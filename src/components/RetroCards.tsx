@@ -1142,7 +1142,7 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-center w-full h-full text-center" style={{ paddingTop: '35%' }}>
             <h1
               className="retro-title logo-slide-anim"
-              style={{ fontSize: '64px', lineHeight: 1.05 }}
+              style={{ fontSize: '64px', lineHeight: 1.05, color: '#9784FA' }}
             >
               Retro Cards
             </h1>
