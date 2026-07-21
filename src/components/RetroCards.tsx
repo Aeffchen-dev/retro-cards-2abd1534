@@ -1173,7 +1173,9 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-lg bg-retro-white/5 border-none focus:outline-none focus:ring-2 focus:ring-black/20 px-4 text-base placeholder:text-base placeholder:text-retro-white/30";
+        const SETUP_ACCENT = "#B3E760"; // lime accent
+        const SETUP_ON_ACCENT = "#0D0D0E"; // dark icon/text on lime
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-lg bg-[#B3E760]/10 border-none focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 px-4 text-base placeholder:text-base placeholder:text-[#C6EE96]/50";
         const emojiPicker = (
           value: string,
           placeholder: string,
@@ -1187,11 +1189,10 @@ const RetroCards: React.FC = () => {
               onChange={(e) => onChange(sanitizeEmoji(e.target.value))}
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
-              className="emoji-picker-input w-full h-full rounded-lg bg-retro-white/5 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/20 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-lg bg-[#B3E760]/10 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 focus:opacity-10 placeholder:text-[#C6EE96]/50"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#5C8A2A] flex items-center justify-center pointer-events-none">
-              <Pencil size={10} color="#FFFFFF" strokeWidth={2.5} />
-
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
+              <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
             </div>
           </div>
         );
@@ -1260,9 +1261,10 @@ const RetroCards: React.FC = () => {
                       const next = setupData.extraPartners.filter((_, i) => i !== idx);
                       setSetupData({ ...setupData, extraPartners: next });
                     }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#5C8A2A] flex items-center justify-center transition-transform hover:scale-105"
+                    className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
+                    style={{ background: SETUP_ACCENT }}
                   >
-                    <X size={10} color="#FFFFFF" strokeWidth={2.5} />
+                    <X size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
 
                   </button>
                 </div>
@@ -1304,10 +1306,11 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? 'bg-[#5C8A2A]' : 'bg-retro-white/20'}`}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? '' : 'bg-[#B3E760]/15'}`}
+                  style={setupData.openRelationship ? { background: SETUP_ACCENT } : undefined}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-retro-card-bg transition-transform ${setupData.openRelationship ? 'translate-x-5' : ''}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#0D0D0E]' : 'bg-[#C6EE96]'}`}
                   />
                 </button>
               </div>
@@ -1318,7 +1321,8 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy !text-[#0D0D0E] bg-[#5C8A2A] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}
             >
               Los geht's
             </button>
