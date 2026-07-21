@@ -1523,13 +1523,12 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const theme = CARD_THEMES[index % CARD_THEMES.length];
-              // Determine text color based on background brightness
-              const hex = theme.bg.replace('#', '');
+              // Convert theme.text hex to rgb triplet for --retro-white-rgb
+              const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
               const g = parseInt(hex.slice(2, 4), 16);
               const b = parseInt(hex.slice(4, 6), 16);
-              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-              const textRgb = luminance > 0.6 ? '13 13 14' : '238 238 238';
+              const textRgb = `${r} ${g} ${b}`;
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
