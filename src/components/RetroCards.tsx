@@ -83,17 +83,16 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// Material 3 tonal palette — dark surfaces with varied hues so text-retro-white stays readable
+// New palette — light + accent surfaces. Text inside cards is dark by default
+// (see `.retro-card-container` scope in index.css which overrides --retro-white-rgb).
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#381E72", blob: "#381E72", accent: "#D0BCFF" }, // deep violet
-  { bg: "#4F378B", blob: "#4F378B", accent: "#EADDFF" }, // primary container
-  { bg: "#211F26", blob: "#211F26", accent: "#D0BCFF" }, // near black surface
-  { bg: "#5C3A7A", blob: "#5C3A7A", accent: "#D0BCFF" }, // plum
-  { bg: "#2B2141", blob: "#2B2141", accent: "#B69DF8" }, // deep indigo
-  { bg: "#6750A4", blob: "#6750A4", accent: "#EADDFF" }, // M3 primary
-  { bg: "#36343B", blob: "#36343B", accent: "#D0BCFF" }, // surface high
-  { bg: "#463A5E", blob: "#463A5E", accent: "#EADDFF" }, // muted violet
+  { bg: "#EEEEEE", blob: "#EEEEEE", accent: "#9784FA" }, // surface primary
+  { bg: "#B3E760", blob: "#B3E760", accent: "#0D0D0E" }, // lime
+  { bg: "#FC9069", blob: "#FC9069", accent: "#0D0D0E" }, // coral
+  { bg: "#9784FA", blob: "#9784FA", accent: "#0D0D0E" }, // lavender
+  { bg: "#51D2C3", blob: "#51D2C3", accent: "#0D0D0E" }, // turquoise
 ];
+
 
 
 const RetroCards: React.FC = () => {
