@@ -1146,7 +1146,7 @@ const RetroCards: React.FC = () => {
             >
               Retro Cards
             </h1>
-            <p className="retro-body-copy mt-8" style={{ fontSize: '16px', lineHeight: 1.5, color: '#9784FA' }}>
+            <p className="retro-body-copy mt-8" style={{ fontSize: '16px', lineHeight: 1.5, color: '#7A6BC7' }}>
               Ein interaktiver Check-in
               <br />
               für eine gesunde Beziehung
@@ -1483,8 +1483,8 @@ const RetroCards: React.FC = () => {
     >
       {/* Header - Compact like friends app */}
       <div className="flex items-center gap-4 w-full px-4 py-3">
-        <h1 className="retro-title text-retro-white/40" style={{ fontSize: '17.64px' }}>Retro Cards</h1>
-        <div className="flex-1 text-right retro-body text-retro-white/40">
+        <h1 className="retro-title text-retro-white/90" style={{ fontSize: '17.64px' }}>Retro Cards</h1>
+        <div className="flex-1 text-right retro-body text-retro-white/90">
           {currentCard + 1} / {totalCards}
         </div>
       </div>
@@ -1594,7 +1594,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Navigation hint on first card */}
                     {index === 0 && (
-                      <div className="absolute bottom-8 left-8 right-8 text-center retro-body text-retro-white/15">
+                      <div className="absolute bottom-8 left-8 right-8 text-center retro-body text-retro-white/8" style={{ opacity: 0.08 }}>
                         Swipe um weiter zu navigieren
                       </div>
                     )}
