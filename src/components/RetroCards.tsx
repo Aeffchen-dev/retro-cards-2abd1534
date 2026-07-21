@@ -83,6 +83,19 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
+// Material 3 tonal palette — dark surfaces with varied hues so text-retro-white stays readable
+const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
+  { bg: "#4F378B", blob: "#D0BCFF", accent: "#EADDFF" }, // primary container
+  { bg: "#211F26", blob: "#4F378B", accent: "#D0BCFF" }, // surface
+  { bg: "#4A4458", blob: "#7F67BE", accent: "#EADDFF" }, // secondary container
+  { bg: "#381E72", blob: "#B69DF8", accent: "#EADDFF" }, // deep primary
+  { bg: "#633B48", blob: "#FFB1C8", accent: "#FFD8E4" }, // tertiary container
+  { bg: "#2B2930", blob: "#D0BCFF", accent: "#B69DF8" }, // surface container
+  { bg: "#5C3A7A", blob: "#EADDFF", accent: "#D0BCFF" }, // violet
+  { bg: "#36343B", blob: "#7F67BE", accent: "#D0BCFF" }, // surface high
+];
+
+
 const RetroCards: React.FC = () => {
   // Initialize currentCard from localStorage synchronously for initialSlide
   const [currentCard, setCurrentCard] = useState(() => {
