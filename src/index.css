@@ -293,13 +293,13 @@ button {
 }
 
 .retro-input-light {
-  color: #000000;
-  caret-color: #000000;
+  color: var(--retro-post-it-text, #000000);
+  caret-color: var(--retro-post-it-text, #000000);
 }
 
 .retro-input-light::placeholder {
-  color: #b29f71;
-  opacity: 1;
+  color: var(--retro-post-it-text, #b29f71);
+  opacity: 0.5;
 }
 
 /* Name input wrapper */
