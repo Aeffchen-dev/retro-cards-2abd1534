@@ -187,8 +187,8 @@
   font-family: "Kokoro", Georgia, serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 44px;
-  line-height: 1;
+  font-size: 32px;
+  line-height: 1.05;
   letter-spacing: -0.01em;
 }
 
@@ -217,14 +217,7 @@
   color: var(--retro-white);
 }
 
-.retro-body {
-  font-family: Arial, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--retro-white);
-}
-
+.retro-body,
 .retro-body-copy {
   font-family: Arial, sans-serif;
   font-weight: 400;
