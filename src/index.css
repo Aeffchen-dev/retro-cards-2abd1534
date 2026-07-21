@@ -187,8 +187,8 @@
   font-family: "Kokoro", Georgia, serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 44px;
-  line-height: 1;
+  font-size: 32px;
+  line-height: 1.05;
   letter-spacing: -0.01em;
 }
 
@@ -217,14 +217,7 @@
   color: var(--retro-white);
 }
 
-.retro-body {
-  font-family: Arial, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--retro-white);
-}
-
+.retro-body,
 .retro-body-copy {
   font-family: Arial, sans-serif;
   font-weight: 400;
@@ -315,7 +308,7 @@ button {
 .retro-post-it-label {
   font-family: Arial, sans-serif;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -534,15 +527,16 @@ textarea.bg-retro-post-it:focus,
 
   /* Match frontend font sizes and spacing */
   .retro-heading {
-    font-size: 2.5rem !important;
-    line-height: 1.1 !important;
+    font-size: 2rem !important;
+    line-height: 1.05 !important;
   }
 
   .retro-label {
-    font-size: 0.875rem !important;
+    font-size: 0.75rem !important;
   }
 
-  .retro-body {
+  .retro-body,
+  .retro-body-copy {
     font-size: 1rem !important;
   }
 
