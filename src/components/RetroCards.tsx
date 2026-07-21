@@ -1539,7 +1539,11 @@ const RetroCards: React.FC = () => {
                       style={{ backgroundColor: theme.accent }}
                     />
 
+                    {/* Edit Mode View */}
+                    {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
+                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-[28px]" style={{ backgroundColor: theme.bg }}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
+
                         <h2 
                           className="retro-body text-retro-white/80 mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
                           style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4 }}
