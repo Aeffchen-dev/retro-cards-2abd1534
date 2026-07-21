@@ -87,7 +87,7 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
-  { bg: "#1A0A24", text: "#E4C7FF", accent: "#7A4A99" }, // deep purple + lilac
+  { bg: "#241030", text: "#E4C7FF", accent: "#7A4A99" }, // deep purple + lilac
   { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF6FB0" }, // dark pink + rosa
   { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
   { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF" }, // deep navy + sky blue
