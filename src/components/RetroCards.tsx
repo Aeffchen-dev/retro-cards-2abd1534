@@ -83,16 +83,16 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// Purple-forward card surfaces, matching the reference: deep plum darks
-// alternating with a soft lavender light card. Accents rotate through the
-// token palette (lavender / lime / coral / turquoise) used sparingly, like the
-// single-color highlights in the reference screenshot.
-const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#1C1424", blob: "#1C1424", accent: "#9784FA" }, // deep plum + lavender
-  { bg: "#EADBFF", blob: "#EADBFF", accent: "#4A2E7A" }, // soft lavender + deep purple
-  { bg: "#241832", blob: "#241832", accent: "#B3E760" }, // plum + lime pop
-  { bg: "#2A1B3D", blob: "#2A1B3D", accent: "#FC9069" }, // violet + coral pop
-  { bg: "#1A1428", blob: "#1A1428", accent: "#51D2C3" }, // midnight + turquoise pop
+// Tonal card families — bg + text stay in the same hue family (like the
+// reference screenshot's monochromatic purple / lavender cards). Cycles
+// through purple, green, and orange families.
+const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
+  { bg: "#1C1424", text: "#D6C7FF", accent: "#9784FA" }, // deep plum + lavender
+  { bg: "#EADBFF", text: "#3A2470", accent: "#5B3FCF" }, // light lavender + deep purple
+  { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
+  { bg: "#E7F7C9", text: "#2E4A19", accent: "#5C8A2A" }, // light lime + dark green
+  { bg: "#2A1810", text: "#FFC7A8", accent: "#FC9069" }, // burnt umber + coral
+  { bg: "#FFE1D0", text: "#5A2410", accent: "#C25330" }, // peach + deep rust
 ];
 
 
@@ -1523,13 +1523,12 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const theme = CARD_THEMES[index % CARD_THEMES.length];
-              // Determine text color based on background brightness
-              const hex = theme.bg.replace('#', '');
+              // Convert theme.text hex to rgb triplet for --retro-white-rgb
+              const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
               const g = parseInt(hex.slice(2, 4), 16);
               const b = parseInt(hex.slice(4, 6), 16);
-              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-              const textRgb = luminance > 0.6 ? '13 13 14' : '238 238 238';
+              const textRgb = `${r} ${g} ${b}`;
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
