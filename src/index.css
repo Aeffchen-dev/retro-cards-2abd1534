@@ -22,16 +22,29 @@
 
 @layer base {
   /**
-   * Retro Cards design system
+   * Retro Cards design system — new token palette
    */
   :root {
-    /* Material 3 dark purple palette */
-    --retro-black: #141218;
-    --retro-card-bg: #211F26;
-    --retro-white: #E6E0E9;
-    --retro-post-it: #EADDFF;
-    --retro-accent: #D0BCFF;
-    --retro-accent-on: #381E72;
+    --retro-black: #0D0D0E;
+    --retro-card-bg: #EEEEEE;
+    /* rgb triplet so tailwind opacity modifiers work */
+    --retro-white-rgb: 238 238 238; /* light on dark app shell */
+    --retro-post-it: #B3E760;
+    --retro-accent: #9784FA;
+    --retro-accent-on: #FFFFFF;
+
+    /* Additional palette tokens */
+    --color-surface-primary: #EEEEEE;
+    --color-surface-lime: #B3E760;
+    --color-surface-coral: #FC9069;
+    --color-surface-lavender: #9784FA;
+    --color-surface-turquoise: #51D2C3;
+    --color-text-primary: #0D0D0E;
+    --color-text-secondary: #615D5C;
+    --color-border-default: #9FA0A1;
+    --color-cta: #0D0D0E;
+    --color-cta-text: #FFFFFF;
+
 
     /* Keep existing colors for compatibility */
     --background: 0 0% 100%;
