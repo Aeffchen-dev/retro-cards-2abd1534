@@ -232,7 +232,7 @@
   padding: 6px 14px 6px 40px;
   background: #FFFFFF;
   border: 0 !important;
-  border-radius: 6px;
+  border-radius: 6px !important;
   overflow: hidden;
 }
 .retro-pill .retro-label {
