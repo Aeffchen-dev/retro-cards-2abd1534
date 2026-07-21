@@ -196,36 +196,43 @@
 }
 
 
+/* M3 Label Small */
 .retro-label {
-  font-family: "Kokoro", Arial, sans-serif;
-  font-weight: 700;
+  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.5px;
+  color: var(--retro-white);
+}
+
+/* M3 Headline Small */
+.retro-heading {
+  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: 0;
+  color: var(--retro-white);
+}
+
+/* M3 Body Small */
+.retro-body {
+  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-weight: 400;
   font-size: 12px;
-  line-height: 1;
+  line-height: 16px;
   letter-spacing: 0.4px;
   color: var(--retro-white);
 }
 
-.retro-heading {
-  font-family: Arial, sans-serif;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 1.2;
-  color: var(--retro-white);
-}
-
-.retro-body {
-  font-family: Arial, sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 1.2;
-  color: var(--retro-white);
-}
-
+/* M3 Body Large */
 .retro-body-copy {
-  font-family: Arial, sans-serif;
+  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 24px;
+  letter-spacing: 0.5px;
   color: var(--retro-white);
 }
 
