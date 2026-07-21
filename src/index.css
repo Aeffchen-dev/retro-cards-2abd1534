@@ -25,11 +25,13 @@
    * Retro Cards design system
    */
   :root {
-    /* Retro Cards specific colors */
-    --retro-black: #000000;
-    --retro-card-bg: #161616;
-    --retro-white: #ffffff;
-    --retro-post-it: #f4e5a3;
+    /* Material 3 dark purple palette */
+    --retro-black: #141218;
+    --retro-card-bg: #211F26;
+    --retro-white: #E6E0E9;
+    --retro-post-it: #EADDFF;
+    --retro-accent: #D0BCFF;
+    --retro-accent-on: #381E72;
 
     /* Keep existing colors for compatibility */
     --background: 0 0% 100%;
