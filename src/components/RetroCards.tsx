@@ -88,7 +88,7 @@ interface MemojisPosition {
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
   { bg: "#1C1424", text: "#D6C7FF", accent: "#9784FA" }, // deep plum + lavender
-  { bg: "#2A1810", text: "#FFC7A8", accent: "#FC9069" }, // burnt umber + coral
+  { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF6FB0" }, // dark pink + rosa
   { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
   { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF" }, // deep navy + sky blue
   { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3" }, // deep teal + turquoise
