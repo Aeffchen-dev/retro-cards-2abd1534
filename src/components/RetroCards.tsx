@@ -90,9 +90,11 @@ const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
   { bg: "#1C1424", text: "#D6C7FF", accent: "#9784FA" }, // deep plum + lavender
   { bg: "#2A1810", text: "#FFC7A8", accent: "#FC9069" }, // burnt umber + coral
   { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
+  { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF" }, // deep navy + sky blue
+  { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3" }, // deep teal + turquoise
   { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA" }, // violet + lavender
-  { bg: "#1A1428", text: "#D6C7FF", accent: "#9784FA" }, // midnight + lavender
-  { bg: "#1E2A14", text: "#C6EE96", accent: "#B3E760" }, // dark olive + lime
+  { bg: "#12222E", text: "#A8D4FF", accent: "#5CA8FF" }, // midnight blue + sky
+  { bg: "#12292A", text: "#9BEEE0", accent: "#51D2C3" }, // dark teal + turquoise
 ];
 
 
