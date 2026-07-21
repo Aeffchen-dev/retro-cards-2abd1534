@@ -1146,7 +1146,7 @@ const RetroCards: React.FC = () => {
             >
               Retro Cards
             </h1>
-            <p className="retro-body-copy mt-8 text-retro-white/50" style={{ fontSize: '16px', lineHeight: 1.5 }}>
+            <p className="retro-body-copy mt-8" style={{ fontSize: '16px', lineHeight: 1.5, color: '#5B3FCF' }}>
               Ein interaktiver Check-in
               <br />
               für eine gesunde Beziehung
