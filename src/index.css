@@ -29,6 +29,8 @@
     --retro-card-bg: #EEEEEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
+    --retro-white: rgb(var(--retro-white-rgb));
+
     --retro-post-it: #B3E760;
     --retro-accent: #9784FA;
     --retro-accent-on: #FFFFFF;
