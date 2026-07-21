@@ -25,10 +25,12 @@ export default {
 			colors: {
 				// Retro Cards specific colors
 				retro: {
-					black: "#000000",
-					'card-bg': "#161616",
-					white: "#FFFFFF",
-					'post-it': "#F4E5A3",
+					black: "#141218",
+					'card-bg': "#211F26",
+					white: "#E6E0E9",
+					'post-it': "#EADDFF",
+					accent: "#D0BCFF",
+					'accent-on': "#381E72",
 				},
 				// Keep existing colors for compatibility
 				border: 'hsl(var(--border))',
