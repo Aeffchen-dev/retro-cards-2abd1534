@@ -88,11 +88,11 @@ interface MemojisPosition {
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
   { bg: "#1C1424", text: "#D6C7FF", accent: "#9784FA" }, // deep plum + lavender
-  { bg: "#2A1810", text: "#FFC7A8", accent: "#FC9069" }, // burnt umber + coral (slide 2)
-  { bg: "#EADBFF", text: "#3A2470", accent: "#5B3FCF" }, // light lavender + deep purple
+  { bg: "#2A1810", text: "#FFC7A8", accent: "#FC9069" }, // burnt umber + coral
   { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
-  { bg: "#E7F7C9", text: "#2E4A19", accent: "#5C8A2A" }, // light lime + dark green
-  { bg: "#FFE1D0", text: "#5A2410", accent: "#C25330" }, // peach + deep rust
+  { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA" }, // violet + lavender
+  { bg: "#1A1428", text: "#D6C7FF", accent: "#9784FA" }, // midnight + lavender
+  { bg: "#1E2A14", text: "#C6EE96", accent: "#B3E760" }, // dark olive + lime
 ];
 
 
