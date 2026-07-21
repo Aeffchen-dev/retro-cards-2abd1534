@@ -1321,7 +1321,8 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy !text-[#0D0D0E] bg-[#5C8A2A] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}
             >
               Los geht's
             </button>
