@@ -85,14 +85,14 @@ interface MemojisPosition {
 
 // Material 3 tonal palette — dark surfaces with varied hues so text-retro-white stays readable
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#4F378B", blob: "#D0BCFF", accent: "#EADDFF" }, // primary container
-  { bg: "#211F26", blob: "#4F378B", accent: "#D0BCFF" }, // surface
-  { bg: "#4A4458", blob: "#7F67BE", accent: "#EADDFF" }, // secondary container
-  { bg: "#381E72", blob: "#B69DF8", accent: "#EADDFF" }, // deep primary
-  { bg: "#633B48", blob: "#FFB1C8", accent: "#FFD8E4" }, // tertiary container
-  { bg: "#2B2930", blob: "#D0BCFF", accent: "#B69DF8" }, // surface container
-  { bg: "#5C3A7A", blob: "#EADDFF", accent: "#D0BCFF" }, // violet
-  { bg: "#36343B", blob: "#7F67BE", accent: "#D0BCFF" }, // surface high
+  { bg: "#381E72", blob: "#381E72", accent: "#D0BCFF" }, // deep violet
+  { bg: "#4F378B", blob: "#4F378B", accent: "#EADDFF" }, // primary container
+  { bg: "#211F26", blob: "#211F26", accent: "#D0BCFF" }, // near black surface
+  { bg: "#5C3A7A", blob: "#5C3A7A", accent: "#D0BCFF" }, // plum
+  { bg: "#2B2141", blob: "#2B2141", accent: "#B69DF8" }, // deep indigo
+  { bg: "#6750A4", blob: "#6750A4", accent: "#EADDFF" }, // M3 primary
+  { bg: "#36343B", blob: "#36343B", accent: "#D0BCFF" }, // surface high
+  { bg: "#463A5E", blob: "#463A5E", accent: "#EADDFF" }, // muted violet
 ];
 
 
@@ -1527,17 +1527,8 @@ const RetroCards: React.FC = () => {
                     className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-[28px] p-8 shadow-2xl overflow-y-auto"
                     style={{ backgroundColor: theme.bg }}
                   >
-                    {/* Decorative M3 blob */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full opacity-40 blur-2xl"
-                      style={{ backgroundColor: theme.blob }}
-                    />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -bottom-20 -left-10 w-40 h-40 rounded-full opacity-20 blur-2xl"
-                      style={{ backgroundColor: theme.accent }}
-                    />
+
+
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
