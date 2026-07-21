@@ -1144,11 +1144,11 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-center w-full h-full text-center" style={{ paddingTop: '35%' }}>
             <h1
               className="retro-title logo-slide-anim"
-              style={{ fontSize: '64px', lineHeight: 1.05, color: '#D0BCFF' }}
+              style={{ fontSize: '64px', lineHeight: 1.05, color: CARD_THEMES[0].text }}
             >
               Retro Cards
             </h1>
-            <p className="retro-body-copy mt-8" style={{ fontSize: '16px', lineHeight: 1.5, color: '#7A6BC7' }}>
+            <p className="retro-body-copy mt-8" style={{ fontSize: '16px', lineHeight: 1.5, color: CARD_THEMES[0].accent }}>
               Ein interaktiver Check-in
               <br />
               für eine gesunde Beziehung
