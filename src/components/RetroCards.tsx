@@ -1618,8 +1618,10 @@ const RetroCards: React.FC = () => {
                   </div>
                 </div>
               </SwiperSlide>
-            ))}
+              );
+            })}
           </Swiper>
+
         </div>
 
         {/* Print-only: All slides with notes interleaved in correct order */}
