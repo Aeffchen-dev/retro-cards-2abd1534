@@ -190,10 +190,9 @@
   line-height: 1.2;
 }
 
-/* Inside card containers, flip retro-white to a dark text tone so text
-   sits legibly on the new light/colored surfaces. */
+/* Cards are dark surfaces — keep text light (238 238 238) on them. */
 .retro-card-container {
-  --retro-white-rgb: 13 13 14;
+  --retro-white-rgb: 238 238 238;
 }
 
 
