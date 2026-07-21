@@ -1261,9 +1261,10 @@ const RetroCards: React.FC = () => {
                       const next = setupData.extraPartners.filter((_, i) => i !== idx);
                       setSetupData({ ...setupData, extraPartners: next });
                     }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#5C8A2A] flex items-center justify-center transition-transform hover:scale-105"
+                    className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
+                    style={{ background: SETUP_ACCENT }}
                   >
-                    <X size={10} color="#FFFFFF" strokeWidth={2.5} />
+                    <X size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
 
                   </button>
                 </div>
