@@ -83,15 +83,16 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// Dark card surfaces with a rotating accent color per slide. Text on cards is
-// light (see .retro-card-container in index.css). Accents come from the token
-// palette: lavender / lime / coral / turquoise / primary.
+// Purple-forward card surfaces, matching the reference: deep plum darks
+// alternating with a soft lavender light card. Accents rotate through the
+// token palette (lavender / lime / coral / turquoise) used sparingly, like the
+// single-color highlights in the reference screenshot.
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#1D1B20", blob: "#1D1B20", accent: "#9784FA" }, // lavender accent
-  { bg: "#211C2B", blob: "#211C2B", accent: "#B3E760" }, // lime accent
-  { bg: "#241A22", blob: "#241A22", accent: "#FC9069" }, // coral accent
-  { bg: "#1A2226", blob: "#1A2226", accent: "#51D2C3" }, // turquoise accent
-  { bg: "#181820", blob: "#181820", accent: "#EEEEEE" }, // neutral accent
+  { bg: "#1C1424", blob: "#1C1424", accent: "#9784FA" }, // deep plum + lavender
+  { bg: "#EADBFF", blob: "#EADBFF", accent: "#4A2E7A" }, // soft lavender + deep purple
+  { bg: "#241832", blob: "#241832", accent: "#B3E760" }, // plum + lime pop
+  { bg: "#2A1B3D", blob: "#2A1B3D", accent: "#FC9069" }, // violet + coral pop
+  { bg: "#1A1428", blob: "#1A1428", accent: "#51D2C3" }, // midnight + turquoise pop
 ];
 
 
@@ -1522,19 +1523,27 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const theme = CARD_THEMES[index % CARD_THEMES.length];
+              // Determine text color based on background brightness
+              const hex = theme.bg.replace('#', '');
+              const r = parseInt(hex.slice(0, 2), 16);
+              const g = parseInt(hex.slice(2, 4), 16);
+              const b = parseInt(hex.slice(4, 6), 16);
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              const textRgb = luminance > 0.6 ? '13 13 14' : '238 238 238';
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-4">
                   <div 
                     className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-[28px] p-8 shadow-2xl overflow-y-auto"
-                    style={{ backgroundColor: theme.bg }}
+                    style={cardStyle}
                   >
 
 
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-[28px]" style={{ backgroundColor: theme.bg }}>
+                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-[28px]" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 

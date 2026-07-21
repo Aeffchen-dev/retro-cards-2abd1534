@@ -31,9 +31,9 @@
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
     --retro-white: rgb(var(--retro-white-rgb));
 
-    --retro-post-it: #B3E760;
+    --retro-post-it: #EADBFF;
     --retro-accent: #9784FA;
-    --retro-accent-on: #FFFFFF;
+    --retro-accent-on: #0D0D0E;
 
     /* Additional palette tokens */
     --color-surface-primary: #EEEEEE;
