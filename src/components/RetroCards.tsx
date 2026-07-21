@@ -1256,9 +1256,10 @@ const RetroCards: React.FC = () => {
                       const next = setupData.extraPartners.filter((_, i) => i !== idx);
                       setSetupData({ ...setupData, extraPartners: next });
                     }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#D0BCFF] flex items-center justify-center transition-transform hover:scale-105"
+                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#9784FA] flex items-center justify-center transition-transform hover:scale-105"
                   >
-                    <X size={10} color="#161616" strokeWidth={2.5} />
+                    <X size={10} color="#FFFFFF" strokeWidth={2.5} />
+
                   </button>
                 </div>
               ))}
