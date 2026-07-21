@@ -1518,15 +1518,27 @@ const RetroCards: React.FC = () => {
             noSwipingClass="swiper-no-swiping"
             noSwiping={true}
           >
-            {slides.map((slideId, index) => (
+            {slides.map((slideId, index) => {
+              const theme = CARD_THEMES[index % CARD_THEMES.length];
+              return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-4">
                   <div 
-                    className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 bg-retro-card-bg rounded-[28px] p-8 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-[28px] p-8 shadow-2xl overflow-y-auto"
+                    style={{ backgroundColor: theme.bg }}
                   >
-                    {/* Edit Mode View */}
-                    {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-8 flex flex-col z-30 bg-retro-card-bg">
+                    {/* Decorative M3 blob */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full opacity-40 blur-2xl"
+                      style={{ backgroundColor: theme.blob }}
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -bottom-20 -left-10 w-40 h-40 rounded-full opacity-20 blur-2xl"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
                         <h2 
                           className="retro-body text-retro-white/80 mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
