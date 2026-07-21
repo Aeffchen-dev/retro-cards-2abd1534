@@ -1523,19 +1523,27 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const theme = CARD_THEMES[index % CARD_THEMES.length];
+              // Determine text color based on background brightness
+              const hex = theme.bg.replace('#', '');
+              const r = parseInt(hex.slice(0, 2), 16);
+              const g = parseInt(hex.slice(2, 4), 16);
+              const b = parseInt(hex.slice(4, 6), 16);
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+              const textRgb = luminance > 0.6 ? '13 13 14' : '238 238 238';
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-4">
                   <div 
                     className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-[28px] p-8 shadow-2xl overflow-y-auto"
-                    style={{ backgroundColor: theme.bg }}
+                    style={cardStyle}
                   >
 
 
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-[28px]" style={{ backgroundColor: theme.bg }}>
+                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-[28px]" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
