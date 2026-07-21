@@ -1527,17 +1527,8 @@ const RetroCards: React.FC = () => {
                     className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-[28px] p-8 shadow-2xl overflow-y-auto"
                     style={{ backgroundColor: theme.bg }}
                   >
-                    {/* Decorative M3 blob */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full opacity-40 blur-2xl"
-                      style={{ backgroundColor: theme.blob }}
-                    />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute -bottom-20 -left-10 w-40 h-40 rounded-full opacity-20 blur-2xl"
-                      style={{ backgroundColor: theme.accent }}
-                    />
+
+
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
