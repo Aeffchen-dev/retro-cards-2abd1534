@@ -87,14 +87,14 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
-  { bg: "#2A1A3D", text: "#E4D4FF", accent: "#B9A3E8" }, // dusty plum + soft lavender
-  { bg: "#3D2438", text: "#F0CBDD", accent: "#D89BB8" }, // muted mauve + dusty rose
-  { bg: "#2A3320", text: "#DCE8B8", accent: "#A8C77A" }, // olive shadow + sage
-  { bg: "#1F2A3D", text: "#C8D4F0", accent: "#8FA3D4" }, // dusk navy + powder blue
-  { bg: "#243535", text: "#BFE0D8", accent: "#88BFB0" }, // deep pine + dusty mint
-  { bg: "#3A2A1F", text: "#F0D8B8", accent: "#D4A87A" }, // burnt cocoa + soft caramel
-  { bg: "#331F3D", text: "#E0C8F0", accent: "#B098D0" }, // aubergine + wisteria
-  { bg: "#1F3338", text: "#B8DCE0", accent: "#7AB3BF" }, // muted teal + dusty aqua
+  { bg: "#241030", text: "#E4C7FF", accent: "#7A4A99" }, // deep purple + lilac
+  { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF6FB0" }, // dark pink + rosa
+  { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
+  { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF" }, // deep navy + sky blue
+  { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3" }, // deep teal + turquoise
+  { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA" }, // violet + lavender
+  { bg: "#12222E", text: "#A8D4FF", accent: "#5CA8FF" }, // midnight blue + sky
+  { bg: "#12292A", text: "#9BEEE0", accent: "#51D2C3" }, // dark teal + turquoise
 ];
 
 
