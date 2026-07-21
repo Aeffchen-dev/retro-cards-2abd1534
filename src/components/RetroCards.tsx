@@ -85,14 +85,14 @@ interface MemojisPosition {
 
 // Material 3 tonal palette — dark surfaces with varied hues so text-retro-white stays readable
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#4F378B", blob: "#D0BCFF", accent: "#EADDFF" }, // primary container
-  { bg: "#211F26", blob: "#4F378B", accent: "#D0BCFF" }, // surface
-  { bg: "#4A4458", blob: "#7F67BE", accent: "#EADDFF" }, // secondary container
-  { bg: "#381E72", blob: "#B69DF8", accent: "#EADDFF" }, // deep primary
-  { bg: "#633B48", blob: "#FFB1C8", accent: "#FFD8E4" }, // tertiary container
-  { bg: "#2B2930", blob: "#D0BCFF", accent: "#B69DF8" }, // surface container
-  { bg: "#5C3A7A", blob: "#EADDFF", accent: "#D0BCFF" }, // violet
-  { bg: "#36343B", blob: "#7F67BE", accent: "#D0BCFF" }, // surface high
+  { bg: "#381E72", blob: "#381E72", accent: "#D0BCFF" }, // deep violet
+  { bg: "#EADDFF", blob: "#EADDFF", accent: "#4F378B" }, // lavender light
+  { bg: "#4F378B", blob: "#4F378B", accent: "#EADDFF" }, // primary container
+  { bg: "#D0BCFF", blob: "#D0BCFF", accent: "#381E72" }, // lavender
+  { bg: "#211F26", blob: "#211F26", accent: "#D0BCFF" }, // near black surface
+  { bg: "#7F67BE", blob: "#7F67BE", accent: "#EADDFF" }, // mid purple
+  { bg: "#F6EDFF", blob: "#F6EDFF", accent: "#4F378B" }, // pale lavender
+  { bg: "#5C3A7A", blob: "#5C3A7A", accent: "#D0BCFF" }, // plum
 ];
 
 
