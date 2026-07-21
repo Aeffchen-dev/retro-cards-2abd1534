@@ -975,7 +975,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-black bg-[#00E676] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#381E72] bg-[#D0BCFF] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               <Camera size={18} strokeWidth={2} />
               Kamera öffnen
@@ -1173,7 +1173,7 @@ const RetroCards: React.FC = () => {
               placeholder={placeholder}
               className="emoji-picker-input w-full h-full rounded-lg bg-retro-white/5 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/20 focus:opacity-10"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00E676] flex items-center justify-center pointer-events-none">
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#D0BCFF] flex items-center justify-center pointer-events-none">
               <Pencil size={10} color="#161616" strokeWidth={2.5} />
             </div>
           </div>
@@ -1243,7 +1243,7 @@ const RetroCards: React.FC = () => {
                       const next = setupData.extraPartners.filter((_, i) => i !== idx);
                       setSetupData({ ...setupData, extraPartners: next });
                     }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#00E676] flex items-center justify-center transition-transform hover:scale-105"
+                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#D0BCFF] flex items-center justify-center transition-transform hover:scale-105"
                   >
                     <X size={10} color="#161616" strokeWidth={2.5} />
                   </button>
@@ -1286,7 +1286,7 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? 'bg-[#00E676]' : 'bg-retro-white/20'}`}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? 'bg-[#D0BCFF]' : 'bg-retro-white/20'}`}
                 >
                   <span
                     className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-retro-card-bg transition-transform ${setupData.openRelationship ? 'translate-x-5' : ''}`}
@@ -1300,7 +1300,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy !text-black bg-[#00E676] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy !text-[#381E72] bg-[#D0BCFF] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               Los geht's
             </button>
@@ -1509,7 +1509,7 @@ const RetroCards: React.FC = () => {
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-4">
                   <div 
-                    className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 bg-retro-card-bg rounded-2xl p-8 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 bg-retro-card-bg rounded-[28px] p-8 shadow-2xl overflow-y-auto"
                   >
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
@@ -1600,7 +1600,7 @@ const RetroCards: React.FC = () => {
               {/* Skip Logo, Intro, Setup, Archive (9) and Questions (10) in print */}
               {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (
                 <div className="print-slide-page" style={{ order: index * 2 }}>
-                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-2xl">
+                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-[28px]">
                     {renderCard(slideId)}
                   </div>
                 </div>
@@ -1609,7 +1609,7 @@ const RetroCards: React.FC = () => {
               {/* Notes page right after its slide - on its own page */}
               {slidesWithEditButton.includes(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
-                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-2xl">
+                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-[28px]">
                     {/* Question text */}
                     <h2 
                       className="retro-body mb-6"
