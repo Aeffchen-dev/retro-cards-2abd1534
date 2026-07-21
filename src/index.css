@@ -286,7 +286,7 @@ button {
 .retro-input {
   outline: none;
   resize: none;
-  font-family: Arial, sans-serif;
+  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
 }
 
 .retro-input-dark {
