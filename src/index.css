@@ -186,8 +186,14 @@
   font-weight: 700;
   font-size: 28px;
   line-height: 1.2;
-  color: var(--retro-white);
 }
+
+/* Inside card containers, flip retro-white to a dark text tone so text
+   sits legibly on the new light/colored surfaces. */
+.retro-card-container {
+  --retro-white-rgb: 13 13 14;
+}
+
 
 .retro-label {
   font-family: "Kokoro", Arial, sans-serif;
