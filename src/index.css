@@ -527,15 +527,16 @@ textarea.bg-retro-post-it:focus,
 
   /* Match frontend font sizes and spacing */
   .retro-heading {
-    font-size: 2.5rem !important;
-    line-height: 1.1 !important;
+    font-size: 2rem !important;
+    line-height: 1.05 !important;
   }
 
   .retro-label {
-    font-size: 0.875rem !important;
+    font-size: 0.75rem !important;
   }
 
-  .retro-body {
+  .retro-body,
+  .retro-body-copy {
     font-size: 1rem !important;
   }
 
