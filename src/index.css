@@ -226,9 +226,37 @@
   color: var(--retro-white);
 }
 
-/* Pill label container */
+/* Pill label container — themed swatch + white label */
 .retro-pill {
-  padding: 6px 14px;
+  position: relative;
+  padding: 6px 14px 6px 40px;
+  background: #FFFFFF;
+  border: 0 !important;
+  border-radius: 6px !important;
+  overflow: hidden;
+}
+.retro-pill .retro-label {
+  color: #0D0D0E !important;
+}
+.retro-pill::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  background: var(--retro-post-it, #EADBFF);
+}
+.retro-pill::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--retro-post-it-text, #0D0D0E);
 }
 
 /* Logo slide entrance animation */
