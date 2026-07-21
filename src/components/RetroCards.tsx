@@ -83,15 +83,16 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// Dark card surfaces with a rotating accent color per slide. Text on cards is
-// light (see .retro-card-container in index.css). Accents come from the token
-// palette: lavender / lime / coral / turquoise / primary.
+// Purple-forward card surfaces, matching the reference: deep plum darks
+// alternating with a soft lavender light card. Accents rotate through the
+// token palette (lavender / lime / coral / turquoise) used sparingly, like the
+// single-color highlights in the reference screenshot.
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#1D1B20", blob: "#1D1B20", accent: "#9784FA" }, // lavender accent
-  { bg: "#211C2B", blob: "#211C2B", accent: "#B3E760" }, // lime accent
-  { bg: "#241A22", blob: "#241A22", accent: "#FC9069" }, // coral accent
-  { bg: "#1A2226", blob: "#1A2226", accent: "#51D2C3" }, // turquoise accent
-  { bg: "#181820", blob: "#181820", accent: "#EEEEEE" }, // neutral accent
+  { bg: "#1C1424", blob: "#1C1424", accent: "#9784FA" }, // deep plum + lavender
+  { bg: "#EADBFF", blob: "#EADBFF", accent: "#4A2E7A" }, // soft lavender + deep purple
+  { bg: "#241832", blob: "#241832", accent: "#B3E760" }, // plum + lime pop
+  { bg: "#2A1B3D", blob: "#2A1B3D", accent: "#FC9069" }, // violet + coral pop
+  { bg: "#1A1428", blob: "#1A1428", accent: "#51D2C3" }, // midnight + turquoise pop
 ];
 
 
