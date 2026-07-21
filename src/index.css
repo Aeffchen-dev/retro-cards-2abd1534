@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,700&family=Roboto:wght@400;500;700&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
 /* Custom Kokoro font */
 @font-face {
   font-family: "Kokoro";
@@ -184,10 +184,12 @@
 
 /* Retro Cards specific styles */
 .retro-title {
-  font-family: "Kokoro", Arial, sans-serif;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 1.2;
+  font-family: "Instrument Serif", "Kokoro", Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 44px;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
@@ -196,43 +198,44 @@
 }
 
 
-/* M3 Label Small */
+/* Small mono uppercase label — editorial kicker */
 .retro-label {
-  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 16px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--retro-white);
 }
 
-/* M3 Headline Small */
+/* Display heading — expressive editorial serif */
 .retro-heading {
-  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-weight: 400;
-  font-size: 28px;
-  line-height: 36px;
+  font-size: 44px;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--retro-white);
+}
+
+/* Body small */
+.retro-body {
+  font-family: "Inter", "Roboto Flex", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
   letter-spacing: 0;
   color: var(--retro-white);
 }
 
-/* M3 Body Small */
-.retro-body {
-  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  color: var(--retro-white);
-}
-
-/* M3 Body Large */
+/* Body copy */
 .retro-body-copy {
-  font-family: "Roboto Flex", "Roboto", Arial, sans-serif;
+  font-family: "Inter", "Roboto Flex", Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
+  line-height: 22px;
+  letter-spacing: -0.005em;
   color: var(--retro-white);
 }
 
