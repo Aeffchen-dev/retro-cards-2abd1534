@@ -299,12 +299,30 @@ button {
 .retro-input-light {
   color: var(--retro-post-it-text, #000000);
   caret-color: var(--retro-post-it-text, #000000);
+  letter-spacing: 0.005em;
 }
 
+/* M3 Expressive body-large placeholder: softer weight, generous tracking */
 .retro-input-light::placeholder {
   color: var(--retro-post-it-text, #b29f71);
-  opacity: 0.5;
+  opacity: 0.62;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
+
+/* M3 Expressive label-small on post-its: uppercase micro label */
+.bg-retro-post-it .retro-label,
+.retro-post-it-label {
+  font-family: Arial, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--retro-post-it-text, #000000);
+  opacity: 0.72;
+}
+
 
 /* Material 3 Expressive filled tonal look for post-its */
 .bg-retro-post-it {
