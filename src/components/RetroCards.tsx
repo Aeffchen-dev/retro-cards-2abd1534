@@ -1110,7 +1110,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setPostItTexts({ ...postItTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-lg"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 />
@@ -1119,7 +1119,7 @@ const RetroCards: React.FC = () => {
             {/* Print-only: post-it notes like takeaways with line breaks */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-lg min-h-[120px] whitespace-pre-wrap">
+                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base min-h-[120px] whitespace-pre-wrap">
                   {postItTexts[person.key] || personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 </div>
               ))}
@@ -1395,7 +1395,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-lg"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 />
@@ -1404,7 +1404,7 @@ const RetroCards: React.FC = () => {
             {/* Print-only: takeaway notes with line breaks per person */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-lg min-h-[120px] whitespace-pre-wrap">
+                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base min-h-[120px] whitespace-pre-wrap">
                   {takeawayTexts[person.key] || personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 </div>
               ))}
@@ -1566,7 +1566,7 @@ const RetroCards: React.FC = () => {
                                   [slideId]: { ...(prev[slideId] || {}), [person.key]: e.target.value }
                                 }))
                               }
-                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-lg"
+                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
                               style={{ borderRadius: "0px" }}
                               placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                             />
@@ -1658,7 +1658,7 @@ const RetroCards: React.FC = () => {
                         const text = editModeNotes[slideId]?.[person.key];
                         if (!text) return null;
                         return (
-                          <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-lg whitespace-pre-wrap min-h-[120px]">
+                          <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base whitespace-pre-wrap min-h-[120px]">
                             {text}
                           </div>
                         );
