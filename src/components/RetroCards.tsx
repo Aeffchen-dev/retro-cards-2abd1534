@@ -83,14 +83,15 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// New palette — light + accent surfaces. Text inside cards is dark by default
-// (see `.retro-card-container` scope in index.css which overrides --retro-white-rgb).
+// Dark card surfaces with a rotating accent color per slide. Text on cards is
+// light (see .retro-card-container in index.css). Accents come from the token
+// palette: lavender / lime / coral / turquoise / primary.
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#EEEEEE", blob: "#EEEEEE", accent: "#9784FA" }, // surface primary
-  { bg: "#B3E760", blob: "#B3E760", accent: "#0D0D0E" }, // lime
-  { bg: "#FC9069", blob: "#FC9069", accent: "#0D0D0E" }, // coral
-  { bg: "#9784FA", blob: "#9784FA", accent: "#0D0D0E" }, // lavender
-  { bg: "#51D2C3", blob: "#51D2C3", accent: "#0D0D0E" }, // turquoise
+  { bg: "#1D1B20", blob: "#1D1B20", accent: "#9784FA" }, // lavender accent
+  { bg: "#211C2B", blob: "#211C2B", accent: "#B3E760" }, // lime accent
+  { bg: "#241A22", blob: "#241A22", accent: "#FC9069" }, // coral accent
+  { bg: "#1A2226", blob: "#1A2226", accent: "#51D2C3" }, // turquoise accent
+  { bg: "#181820", blob: "#181820", accent: "#EEEEEE" }, // neutral accent
 ];
 
 
@@ -987,7 +988,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#FFFFFF] bg-[#0D0D0E] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#0D0D0E] bg-[#9784FA] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               <Camera size={18} strokeWidth={2} />
               Kamera öffnen
@@ -1314,7 +1315,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy !text-[#FFFFFF] bg-[#0D0D0E] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy !text-[#0D0D0E] bg-[#9784FA] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               Los geht's
             </button>
