@@ -83,17 +83,16 @@ interface MemojisPosition {
   [personKey: string]: { x: number; y: number };
 }
 
-// Material 3 tonal palette — dark surfaces with varied hues so text-retro-white stays readable
+// New palette — light + accent surfaces. Text inside cards is dark by default
+// (see `.retro-card-container` scope in index.css which overrides --retro-white-rgb).
 const CARD_THEMES: { bg: string; blob: string; accent: string }[] = [
-  { bg: "#381E72", blob: "#381E72", accent: "#D0BCFF" }, // deep violet
-  { bg: "#4F378B", blob: "#4F378B", accent: "#EADDFF" }, // primary container
-  { bg: "#211F26", blob: "#211F26", accent: "#D0BCFF" }, // near black surface
-  { bg: "#5C3A7A", blob: "#5C3A7A", accent: "#D0BCFF" }, // plum
-  { bg: "#2B2141", blob: "#2B2141", accent: "#B69DF8" }, // deep indigo
-  { bg: "#6750A4", blob: "#6750A4", accent: "#EADDFF" }, // M3 primary
-  { bg: "#36343B", blob: "#36343B", accent: "#D0BCFF" }, // surface high
-  { bg: "#463A5E", blob: "#463A5E", accent: "#EADDFF" }, // muted violet
+  { bg: "#EEEEEE", blob: "#EEEEEE", accent: "#9784FA" }, // surface primary
+  { bg: "#B3E760", blob: "#B3E760", accent: "#0D0D0E" }, // lime
+  { bg: "#FC9069", blob: "#FC9069", accent: "#0D0D0E" }, // coral
+  { bg: "#9784FA", blob: "#9784FA", accent: "#0D0D0E" }, // lavender
+  { bg: "#51D2C3", blob: "#51D2C3", accent: "#0D0D0E" }, // turquoise
 ];
+
 
 
 const RetroCards: React.FC = () => {
@@ -988,7 +987,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#381E72] bg-[#D0BCFF] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#FFFFFF] bg-[#0D0D0E] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               <Camera size={18} strokeWidth={2} />
               Kamera öffnen
@@ -1186,8 +1185,9 @@ const RetroCards: React.FC = () => {
               placeholder={placeholder}
               className="emoji-picker-input w-full h-full rounded-lg bg-retro-white/5 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/20 focus:opacity-10"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#D0BCFF] flex items-center justify-center pointer-events-none">
-              <Pencil size={10} color="#161616" strokeWidth={2.5} />
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#9784FA] flex items-center justify-center pointer-events-none">
+              <Pencil size={10} color="#FFFFFF" strokeWidth={2.5} />
+
             </div>
           </div>
         );
@@ -1256,9 +1256,10 @@ const RetroCards: React.FC = () => {
                       const next = setupData.extraPartners.filter((_, i) => i !== idx);
                       setSetupData({ ...setupData, extraPartners: next });
                     }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#D0BCFF] flex items-center justify-center transition-transform hover:scale-105"
+                    className="relative z-40 shrink-0 w-5 h-5 rounded-full bg-[#9784FA] flex items-center justify-center transition-transform hover:scale-105"
                   >
-                    <X size={10} color="#161616" strokeWidth={2.5} />
+                    <X size={10} color="#FFFFFF" strokeWidth={2.5} />
+
                   </button>
                 </div>
               ))}
@@ -1299,7 +1300,7 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? 'bg-[#D0BCFF]' : 'bg-retro-white/20'}`}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? 'bg-[#9784FA]' : 'bg-retro-white/20'}`}
                 >
                   <span
                     className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-retro-card-bg transition-transform ${setupData.openRelationship ? 'translate-x-5' : ''}`}
@@ -1313,7 +1314,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy !text-[#381E72] bg-[#D0BCFF] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy !text-[#FFFFFF] bg-[#0D0D0E] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
             >
               Los geht's
             </button>

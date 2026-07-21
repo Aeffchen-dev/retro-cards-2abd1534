@@ -23,15 +23,16 @@ export default {
 				arial: ["Arial", "sans-serif"],
 			},
 			colors: {
-				// Retro Cards specific colors
+				// Retro Cards specific colors — driven by CSS vars so we can theme per surface
 				retro: {
-					black: "#141218",
-					'card-bg': "#211F26",
-					white: "#E6E0E9",
-					'post-it': "#EADDFF",
-					accent: "#D0BCFF",
-					'accent-on': "#381E72",
+					black: "var(--retro-black)",
+					'card-bg': "var(--retro-card-bg)",
+					white: "rgb(var(--retro-white-rgb) / <alpha-value>)",
+					'post-it': "var(--retro-post-it)",
+					accent: "var(--retro-accent)",
+					'accent-on': "var(--retro-accent-on)",
 				},
+
 				// Keep existing colors for compatibility
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
