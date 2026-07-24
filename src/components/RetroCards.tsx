@@ -1697,7 +1697,7 @@ const RetroCards: React.FC = () => {
                     ) : renderCard(slideId)}
 
                     {/* Edit/Close button - top right with 48x48 touch target */}
-                    {slidesWithEditButton.includes(slideId) && (
+                    {slidesWithEditButton.includes(slideId) && slideId !== 3 && (
                       <button
                         onClick={() => toggleEditMode(slideId)}
                         className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
