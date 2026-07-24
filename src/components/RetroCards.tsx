@@ -103,18 +103,20 @@ interface MemojisPosition {
 }
 
 // Tonal card families — bg + text stay in the same hue family (like the
-// reference screenshot's monochromatic purple / lavender cards). Cycles
-// through purple, green, and orange families.
+// Stack Overflow brand palette only (stackoverflow.design/brand/color).
+// Cards: Pure White bg + Off-Black text. Accents cycle through the brand
+// primaries, each paired with its dark counterpart for the pill dot.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#F39FFF", pill: "#F39FFF", pillDot: "#4D1955" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
 ];
+
 
 const RetroCards: React.FC = () => {
   // Initialize currentCard from localStorage synchronously for initialSlide
@@ -1048,7 +1050,7 @@ const RetroCards: React.FC = () => {
                 openCamera();
               }}
               className="swiper-no-swiping relative z-40 mt-auto self-center inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#0D0D0E' }}
+              style={{ background: '#201C1D' }}
             >
               Kamera öffnen
             </button>
@@ -1229,10 +1231,10 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
-        const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
+        const SETUP_ACCENT = "#F39FFF"; // tag/label colour of this slide
+        const SETUP_ON_ACCENT = "#201C1D"; // dark text/icons on the accent
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
-        const SETUP_FIELD_BG = "#F0F0F0"; // subtle grey field on white slide background
+        const SETUP_FIELD_BG = "#F0EFEE"; // subtle grey field on white slide background
 
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
@@ -1374,7 +1376,7 @@ const RetroCards: React.FC = () => {
                   style={{ background: setupData.openRelationship ? '#FFFFFF' : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#1A1A1A]' : 'bg-[#C9C9C9]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C6D1E1]'}`}
                   />
                 </button>
               </div>
@@ -1386,7 +1388,7 @@ const RetroCards: React.FC = () => {
                 swiperRef?.slideNext();
               }}
               className="relative z-40 mt-auto self-center inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#0D0D0E' }}
+              style={{ background: '#201C1D' }}
             >
               Los geht's
             </button>

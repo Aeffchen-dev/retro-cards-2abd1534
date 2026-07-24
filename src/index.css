@@ -25,26 +25,26 @@
    * Retro Cards design system — new token palette
    */
   :root {
-    --retro-black: #0D0D0E;
-    --retro-card-bg: #EEEEEE;
+    --retro-black: #201C1D;
+    --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
     --retro-white: rgb(var(--retro-white-rgb));
 
-    --retro-post-it: #EADBFF;
-    --retro-accent: #9784FA;
-    --retro-accent-on: #0D0D0E;
+    --retro-post-it: #9D9CFF;
+    --retro-accent: #9D9CFF;
+    --retro-accent-on: #201C1D;
 
     /* Additional palette tokens */
-    --color-surface-primary: #EEEEEE;
-    --color-surface-lime: #B3E760;
-    --color-surface-coral: #FC9069;
-    --color-surface-lavender: #9784FA;
-    --color-surface-turquoise: #51D2C3;
-    --color-text-primary: #0D0D0E;
-    --color-text-secondary: #615D5C;
-    --color-border-default: #9FA0A1;
-    --color-cta: #0D0D0E;
+    --color-surface-primary: #F0EFEE;
+    --color-surface-lime: #86AF25;
+    --color-surface-coral: #FF5E00;
+    --color-surface-lavender: #9D9CFF;
+    --color-surface-turquoise: #5074EF;
+    --color-text-primary: #201C1D;
+    --color-text-secondary: #998B7A;
+    --color-border-default: #C6D1E1;
+    --color-cta: #201C1D;
     --color-cta-text: #FFFFFF;
 
 
@@ -245,7 +245,7 @@
   overflow: hidden;
 }
 .retro-pill .retro-label {
-  color: #0D0D0E !important;
+  color: #201C1D !important;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
@@ -258,7 +258,7 @@
   top: 0;
   bottom: 0;
   width: var(--pill-swatch);
-  background: var(--retro-pill, var(--retro-post-it, #EADBFF));
+  background: var(--retro-pill, var(--retro-post-it, #9D9CFF));
 }
 .retro-pill::after {
   content: "";
@@ -270,7 +270,7 @@
   height: var(--pill-dot);
 
   border-radius: 999px;
-  background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
+  background: var(--retro-pill-dot, var(--retro-post-it-text, #201C1D));
 }
 
 
@@ -361,7 +361,7 @@ button {
   line-height: 22px;
   letter-spacing: 0.005em;
   text-transform: none;
-  color: var(--retro-post-it-text, #000000);
+  color: var(--retro-post-it-text, #201C1D);
   opacity: 0.72;
 }
 
@@ -388,7 +388,7 @@ textarea.bg-retro-post-it:focus,
   border-radius: 20px 32px 20px 32px;
   outline: none;
   box-shadow:
-    0 0 0 3px var(--retro-post-it-text, #000000) inset,
+    0 0 0 3px var(--retro-post-it-text, #201C1D) inset,
     0 2px 4px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.14);
 }
@@ -509,28 +509,28 @@ textarea.bg-retro-post-it:focus,
 
   /* Card styling for print */
   .bg-retro-card-bg {
-    background: #e8e8e8 !important;
+    background: #F0EFEE !important;
     box-shadow: none !important;
   }
 
   /* Text colors for print */
   .text-retro-white {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .text-retro-white\/80 {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .retro-title,
   .retro-label,
   .retro-heading,
   .retro-body {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .border-retro-white {
-    border-color: #000000 !important;
+    border-color: #201C1D !important;
   }
 
   /* Hide navigation elements */
@@ -562,7 +562,7 @@ textarea.bg-retro-post-it:focus,
     max-height: 85vh !important;
     margin: 0 !important;
     padding: 40px !important;
-    background: #e8e8e8 !important;
+    background: #F0EFEE !important;
     overflow: hidden !important;
     position: relative !important;
     flex-shrink: 0 !important;
@@ -571,7 +571,7 @@ textarea.bg-retro-post-it:focus,
   /* Post-it text areas - maintain frontend layout */
   textarea {
     min-height: 120px !important;
-    background: #f4e5a3 !important;
+    background: #FFCC00 !important;
   }
 
   /* Match frontend font sizes and spacing */
@@ -667,8 +667,8 @@ textarea.bg-retro-post-it:focus,
 
   /* Post-it print styling */
   .bg-retro-post-it {
-    background: #f4e5a3 !important;
-    color: #000000 !important;
+    background: #FFCC00 !important;
+    color: #201C1D !important;
   }
 
   /* Preserve line breaks in post-its */
