@@ -1275,7 +1275,8 @@ const RetroCards: React.FC = () => {
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
-        const fieldStyle = { background: "#CDEDE8", color: SETUP_TEXT, border: "none" } as React.CSSProperties;
+        const fieldStyle = { background: "transparent", color: SETUP_TEXT, border: "none" } as React.CSSProperties;
+        const rowCls = "flex items-center gap-2 w-full py-4 border-t border-[#201C1D]/15";
         const emojiPicker = (
           value: string,
           placeholder: string,
