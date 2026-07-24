@@ -334,9 +334,9 @@ button {
 
 /* M3 Expressive body-large placeholder: softer weight, generous tracking */
 .retro-input-light::placeholder {
-  color: var(--retro-post-it-text, #b29f71);
-  opacity: 0.62;
-  font-weight: 400;
+  color: #4A4A4A;
+  opacity: 1;
+  font-weight: 500;
   letter-spacing: 0.01em;
 }
 
