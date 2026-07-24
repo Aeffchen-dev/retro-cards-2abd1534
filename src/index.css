@@ -327,14 +327,14 @@ button {
 }
 
 .retro-input-light {
-  color: var(--retro-post-it-text, #000000);
-  caret-color: var(--retro-post-it-text, #000000);
+  color: #C6D1E1;
+  caret-color: #C6D1E1;
   letter-spacing: 0.005em;
 }
 
 /* M3 Expressive body-large placeholder: softer weight, generous tracking */
 .retro-input-light::placeholder {
-  color: #4A4A4A;
+  color: rgba(198, 209, 225, 0.55);
   opacity: 1;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -688,6 +688,6 @@ textarea.bg-retro-post-it:focus,
 /* Setup slide fields: placeholder tone matches the question text */
 .name-input-field::placeholder,
 .emoji-picker-input::placeholder {
-  color: #4A4A4A;
+  color: rgba(198, 209, 225, 0.55);
   opacity: 1;
 }
