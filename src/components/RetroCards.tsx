@@ -1012,15 +1012,7 @@ const RetroCards: React.FC = () => {
       case 0:
         return (
           <div className="flex flex-col items-start w-full h-full">
-            <div className="flex flex-col items-start gap-6 w-full">
-              <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label" style={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}>Memory Time</span>
-              </div>
-              <h2 className="retro-heading w-full">
-                Schießt ein paar süße Fotos zusammen
-              </h2>
-            </div>
-            <div style={{ marginTop: "40px" }} className="screen-only">
+            <div className="screen-only" style={{ marginBottom: '16px' }}>
               <button
                 onClick={openCamera}
                 className="cursor-pointer flex items-center justify-center"
@@ -1028,6 +1020,14 @@ const RetroCards: React.FC = () => {
               >
                 📸
               </button>
+            </div>
+            <div className="flex flex-col items-start gap-6 w-full">
+              <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
+                <span className="retro-label" style={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}>Memory Time</span>
+              </div>
+              <h2 className="retro-heading w-full">
+                Schießt ein paar süße Fotos zusammen
+              </h2>
             </div>
             {/* Print-only: Show captured photos in a single row */}
             {capturedPhotos.length > 0 && (
@@ -1049,12 +1049,13 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto self-center inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#201C1D' }}
+              className="swiper-no-swiping relative z-40 inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: '#201C1D', marginTop: '28px' }}
             >
               Kamera öffnen
             </button>
           </div>
+
         );
 
       case 1:
