@@ -87,14 +87,14 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#241030", text: "#E9C7FF", accent: "#B968FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep purple + vibrant lilac
-  { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF4D9E", pill: "#E4A9F0", pillDot: "#4A1520" }, // dark pink + rosa
-  { bg: "#152818", text: "#C6EE96", accent: "#B3E760", pill: "#C6EE96", pillDot: "#1C3A1F" }, // deep forest + lime
-  { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep navy + sky blue
-  { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA", pill: "#E4A9F0", pillDot: "#4A1520" }, // violet + lavender
-  { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3", pill: "#F5C842", pillDot: "#2E2205" }, // deep teal + turquoise (slide 6)
-  { bg: "#12222E", text: "#A8D4FF", accent: "#5CA8FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // midnight blue + sky
-  { bg: "#12292A", text: "#9BEEE0", accent: "#51D2C3", pill: "#E4A9F0", pillDot: "#4A1520" }, // dark teal + turquoise
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#1A1A1A", text: "#C9C9C9", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
 ];
 
 
@@ -340,17 +340,14 @@ const RetroCards: React.FC = () => {
     }));
   }, []);
 
-  // Sync body background to current slide's theme with a smooth fade
+  // Page background stays a constant neutral grey
   useEffect(() => {
-    const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
-    if (theme) {
-      document.body.style.transition = "background-color 500ms cubic-bezier(0.2, 0, 0, 1)";
-      document.body.style.backgroundColor = theme.bg;
-    }
+    document.body.style.transition = "background-color 500ms cubic-bezier(0.2, 0, 0, 1)";
+    document.body.style.backgroundColor = "#1A1A1A";
     return () => {
       document.body.style.backgroundColor = "";
     };
-  }, [currentCard]);
+  }, []);
 
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {
