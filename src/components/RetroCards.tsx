@@ -1211,7 +1211,7 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="retro-pill flex justify-center items-center gap-2 mt-8" style={{ background: '#FFFFFF', display: 'inline-flex' }}>
+            <div className="retro-pill flex justify-center items-center gap-2 mt-8">
               <span className="retro-label" style={{ color: '#201C1D' }}>Relationship by design</span>
             </div>
           </div>
@@ -1376,10 +1376,10 @@ const RetroCards: React.FC = () => {
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
                   className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors`}
-                  style={{ background: setupData.openRelationship ? '#5074EF' : SETUP_FIELD_BG }}
+                  style={{ background: setupData.openRelationship ? '#FFFFFF' : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform bg-[#201C1D] ${setupData.openRelationship ? 'translate-x-5' : ''}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C8CCD0]'}`}
                   />
                 </button>
               </div>
