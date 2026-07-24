@@ -335,7 +335,7 @@ button {
 /* M3 Expressive label-small on post-its: uppercase micro label */
 .bg-retro-post-it .retro-label,
 .retro-post-it-label {
-  font-family: "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
