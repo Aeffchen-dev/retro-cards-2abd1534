@@ -1585,7 +1585,7 @@ const RetroCards: React.FC = () => {
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-5">
                   {SLIDE_PILLS[slideId] && (
-                    <div className="w-full max-w-[500px] mx-auto mb-2 flex" style={cardStyle}>
+                    <div className="w-full max-w-[500px] mx-auto mb-2 flex" style={{ ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                         <span className="retro-label">{SLIDE_PILLS[slideId]}</span>
                       </div>
