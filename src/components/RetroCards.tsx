@@ -1224,7 +1224,7 @@ const RetroCards: React.FC = () => {
 
                 <p>Retro Cards ist euer monatlicher Check-in für eure Beziehung. Nehmt euch Zeit füreinander, sprecht ehrlich über das, was euch bewegt, und stärkt, was euch verbindet.</p>
                 <p>Macht daraus euren Date-Abend. Schnappt euch euer Lieblingsgetränk, macht’s euch gemütlich und genießt ein gutes Gespräch.</p>
-                <p>Hört einander zu, bleibt neugierig und denkt immer daran: Ihr seid ein Team. ❤️</p>
+                <p>Hört einander zu, bleibt neugierig und denkt immer daran: Ihr seid ein Team.</p>
               </div>
             </div>
           </div>
