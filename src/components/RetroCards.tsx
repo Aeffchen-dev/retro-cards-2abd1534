@@ -1236,8 +1236,8 @@ const RetroCards: React.FC = () => {
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base";
-        const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
+        const fieldStyle = { background: "transparent", color: SETUP_TEXT, border: "1px solid #201C1D" } as React.CSSProperties;
         const emojiPicker = (
           value: string,
           placeholder: string,
