@@ -216,7 +216,7 @@
   font-size: 40px;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--retro-body-bg, var(--retro-white));
+  color: #FF5E00;
 }
 
 .retro-body,
@@ -227,7 +227,7 @@
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0.005em;
-  color: var(--retro-body-bg, var(--retro-white));
+  color: #201C1D;
 }
 
 /* Hide in-card pills — pill is now rendered above the card */
