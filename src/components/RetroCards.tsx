@@ -1726,7 +1726,7 @@ const RetroCards: React.FC = () => {
                         aria-label="Nächste Karte"
                         onClick={(e) => { e.stopPropagation(); swiperRef?.slideNext(); }}
                         className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
-                        style={{ width: '64px', height: '64px', right: '-28px', bottom: '-28px', backgroundColor: '#C6D1E1' }}
+                        style={{ width: '64px', height: '64px', right: '0px', bottom: '0px', backgroundColor: '#C6D1E1' }}
                       >
                         <StackIcon name="IconArrowRight" size={24} color="#201C1D" />
                       </button>
