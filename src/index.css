@@ -235,7 +235,7 @@
 
 /* Pill label container — themed swatch + white label */
 .retro-pill {
-  --pill-swatch: 24px;
+  --pill-swatch: 28px;
   --pill-dot: 10px;
   position: relative;
   padding: 3px 8px 3px calc(var(--pill-swatch) + 6px);
