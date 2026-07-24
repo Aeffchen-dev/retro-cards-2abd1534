@@ -25,26 +25,26 @@
    * Retro Cards design system — new token palette
    */
   :root {
-    --retro-black: #0D0D0E;
-    --retro-card-bg: #EEEEEE;
+    --retro-black: #201C1D;
+    --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
     --retro-white: rgb(var(--retro-white-rgb));
 
-    --retro-post-it: #EADBFF;
-    --retro-accent: #9784FA;
-    --retro-accent-on: #0D0D0E;
+    --retro-post-it: #9D9CFF;
+    --retro-accent: #9D9CFF;
+    --retro-accent-on: #201C1D;
 
     /* Additional palette tokens */
-    --color-surface-primary: #EEEEEE;
-    --color-surface-lime: #B3E760;
-    --color-surface-coral: #FC9069;
-    --color-surface-lavender: #9784FA;
-    --color-surface-turquoise: #51D2C3;
-    --color-text-primary: #0D0D0E;
-    --color-text-secondary: #615D5C;
-    --color-border-default: #9FA0A1;
-    --color-cta: #0D0D0E;
+    --color-surface-primary: #F0EFEE;
+    --color-surface-lime: #86AF25;
+    --color-surface-coral: #FF5E00;
+    --color-surface-lavender: #9D9CFF;
+    --color-surface-turquoise: #5074EF;
+    --color-text-primary: #201C1D;
+    --color-text-secondary: #998B7A;
+    --color-border-default: #C6D1E1;
+    --color-cta: #201C1D;
     --color-cta-text: #FFFFFF;
 
 
@@ -245,7 +245,7 @@
   overflow: hidden;
 }
 .retro-pill .retro-label {
-  color: #0D0D0E !important;
+  color: #201C1D !important;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
@@ -258,7 +258,7 @@
   top: 0;
   bottom: 0;
   width: var(--pill-swatch);
-  background: var(--retro-pill, var(--retro-post-it, #EADBFF));
+  background: var(--retro-pill, var(--retro-post-it, #9D9CFF));
 }
 .retro-pill::after {
   content: "";
@@ -270,7 +270,7 @@
   height: var(--pill-dot);
 
   border-radius: 999px;
-  background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
+  background: var(--retro-pill-dot, var(--retro-post-it-text, #201C1D));
 }
 
 
