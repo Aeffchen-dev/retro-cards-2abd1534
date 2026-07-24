@@ -1693,11 +1693,7 @@ const RetroCards: React.FC = () => {
                           ))}
                         </div>
                       </div>
-                    ) : (
-                      <>
-                        {renderCard(slideId)}
-                      </>
-                    )}
+                    ) : renderCard(slideId)}
 
                     {/* Edit/Close button - top right with 48x48 touch target */}
                     {slidesWithEditButton.includes(slideId) && (
@@ -1750,7 +1746,7 @@ const RetroCards: React.FC = () => {
         {/* Print-only: All slides with notes interleaved in correct order */}
         <div className="hidden print-slides-container">
           {slides.map((slideId, index) => (
-            <React.Fragment key={`print-${slideId}`}>
+            <div key={`print-${slideId}`} className="contents">
               {/* Skip Logo, Intro, Setup, Archive (9) and Questions (10) in print */}
               {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (
                 <div className="print-slide-page" style={{ order: index * 2 }}>
@@ -1787,7 +1783,7 @@ const RetroCards: React.FC = () => {
                   </div>
                 </div>
               )}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       </div>
