@@ -1177,7 +1177,7 @@ const RetroCards: React.FC = () => {
             {/* Print-only: post-it notes like takeaways with line breaks */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base min-h-[120px] whitespace-pre-wrap">
+                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-[#201C1D] text-base min-h-[120px] whitespace-pre-wrap">
                   {postItTexts[person.key] || personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 </div>
               ))}
@@ -1376,7 +1376,7 @@ const RetroCards: React.FC = () => {
                   style={{ background: setupData.openRelationship ? '#FFFFFF' : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C6D1E1]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C8CCD0]'}`}
                   />
                 </button>
               </div>
@@ -1474,7 +1474,7 @@ const RetroCards: React.FC = () => {
             {/* Print-only: takeaway notes with line breaks per person */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base min-h-[120px] whitespace-pre-wrap">
+                <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-[#201C1D] text-base min-h-[120px] whitespace-pre-wrap">
                   {takeawayTexts[person.key] || personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 </div>
               ))}
@@ -1774,7 +1774,7 @@ const RetroCards: React.FC = () => {
                         const text = editModeNotes[slideId]?.[person.key];
                         if (!text) return null;
                         return (
-                          <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-black text-base whitespace-pre-wrap min-h-[120px]">
+                          <div key={person.key} className="w-full flex-1 p-5 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
                             {text}
                           </div>
                         );
@@ -1791,8 +1791,8 @@ const RetroCards: React.FC = () => {
 
       {/* Camera Preview Modal */}
       {cameraStream && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg overflow-hidden max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(32, 28, 29, 0.9)' }}>
+          <div className="overflow-hidden max-w-md w-full" style={{ background: '#FFFFFF' }}>
             <video
               ref={videoRef}
               autoPlay
@@ -1803,15 +1803,17 @@ const RetroCards: React.FC = () => {
             <div className="p-4 flex gap-3 justify-center">
               <button
                 onClick={takePicture}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 rounded-full retro-label"
+                style={{ background: '#201C1D', color: '#FFFFFF' }}
               >
-                📸 Foto aufnehmen
+                Foto aufnehmen
               </button>
               <button
                 onClick={closeCameraPreview}
-                className="px-6 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+                className="px-6 py-2 rounded-full retro-label"
+                style={{ background: '#F0EFEE', color: '#201C1D' }}
               >
-                ❌ Schließen
+                Schließen
               </button>
             </div>
           </div>
