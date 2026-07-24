@@ -1130,9 +1130,10 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="w-full text-left mt-8 screen-only" style={{ color: '#6A737C', fontSize: '12px', lineHeight: 1.4 }}>
+            <div className="absolute left-0 right-0 bottom-0 h-12 flex items-center screen-only" style={{ borderTop: '1px solid #201C1D', paddingLeft: '28px', paddingRight: '60px', color: '#6A737C', fontSize: '12px', lineHeight: 1.4 }}>
               Platziert eure Memojis auf der Skala
             </div>
+
           </div>
         );
       }
@@ -1700,7 +1701,7 @@ const RetroCards: React.FC = () => {
                       <button
                         onClick={() => toggleEditMode(slideId)}
                         className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
-                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: '#F39FFF' }}
+                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: 'transparent', borderTop: '1px solid #201C1D', borderLeft: '1px solid #201C1D' }}
                       >
                         {editModeSlides[slideId] ? (
                           <StackIcon name="IconClear" size={28} color="#201C1D" />
