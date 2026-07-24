@@ -1192,15 +1192,18 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = "#B3E760"; // lime accent
-        const SETUP_ON_ACCENT = "#0D0D0E"; // dark icon/text on lime
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-lg bg-[#B3E760]/10 border-none focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 px-4 text-base placeholder:text-base placeholder:text-[#C6EE96]/50";
+        const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
+        const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
+        const SETUP_TEXT = "#C9C9C9"; // same tone as the question text
+        const SETUP_FIELD_BG = "#333333"; // 20% lighter than the slide background
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-4 text-base placeholder:text-base";
+        const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
         const emojiPicker = (
           value: string,
           placeholder: string,
           onChange: (val: string) => void
         ) => (
-          <div className="relative shrink-0 w-12 h-12 rounded-lg">
+          <div className="relative shrink-0 w-12 h-12">
             <input
               type="text"
               inputMode="text"
@@ -1208,7 +1211,8 @@ const RetroCards: React.FC = () => {
               onChange={(e) => onChange(sanitizeEmoji(e.target.value))}
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
-              className="emoji-picker-input w-full h-full rounded-lg bg-[#B3E760]/10 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 focus:opacity-10 placeholder:text-[#C6EE96]/50"
+              style={fieldStyle}
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
