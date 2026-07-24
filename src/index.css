@@ -229,7 +229,7 @@
 /* Pill label container — themed swatch + white label */
 .retro-pill {
   position: relative;
-  padding: 6px 14px 6px 40px;
+  padding: 6px 8px 6px 34px;
   background: #FFFFFF;
   border: 0 !important;
   border-radius: 0 !important;
@@ -237,6 +237,7 @@
 }
 .retro-pill .retro-label {
   color: #0D0D0E !important;
+  font-weight: 500;
 }
 .retro-pill::before {
   content: "";
