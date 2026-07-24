@@ -89,7 +89,7 @@ interface MemojisPosition {
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
   { bg: "#241030", text: "#E9C7FF", accent: "#B968FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep purple + vibrant lilac
   { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF4D9E", pill: "#E4A9F0", pillDot: "#4A1520" }, // dark pink + rosa
-  { bg: "#152818", text: "#C6EE96", accent: "#B3E760", pill: "#F5C842", pillDot: "#2E2205" }, // deep forest + lime
+  { bg: "#152818", text: "#C6EE96", accent: "#B3E760", pill: "#C6EE96", pillDot: "#1C3A1F" }, // deep forest + lime
   { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep navy + sky blue
   { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA", pill: "#E4A9F0", pillDot: "#4A1520" }, // violet + lavender
   { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3", pill: "#F5C842", pillDot: "#2E2205" }, // deep teal + turquoise (slide 6)
