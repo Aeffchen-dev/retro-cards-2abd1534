@@ -106,14 +106,14 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#C8D1DE", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
 ];
 
 
@@ -1214,8 +1214,8 @@ const RetroCards: React.FC = () => {
       case SLIDE_SETUP: {
         const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
-        const SETUP_TEXT = "#0D0D0E"; // dark text on white slide bg
-        const SETUP_FIELD_BG = "#F0F0F0"; // 20% darker than the white slide background
+        const SETUP_TEXT = "#C6D1E1"; // light grey text on dark slide bg
+        const SETUP_FIELD_BG = "#2E2A2B"; // 20% lighter than the dark slide background
 
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-light h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
@@ -1587,7 +1587,7 @@ const RetroCards: React.FC = () => {
               const pg = parseInt(pillHex.slice(2, 4), 16);
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
-              const bodyBg = `rgb(${mixC(pr)}, ${mixC(pg)}, ${mixC(pb)})`;
+              const bodyBg = "#C6D1E1";
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
