@@ -235,9 +235,10 @@
 
 /* Pill label container — themed swatch + white label */
 .retro-pill {
-
+  --pill-swatch: clamp(20px, 6vw, 28px);
+  --pill-dot: clamp(7px, 2.4vw, 10px);
   position: relative;
-  padding: 3px 8px 3px 24px;
+  padding: 3px 8px 3px calc(var(--pill-swatch) + 6px);
   background: #FFFFFF;
   border: 0 !important;
   border-radius: 0 !important;
@@ -256,25 +257,22 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 16px;
-  height: 16px;
-  top: 50%;
-  bottom: auto;
-  transform: translateY(-50%);
+  width: var(--pill-swatch);
   background: var(--retro-pill, var(--retro-post-it, #EADBFF));
 }
 .retro-pill::after {
   content: "";
   position: absolute;
-  left: 5px;
+  left: calc((var(--pill-swatch) - var(--pill-dot)) / 2);
   top: 50%;
   transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
+  width: var(--pill-dot);
+  height: var(--pill-dot);
 
   border-radius: 999px;
   background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
 }
+
 
 /* Logo slide entrance animation */
 @keyframes logoSlideDown {
