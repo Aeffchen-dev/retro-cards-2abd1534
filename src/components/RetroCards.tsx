@@ -1259,13 +1259,12 @@ const RetroCards: React.FC = () => {
           </div>
         );
         return (
-          <div className="flex flex-col items-start w-full h-full">
+          <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
-              <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">Setup</span>
-              </div>
+              <h2 className="retro-heading w-full">Wer macht mit?</h2>
             </div>
             <div className="flex flex-col w-full mt-8">
+
               {/* Person 1 */}
               <div className="flex items-center gap-4 w-full py-4">
                 {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
