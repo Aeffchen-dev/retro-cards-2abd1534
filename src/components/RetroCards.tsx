@@ -1599,7 +1599,8 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-5">
+                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-3 sm:px-5 md:px-6">
+
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto mb-2 flex" style={{ ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
