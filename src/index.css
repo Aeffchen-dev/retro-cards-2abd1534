@@ -189,7 +189,7 @@
   font-style: italic;
   font-size: 32px;
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   display: inline-block;
   width: fit-content;
   padding: 4px 12px;
@@ -211,7 +211,7 @@
   font-feature-settings: "ss01", "ss02", "cv11";
   font-size: 16px;
   line-height: 22px;
-  letter-spacing: 0;
+  letter-spacing: 0.005em;
   color: var(--retro-body-bg, var(--retro-white));
 }
 
@@ -221,8 +221,8 @@
   font-feature-settings: "ss01", "ss02", "cv11";
   font-style: normal;
   font-size: 40px;
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   color: var(--retro-black);
   display: inline-block;
   width: fit-content;
@@ -239,6 +239,7 @@
   font-feature-settings: "ss01", "ss02", "cv11";
   font-size: 16px;
   line-height: 22px;
+  letter-spacing: 0.005em;
   color: var(--retro-body-bg, var(--retro-white));
 }
 
@@ -257,7 +258,10 @@
 }
 .retro-pill .retro-label {
   color: #0D0D0E !important;
-  font-weight: 400;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0.005em;
 }
 .retro-pill::before {
   content: "";
@@ -327,6 +331,11 @@ button {
   outline: none;
   resize: none;
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
+  font-weight: 500;
+  font-feature-settings: "ss01", "ss02", "cv11";
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0.005em;
 }
 
 .retro-input-dark {
@@ -342,7 +351,6 @@ button {
 .retro-input-light {
   color: #C6D1E1;
   caret-color: #C6D1E1;
-  letter-spacing: 0.005em;
 }
 
 /* M3 Expressive body-large placeholder: softer weight, generous tracking */
@@ -350,7 +358,7 @@ button {
   color: rgba(198, 209, 225, 0.55);
   opacity: 1;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
 }
 
 /* M3 Expressive label-small on post-its: uppercase micro label */
@@ -358,10 +366,10 @@ button {
 .retro-post-it-label {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0.005em;
+  text-transform: none;
   color: var(--retro-post-it-text, #000000);
   opacity: 0.72;
 }
