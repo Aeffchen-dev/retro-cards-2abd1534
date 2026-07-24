@@ -199,8 +199,8 @@
 
 
 .retro-label {
-  font-family: "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 500;
+  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-weight: 700;
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
@@ -208,19 +208,19 @@
 }
 
 .retro-heading {
-  font-family: "Kokoro", "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 700;
-  font-style: italic;
+  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-weight: 800;
+  font-style: normal;
   font-size: 32px;
   line-height: 1.05;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--retro-white);
 }
 
 .retro-body,
 .retro-body-copy {
-  font-family: "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 400;
+  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-weight: 500;
   font-size: 16px;
   line-height: 22px;
   color: var(--retro-white);
