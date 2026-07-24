@@ -86,16 +86,17 @@ interface MemojisPosition {
 // Tonal card families — bg + text stay in the same hue family (like the
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
-const CARD_THEMES: { bg: string; text: string; accent: string }[] = [
-  { bg: "#241030", text: "#E9C7FF", accent: "#B968FF" }, // deep purple + vibrant lilac
-  { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF4D9E" }, // dark pink + rosa
-  { bg: "#152818", text: "#C6EE96", accent: "#B3E760" }, // deep forest + lime
-  { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF" }, // deep navy + sky blue
-  { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA" }, // violet + lavender
-  { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3" }, // deep teal + turquoise (slide 6)
-  { bg: "#12222E", text: "#A8D4FF", accent: "#5CA8FF" }, // midnight blue + sky
-  { bg: "#12292A", text: "#9BEEE0", accent: "#51D2C3" }, // dark teal + turquoise
+const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
+  { bg: "#241030", text: "#E9C7FF", accent: "#B968FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep purple + vibrant lilac
+  { bg: "#2A0F1E", text: "#FFC2DE", accent: "#FF4D9E", pill: "#E4A9F0", pillDot: "#4A1520" }, // dark pink + rosa
+  { bg: "#152818", text: "#C6EE96", accent: "#B3E760", pill: "#F5C842", pillDot: "#2E2205" }, // deep forest + lime
+  { bg: "#0F1E2A", text: "#A8D4FF", accent: "#5CA8FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // deep navy + sky blue
+  { bg: "#2A1B3D", text: "#D6C7FF", accent: "#9784FA", pill: "#E4A9F0", pillDot: "#4A1520" }, // violet + lavender
+  { bg: "#0F2624", text: "#9BEEE0", accent: "#51D2C3", pill: "#F5C842", pillDot: "#2E2205" }, // deep teal + turquoise (slide 6)
+  { bg: "#12222E", text: "#A8D4FF", accent: "#5CA8FF", pill: "#7B78F0", pillDot: "#2E1A8A" }, // midnight blue + sky
+  { bg: "#12292A", text: "#9BEEE0", accent: "#51D2C3", pill: "#E4A9F0", pillDot: "#4A1520" }, // dark teal + turquoise
 ];
+
 
 
 
