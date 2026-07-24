@@ -245,7 +245,7 @@
   top: 0;
   bottom: 0;
   width: 28px;
-  background: var(--retro-post-it, #EADBFF);
+  background: var(--retro-pill, var(--retro-post-it, #EADBFF));
 }
 .retro-pill::after {
   content: "";
@@ -256,7 +256,7 @@
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: var(--retro-post-it-text, #0D0D0E);
+  background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
 }
 
 /* Logo slide entrance animation */
