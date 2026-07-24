@@ -1726,9 +1726,9 @@ const RetroCards: React.FC = () => {
                         aria-label="Nächste Karte"
                         onClick={(e) => { e.stopPropagation(); swiperRef?.slideNext(); }}
                         className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
-                        style={{ width: '48px', height: '48px', right: '0px', bottom: '0px', backgroundColor: '#FFCC00' }}
+                        style={{ width: '48px', height: '48px', right: '0px', bottom: '0px', backgroundColor: '#201C1D' }}
                       >
-                        <svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true" fill="#201C1D"><path d="m17.52 9.28.56.54-.56.54-7.25 6.93-1.04-1.08 5.97-5.71H2V9h15.24zM15.7 7.5h-2.15L9.23 3.29l1.04-1.08z"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 20 20" aria-hidden="true" fill="#FFFFFF"><path d="m17.52 9.28.56.54-.56.54-7.25 6.93-1.04-1.08 5.97-5.71H2V9h15.24zM15.7 7.5h-2.15L9.23 3.29l1.04-1.08z"/></svg>
                       </button>
                     )}
 
