@@ -1050,15 +1050,6 @@ const RetroCards: React.FC = () => {
                 📸
               </button>
             </div>
-            <button
-              type="button"
-              aria-label="Nächste Karte"
-              onClick={(e) => { e.stopPropagation(); swiperRef?.slideNext(); }}
-              className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
-              style={{ width: '48px', height: '48px', right: '-28px', bottom: '-28px', backgroundColor: '#C6D1E1' }}
-            >
-              <StackIcon name="IconArrowRight" size={24} color="#201C1D" />
-            </button>
 
             {/* Print-only: Show captured photos in a single row */}
             {capturedPhotos.length > 0 && (
