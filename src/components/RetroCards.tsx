@@ -1658,7 +1658,7 @@ const RetroCards: React.FC = () => {
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                        <span className="retro-label">{SLIDE_PILLS[slideId]}</span>
+                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{SLIDE_PILLS[slideId]}</span>
                       </div>
                     </div>
                   )}
