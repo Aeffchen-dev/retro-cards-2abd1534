@@ -954,6 +954,27 @@ const RetroCards: React.FC = () => {
     }
   }, [swiperRef]);
 
+  // Global keyboard navigation (ignored while typing in inputs)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        navigateCard("prev");
+      } else if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        navigateCard("next");
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [navigateCard]);
+
+
   const clearAllUserData = useCallback(() => {
     if (window.confirm("Möchtest du wirklich alle deine Einträge löschen? Diese Aktion kann nicht rückgängig gemacht werden.")) {
       // Clear all state
