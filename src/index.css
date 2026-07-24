@@ -255,11 +255,12 @@
 .retro-pill::after {
   content: "";
   position: absolute;
-  left: 10px;
+  left: 9px;
   top: 50%;
   transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
+
   border-radius: 999px;
   background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
 }
