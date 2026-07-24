@@ -1012,11 +1012,11 @@ const RetroCards: React.FC = () => {
       case 0:
         return (
           <div className="flex flex-col items-start w-full h-full">
-            <div className="screen-only" style={{ marginBottom: '16px' }}>
+            <div className="screen-only w-full flex justify-end" style={{ marginBottom: '16px' }}>
               <button
                 onClick={openCamera}
                 className="cursor-pointer flex items-center justify-center"
-                style={{ fontSize: '67px', lineHeight: 1 }}
+                style={{ fontSize: '77px', lineHeight: 1 }}
               >
                 📸
               </button>
@@ -1025,7 +1025,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label" style={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}>Memory Time</span>
               </div>
-              <h2 className="retro-heading w-full">
+              <h2 className="retro-heading w-full" style={{ fontSize: '36px' }}>
                 Schießt ein paar süße Fotos zusammen
               </h2>
             </div>
