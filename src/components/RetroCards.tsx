@@ -1088,7 +1088,7 @@ const RetroCards: React.FC = () => {
           : "Wie geht's mir in der Beziehung?";
         const defaultX = isMobile ? 248 : 380;
         // Stagger default y positions per person so they don't overlap
-        const defaultY = (i: number) => (isMobile ? 40 + i * 56 : 96 + i * 72);
+        const defaultY = (i: number) => (isMobile ? 35 + i * 49 : 87 + i * 65);
         return (
           <div className="flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
