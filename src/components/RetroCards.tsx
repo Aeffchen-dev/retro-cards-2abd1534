@@ -1603,6 +1603,11 @@ const RetroCards: React.FC = () => {
             onSwiper={setSwiperRef}
             onSlideChange={handleSlideChange}
             allowTouchMove={!draggingMemoji}
+            simulateTouch={true}
+            touchEventsTarget="container"
+            touchReleaseOnEdges={true}
+            edgeSwipeDetection={false}
+            passiveListeners={true}
             className="h-full min-h-0"
             style={{ height: '100%', width: '100%', minHeight: 0 }}
             effect="slide"
