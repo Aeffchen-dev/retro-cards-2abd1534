@@ -113,8 +113,8 @@ const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pil
   { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
 ];
 
@@ -1699,8 +1699,8 @@ const RetroCards: React.FC = () => {
                     {slidesWithEditButton.includes(slideId) && (
                       <button
                         onClick={() => toggleEditMode(slideId)}
-                        className="swiper-no-swiping absolute bottom-4 right-4 w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
-                        style={{ touchAction: 'manipulation' }}
+                        className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
+                        style={{ touchAction: 'manipulation', right: '-28px', bottom: '-28px', backgroundColor: '#F39FFF' }}
                       >
                         {editModeSlides[slideId] ? (
                           <StackIcon name="IconClear" size={28} className="text-retro-white" />
