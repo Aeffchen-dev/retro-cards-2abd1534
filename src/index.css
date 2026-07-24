@@ -185,12 +185,12 @@
 /* Retro Cards specific styles */
 .retro-title {
   font-family: "Stack Sans Notch", "Figtree", Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   font-size: 32px;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--retro-pill, var(--retro-white));
+  color: var(--retro-body-bg, var(--retro-white));
 }
 
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
@@ -201,7 +201,7 @@
 
 .retro-label {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-feature-settings: "ss01", "ss02", "cv11";
   font-size: 16px;
   line-height: 22px;
@@ -211,18 +211,18 @@
 
 .retro-heading {
   font-family: "Stack Sans Notch", "Figtree", Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   font-size: 40px;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--retro-pill, var(--retro-white));
+  color: var(--retro-body-bg, var(--retro-white));
 }
 
 .retro-body,
 .retro-body-copy {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-feature-settings: "ss01", "ss02", "cv11";
   font-size: 16px;
   line-height: 22px;
@@ -237,7 +237,7 @@
 .retro-pill {
 
   position: relative;
-  padding: 3px 8px 3px 34px;
+  padding: 3px 8px 3px 24px;
   background: #FFFFFF;
   border: 0 !important;
   border-radius: 0 !important;
@@ -256,17 +256,21 @@
   left: 0;
   top: 0;
   bottom: 0;
-  width: 28px;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%);
   background: var(--retro-pill, var(--retro-post-it, #EADBFF));
 }
 .retro-pill::after {
   content: "";
   position: absolute;
-  left: 9px;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
 
   border-radius: 999px;
   background: var(--retro-pill-dot, var(--retro-post-it-text, #0D0D0E));
@@ -335,14 +339,16 @@ button {
   opacity: 1;
 }
 
-.retro-input-light {
-  color: #C6D1E1;
-  caret-color: #C6D1E1;
+.retro-input-light,
+.retro-input-dark-text {
+  color: #201C1D;
+  caret-color: #201C1D;
 }
 
 /* M3 Expressive body-large placeholder: softer weight, generous tracking */
-.retro-input-light::placeholder {
-  color: rgba(198, 209, 225, 0.55);
+.retro-input-light::placeholder,
+.retro-input-dark-text::placeholder {
+  color: rgba(32, 28, 29, 0.55);
   opacity: 1;
   font-weight: 500;
   letter-spacing: 0.005em;
@@ -696,6 +702,6 @@ textarea.bg-retro-post-it:focus,
 /* Setup slide fields: placeholder tone matches the question text */
 .name-input-field::placeholder,
 .emoji-picker-input::placeholder {
-  color: rgba(198, 209, 225, 0.55);
+  color: rgba(32, 28, 29, 0.55);
   opacity: 1;
 }

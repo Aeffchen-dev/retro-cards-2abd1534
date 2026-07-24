@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { RefreshCw, Download, Pencil, X, Trash2, Camera } from "lucide-react";
+import StackIcon from "@/components/StackIcon";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
@@ -106,19 +106,15 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#201C1D", text: "#C6D1E1", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
 ];
-
-
-
-
 
 const RetroCards: React.FC = () => {
   // Initialize currentCard from localStorage synchronously for initialSlide
@@ -1149,7 +1145,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setPostItTexts({ ...postItTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 />
@@ -1214,10 +1210,10 @@ const RetroCards: React.FC = () => {
       case SLIDE_SETUP: {
         const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
-        const SETUP_TEXT = "#C6D1E1"; // light grey text on dark slide bg
-        const SETUP_FIELD_BG = "#2E2A2B"; // 20% lighter than the dark slide background
+        const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
+        const SETUP_FIELD_BG = "#F0F0F0"; // subtle grey field on white slide background
 
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-light h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-5 text-base placeholder:text-base";
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
         const emojiPicker = (
           value: string,
@@ -1233,10 +1229,10 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={fieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-light border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
-              <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
+              <StackIcon name="IconPencilSm" size={10} color={SETUP_ON_ACCENT} />
             </div>
           </div>
         );
@@ -1311,7 +1307,7 @@ const RetroCards: React.FC = () => {
                     className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
                     style={{ background: SETUP_ACCENT }}
                   >
-                    <X size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
+                    <StackIcon name="IconClearSm" size={10} color={SETUP_ON_ACCENT} />
 
                   </button>
                 </div>
@@ -1393,21 +1389,21 @@ const RetroCards: React.FC = () => {
               <textarea
                 value={reflectionTexts.nice}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, nice: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Das finde ich gerade schön in unserer Beziehung"
               />
               <textarea
                 value={reflectionTexts.thanks}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, thanks: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Dafür möchte ich Danke sagen / ein Kompliment für dich"
               />
               <textarea
                 value={reflectionTexts.idea}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, idea: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Eine Idee für uns / Das können wir besser machen"
               />
@@ -1446,7 +1442,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 />
@@ -1477,14 +1473,14 @@ const RetroCards: React.FC = () => {
                 onClick={() => window.print()}
                 className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
               >
-                <Download size={20} className="text-retro-white" />
+                <StackIcon name="IconDownload" size={20} className="text-retro-white" />
                 <span className="retro-body">Ergebnisse sichern</span>
               </button>
               <button
                 onClick={clearAllUserData}
                 className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
               >
-                <Trash2 size={20} className="text-retro-white" />
+                <StackIcon name="IconTrash" size={20} className="text-retro-white" />
                 <span className="retro-body">Meine Einträge löschen</span>
               </button>
             </div>
@@ -1507,7 +1503,7 @@ const RetroCards: React.FC = () => {
                 onClick={getRandomQuestion}
                 className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
               >
-                <RefreshCw size={20} className="text-retro-white" />
+                <StackIcon name="IconRefresh" size={20} className="text-retro-white" />
                 <span className="retro-body">Neue Frage</span>
               </div>
             </div>
@@ -1587,7 +1583,7 @@ const RetroCards: React.FC = () => {
               const pg = parseInt(pillHex.slice(2, 4), 16);
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
-              const bodyBg = "#C6D1E1";
+              const bodyBg = "#201C1D";
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
@@ -1600,7 +1596,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-8 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-4 shadow-2xl overflow-y-auto"
 
                     style={cardStyle}
                   >
@@ -1610,7 +1606,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-8 flex flex-col z-30 rounded-none" style={cardStyle}>
+                      <div className="absolute inset-0 p-4 flex flex-col z-30 rounded-none" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
@@ -1632,7 +1628,7 @@ const RetroCards: React.FC = () => {
                                   [slideId]: { ...(prev[slideId] || {}), [person.key]: e.target.value }
                                 }))
                               }
-                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-light border-none text-base"
+                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
                               style={{ borderRadius: "0px" }}
                               placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                             />
@@ -1649,20 +1645,20 @@ const RetroCards: React.FC = () => {
                     {slidesWithEditButton.includes(slideId) && (
                       <button
                         onClick={() => toggleEditMode(slideId)}
-                        className="swiper-no-swiping absolute top-4 right-4 w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
+                        className="swiper-no-swiping absolute bottom-4 right-4 w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
                         style={{ touchAction: 'manipulation' }}
                       >
                         {editModeSlides[slideId] ? (
-                          <X size={32} strokeWidth={1} className="text-retro-white" />
+                          <StackIcon name="IconClear" size={28} className="text-retro-white" />
                         ) : (
-                          <Pencil size={24} strokeWidth={1} className="text-retro-white" />
+                          <StackIcon name="IconPencil" size={22} className="text-retro-white" />
                         )}
                       </button>
                     )}
 
                     {/* Navigation hint on first card */}
                     {index === 0 && (
-                      <div className="absolute bottom-8 left-8 right-8 text-center retro-body text-retro-white" style={{ opacity: 0.25 }}>
+                      <div className="absolute bottom-4 left-4 right-4 text-center retro-body text-retro-white" style={{ opacity: 0.25 }}>
                         Swipe um weiter zu navigieren
                       </div>
                     )}
