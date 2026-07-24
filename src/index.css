@@ -688,6 +688,6 @@ textarea.bg-retro-post-it:focus,
 /* Setup slide fields: placeholder tone matches the question text */
 .name-input-field::placeholder,
 .emoji-picker-input::placeholder {
-  color: rgba(214, 214, 214, 0.6);
+  color: #4A4A4A;
   opacity: 1;
 }
