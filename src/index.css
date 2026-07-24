@@ -226,8 +226,12 @@
   color: var(--retro-white);
 }
 
+/* Hide in-card pills — pill is now rendered above the card */
+.retro-card-container .retro-pill { display: none !important; }
+
 /* Pill label container — themed swatch + white label */
 .retro-pill {
+
   position: relative;
   padding: 6px 8px 6px 34px;
   background: #FFFFFF;

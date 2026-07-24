@@ -21,6 +21,25 @@ const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
 const SLIDE_LOGO = 103;
 
+// Pill label displayed ABOVE the card for each slide (null = no pill)
+const SLIDE_PILLS: Record<number, string | null> = {
+  103: null,
+  100: "Intro",
+  101: "Setup",
+  0: "Memory Time",
+  1: "Health Check",
+  2: "Health Check",
+  3: "The last 4 weeks",
+  102: "Reflection",
+  4: "To talk about",
+  5: "Nicht monogam",
+  7: "Intimacy",
+  8: "Takeaways",
+  9: "Archive",
+  10: "Questions",
+};
+
+
 interface ExtraPartner {
   name: string;
   emoji: string;
@@ -1515,7 +1534,7 @@ const RetroCards: React.FC = () => {
     >
       {/* Header - Compact like friends app */}
       <div className="flex items-center gap-4 w-full px-4 py-3">
-        <h1 className="retro-title text-retro-white/90" style={{ fontSize: '17.64px' }}>Retro Cards</h1>
+        <h1 className="retro-body text-retro-white/90">Retro Cards</h1>
         <div className="flex-1 text-right retro-body text-retro-white/90">
           {currentCard + 1} / {totalCards}
         </div>
@@ -1564,12 +1583,20 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-8">
+                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-5">
+                  {SLIDE_PILLS[slideId] && (
+                    <div className="w-full max-w-[500px] mx-auto mb-2 flex" style={{ ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
+                      <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
+                        <span className="retro-label">{SLIDE_PILLS[slideId]}</span>
+                      </div>
+                    </div>
+                  )}
                   <div
-                    className="retro-card-container relative h-full w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-8 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-8 shadow-2xl overflow-y-auto"
 
                     style={cardStyle}
                   >
+
 
 
 
