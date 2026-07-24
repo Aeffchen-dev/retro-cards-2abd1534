@@ -1236,8 +1236,8 @@ const RetroCards: React.FC = () => {
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base";
-        const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
+        const fieldStyle = { background: "transparent", color: SETUP_TEXT, border: "1px solid #201C1D" } as React.CSSProperties;
         const emojiPicker = (
           value: string,
           placeholder: string,
@@ -1252,7 +1252,7 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={fieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <StackIcon name="IconPencilSm" size={10} color={SETUP_ON_ACCENT} />
@@ -1267,9 +1267,9 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 */}
-              <div className="flex items-center gap-4 w-full py-4">
+              <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
-                <div className="name-input-wrapper first-name-input-wrapper flex-1">
+                <div className="name-input-wrapper first-name-input-wrapper flex-1 -ml-px">
                   <input
                     type="text"
                     value={setupData.name1}
@@ -1281,9 +1281,9 @@ const RetroCards: React.FC = () => {
                 </div>
               </div>
               {/* Person 2 */}
-              <div className="flex items-center gap-4 w-full py-4">
+              <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
-                <div className="name-input-wrapper flex-1">
+                <div className="name-input-wrapper flex-1 -ml-px">
                   <input
                     type="text"
                     value={setupData.name2}
@@ -1296,14 +1296,14 @@ const RetroCards: React.FC = () => {
               </div>
               {/* Extra partners */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex items-center gap-4 w-full py-4">
-                  <div className="flex-1 flex items-center gap-4">
+                <div key={idx} className="flex items-center gap-0 w-full py-4">
+                  <div className="flex-1 flex items-center gap-0">
                     {emojiPicker(p.emoji, "🧚", (val) => {
                       const next = [...setupData.extraPartners];
                       next[idx] = { ...next[idx], emoji: val };
                       setSetupData({ ...setupData, extraPartners: next });
                     })}
-                    <div className="name-input-wrapper flex-1">
+                    <div className="name-input-wrapper flex-1 -ml-px">
                       <input
                         type="text"
                         value={p.name}
