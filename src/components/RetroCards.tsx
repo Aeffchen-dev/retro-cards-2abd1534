@@ -1194,9 +1194,9 @@ const RetroCards: React.FC = () => {
       case SLIDE_SETUP: {
         const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
-        const SETUP_TEXT = "#C9C9C9"; // same tone as the question text
+        const SETUP_TEXT = "#D6D6D6"; // matches the light grey body text on dark bg
         const SETUP_FIELD_BG = "#333333"; // 20% lighter than the slide background
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-4 text-base placeholder:text-base";
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-light h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
         const emojiPicker = (
           value: string,
@@ -1212,7 +1212,7 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={fieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-light border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
