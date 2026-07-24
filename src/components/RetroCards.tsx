@@ -1626,7 +1626,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Navigation hint on first card */}
                     {index === 0 && (
-                      <div className="absolute bottom-8 left-8 right-8 text-center retro-body text-retro-white/8" style={{ opacity: 0.08 }}>
+                      <div className="absolute bottom-8 left-8 right-8 text-center retro-body text-retro-white" style={{ opacity: 0.25 }}>
                         Swipe um weiter zu navigieren
                       </div>
                     )}
