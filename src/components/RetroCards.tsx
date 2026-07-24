@@ -1130,7 +1130,7 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="w-full text-center retro-body mt-8 screen-only">
+            <div className="w-full text-left mt-8 screen-only" style={{ color: '#6A737C', fontSize: '12px', lineHeight: 1.4 }}>
               Platziert eure Memojis auf der Skala
             </div>
           </div>
