@@ -1333,7 +1333,7 @@ const RetroCards: React.FC = () => {
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
                   className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors`}
-                  style={{ background: setupData.openRelationship ? SETUP_ACCENT : SETUP_FIELD_BG }}
+                  style={{ background: setupData.openRelationship ? '#FFFFFF' : SETUP_FIELD_BG }}
                 >
                   <span
                     className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#1A1A1A]' : 'bg-[#C9C9C9]'}`}
