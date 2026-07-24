@@ -1629,14 +1629,14 @@ const RetroCards: React.FC = () => {
                 <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-[28px]">
 
                   {SLIDE_PILLS[slideId] && (
-                    <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '1px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
+                    <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                         <span className="retro-label">{SLIDE_PILLS[slideId]}</span>
                       </div>
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-6 sm:gap-10 rounded-none p-4 sm:p-6 md:p-8 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-6 sm:gap-10 rounded-none p-[28px] shadow-2xl overflow-y-auto"
 
                     style={cardStyle}
                   >
@@ -1646,7 +1646,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col z-30 rounded-none" style={cardStyle}>
+                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
