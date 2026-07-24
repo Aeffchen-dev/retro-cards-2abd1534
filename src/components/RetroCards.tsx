@@ -1269,7 +1269,7 @@ const RetroCards: React.FC = () => {
               {/* Person 1 */}
               <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
-                <div className="name-input-wrapper first-name-input-wrapper flex-1">
+                <div className="name-input-wrapper first-name-input-wrapper flex-1 -ml-px">
                   <input
                     type="text"
                     value={setupData.name1}
@@ -1283,7 +1283,7 @@ const RetroCards: React.FC = () => {
               {/* Person 2 */}
               <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
-                <div className="name-input-wrapper flex-1">
+                <div className="name-input-wrapper flex-1 -ml-px">
                   <input
                     type="text"
                     value={setupData.name2}
@@ -1303,7 +1303,7 @@ const RetroCards: React.FC = () => {
                       next[idx] = { ...next[idx], emoji: val };
                       setSetupData({ ...setupData, extraPartners: next });
                     })}
-                    <div className="name-input-wrapper flex-1">
+                    <div className="name-input-wrapper flex-1 -ml-px">
                       <input
                         type="text"
                         value={p.name}
