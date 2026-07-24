@@ -1791,8 +1791,8 @@ const RetroCards: React.FC = () => {
 
       {/* Camera Preview Modal */}
       {cameraStream && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg overflow-hidden max-w-md w-full">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(32, 28, 29, 0.9)' }}>
+          <div className="overflow-hidden max-w-md w-full" style={{ background: '#FFFFFF' }}>
             <video
               ref={videoRef}
               autoPlay
@@ -1803,15 +1803,17 @@ const RetroCards: React.FC = () => {
             <div className="p-4 flex gap-3 justify-center">
               <button
                 onClick={takePicture}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 rounded-full retro-label"
+                style={{ background: '#201C1D', color: '#FFFFFF' }}
               >
-                📸 Foto aufnehmen
+                Foto aufnehmen
               </button>
               <button
                 onClick={closeCameraPreview}
-                className="px-6 py-2 bg-gray-600 text-white rounded-lg font-medium hover:bg-gray-700 transition-colors"
+                className="px-6 py-2 rounded-full retro-label"
+                style={{ background: '#F0EFEE', color: '#201C1D' }}
               >
-                ❌ Schließen
+                Schließen
               </button>
             </div>
           </div>
