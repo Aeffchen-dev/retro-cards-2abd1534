@@ -1012,7 +1012,24 @@ const RetroCards: React.FC = () => {
     switch (cardIndex) {
       case 0:
         return (
-          <div className="relative flex flex-col items-start w-full h-full">
+          <div
+            className="relative flex flex-col items-start w-full h-full"
+            onTouchStart={(e) => {
+              const t = e.touches[0];
+              memorySwipeRef.current = { x: t.clientX, y: t.clientY };
+            }}
+            onTouchEnd={(e) => {
+              const start = memorySwipeRef.current;
+              memorySwipeRef.current = null;
+              if (!start) return;
+              const t = e.changedTouches[0];
+              const dx = t.clientX - start.x;
+              const dy = t.clientY - start.y;
+              if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+              navigateCard(dx < 0 ? "next" : "prev");
+            }}
+          >
+
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label" style={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}>Memory Time</span>
