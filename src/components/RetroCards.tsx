@@ -1376,7 +1376,7 @@ const RetroCards: React.FC = () => {
                   style={{ background: setupData.openRelationship ? '#FFFFFF' : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C6D1E1]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#201C1D]' : 'bg-[#C8CCD0]'}`}
                   />
                 </button>
               </div>
