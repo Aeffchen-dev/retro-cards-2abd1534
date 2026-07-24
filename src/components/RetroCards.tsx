@@ -1192,15 +1192,18 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = "#B3E760"; // lime accent
-        const SETUP_ON_ACCENT = "#0D0D0E"; // dark icon/text on lime
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-lg bg-[#B3E760]/10 border-none focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 px-4 text-base placeholder:text-base placeholder:text-[#C6EE96]/50";
+        const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
+        const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
+        const SETUP_TEXT = "#C9C9C9"; // same tone as the question text
+        const SETUP_FIELD_BG = "#333333"; // 20% lighter than the slide background
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-4 text-base placeholder:text-base";
+        const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
         const emojiPicker = (
           value: string,
           placeholder: string,
           onChange: (val: string) => void
         ) => (
-          <div className="relative shrink-0 w-12 h-12 rounded-lg">
+          <div className="relative shrink-0 w-12 h-12">
             <input
               type="text"
               inputMode="text"
@@ -1208,7 +1211,8 @@ const RetroCards: React.FC = () => {
               onChange={(e) => onChange(sanitizeEmoji(e.target.value))}
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
-              className="emoji-picker-input w-full h-full rounded-lg bg-[#B3E760]/10 text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-[#B3E760]/40 focus:opacity-10 placeholder:text-[#C6EE96]/50"
+              style={fieldStyle}
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
@@ -1232,6 +1236,7 @@ const RetroCards: React.FC = () => {
                     value={setupData.name1}
                     onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
                     placeholder={NAME1_PLACEHOLDER}
+                    style={fieldStyle}
                     className={nameInputCls}
                   />
                 </div>
@@ -1245,6 +1250,7 @@ const RetroCards: React.FC = () => {
                     value={setupData.name2}
                     onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
                     placeholder={NAME2_PLACEHOLDER}
+                    style={fieldStyle}
                     className={nameInputCls}
                   />
                 </div>
@@ -1268,7 +1274,8 @@ const RetroCards: React.FC = () => {
                           setSetupData({ ...setupData, extraPartners: next });
                         }}
                         placeholder={`Partner ${idx + 3}`}
-                        className={nameInputCls}
+                        style={fieldStyle}
+                    className={nameInputCls}
                       />
                     </div>
                   </div>
@@ -1325,11 +1332,11 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? '' : 'bg-[#B3E760]/15'}`}
-                  style={setupData.openRelationship ? { background: SETUP_ACCENT } : undefined}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors`}
+                  style={{ background: setupData.openRelationship ? SETUP_ACCENT : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#0D0D0E]' : 'bg-[#C6EE96]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#1A1A1A]' : 'bg-[#C9C9C9]'}`}
                   />
                 </button>
               </div>
@@ -1340,7 +1347,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy rounded-none px-6 py-3 hover:opacity-90 transition-opacity"
               style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}
             >
               Los geht's
