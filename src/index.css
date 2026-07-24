@@ -255,9 +255,10 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 0;
-  bottom: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: var(--pill-swatch);
+  height: var(--pill-swatch);
   background: var(--retro-pill, var(--retro-post-it, #9D9CFF));
 }
 .retro-pill::after {
