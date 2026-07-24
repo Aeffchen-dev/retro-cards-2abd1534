@@ -21,6 +21,25 @@ const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
 const SLIDE_LOGO = 103;
 
+// Pill label displayed ABOVE the card for each slide (null = no pill)
+const SLIDE_PILLS: Record<number, string | null> = {
+  103: null,
+  100: "Intro",
+  101: "Setup",
+  0: "Memory Time",
+  1: "Health Check",
+  2: "Health Check",
+  3: "The last 4 weeks",
+  102: "Reflection",
+  4: "To talk about",
+  5: "Nicht monogam",
+  7: "Intimacy",
+  8: "Takeaways",
+  9: "Archive",
+  10: "Questions",
+};
+
+
 interface ExtraPartner {
   name: string;
   emoji: string;
