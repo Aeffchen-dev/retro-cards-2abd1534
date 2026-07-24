@@ -106,15 +106,16 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
-  { bg: "#141414", text: "#D6D6D6", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // white + electric blue
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // white + magenta
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // white + orange
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
 ];
+
 
 
 
