@@ -107,9 +107,9 @@ interface MemojisPosition {
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#F39FFF", pill: "#F39FFF", pillDot: "#4D1955" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
@@ -1168,7 +1168,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setPostItTexts({ ...postItTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 />
@@ -1234,7 +1234,7 @@ const RetroCards: React.FC = () => {
         const SETUP_ACCENT = "#F39FFF"; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#201C1D"; // dark text/icons on the accent
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
-        const SETUP_FIELD_BG = "#F0EFEE"; // subtle grey field on white slide background
+        const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-black/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
@@ -1412,21 +1412,21 @@ const RetroCards: React.FC = () => {
               <textarea
                 value={reflectionTexts.nice}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, nice: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Das finde ich gerade schön in unserer Beziehung"
               />
               <textarea
                 value={reflectionTexts.thanks}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, thanks: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Dafür möchte ich Danke sagen / ein Kompliment für dich"
               />
               <textarea
                 value={reflectionTexts.idea}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, idea: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Eine Idee für uns / Das können wir besser machen"
               />
@@ -1465,7 +1465,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 />
@@ -1553,29 +1553,8 @@ const RetroCards: React.FC = () => {
         bottom: 0,
       }}
     >
-      {/* Header - progress dots + counter */}
-      <div className="flex items-center gap-4 w-full px-4 py-3">
-        <div className="flex-1 flex items-center gap-1.5 min-w-0 flex-wrap screen-only">
-          {slides.map((slideId, i) => (
-            <button
-              key={slideId}
-              type="button"
-              aria-label={`Zu Karte ${i + 1}`}
-              aria-current={i === currentCard}
-              onClick={(e) => { e.stopPropagation(); swiperRef?.slideTo(i); }}
-              className="h-1.5 rounded-full transition-all duration-300 border-0 p-0 cursor-pointer"
-              style={{
-                width: i === currentCard ? 20 : 6,
-                background: CARD_THEMES[i % CARD_THEMES.length].pill,
-                opacity: i === currentCard ? 1 : 0.35,
-              }}
-            />
-          ))}
-        </div>
-        <div className="retro-body text-retro-white/90 shrink-0">
-          {currentCard + 1} / {totalCards}
-        </div>
-      </div>
+      {/* Header spacer */}
+      <div className="w-full px-4 py-2" />
 
 
       {/* Card Content - Swiper.js slide animation like friends app */}
@@ -1641,7 +1620,7 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#C6D1E1', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-3 sm:px-5 md:px-6">
@@ -1686,7 +1665,7 @@ const RetroCards: React.FC = () => {
                                   [slideId]: { ...(prev[slideId] || {}), [person.key]: e.target.value }
                                 }))
                               }
-                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                               style={{ borderRadius: "0px" }}
                               placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                             />
@@ -1787,6 +1766,35 @@ const RetroCards: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Pagination dots (centered) + counter at card edge */}
+      <div className="relative w-full px-5 pb-4 min-h-[22px] flex items-center screen-only">
+        <div className="flex-1 flex items-center justify-center gap-1.5 flex-wrap">
+          {slides.map((slideId, i) => (
+            <button
+              key={slideId}
+              type="button"
+              aria-label={`Zu Karte ${i + 1}`}
+              aria-current={i === currentCard}
+              onClick={(e) => { e.stopPropagation(); swiperRef?.slideTo(i); }}
+              className="h-1.5 rounded-full transition-all duration-300 border-0 p-0 cursor-pointer"
+              style={{
+                width: i === currentCard ? 20 : 6,
+                background: CARD_THEMES[i % CARD_THEMES.length].pill,
+                opacity: i === currentCard ? 1 : 0.35,
+              }}
+            />
+          ))}
+        </div>
+        <div
+          className="absolute right-5 top-1/2 -translate-y-1/2 retro-body text-retro-white"
+          style={{ opacity: 0.25 }}
+        >
+          {currentCard + 1} / {totalCards}
+        </div>
+      </div>
+
+
 
 
       {/* Camera Preview Modal */}
