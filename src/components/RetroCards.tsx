@@ -1245,11 +1245,15 @@ const RetroCards: React.FC = () => {
             >
               Retro Cards
             </h1>
-            <p className="retro-body-copy absolute text-left" style={{ left: 0, bottom: '10px', fontSize: '12px', lineHeight: 1.15, color: '#201C1D' }}>
+            <p className="retro-body-copy mt-8 text-center" style={{ fontSize: '16px', lineHeight: 1.5, color: '#201C1D' }}>
               Ein interaktiver Check-in
               <br />
               für eine gesunde Beziehung
             </p>
+            <div className="absolute flex items-center" style={{ left: 0, bottom: 0, height: '48px' }}>
+              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#6A737C' }}>Swipe um weiter zu navigieren</span>
+            </div>
+
           </div>
 
         );
