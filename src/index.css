@@ -128,7 +128,7 @@
     padding: 0;
     background: var(--retro-black);
     color: var(--retro-white);
-    font-family: "Hanken Grotesk", Arial, sans-serif;
+    font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
     overflow: hidden;
     position: fixed;
     width: 100%;
