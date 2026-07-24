@@ -1219,7 +1219,7 @@ const RetroCards: React.FC = () => {
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
-              <h2 className="retro-heading w-full">Willkommen bei Retro Cards</h2>
+              <h2 className="retro-heading w-full">Euer monatlicher Checkin</h2>
               <div className="flex flex-col gap-4 w-full retro-body-copy">
 
                 <p>Retro Cards ist euer monatlicher Check-in für eure Beziehung. Nehmt euch Zeit füreinander, sprecht ehrlich über das, was euch bewegt, und stärkt, was euch verbindet.</p>
