@@ -340,14 +340,23 @@ const RetroCards: React.FC = () => {
     }));
   }, []);
 
-  // Page background stays a constant neutral grey
+  // Page background: near-black tint of the current slide's label colour, morphing on transition
   useEffect(() => {
-    document.body.style.transition = "background-color 500ms cubic-bezier(0.2, 0, 0, 1)";
-    document.body.style.backgroundColor = "#1A1A1A";
+    const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
+    if (theme) {
+      const h = theme.pill.replace("#", "");
+      const r = parseInt(h.slice(0, 2), 16);
+      const g = parseInt(h.slice(2, 4), 16);
+      const b = parseInt(h.slice(4, 6), 16);
+      // mix 12% of the label colour into near-black
+      const mix = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
+      document.body.style.transition = "background-color 600ms cubic-bezier(0.2, 0, 0, 1)";
+      document.body.style.backgroundColor = `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+    }
     return () => {
       document.body.style.backgroundColor = "";
     };
-  }, []);
+  }, [currentCard]);
 
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {

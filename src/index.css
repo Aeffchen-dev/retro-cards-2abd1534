@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
 /* Custom Kokoro font */
 @font-face {
   font-family: "Kokoro";
@@ -128,7 +128,7 @@
     padding: 0;
     background: var(--retro-black);
     color: var(--retro-white);
-    font-family: "Outfit", Arial, sans-serif;
+    font-family: "Hanken Grotesk", Arial, sans-serif;
     overflow: hidden;
     position: fixed;
     width: 100%;
@@ -184,7 +184,7 @@
 
 /* Retro Cards specific styles */
 .retro-title {
-  font-family: "Outfit", Arial, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-style: normal;
   font-size: 32px;
@@ -199,7 +199,7 @@
 
 
 .retro-label {
-  font-family: "Outfit", Arial, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -208,7 +208,7 @@
 }
 
 .retro-heading {
-  font-family: "Outfit", Arial, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-style: normal;
   font-size: 32px;
@@ -219,7 +219,7 @@
 
 .retro-body,
 .retro-body-copy {
-  font-family: "Outfit", Arial, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -232,7 +232,7 @@
   padding: 6px 14px 6px 40px;
   background: #FFFFFF;
   border: 0 !important;
-  border-radius: 6px !important;
+  border-radius: 0 !important;
   overflow: hidden;
 }
 .retro-pill .retro-label {
@@ -334,7 +334,7 @@ button {
 /* M3 Expressive label-small on post-its: uppercase micro label */
 .bg-retro-post-it .retro-label,
 .retro-post-it-label {
-  font-family: "Outfit", Arial, sans-serif;
+  font-family: "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
