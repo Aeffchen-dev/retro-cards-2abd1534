@@ -190,6 +190,13 @@
   font-size: 32px;
   line-height: 1.05;
   letter-spacing: -0.01em;
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 12px;
+  background: var(--retro-pill, var(--retro-accent));
+  color: var(--retro-black);
+  /* notched: cut top-right + bottom-left corners */
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
 }
 
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
@@ -216,7 +223,13 @@
   font-size: 40px;
   line-height: 1.02;
   letter-spacing: -0.025em;
-  color: var(--retro-pill, var(--retro-white));
+  color: var(--retro-black);
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 12px;
+  background: var(--retro-pill, var(--retro-white));
+  /* notched: cut top-right + bottom-left corners */
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
 }
 
 .retro-body,
