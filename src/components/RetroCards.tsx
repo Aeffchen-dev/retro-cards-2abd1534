@@ -1729,7 +1729,7 @@ const RetroCards: React.FC = () => {
                         className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
                         style={{ width: '64px', height: '64px', right: '0px', bottom: '0px', backgroundColor: '#C6D1E1' }}
                       >
-                        <ArrowRight size={28} strokeWidth={2} color="#201C1D" />
+                        <StackIcon name="IconArrowRightSm" size={24} color="#201C1D" />
                       </button>
                     )}
 
