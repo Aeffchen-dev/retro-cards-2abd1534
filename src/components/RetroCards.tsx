@@ -1368,7 +1368,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto self-center inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
               style={{ background: '#0D0D0E' }}
             >
               Los geht's
