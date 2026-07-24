@@ -106,15 +106,16 @@ interface MemojisPosition {
 // reference screenshot's monochromatic purple / lavender cards). Cycles
 // through purple, green, and orange families.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // grey + electric blue
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // grey + magenta
-  { bg: "#141414", text: "#D6D6D6", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // grey + orange
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#141414", text: "#D6D6D6", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" }, // white + electric blue
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" }, // white + magenta
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" }, // white + orange
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
+  { bg: "#FFFFFF", text: "#0D0D0E", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
 ];
+
 
 
 
@@ -1213,8 +1214,9 @@ const RetroCards: React.FC = () => {
       case SLIDE_SETUP: {
         const SETUP_ACCENT = "#F4661B"; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#1A1A1A"; // dark text/icons on the accent
-        const SETUP_TEXT = "#D6D6D6"; // matches the light grey body text on dark bg
-        const SETUP_FIELD_BG = "#333333"; // 20% lighter than the slide background
+        const SETUP_TEXT = "#0D0D0E"; // dark text on white slide bg
+        const SETUP_FIELD_BG = "#F0F0F0"; // 20% darker than the white slide background
+
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-light h-12 w-full rounded-none border-none focus:outline-none focus:ring-2 focus:ring-white/10 px-5 text-base placeholder:text-base";
         const fieldStyle = { background: SETUP_FIELD_BG, color: SETUP_TEXT } as React.CSSProperties;
         const emojiPicker = (
@@ -1534,7 +1536,7 @@ const RetroCards: React.FC = () => {
     >
       {/* Header - Compact like friends app */}
       <div className="flex items-center gap-4 w-full px-4 py-3">
-        <h1 className="retro-body text-retro-white/90">Retro Cards</h1>
+        
         <div className="flex-1 text-right retro-body text-retro-white/90">
           {currentCard + 1} / {totalCards}
         </div>
