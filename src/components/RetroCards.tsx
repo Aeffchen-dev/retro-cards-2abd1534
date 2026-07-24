@@ -1252,7 +1252,7 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={fieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <StackIcon name="IconPencilSm" size={10} color={SETUP_ON_ACCENT} />
@@ -1267,7 +1267,7 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 */}
-              <div className="flex items-center gap-4 w-full py-4">
+              <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
                 <div className="name-input-wrapper first-name-input-wrapper flex-1">
                   <input
@@ -1281,7 +1281,7 @@ const RetroCards: React.FC = () => {
                 </div>
               </div>
               {/* Person 2 */}
-              <div className="flex items-center gap-4 w-full py-4">
+              <div className="flex items-center gap-0 w-full py-4">
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
                 <div className="name-input-wrapper flex-1">
                   <input
@@ -1296,8 +1296,8 @@ const RetroCards: React.FC = () => {
               </div>
               {/* Extra partners */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex items-center gap-4 w-full py-4">
-                  <div className="flex-1 flex items-center gap-4">
+                <div key={idx} className="flex items-center gap-0 w-full py-4">
+                  <div className="flex-1 flex items-center gap-0">
                     {emojiPicker(p.emoji, "🧚", (val) => {
                       const next = [...setupData.extraPartners];
                       next[idx] = { ...next[idx], emoji: val };
