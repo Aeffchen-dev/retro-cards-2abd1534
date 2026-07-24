@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import StackIcon from "@/components/StackIcon";
+import { ArrowRight } from "lucide-react";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1728,7 +1729,7 @@ const RetroCards: React.FC = () => {
                         className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
                         style={{ width: '64px', height: '64px', right: '0px', bottom: '0px', backgroundColor: '#C6D1E1' }}
                       >
-                        <StackIcon name="IconArrowRight" size={24} color="#201C1D" />
+                        <ArrowRight size={28} strokeWidth={2} color="#201C1D" />
                       </button>
                     )}
 
