@@ -1539,8 +1539,20 @@ const RetroCards: React.FC = () => {
       </div>
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+      <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+        {/* Edge click zones for slide navigation */}
+        <button
+          aria-label="Vorherige Karte"
+          onClick={(e) => { e.stopPropagation(); navigateCard("prev"); }}
+          className="swiper-no-swiping absolute left-0 top-0 bottom-0 w-3 sm:w-5 z-40 bg-transparent border-0 p-0 cursor-w-resize screen-only"
+        />
+        <button
+          aria-label="Nächste Karte"
+          onClick={(e) => { e.stopPropagation(); navigateCard("next"); }}
+          className="swiper-no-swiping absolute right-0 top-0 bottom-0 w-3 sm:w-5 z-40 bg-transparent border-0 p-0 cursor-e-resize screen-only"
+        />
         <div className="w-full h-full min-h-0 overflow-hidden">
+
             <Swiper
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
