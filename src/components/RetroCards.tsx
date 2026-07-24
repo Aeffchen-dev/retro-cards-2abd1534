@@ -103,18 +103,20 @@ interface MemojisPosition {
 }
 
 // Tonal card families — bg + text stay in the same hue family (like the
-// reference screenshot's monochromatic purple / lavender cards). Cycles
-// through purple, green, and orange families.
+// Stack Overflow brand palette only (stackoverflow.design/brand/color).
+// Cards: Pure White bg + Off-Black text. Accents cycle through the brand
+// primaries, each paired with its dark counterpart for the pill dot.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#F4661B", pill: "#F4661B", pillDot: "#331103" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5B7CFA", pill: "#5B7CFA", pillDot: "#101833" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#E87BD8", pill: "#E87BD8", pillDot: "#3A1234" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#F39FFF", pill: "#F39FFF", pillDot: "#4D1955" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
 ];
+
 
 const RetroCards: React.FC = () => {
   // Initialize currentCard from localStorage synchronously for initialSlide
