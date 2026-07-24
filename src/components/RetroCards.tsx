@@ -1212,7 +1212,7 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={fieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-light border-none caret-transparent focus:outline-none focus:ring-2 focus:ring-white/10 focus:opacity-10"
             />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ACCENT }}>
               <Pencil size={10} color={SETUP_ON_ACCENT} strokeWidth={2.5} />
