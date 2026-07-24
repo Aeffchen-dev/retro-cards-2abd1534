@@ -1236,6 +1236,7 @@ const RetroCards: React.FC = () => {
                     value={setupData.name1}
                     onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
                     placeholder={NAME1_PLACEHOLDER}
+                    style={fieldStyle}
                     className={nameInputCls}
                   />
                 </div>
@@ -1249,6 +1250,7 @@ const RetroCards: React.FC = () => {
                     value={setupData.name2}
                     onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
                     placeholder={NAME2_PLACEHOLDER}
+                    style={fieldStyle}
                     className={nameInputCls}
                   />
                 </div>
@@ -1272,7 +1274,8 @@ const RetroCards: React.FC = () => {
                           setSetupData({ ...setupData, extraPartners: next });
                         }}
                         placeholder={`Partner ${idx + 3}`}
-                        className={nameInputCls}
+                        style={fieldStyle}
+                    className={nameInputCls}
                       />
                     </div>
                   </div>
@@ -1329,11 +1332,11 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors ${setupData.openRelationship ? '' : 'bg-[#B3E760]/15'}`}
-                  style={setupData.openRelationship ? { background: SETUP_ACCENT } : undefined}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors`}
+                  style={{ background: setupData.openRelationship ? SETUP_ACCENT : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#0D0D0E]' : 'bg-[#C6EE96]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-[#1A1A1A]' : 'bg-[#C9C9C9]'}`}
                   />
                 </button>
               </div>
@@ -1344,7 +1347,7 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-body-copy rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="relative z-40 mt-auto w-full retro-body-copy rounded-none px-6 py-3 hover:opacity-90 transition-opacity"
               style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}
             >
               Los geht's
