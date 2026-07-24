@@ -1030,8 +1030,8 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center retro-label !text-[#0D0D0E] px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: CARD_THEMES[3]?.pill }}
+              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: '#0D0D0E' }}
             >
               Kamera öffnen
             </button>
@@ -1368,8 +1368,8 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 swiperRef?.slideNext();
               }}
-              className="relative z-40 mt-auto w-full retro-label rounded-none px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}
+              className="relative z-40 mt-auto w-full retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: '#0D0D0E' }}
             >
               Los geht's
             </button>
@@ -1582,7 +1582,13 @@ const RetroCards: React.FC = () => {
               const g = parseInt(hex.slice(2, 4), 16);
               const b = parseInt(hex.slice(4, 6), 16);
               const textRgb = `${r} ${g} ${b}`;
-              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties;
+              const pillHex = theme.pill.replace('#', '');
+              const pr = parseInt(pillHex.slice(0, 2), 16);
+              const pg = parseInt(pillHex.slice(2, 4), 16);
+              const pb = parseInt(pillHex.slice(4, 6), 16);
+              const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
+              const bodyBg = `rgb(${mixC(pr)}, ${mixC(pg)}, ${mixC(pb)})`;
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-5">
