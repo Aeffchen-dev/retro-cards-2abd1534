@@ -1211,6 +1211,9 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
+            <div className="retro-pill flex justify-center items-center gap-2 mt-8">
+              <span className="retro-label" style={{ color: '#201C1D' }}>Relationship by design</span>
+            </div>
           </div>
         );
 
