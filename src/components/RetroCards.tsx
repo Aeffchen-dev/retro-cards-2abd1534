@@ -1701,7 +1701,7 @@ const RetroCards: React.FC = () => {
                       <button
                         onClick={() => toggleEditMode(slideId)}
                         className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
-                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: '#F39FFF' }}
+                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: 'transparent', borderTop: '1px solid #201C1D', borderLeft: '1px solid #201C1D' }}
                       >
                         {editModeSlides[slideId] ? (
                           <StackIcon name="IconClear" size={28} color="#201C1D" />
