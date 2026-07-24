@@ -108,7 +108,7 @@ interface MemojisPosition {
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#F39FFF", text: "#201C1D", accent: "#F39FFF", pill: "#F39FFF", pillDot: "#4D1955" },
+  { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
