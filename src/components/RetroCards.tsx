@@ -947,7 +947,10 @@ const RetroCards: React.FC = () => {
     });
   };
 
+  const memorySwipeRef = useRef<{ x: number; y: number } | null>(null);
+
   const navigateCard = useCallback((direction: "prev" | "next") => {
+
     if (!swiperRef) return;
     
     if (direction === "prev") {
