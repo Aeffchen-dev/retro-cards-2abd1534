@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import StackIcon from "@/components/StackIcon";
-import { ArrowRight } from "lucide-react";
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
@@ -1034,11 +1034,12 @@ const RetroCards: React.FC = () => {
               type="button"
               aria-label="Nächste Karte"
               onClick={(e) => { e.stopPropagation(); swiperRef?.slideNext(); }}
-              className="swiper-no-swiping screen-only absolute right-0 bottom-0 z-40 flex items-center justify-center"
-              style={{ width: '48px', height: '48px' }}
+              className="swiper-no-swiping screen-only absolute z-40 flex items-center justify-center"
+              style={{ width: '48px', height: '48px', right: '-28px', bottom: '-28px', backgroundColor: '#C6D1E1' }}
             >
-              <ArrowRight size={32} color="#201C1D" strokeWidth={2} />
+              <StackIcon name="IconArrowRight" size={24} color="#201C1D" />
             </button>
+
             {/* Print-only: Show captured photos in a single row */}
             {capturedPhotos.length > 0 && (
               <div className="hidden print-only gap-2 mt-8 w-full flex-row items-center">
