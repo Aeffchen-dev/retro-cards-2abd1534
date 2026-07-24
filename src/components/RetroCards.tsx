@@ -1234,7 +1234,7 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = "#F39FFF"; // tag/label colour of this slide
+        const SETUP_ACCENT = CARD_THEMES[2].pill; // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#201C1D"; // dark text/icons on the accent
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
