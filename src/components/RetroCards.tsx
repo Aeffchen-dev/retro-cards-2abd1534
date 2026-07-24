@@ -1010,9 +1010,9 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center gap-3 retro-body-copy !text-[#0D0D0E] bg-[#9784FA] rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
+              className="swiper-no-swiping relative z-40 mt-auto w-full flex items-center justify-center retro-body-copy !text-[#0D0D0E] px-6 py-3 hover:opacity-90 transition-opacity"
+              style={{ background: CARD_THEMES[3]?.pill }}
             >
-              <Camera size={18} strokeWidth={2} />
               Kamera öffnen
             </button>
           </div>
