@@ -1168,7 +1168,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setPostItTexts({ ...postItTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                 />
@@ -1412,21 +1412,21 @@ const RetroCards: React.FC = () => {
               <textarea
                 value={reflectionTexts.nice}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, nice: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Das finde ich gerade schön in unserer Beziehung"
               />
               <textarea
                 value={reflectionTexts.thanks}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, thanks: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Dafür möchte ich Danke sagen / ein Kompliment für dich"
               />
               <textarea
                 value={reflectionTexts.idea}
                 onChange={(e) => setReflectionTexts({ ...reflectionTexts, idea: e.target.value })}
-                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                 style={{ borderRadius: "0px" }}
                 placeholder="Eine Idee für uns / Das können wir besser machen"
               />
@@ -1465,7 +1465,7 @@ const RetroCards: React.FC = () => {
                   onChange={(e) =>
                     setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
                   }
-                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                  className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                   style={{ borderRadius: "0px" } as React.CSSProperties}
                   placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                 />
@@ -1686,7 +1686,7 @@ const RetroCards: React.FC = () => {
                                   [slideId]: { ...(prev[slideId] || {}), [person.key]: e.target.value }
                                 }))
                               }
-                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark border-none text-base"
+                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
                               style={{ borderRadius: "0px" }}
                               placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                             />
