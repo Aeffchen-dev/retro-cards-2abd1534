@@ -23,7 +23,7 @@ const SLIDE_LOGO = 103;
 
 // Pill label displayed ABOVE the card for each slide (null = no pill)
 const SLIDE_PILLS: Record<number, string | null> = {
-  103: null,
+  103: "Relationship by design",
   100: "Intro",
   101: "Setup",
   0: "Memory Time",
@@ -1211,9 +1211,6 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="retro-pill flex justify-center items-center gap-2 mt-8">
-              <span className="retro-label" style={{ color: '#201C1D' }}>Relationship by design</span>
-            </div>
           </div>
         );
 
