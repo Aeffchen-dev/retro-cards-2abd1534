@@ -340,17 +340,14 @@ const RetroCards: React.FC = () => {
     }));
   }, []);
 
-  // Sync body background to current slide's theme with a smooth fade
+  // Page background stays a constant neutral grey
   useEffect(() => {
-    const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
-    if (theme) {
-      document.body.style.transition = "background-color 500ms cubic-bezier(0.2, 0, 0, 1)";
-      document.body.style.backgroundColor = theme.bg;
-    }
+    document.body.style.transition = "background-color 500ms cubic-bezier(0.2, 0, 0, 1)";
+    document.body.style.backgroundColor = "#1A1A1A";
     return () => {
       document.body.style.backgroundColor = "";
     };
-  }, [currentCard]);
+  }, []);
 
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {
