@@ -676,3 +676,9 @@ textarea.bg-retro-post-it:focus,
     print-color-adjust: exact !important;
   }
 }
+/* Setup slide fields: placeholder tone matches the question text */
+.name-input-field::placeholder,
+.emoji-picker-input::placeholder {
+  color: rgba(201, 201, 201, 0.5);
+  opacity: 1;
+}
