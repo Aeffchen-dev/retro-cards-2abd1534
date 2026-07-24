@@ -204,17 +204,17 @@
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
-  color: var(--retro-white);
+  color: var(--retro-body-bg, var(--retro-white));
 }
 
 .retro-heading {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
   font-size: 32px;
   line-height: 1.05;
   letter-spacing: -0.02em;
-  color: var(--retro-white);
+  color: var(--retro-pill, var(--retro-white));
 }
 
 .retro-body,
@@ -223,7 +223,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
-  color: var(--retro-white);
+  color: var(--retro-body-bg, var(--retro-white));
 }
 
 /* Hide in-card pills — pill is now rendered above the card */
