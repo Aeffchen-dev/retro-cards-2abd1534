@@ -1619,7 +1619,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-4 flex flex-col z-30 rounded-none" style={cardStyle}>
+                      <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col z-30 rounded-none" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
