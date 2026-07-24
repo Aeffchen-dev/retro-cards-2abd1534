@@ -1609,7 +1609,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-4 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-6 sm:gap-10 rounded-none p-4 sm:p-6 md:p-8 shadow-2xl overflow-y-auto"
 
                     style={cardStyle}
                   >
