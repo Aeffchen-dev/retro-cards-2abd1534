@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Nunito:wght@400;500;600;700;800;900&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
 /* Custom Kokoro font */
 @font-face {
   font-family: "Kokoro";
@@ -128,7 +128,7 @@
     padding: 0;
     background: var(--retro-black);
     color: var(--retro-white);
-    font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+    font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
     overflow: hidden;
     position: fixed;
     width: 100%;
@@ -199,7 +199,7 @@
 
 
 .retro-label {
-  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 700;
   font-size: 16px;
   line-height: 22px;
@@ -208,7 +208,7 @@
 }
 
 .retro-heading {
-  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 800;
   font-style: normal;
   font-size: 32px;
@@ -219,7 +219,7 @@
 
 .retro-body,
 .retro-body-copy {
-  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
@@ -305,7 +305,7 @@ button {
 .retro-input {
   outline: none;
   resize: none;
-  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
 }
 
 .retro-input-dark {
@@ -335,7 +335,7 @@ button {
 /* M3 Expressive label-small on post-its: uppercase micro label */
 .bg-retro-post-it .retro-label,
 .retro-post-it-label {
-  font-family: "Nunito", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
