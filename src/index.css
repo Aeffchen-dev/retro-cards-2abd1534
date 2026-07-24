@@ -361,7 +361,7 @@ button {
   line-height: 22px;
   letter-spacing: 0.005em;
   text-transform: none;
-  color: var(--retro-post-it-text, #000000);
+  color: var(--retro-post-it-text, #201C1D);
   opacity: 0.72;
 }
 
@@ -388,7 +388,7 @@ textarea.bg-retro-post-it:focus,
   border-radius: 20px 32px 20px 32px;
   outline: none;
   box-shadow:
-    0 0 0 3px var(--retro-post-it-text, #000000) inset,
+    0 0 0 3px var(--retro-post-it-text, #201C1D) inset,
     0 2px 4px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.14);
 }
@@ -509,28 +509,28 @@ textarea.bg-retro-post-it:focus,
 
   /* Card styling for print */
   .bg-retro-card-bg {
-    background: #e8e8e8 !important;
+    background: #F0EFEE !important;
     box-shadow: none !important;
   }
 
   /* Text colors for print */
   .text-retro-white {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .text-retro-white\/80 {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .retro-title,
   .retro-label,
   .retro-heading,
   .retro-body {
-    color: #000000 !important;
+    color: #201C1D !important;
   }
 
   .border-retro-white {
-    border-color: #000000 !important;
+    border-color: #201C1D !important;
   }
 
   /* Hide navigation elements */
@@ -562,7 +562,7 @@ textarea.bg-retro-post-it:focus,
     max-height: 85vh !important;
     margin: 0 !important;
     padding: 40px !important;
-    background: #e8e8e8 !important;
+    background: #F0EFEE !important;
     overflow: hidden !important;
     position: relative !important;
     flex-shrink: 0 !important;
@@ -571,7 +571,7 @@ textarea.bg-retro-post-it:focus,
   /* Post-it text areas - maintain frontend layout */
   textarea {
     min-height: 120px !important;
-    background: #f4e5a3 !important;
+    background: #FFCC00 !important;
   }
 
   /* Match frontend font sizes and spacing */
@@ -667,8 +667,8 @@ textarea.bg-retro-post-it:focus,
 
   /* Post-it print styling */
   .bg-retro-post-it {
-    background: #f4e5a3 !important;
-    color: #000000 !important;
+    background: #FFCC00 !important;
+    color: #201C1D !important;
   }
 
   /* Preserve line breaks in post-its */
