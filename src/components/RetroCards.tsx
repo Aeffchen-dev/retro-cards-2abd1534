@@ -1548,7 +1548,7 @@ const RetroCards: React.FC = () => {
               const g = parseInt(hex.slice(2, 4), 16);
               const b = parseInt(hex.slice(4, 6), 16);
               const textRgb = `${r} ${g} ${b}`;
-              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex items-center justify-center overflow-hidden px-4">
