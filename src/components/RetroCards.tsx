@@ -1535,7 +1535,7 @@ const RetroCards: React.FC = () => {
     >
       {/* Header - Compact like friends app */}
       <div className="flex items-center gap-4 w-full px-4 py-3">
-        <h1 className="retro-body text-retro-white/90">Retro Cards</h1>
+        
         <div className="flex-1 text-right retro-body text-retro-white/90">
           {currentCard + 1} / {totalCards}
         </div>
