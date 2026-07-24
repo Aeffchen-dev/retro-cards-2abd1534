@@ -1553,13 +1553,30 @@ const RetroCards: React.FC = () => {
         bottom: 0,
       }}
     >
-      {/* Header - Compact like friends app */}
+      {/* Header - progress dots + counter */}
       <div className="flex items-center gap-4 w-full px-4 py-3">
-        
-        <div className="flex-1 text-right retro-body text-retro-white/90">
+        <div className="flex-1 flex items-center gap-1.5 min-w-0 flex-wrap screen-only">
+          {slides.map((slideId, i) => (
+            <button
+              key={slideId}
+              type="button"
+              aria-label={`Zu Karte ${i + 1}`}
+              aria-current={i === currentCard}
+              onClick={(e) => { e.stopPropagation(); swiperRef?.slideTo(i); }}
+              className="h-1.5 rounded-full transition-all duration-300 border-0 p-0 cursor-pointer"
+              style={{
+                width: i === currentCard ? 20 : 6,
+                background: CARD_THEMES[i % CARD_THEMES.length].pill,
+                opacity: i === currentCard ? 1 : 0.35,
+              }}
+            />
+          ))}
+        </div>
+        <div className="retro-body text-retro-white/90 shrink-0">
           {currentCard + 1} / {totalCards}
         </div>
       </div>
+
 
       {/* Card Content - Swiper.js slide animation like friends app */}
       <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
