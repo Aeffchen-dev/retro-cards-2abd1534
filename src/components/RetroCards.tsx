@@ -954,6 +954,27 @@ const RetroCards: React.FC = () => {
     }
   }, [swiperRef]);
 
+  // Global keyboard navigation (ignored while typing in inputs)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        navigateCard("prev");
+      } else if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        navigateCard("next");
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [navigateCard]);
+
+
   const clearAllUserData = useCallback(() => {
     if (window.confirm("Möchtest du wirklich alle deine Einträge löschen? Diese Aktion kann nicht rückgängig gemacht werden.")) {
       // Clear all state
@@ -1539,8 +1560,20 @@ const RetroCards: React.FC = () => {
       </div>
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+      <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+        {/* Edge click zones for slide navigation */}
+        <button
+          aria-label="Vorherige Karte"
+          onClick={(e) => { e.stopPropagation(); navigateCard("prev"); }}
+          className="swiper-no-swiping absolute left-0 top-0 bottom-0 w-3 sm:w-5 z-40 bg-transparent border-0 p-0 cursor-w-resize screen-only"
+        />
+        <button
+          aria-label="Nächste Karte"
+          onClick={(e) => { e.stopPropagation(); navigateCard("next"); }}
+          className="swiper-no-swiping absolute right-0 top-0 bottom-0 w-3 sm:w-5 z-40 bg-transparent border-0 p-0 cursor-e-resize screen-only"
+        />
         <div className="w-full h-full min-h-0 overflow-hidden">
+
             <Swiper
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
@@ -1587,7 +1620,8 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: theme.text, ['--retro-post-it-text' as any]: theme.bg, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-5">
+                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-3 sm:px-5 md:px-6">
+
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto mb-2 flex" style={{ ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
@@ -1596,7 +1630,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-10 rounded-none p-4 shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-6 sm:gap-10 rounded-none p-4 sm:p-6 md:p-8 shadow-2xl overflow-y-auto"
 
                     style={cardStyle}
                   >
@@ -1606,7 +1640,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-4 flex flex-col z-30 rounded-none" style={cardStyle}>
+                      <div className="absolute inset-0 p-4 sm:p-6 md:p-8 flex flex-col z-30 rounded-none" style={cardStyle}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
