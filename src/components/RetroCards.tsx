@@ -1250,9 +1250,10 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute flex items-center" style={{ left: 0, bottom: '-16px', height: '48px' }}>
-              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#201C1D' }}>Swipe um weiter zu navigieren</span>
+            <div className="absolute flex items-center" style={{ left: 0, bottom: '-32px', height: '48px' }}>
+              <span style={{ fontSize: '12px', lineHeight: 1.4, color: 'rgba(32,28,29,0.9)' }}>Swipe um weiter zu navigieren</span>
             </div>
+
 
 
           </div>
