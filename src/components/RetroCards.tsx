@@ -1285,9 +1285,10 @@ const RetroCards: React.FC = () => {
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-0 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
-        const fieldStyle = { background: "transparent", color: SETUP_TEXT, border: "none" } as React.CSSProperties;
-        const rowCls = "flex items-center gap-2 w-full py-4 border-t border-[#201C1D]/15";
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-3 text-base placeholder:text-base placeholder:text-[#201C1D]/50 -ml-px";
+        const fieldStyle = { background: "transparent", color: SETUP_TEXT, border: `1px solid ${SETUP_TEXT}` } as React.CSSProperties;
+        const rowCls = "flex items-center gap-0 w-full mb-2";
+
         const emojiPicker = (
           value: string,
           placeholder: string,
@@ -1314,7 +1315,7 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full">Wer macht mit?</h2>
             </div>
-            <div className="flex flex-col w-full mt-8 -mx-4 px-4 border-b border-[#201C1D]/15" style={{ width: "calc(100% + 32px)" }}>
+            <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 */}
               <div className={rowCls}>
@@ -1347,7 +1348,7 @@ const RetroCards: React.FC = () => {
               {/* Extra partners */}
               {setupData.extraPartners.map((p, idx) => (
                 <div key={idx} className={rowCls}>
-                  <div className="flex-1 flex items-center gap-2">
+                  <div className="flex-1 flex items-center gap-0">
                     {emojiPicker(p.emoji, "🧚", (val) => {
                       const next = [...setupData.extraPartners];
                       next[idx] = { ...next[idx], emoji: val };
@@ -1394,7 +1395,7 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 py-4 retro-body-copy text-[#6A737C] transition-colors hover:text-[#201C1D] no-underline border-t border-[#201C1D]/15"
+                className="relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy text-[#6A737C] transition-colors hover:text-[#201C1D] no-underline"
               >
                 <span className="text-left whitespace-nowrap">
                   <span>+ </span>
@@ -1402,7 +1403,7 @@ const RetroCards: React.FC = () => {
                 </span>
               </button>
               {/* Toggle */}
-              <div className="flex items-center w-full py-4 border-t border-[#201C1D]/15">
+              <div className="flex items-center w-full h-12">
                 <button
                   type="button"
                   onClick={(e) => {
