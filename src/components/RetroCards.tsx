@@ -1348,7 +1348,7 @@ const RetroCards: React.FC = () => {
               {/* Extra partners */}
               {setupData.extraPartners.map((p, idx) => (
                 <div key={idx} className={rowCls}>
-                  <div className="flex-1 flex items-center gap-2">
+                  <div className="flex-1 flex items-center gap-0">
                     {emojiPicker(p.emoji, "🧚", (val) => {
                       const next = [...setupData.extraPartners];
                       next[idx] = { ...next[idx], emoji: val };
