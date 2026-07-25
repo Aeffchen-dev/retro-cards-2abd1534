@@ -1430,9 +1430,8 @@ const RetroCards: React.FC = () => {
                   />
                 </button>
               </div>
-
-              </div>
             </div>
+
             <button
               type="button"
               onClick={(e) => {
