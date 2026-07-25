@@ -31,7 +31,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   1: "Health Check",
   2: "Health Check",
   3: "The last 4 weeks",
-  102: "Reflection",
+  102: "Feedback",
   4: "To talk about",
   5: "Nicht monogam",
   7: "Intimacy",
@@ -390,7 +390,7 @@ const RetroCards: React.FC = () => {
       1: isMobile ? "Wie geht's mir persönlich?" : "Wie geht's mir persönlich in letzter Zeit?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
-      [SLIDE_REFLECTION]: "Reflection",
+      [SLIDE_REFLECTION]: "Feedback",
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
@@ -1449,9 +1449,9 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">Reflection</span>
+                <span className="retro-label">Feedback</span>
               </div>
-              <h2 className="retro-heading w-full">Reflection</h2>
+              <h2 className="retro-heading w-full">Feedback</h2>
             </div>
             <div className="flex flex-col flex-1 w-full gap-4 mt-8">
               <textarea
