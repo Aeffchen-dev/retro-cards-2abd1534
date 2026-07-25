@@ -1241,7 +1241,7 @@ const RetroCards: React.FC = () => {
           <div className="relative flex flex-col items-center w-full h-full text-center" style={{ paddingTop: '35%' }}>
             <h1
               className="retro-title logo-slide-anim"
-              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 700, color: '#FF5E00' }}
+              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 700, color: '#E85200' }}
             >
               Retro Cards
             </h1>
@@ -1250,9 +1250,10 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute flex items-center" style={{ left: 0, bottom: 0, height: '48px' }}>
-              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#6A737C' }}>Swipe um weiter zu navigieren</span>
+            <div className="absolute flex items-center" style={{ left: 0, bottom: '-16px', height: '48px' }}>
+              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#201C1D' }}>Swipe um weiter zu navigieren</span>
             </div>
+
 
           </div>
 
