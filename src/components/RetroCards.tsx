@@ -1395,7 +1395,7 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy text-[#6A737C] transition-colors hover:text-[#201C1D] no-underline"
+                className="relative z-40 w-full flex items-center gap-0 h-12 px-3 mb-4 retro-body-copy text-[#6A737C] transition-colors hover:text-[#201C1D] no-underline rounded-none border border-[#201C1D]"
               >
                 <span className="text-left whitespace-nowrap">
                   <span>+ </span>
@@ -1403,7 +1403,7 @@ const RetroCards: React.FC = () => {
                 </span>
               </button>
               {/* Toggle */}
-              <div className="flex items-center w-full h-12">
+              <div className="flex items-center justify-between w-full h-12 px-3 rounded-none border border-[#201C1D]">
                 <button
                   type="button"
                   onClick={(e) => {
@@ -1422,15 +1422,16 @@ const RetroCards: React.FC = () => {
                     e.stopPropagation();
                     setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                   }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-full transition-colors`}
+                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-none transition-colors`}
                   style={{ background: setupData.openRelationship ? '#201C1D' : SETUP_FIELD_BG }}
                 >
                   <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-full transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-white' : 'bg-[#201C1D]'}`}
+                    className={`absolute top-1 left-1 w-5 h-5 rounded-none transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-white' : 'bg-[#201C1D]'}`}
                   />
                 </button>
               </div>
             </div>
+
             <button
               type="button"
               onClick={(e) => {
