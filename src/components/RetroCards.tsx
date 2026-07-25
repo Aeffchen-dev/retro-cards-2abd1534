@@ -1186,9 +1186,6 @@ const RetroCards: React.FC = () => {
                   </button>
                 </div>
               ))}
-
-                </div>
-              ))}
             </div>
 
 
