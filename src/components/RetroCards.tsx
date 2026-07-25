@@ -1315,7 +1315,7 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full">Wer macht mit?</h2>
             </div>
-            <div className="flex flex-col w-full mt-8 -mx-4 px-4 border-b border-[#201C1D]/15" style={{ width: "calc(100% + 32px)" }}>
+            <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 */}
               <div className={rowCls}>
