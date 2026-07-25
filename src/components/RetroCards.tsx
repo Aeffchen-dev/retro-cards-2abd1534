@@ -1147,7 +1147,7 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">The last 4 weeks</span>
               </div>
               <h2 className="retro-heading w-full">
-                Wie waren die letzten 4 Wochen? Was war los?
+                Was war die letzten 4 Wochen so los?
               </h2>
             </div>
             <div className="flex flex-col flex-1 justify-end" style={{ width: 'calc(100% + 56px)', marginLeft: '-28px', marginRight: '-28px' }}>
