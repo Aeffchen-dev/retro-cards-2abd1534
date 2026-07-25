@@ -1152,13 +1152,13 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 justify-end" style={{ width: 'calc(100% + 56px)', marginLeft: '-28px', marginRight: '-28px' }}>
               {[
-                "🏆\u00A0\u00A0\u00A0Das habe(n) ich / wir richtig gerockt",
-                "🥰\u00A0\u00A0\u00A0Ein schöner Moment",
-                "💡\u00A0\u00A0\u00A0Das habe ich gelernt",
-                "💥\u00A0\u00A0\u00A0Das hat mich Kraft gekostet",
-                "🧠\u00A0\u00A0\u00A0Was beschäftigt mich grade?",
-                "💬\u00A0\u00A0\u00A0 Die letzten 4 Wochen in einem Wort",
-              ].map((label, i, arr) => (
+                ["🏆", "Das habe(n) ich / wir richtig gerockt"],
+                ["🥰", "Ein schöner Moment"],
+                ["💡", "Das habe ich gelernt"],
+                ["💥", "Das hat mich Kraft gekostet"],
+                ["🧠", "Was beschäftigt mich grade?"],
+                ["💬", "Die letzten 4 Wochen in einem Wort"],
+              ].map(([emoji, label], i, arr) => (
                 <div
                   key={i}
                   className="flex items-center justify-between gap-3"
@@ -1168,13 +1168,17 @@ const RetroCards: React.FC = () => {
                     paddingLeft: '28px',
                     fontSize: '12px',
                     lineHeight: 1.4,
+                    color: '#201C1D',
                   }}
                 >
-                  <span>{label}</span>
+                  <span className="flex items-center gap-3">
+                    <span style={{ fontSize: '16px', lineHeight: 1.4 }}>{emoji}</span>
+                    <span>{label}</span>
+                  </span>
                   <button
                     onClick={() => toggleEditMode(3)}
                     className="swiper-no-swiping shrink-0 w-12 h-12 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity screen-only"
-                    style={{ touchAction: 'manipulation', backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1' }}
+                    style={{ touchAction: 'manipulation', backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1', borderLeft: '1px solid #201C1D' }}
                     aria-label="Bearbeiten"
                   >
 
