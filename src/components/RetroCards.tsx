@@ -1403,7 +1403,7 @@ const RetroCards: React.FC = () => {
                 </span>
               </button>
               {/* Toggle */}
-              <div className="flex items-center w-full py-4 border-t border-[#201C1D]/15">
+              <div className="flex items-center w-full h-12">
                 <button
                   type="button"
                   onClick={(e) => {
