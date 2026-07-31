@@ -259,7 +259,7 @@ const RetroCards: React.FC = () => {
 
   // Slide ids with edit button: health-personal(1), health-relationship(2), last-4-weeks(3),
   // reflection(102), dates(5), intimacy(7)
-  const slidesWithEditButton = [1, 2, 3, SLIDE_REFLECTION, 5, 7];
+  const slidesWithEditButton = [1, 2, 3, 5, 7];
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
