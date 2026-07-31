@@ -12,6 +12,8 @@ export interface ActionRowProps {
   iconColor?: string;
   /** Label text colour, defaults to #201C1D */
   labelColor?: string;
+  /** Background of the label field, defaults to #E4E6E8 */
+  fieldBg?: string;
   /** Click handler (ignored when `href` is set and no handler is needed) */
   onClick?: (e: React.MouseEvent) => void;
   /** Render as a link instead of a button */
@@ -37,6 +39,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   accent,
   iconColor,
   labelColor,
+  fieldBg,
   onClick,
   href,
   target,
@@ -54,7 +57,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
-        style={{ background: GREY_TILE, color: labelColor ?? "#201C1D" }}
+        style={{ background: fieldBg ?? GREY_TILE, color: labelColor ?? "#201C1D" }}
       >
 
 
