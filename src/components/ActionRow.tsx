@@ -14,7 +14,7 @@ export interface ActionRowProps {
   iconColor?: string;
   /** Label text colour, defaults to #201C1D */
   labelColor?: string;
-  /** Background of the label field, defaults to #E4E6E8 */
+  /** Background of the label field, defaults to the accent (slide pill) colour */
   fieldBg?: string;
   /** Outlined style: no fills, black borders */
   outlined?: boolean;
@@ -65,7 +65,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
         style={{
-          background: outlined ? "transparent" : (fieldBg ?? GREY_TILE),
+          background: outlined ? "transparent" : (fieldBg ?? accent),
           color: labelColor ?? "#201C1D",
           border,
           borderLeft: outlined ? "none" : undefined,
