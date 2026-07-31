@@ -1618,7 +1618,7 @@ const RetroCards: React.FC = () => {
                   <StackIcon
                     name="IconCheckmark"
                     size={16}
-                    color={setupData.openRelationship ? '#201C1D' : 'rgba(32,28,29,0.3)'}
+                    color={setupData.openRelationship ? BRAND.white : 'rgba(255,255,255,0.4)'}
                   />
                 </span>
 
