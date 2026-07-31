@@ -1491,29 +1491,6 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full">Feedback</h2>
             </div>
-            <div className="flex flex-col flex-1 w-full gap-4 mt-8">
-              <textarea
-                value={reflectionTexts.nice}
-                onChange={(e) => setReflectionTexts({ ...reflectionTexts, nice: e.target.value })}
-                className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                style={{ borderRadius: "0px" }}
-                placeholder="Das finde ich gerade schön in unserer Beziehung"
-              />
-              <textarea
-                value={reflectionTexts.thanks}
-                onChange={(e) => setReflectionTexts({ ...reflectionTexts, thanks: e.target.value })}
-                className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                style={{ borderRadius: "0px" }}
-                placeholder="Dafür möchte ich Danke sagen / ein Kompliment für dich"
-              />
-              <textarea
-                value={reflectionTexts.idea}
-                onChange={(e) => setReflectionTexts({ ...reflectionTexts, idea: e.target.value })}
-                className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                style={{ borderRadius: "0px" }}
-                placeholder="Eine Idee für uns / Das können wir besser machen"
-              />
-            </div>
           </div>
         );
 
