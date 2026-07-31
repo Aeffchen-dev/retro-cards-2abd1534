@@ -1546,7 +1546,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconArrowRight"
                 label="Los geht's"
-                accent={SETUP_ACCENT}
+                accent={BRAND.blue}
                 onClick={() => swiperRef?.slideNext()}
               />
             </div>
