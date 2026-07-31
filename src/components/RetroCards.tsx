@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
+import PostItField from "@/components/PostItField";
 import { Camera } from "lucide-react";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
