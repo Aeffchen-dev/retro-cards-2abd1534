@@ -58,9 +58,9 @@ interface SetupData {
 }
 
 const REFLECTION_FIELDS = [
-  ["nice", "Das fand ich schön", "z. B. unser spontaner Abend am Fluss letzte Woche …"],
-  ["thanks", "Dafür möchte ich Danke sagen", "z. B. dass du dich um alles gekümmert hast, als ich krank war …"],
-  ["idea", "Das wünsche ich mir", "z. B. mehr gemeinsame Zeit ohne Handy …"],
+  ["nice", "Das fand ich schön", "Deine Antwort"],
+  ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort"],
+  ["idea", "Das wünsche ich mir", "Deine Antwort"],
 ] as const;
 
 const NAME1_PLACEHOLDER = "Dein Name";
