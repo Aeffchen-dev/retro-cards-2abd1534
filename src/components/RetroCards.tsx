@@ -1161,7 +1161,11 @@ const RetroCards: React.FC = () => {
               ].map(([emoji, label], i, arr) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between gap-3"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openQuestionEdit(3, i, String(label))}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuestionEdit(3, i, String(label)); } }}
+                  className="swiper-no-swiping flex items-center justify-between gap-3 cursor-pointer hover:opacity-80 transition-opacity"
                   style={{
                     borderTop: '1px solid #201C1D',
                     borderBottom: i === arr.length - 1 ? '1px solid #201C1D' : 'none',
@@ -1169,21 +1173,22 @@ const RetroCards: React.FC = () => {
                     fontSize: '12px',
                     lineHeight: 1.4,
                     color: '#201C1D',
+                    touchAction: 'manipulation',
                   }}
                 >
                   <span className="flex items-center gap-3">
                     <span style={{ fontSize: '16px', lineHeight: 1.4 }}>{emoji}</span>
                     <span>{label}</span>
                   </span>
-                  <button
-                    onClick={() => toggleEditMode(3)}
-                    className="swiper-no-swiping shrink-0 w-12 h-12 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity screen-only"
-                    style={{ touchAction: 'manipulation', backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1', borderLeft: '1px solid #201C1D' }}
-                    aria-label="Bearbeiten"
+                  <span
+                    className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
+                    style={{ backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1', borderLeft: '1px solid #201C1D' }}
+                    aria-hidden="true"
                   >
 
                     <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" fill="#201C1D"><path d="m2.61 1.7.25.07L4.9 3.8l-.05-.01 3.4 3.4a2.25 2.25 0 0 1 3.23 2.03 2.26 2.26 0 1 1-4.3-.97L3.8 4.85l1.9 7.88 4.8.96 3.2-3.2-.96-4.8L7.7 4.48 5.67 2.45l7.88 1.9.46.1.1.48.85 4.28.3-.3 3.32 3.33-4.21 4.2-1.06-1.05 3.15-3.15-1.2-1.2-4.22 4.21 1.2 1.2 1.06 1.06-1.06 1.07-3.32-3.33.29-.29-4.28-.85-.47-.1-.11-.46L1.7 2.6l-.29-1.19zm6.61 6.76a.76.76 0 1 0 0 1.52.76.76 0 0 0 0-1.52"/></svg>
-                  </button>
+                  </span>
+
                 </div>
               ))}
             </div>
