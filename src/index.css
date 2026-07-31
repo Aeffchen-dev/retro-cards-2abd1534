@@ -592,7 +592,7 @@ textarea.bg-retro-post-it:focus,
   /* Post-it text areas - maintain frontend layout */
   textarea {
     min-height: 120px !important;
-    background: #FFCC00 !important;
+    background: #E4E6E8 !important;
   }
 
   /* Match frontend font sizes and spacing */
@@ -688,7 +688,7 @@ textarea.bg-retro-post-it:focus,
 
   /* Post-it print styling */
   .bg-retro-post-it {
-    background: #FFCC00 !important;
+    background: #E4E6E8 !important;
     color: #201C1D !important;
   }
 
