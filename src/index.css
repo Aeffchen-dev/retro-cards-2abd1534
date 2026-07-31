@@ -410,9 +410,8 @@ textarea.bg-retro-post-it:hover,
 }
 textarea.bg-retro-post-it:focus,
 .bg-retro-post-it:focus {
-  border-radius: 20px 32px 20px 32px;
   outline: none;
-  box-shadow: 0 0 0 3px var(--retro-post-it-text, #201C1D) inset;
+  box-shadow: none;
 }
 
 /* Name input wrapper */
