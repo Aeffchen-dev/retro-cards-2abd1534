@@ -1184,16 +1184,15 @@ const RetroCards: React.FC = () => {
                 >
                   <span
                     className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length] }}
+                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length], fontSize: '20px', lineHeight: 1 }}
                     aria-hidden="true"
                   >
-                    <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" fill="#201C1D"><path d="m2.61 1.7.25.07L4.9 3.8l-.05-.01 3.4 3.4a2.25 2.25 0 0 1 3.23 2.03 2.26 2.26 0 1 1-4.3-.97L3.8 4.85l1.9 7.88 4.8.96 3.2-3.2-.96-4.8L7.7 4.48 5.67 2.45l7.88 1.9.46.1.1.48.85 4.28.3-.3 3.32 3.33-4.21 4.2-1.06-1.05 3.15-3.15-1.2-1.2-4.22 4.21 1.2 1.2 1.06 1.06-1.06 1.07-3.32-3.33.29-.29-4.28-.85-.47-.1-.11-.46L1.7 2.6l-.29-1.19zm6.61 6.76a.76.76 0 1 0 0 1.52.76.76 0 0 0 0-1.52"/></svg>
+                    {emoji}
                   </span>
                   <span
-                    className="flex flex-1 items-center gap-3 h-12 px-3 min-w-0"
+                    className="flex flex-1 items-center h-12 px-3 min-w-0"
                     style={{ backgroundColor: '#E4E6E8', fontSize: '12px', lineHeight: 1.4, color: '#201C1D' }}
                   >
-                    <span style={{ fontSize: '16px', lineHeight: 1.4 }}>{emoji}</span>
                     <span className="truncate">{label}</span>
                   </span>
                 </div>
