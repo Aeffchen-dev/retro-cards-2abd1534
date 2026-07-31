@@ -10,6 +10,8 @@ export interface ActionRowProps {
   accent: string;
   /** Icon colour, defaults to white */
   iconColor?: string;
+  /** Label text colour, defaults to #201C1D */
+  labelColor?: string;
   /** Click handler (ignored when `href` is set and no handler is needed) */
   onClick?: (e: React.MouseEvent) => void;
   /** Render as a link instead of a button */
