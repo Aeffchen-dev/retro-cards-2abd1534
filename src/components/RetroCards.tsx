@@ -1862,12 +1862,20 @@ const RetroCards: React.FC = () => {
         bottom: 0,
       }}
     >
+      {/* Decorative page background graphic */}
+      <img
+        src={bgGraphic.url}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute inset-y-0 right-0 h-full w-auto max-w-none object-cover opacity-70 screen-only"
+      />
+
       {/* Header spacer */}
-      <div className="w-full px-4 py-2" />
+      <div className="relative z-10 w-full px-4 py-2" />
 
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"
