@@ -1055,15 +1055,6 @@ const RetroCards: React.FC = () => {
                 Schießt ein paar süße Fotos zusammen
               </h2>
             </div>
-            <div className="screen-only absolute left-0 bottom-0">
-              <button
-                onClick={openCamera}
-                className="cursor-pointer flex items-center justify-center"
-                style={{ fontSize: '77px', lineHeight: 1, transform: 'rotate(-20deg)' }}
-              >
-                📸
-              </button>
-            </div>
 
             {/* Print-only: Show captured photos in a single row */}
             {capturedPhotos.length > 0 && (
