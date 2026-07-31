@@ -1267,7 +1267,7 @@ const RetroCards: React.FC = () => {
             </p>
             <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '0px' }}>
               <ActionRow
-                icon="IconArrowRightAlt"
+                icon="IconArrowRightSm"
                 label="Swipe um weiter zu navigieren"
                 accent={CARD_THEMES[SLIDE_LOGO % CARD_THEMES.length].pill}
                 onClick={() => swiperRef?.slideNext()}
@@ -1416,45 +1416,43 @@ const RetroCards: React.FC = () => {
                 }}
                 className="relative z-40 w-full flex items-center gap-0 h-8 mb-4 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
-                <span className="shrink-0 w-8 h-8 flex items-center justify-center text-base leading-none" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>+</span>
-                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: '#6A737C' }}>
+                <span className="shrink-0 w-8 h-8 flex items-center justify-center leading-none" style={{ background: SETUP_ACCENT }}>
+                  <StackIcon name="IconPlusSm" size={16} color="#FFFFFF" />
+                </span>
+                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Weiteren Partner hinzufügen
                 </span>
               </button>
 
-              {/* Toggle */}
-              <div className="flex items-center justify-between w-full h-8 px-3 rounded-none border-none" style={{ background: SETUP_GREY_FILL }}>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
-                  }}
-                  className="retro-body-copy text-left bg-transparent p-0 m-0 no-underline"
+              {/* Nicht monogam — checkbox row (tile left, label field right) */}
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={setupData.openRelationship}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
+                }}
+                className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+              >
+                <span
+                  className="shrink-0 w-8 h-8 flex items-center justify-center"
+                  style={{ background: setupData.openRelationship ? '#201C1D' : SETUP_ACCENT }}
                 >
+                  {setupData.openRelationship && (
+                    <StackIcon name="IconCheckmarkSm" size={16} color="#FFFFFF" />
+                  )}
+                </span>
+                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Nicht monogam
-                </button>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={setupData.openRelationship}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
-                  }}
-                  className={`relative z-40 shrink-0 w-12 h-7 ml-4 rounded-none transition-colors`}
-                  style={{ background: setupData.openRelationship ? '#201C1D' : SETUP_FIELD_BG }}
-                >
-                  <span
-                    className={`absolute top-1 left-1 w-5 h-5 rounded-none transition-transform ${setupData.openRelationship ? 'translate-x-5 bg-white' : 'bg-[#201C1D]'}`}
-                  />
-                </button>
-              </div>
+                </span>
+              </button>
+
             </div>
 
             <div className="mt-auto pt-7">
               <ActionRow
-                icon="IconArrowRightAlt"
+                icon="IconArrowRightSm"
                 label="Los geht's"
                 accent={SETUP_ACCENT}
                 onClick={() => swiperRef?.slideNext()}
