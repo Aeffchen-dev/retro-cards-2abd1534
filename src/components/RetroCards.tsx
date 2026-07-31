@@ -1306,7 +1306,7 @@ const RetroCards: React.FC = () => {
                 Darüber möchte ich mit dir sprechen
               </h2>
             </div>
-            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-10 screen-only">
+            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
@@ -1606,7 +1606,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full">Feedback</h2>
             </div>
-            <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-10 screen-only">
+            <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
                 <PostItField
                   key={key}
@@ -1659,7 +1659,7 @@ const RetroCards: React.FC = () => {
                 Das nehmen wir aus der Retro mit
               </h2>
             </div>
-            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-10 screen-only">
+            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
