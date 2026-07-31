@@ -1213,7 +1213,7 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
-            <div className="w-full mt-6">
+            <div className="mt-auto pt-7">
               <ActionRow
                 iconNode={<Camera size={16} />}
                 label="Kamera öffnen"
