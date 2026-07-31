@@ -9,10 +9,13 @@ interface PostItFieldProps {
   readOnly?: boolean;
   minHeight?: number;
   className?: string;
+  /** Colour of the 4px left edge on the label bar (slide pill colour) */
+  accent?: string;
 }
 
 /**
  * Post-it style input with a 32px grey label bar directly above (0px gap).
+ * The label bar hugs its content width and carries a 4px accent edge on the left.
  */
 export const PostItField: React.FC<PostItFieldProps> = ({
   label,
@@ -22,11 +25,15 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   readOnly = false,
   minHeight,
   className = "",
+  accent,
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
-      className="flex items-center h-8 px-3 w-full retro-body-copy text-[#201C1D]"
-      style={{ backgroundColor: "#D9DBDE" }}
+      className="inline-flex self-start items-center h-8 pl-3 pr-3 retro-body-copy text-[#201C1D]"
+      style={{
+        backgroundColor: "hsl(var(--retro-post-it, 220 8% 90%))",
+        borderLeft: accent ? `4px solid ${accent}` : undefined,
+      }}
     >
       {label}
     </div>
