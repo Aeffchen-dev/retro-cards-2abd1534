@@ -1175,18 +1175,18 @@ const RetroCards: React.FC = () => {
                   tabIndex={0}
                   onClick={() => openQuestionEdit(3, i, String(label))}
                   onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuestionEdit(3, i, String(label)); } }}
-                  className="swiper-no-swiping flex items-center gap-0 h-12 w-full cursor-pointer hover:opacity-80 transition-opacity"
+                  className="swiper-no-swiping flex items-center gap-0 h-6 w-full cursor-pointer hover:opacity-80 transition-opacity"
                   style={{ touchAction: 'manipulation' }}
                 >
                   <span
-                    className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
+                    className="shrink-0 w-6 h-6 flex items-center justify-center screen-only"
                     style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length] }}
                     aria-hidden="true"
                   >
-                    <StackIcon name={iconName} size={20} color="#FFFFFF" />
+                    <StackIcon name={iconName} size={14} color="#FFFFFF" />
                   </span>
                   <span
-                    className="retro-body-copy flex flex-1 items-center h-12 px-3 min-w-0"
+                    className="retro-body-copy flex flex-1 items-center h-6 px-2 min-w-0"
                     style={{ backgroundColor: '#E4E6E8', color: '#201C1D', fontFamily: '"Stack Sans Notch", "Figtree", Arial, sans-serif' }}
                   >
                     <span className="truncate">{label}</span>
