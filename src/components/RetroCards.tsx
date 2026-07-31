@@ -1109,22 +1109,13 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                openCamera();
-              }}
-              className="swiper-no-swiping screen-only relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+            <ActionRow
+              icon="IconImage"
+              label="Kamera öffnen"
+              accent={CARD_THEMES[0].pill}
+              onClick={() => openCamera()}
               style={{ marginTop: '28px' }}
-            >
-              <span className="shrink-0 w-12 h-12 flex items-center justify-center" style={{ background: CARD_THEMES[0].pill }}>
-                <StackIcon name="IconImage" size={20} color="#FFFFFF" />
-              </span>
-              <span className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap" style={{ background: '#E4E6E8', color: '#201C1D' }}>
-                Kamera öffnen
-              </span>
-            </button>
+            />
           </div>
 
         );
