@@ -317,7 +317,7 @@ button {
   animation: logoSlideDown 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* Occasional pink/orange glitch on the logo title */
+/* Occasional soft pink/orange chroma pulse on the logo title */
 .logo-glitch {
   position: relative;
   display: inline-block;
@@ -329,32 +329,27 @@ button {
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  clip-path: inset(0 0 60% 0);
+  mix-blend-mode: multiply;
 }
 .logo-glitch::before {
   color: #FF47D1;
-  animation: logo-glitch-a 7s steps(1, end) infinite;
+  animation: logo-chroma-a 8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 .logo-glitch::after {
   color: #FF5E00;
-  clip-path: inset(55% 0 0 0);
-  animation: logo-glitch-b 7s steps(1, end) infinite;
+  animation: logo-chroma-b 8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
-@keyframes logo-glitch-a {
-  0%, 89.9% { opacity: 0; transform: translate(0, 0); }
-  90% { opacity: 1; transform: translate(-3px, -2px); }
-  92% { opacity: 1; transform: translate(4px, 1px); }
-  94% { opacity: 0; }
-  96% { opacity: 1; transform: translate(-2px, 2px); }
-  97.5%, 100% { opacity: 0; transform: translate(0, 0); }
+@keyframes logo-chroma-a {
+  0%, 74% { opacity: 0; transform: translate(0, 0); }
+  80% { opacity: 0.85; transform: translate(-5px, -3px); }
+  86% { opacity: 0.5; transform: translate(-2px, -1px); }
+  93%, 100% { opacity: 0; transform: translate(0, 0); }
 }
-@keyframes logo-glitch-b {
-  0%, 89.9% { opacity: 0; transform: translate(0, 0); }
-  90.5% { opacity: 1; transform: translate(3px, 2px); }
-  92.5% { opacity: 1; transform: translate(-4px, -1px); }
-  94.5% { opacity: 0; }
-  96.5% { opacity: 1; transform: translate(2px, -2px); }
-  98%, 100% { opacity: 0; transform: translate(0, 0); }
+@keyframes logo-chroma-b {
+  0%, 74% { opacity: 0; transform: translate(0, 0); }
+  80% { opacity: 0.85; transform: translate(5px, 3px); }
+  86% { opacity: 0.5; transform: translate(2px, 1px); }
+  93%, 100% { opacity: 0; transform: translate(0, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .logo-glitch::before, .logo-glitch::after { animation: none; }
