@@ -107,6 +107,9 @@ interface MemojisPosition {
 // Stack Overflow brand palette only (stackoverflow.design/brand/color).
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
+// One colour per "last 4 weeks" question — drives the page background in edit mode
+const QUESTION_COLORS = ["#FF5E00", "#F39FFF", "#FFCC00", "#4FC3D9", "#5EBA7D", "#A98BFF"];
+
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
   { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
@@ -371,8 +374,10 @@ const RetroCards: React.FC = () => {
   // Page background: near-black tint of the current slide's label colour, morphing on transition
   useEffect(() => {
     const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
-    if (theme) {
-      const h = theme.pill.replace("#", "");
+    const aq = activeQuestion[currentCard];
+    const source = aq ? QUESTION_COLORS[aq.idx % QUESTION_COLORS.length] : theme?.pill;
+    if (source) {
+      const h = source.replace("#", "");
       const r = parseInt(h.slice(0, 2), 16);
       const g = parseInt(h.slice(2, 4), 16);
       const b = parseInt(h.slice(4, 6), 16);
@@ -384,7 +389,7 @@ const RetroCards: React.FC = () => {
     return () => {
       document.body.style.backgroundColor = "";
     };
-  }, [currentCard]);
+  }, [currentCard, activeQuestion]);
 
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {
@@ -1191,7 +1196,7 @@ const RetroCards: React.FC = () => {
                   </span>
                   <span
                     className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1', borderLeft: '1px solid #201C1D' }}
+                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length], borderLeft: '1px solid #201C1D' }}
                     aria-hidden="true"
                   >
 
@@ -1716,8 +1721,8 @@ const RetroCards: React.FC = () => {
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
-                          className="retro-body text-retro-white/80 mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
-                          style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4 }}
+                          className="retro-body mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
+                          style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4, color: '#201C1D' }}
                         >
                           {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
                         </h2>
