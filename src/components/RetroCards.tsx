@@ -1412,24 +1412,31 @@ const RetroCards: React.FC = () => {
 
       case SLIDE_LOGO:
         return (
-          <div className="relative flex flex-col items-center w-full h-full text-center" style={{ paddingTop: '35%' }}>
+          <div className="relative flex flex-col items-start w-full h-full text-left" style={{ paddingTop: '35%' }}>
             <h1
-              className="retro-title logo-slide-anim flex flex-col items-center"
+              className="retro-title logo-slide-anim flex flex-col items-start"
               style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#FF5E00' }}
             >
-              <span className="logo-glitch" data-text="Retro">
+              <span
+                className="logo-glitch"
+                data-text="Retro"
+                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+              >
                 Retro
               </span>
-              <span className="logo-glitch" data-text="Cards">
+              <span
+                className="logo-glitch"
+                data-text="Cards"
+                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+              >
                 Cards
               </span>
             </h1>
-            <p className="retro-body-copy mt-8 text-center">
+            <p className="retro-body-copy mt-8 text-left">
               Ein interaktiver Check-in
               <br />
               für eine gesunde Beziehung
             </p>
-
             <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '0px' }}>
               <ActionRow
                 icon="IconArrowRight"

@@ -767,43 +767,43 @@ textarea.bg-retro-post-it:focus,
     question-word-settle 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }
 
-/* Isometric block logo title: orange top face, periwinkle front-left, pink right cap */
+/* Pink glitch effect for the logo title */
 .logo-glitch {
   position: relative;
   display: inline-block;
-  color: #E9682A;
-  text-shadow:
-    0.006em 0.003em 0 #EFA6F7,
-    0.012em 0.006em 0 #EFA6F7,
-    0.018em 0.009em 0 #EFA6F7,
-    0.024em 0.012em 0 #EFA6F7,
-    0.030em 0.015em 0 #EFA6F7,
-    0.036em 0.018em 0 #EFA6F7,
-    0.042em 0.021em 0 #EFA6F7,
-    0.048em 0.024em 0 #EFA6F7,
-    0.054em 0.027em 0 #EFA6F7,
-    0.060em 0.030em 0 #EFA6F7,
-    -0.004em 0.008em 0 #A29CFF,
-    -0.008em 0.016em 0 #A29CFF,
-    -0.012em 0.024em 0 #A29CFF,
-    -0.016em 0.032em 0 #A29CFF,
-    -0.020em 0.040em 0 #A29CFF,
-    -0.024em 0.048em 0 #A29CFF,
-    -0.028em 0.056em 0 #A29CFF,
-    -0.032em 0.064em 0 #A29CFF,
-    -0.036em 0.072em 0 #A29CFF,
-    -0.040em 0.080em 0 #A29CFF,
-    -0.044em 0.088em 0 #A29CFF,
-    -0.048em 0.096em 0 #A29CFF,
-    -0.052em 0.104em 0 #A29CFF,
-    -0.056em 0.112em 0 #A29CFF,
-    -0.060em 0.120em 0 #A29CFF;
 }
-
-
-
-
-
+.logo-glitch::before,
+.logo-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  padding: inherit;
+  pointer-events: none;
+}
+.logo-glitch::before {
+  color: #F39FFF;
+  animation: logoGlitchA 2.6s infinite steps(2, end);
+}
+.logo-glitch::after {
+  color: #FF47D1;
+  animation: logoGlitchB 3.1s infinite steps(2, end);
+}
+@keyframes logoGlitchA {
+  0%, 92%, 100% { transform: translate(0, 0); opacity: 0; }
+  93% { transform: translate(-3px, 1px); opacity: 0.85; }
+  95% { transform: translate(2px, -2px); opacity: 0.6; }
+  97% { transform: translate(-1px, 2px); opacity: 0.8; }
+}
+@keyframes logoGlitchB {
+  0%, 88%, 100% { transform: translate(0, 0); opacity: 0; }
+  89% { transform: translate(3px, -1px); opacity: 0.7; }
+  92% { transform: translate(-2px, 2px); opacity: 0.5; }
+  94% { transform: translate(1px, -2px); opacity: 0.75; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-glitch::before,
+  .logo-glitch::after { animation: none; opacity: 0; }
+}
 
 /* Subtle ambient drift for the background graphic */
 @keyframes bgDrift {
