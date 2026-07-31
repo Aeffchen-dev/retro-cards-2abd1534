@@ -1794,10 +1794,9 @@ const RetroCards: React.FC = () => {
                   ? currentQuestion.split(" ").map((word, i) => (
                       <span
                         key={`${word}-${i}`}
-                        className="inline-block opacity-0 animate-fade-in"
+                        className="question-word"
                         style={{
                           animationDelay: `${i * 60}ms`,
-                          animationFillMode: "forwards",
                           color: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
                         }}
                       >
