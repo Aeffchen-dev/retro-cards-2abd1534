@@ -27,24 +27,28 @@ const BASE_CLASS =
  * Shared CTA row: coloured icon tile on the left + grey label field.
  * Single source of truth for every call-to-action row in the app.
  */
+const GREY_TILE = "#E4E6E8";
+
 const ActionRow: React.FC<ActionRowProps> = ({
   icon,
   label,
   accent,
-  iconColor = "#FFFFFF",
+  iconColor,
   onClick,
   href,
   target,
   className = "",
   style,
 }) => {
+  const isGreyTile = accent.trim().toUpperCase() === GREY_TILE;
+  const resolvedIconColor = iconColor ?? (isGreyTile ? "#201C1D" : "#FFFFFF");
   const content = (
     <>
       <span
         className="shrink-0 w-8 h-8 flex items-center justify-center"
         style={{ background: accent }}
       >
-        <StackIcon name={icon} size={16} color={iconColor} />
+        <StackIcon name={icon} size={16} color={resolvedIconColor} />
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
