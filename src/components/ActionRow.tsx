@@ -28,6 +28,21 @@ export interface ActionRowProps {
   style?: React.CSSProperties;
 }
 
+/** Relative luminance based contrast pick: dark text on light bg, white on dark. */
+const contrastOn = (bg?: string): string => {
+  if (!bg) return "#201C1D";
+  const hex = bg.replace("#", "").trim();
+  const full = hex.length === 3 ? hex.split("").map((c) => c + c).join("") : hex;
+  if (full.length !== 6) return "#201C1D";
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16) / 255);
+  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+  const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  // contrast vs white vs vs off-black
+  const contrastWhite = 1.05 / (L + 0.05);
+  const contrastDark = (L + 0.05) / 0.0176;
+  return contrastWhite > contrastDark ? "#FFFFFF" : "#201C1D";
+};
+
 const BASE_CLASS =
   "swiper-no-swiping screen-only relative z-40 w-auto max-w-full self-start inline-flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90";
 
@@ -53,7 +68,10 @@ const ActionRow: React.FC<ActionRowProps> = ({
   className = "",
   style,
 }) => {
-  const resolvedIconColor = outlined ? (iconColor ?? "#201C1D") : (iconColor ?? "#201C1D");
+  const resolvedIconColor = outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
+  const resolvedLabelColor = outlined
+    ? (labelColor ?? "#201C1D")
+    : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
   const border = outlined ? "1px solid #201C1D" : undefined;
   const content = (
     <>
@@ -67,7 +85,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
         style={{
           background: outlined ? "transparent" : (fieldBg ?? "#E4E6E8"),
-          color: labelColor ?? "#201C1D",
+          color: resolvedLabelColor,
           border,
           borderLeft: outlined ? "none" : undefined,
         }}
