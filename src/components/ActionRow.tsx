@@ -37,6 +37,7 @@ const GREY_TILE = "#E4E6E8";
 
 const ActionRow: React.FC<ActionRowProps> = ({
   icon,
+  iconNode,
   label,
   accent,
   iconColor,
@@ -53,9 +54,9 @@ const ActionRow: React.FC<ActionRowProps> = ({
     <>
       <span
         className="shrink-0 w-8 h-8 flex items-center justify-center"
-        style={{ background: accent }}
+        style={{ background: accent, color: resolvedIconColor }}
       >
-        <StackIcon name={icon} size={16} color={resolvedIconColor} />
+        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} /> : null)}
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
