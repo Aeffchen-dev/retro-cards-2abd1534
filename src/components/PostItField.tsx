@@ -31,7 +31,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
     <div
       className="inline-flex self-start items-center h-8 pl-3 pr-3 retro-body-copy text-[#201C1D]"
       style={{
-        backgroundColor: "hsl(var(--retro-post-it, 220 8% 90%))",
+        backgroundColor: "var(--retro-post-it, #E4E6E8)",
         borderLeft: accent ? `4px solid ${accent}` : undefined,
       }}
     >
