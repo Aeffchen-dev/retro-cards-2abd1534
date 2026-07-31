@@ -751,14 +751,13 @@ textarea.bg-retro-post-it:focus,
 
 /* Word-by-word reveal for the random question headline */
 @keyframes question-word-in {
-  0% { opacity: 0; transform: translateY(14px) scale(1.06); filter: blur(6px); color: var(--reveal-color, #201C1D); }
-  45% { opacity: 1; transform: translateY(0) scale(1.02); filter: blur(0); color: var(--reveal-color, #201C1D); }
-  70% { transform: scale(1); color: var(--reveal-color, #201C1D); }
-  100% { opacity: 1; transform: scale(1); filter: blur(0); color: #201C1D; }
+  from { opacity: 0; transform: translateY(10px); color: var(--reveal-color, #201C1D); }
+  60% { opacity: 1; transform: translateY(0); color: var(--reveal-color, #201C1D); }
+  to { opacity: 1; transform: translateY(0); color: #201C1D; }
 }
 .question-word {
   display: inline-block;
   opacity: 0;
   color: var(--reveal-color, #201C1D);
-  animation: question-word-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: question-word-in 0.9s ease-out forwards;
 }
