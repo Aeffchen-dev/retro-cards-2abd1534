@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
+import PostItField from "@/components/PostItField";
 import { Camera } from "lucide-react";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -56,6 +57,12 @@ interface SetupData {
   openRelationship: boolean;
   extraPartners: ExtraPartner[];
 }
+
+const REFLECTION_FIELDS = [
+  ["nice", "Das fand ich schön", "z. B. unser spontaner Abend am Fluss letzte Woche …"],
+  ["thanks", "Dafür möchte ich Danke sagen", "z. B. dass du dich um alles gekümmert hast, als ich krank war …"],
+  ["idea", "Das wünsche ich mir", "z. B. mehr gemeinsame Zeit ohne Handy …"],
+] as const;
 
 const NAME1_PLACEHOLDER = "Dein Name";
 const NAME2_PLACEHOLDER = "Name deines Partners";
@@ -1228,26 +1235,29 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-10 screen-only">
               {persons.map((person, idx) => (
-                <textarea
+                <PostItField
                   key={person.key}
+                  label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
+                  placeholder="z. B. Urlaubsplanung, Aufgaben im Haushalt, Zeit zu zweit …"
                   value={postItTexts[person.key] || ""}
-                  onChange={(e) =>
-                    setPostItTexts({ ...postItTexts, [person.key]: e.target.value })
-                  }
-                  className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                  style={{ borderRadius: "0px" } as React.CSSProperties}
-                  placeholder={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
+                  onChange={(v) => setPostItTexts({ ...postItTexts, [person.key]: v })}
                 />
               ))}
             </div>
             {/* Print-only: post-it notes like takeaways with line breaks */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base min-h-[120px] whitespace-pre-wrap">
-                  {postItTexts[person.key] || personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                </div>
+                <PostItField
+                  key={person.key}
+                  readOnly
+                  minHeight={120}
+                  label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
+                  placeholder="z. B. Urlaubsplanung, Aufgaben im Haushalt, Zeit zu zweit …"
+                  value={postItTexts[person.key] || ""}
+                />
               ))}
             </div>
+
           </div>
         );
 
@@ -1493,33 +1503,30 @@ const RetroCards: React.FC = () => {
               <h2 className="retro-heading w-full">Feedback</h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-10 screen-only">
-              {([
-                ["nice", "Das fand ich schön"],
-                ["thanks", "Dafür möchte ich Danke sagen"],
-                ["idea", "Das wünsche ich mir"],
-              ] as const).map(([key, placeholder]) => (
-                <textarea
+              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+                <PostItField
                   key={key}
-                  value={reflectionTexts[key] || ""}
-                  onChange={(e) => setReflectionTexts({ ...reflectionTexts, [key]: e.target.value })}
-                  className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                  style={{ borderRadius: "0px" } as React.CSSProperties}
+                  label={label}
                   placeholder={placeholder}
+                  value={reflectionTexts[key] || ""}
+                  onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />
               ))}
             </div>
             {/* Print-only */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-4 mt-10">
-              {([
-                ["nice", "Das fand ich schön"],
-                ["thanks", "Dafür möchte ich Danke sagen"],
-                ["idea", "Das wünsche ich mir"],
-              ] as const).map(([key, placeholder]) => (
-                <div key={key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base min-h-[100px] whitespace-pre-wrap">
-                  {reflectionTexts[key] || placeholder}
-                </div>
+              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+                <PostItField
+                  key={key}
+                  readOnly
+                  minHeight={100}
+                  label={label}
+                  placeholder={placeholder}
+                  value={reflectionTexts[key] || ""}
+                />
               ))}
             </div>
+
           </div>
         );
 
@@ -1548,26 +1555,29 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-10 screen-only">
               {persons.map((person, idx) => (
-                <textarea
+                <PostItField
                   key={person.key}
+                  label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
                   value={takeawayTexts[person.key] || ""}
-                  onChange={(e) =>
-                    setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
-                  }
-                  className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                  style={{ borderRadius: "0px" } as React.CSSProperties}
-                  placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
                 />
               ))}
             </div>
             {/* Print-only: takeaway notes with line breaks per person */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base min-h-[120px] whitespace-pre-wrap">
-                  {takeawayTexts[person.key] || personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                </div>
+                <PostItField
+                  key={person.key}
+                  readOnly
+                  minHeight={120}
+                  label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
+                  value={takeawayTexts[person.key] || ""}
+                />
               ))}
             </div>
+
           </div>
         );
 
@@ -1752,19 +1762,19 @@ const RetroCards: React.FC = () => {
                             const aq = activeQuestion[slideId];
                             const noteKey = aq ? `q${aq.idx}-${person.key}` : person.key;
                             return (
-                              <textarea
+                              <PostItField
                                 key={noteKey}
+                                label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                                placeholder="z. B. was uns dazu gerade eingefallen ist …"
                                 value={editModeNotes[slideId]?.[noteKey] || ""}
-                                onChange={(e) =>
+                                onChange={(v) =>
                                   setEditModeNotes(prev => ({
                                     ...prev,
-                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: e.target.value }
+                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: v }
                                   }))
                                 }
-                                className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                                style={{ borderRadius: "0px" }}
-                                placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                               />
+
                             );
                           })}
                         </div>
