@@ -767,29 +767,21 @@ textarea.bg-retro-post-it:focus,
     question-word-settle 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }
 
-/* Color-swap flicker for the logo title */
+/* 3D extruded logo title with orange / pink / blue layered sides */
 .logo-glitch {
   position: relative;
   display: inline-block;
-  animation: logoColorSwap 4.2s infinite steps(1, end);
+  color: #201C1D;
+  text-shadow:
+    1px 1px 0 #FF5E00,
+    2px 2px 0 #FF5E00,
+    3px 3px 0 #FF47D1,
+    4px 4px 0 #FF47D1,
+    5px 5px 0 #2B6DEF,
+    6px 6px 0 #2B6DEF,
+    7px 7px 0 rgba(0, 0, 0, 0.18);
 }
-.logo-glitch:nth-of-type(2) {
-  animation-duration: 5.3s;
-  animation-delay: -1.7s;
-}
-@keyframes logoColorSwap {
-  0%, 46%, 100% { color: #FF5E00; }
-  47% { color: #FF47D1; }
-  48.5% { color: #FF5E00; }
-  62% { color: #0FB3A6; }
-  63.5% { color: #FF5E00; }
-  85% { color: #FFC02B; }
-  86% { color: #FF47D1; }
-  87.5% { color: #FF5E00; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .logo-glitch { animation: none; }
-}
+
 
 
 /* Subtle ambient drift for the background graphic */
