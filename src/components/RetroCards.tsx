@@ -1740,20 +1740,18 @@ const RetroCards: React.FC = () => {
                       </div>
                     ) : renderCard(slideId)}
 
-                    {/* Edit/Close button - top right with 48x48 touch target */}
+                    {/* Edit/Close action row - bottom right */}
                     {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
-                      <button
-                        onClick={() => toggleEditMode(slideId)}
-                        className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
-                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: editModeSlides[slideId] ? '#E4E6E8' : 'transparent', borderTop: editModeSlides[slideId] ? 'none' : '1px solid #201C1D', borderLeft: editModeSlides[slideId] ? 'none' : '1px solid #201C1D' }}
-                      >
-                        {editModeSlides[slideId] ? (
-                          <StackIcon name="IconClear" size={28} color="#201C1D" />
-                        ) : (
-                          <svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true" fill="#201C1D"><path d="m2.61 1.7.25.07L4.9 3.8l-.05-.01 3.4 3.4a2.25 2.25 0 0 1 3.23 2.03 2.26 2.26 0 1 1-4.3-.97L3.8 4.85l1.9 7.88 4.8.96 3.2-3.2-.96-4.8L7.7 4.48 5.67 2.45l7.88 1.9.46.1.1.48.85 4.28.3-.3 3.32 3.33-4.21 4.2-1.06-1.05 3.15-3.15-1.2-1.2-4.22 4.21 1.2 1.2 1.06 1.06-1.06 1.07-3.32-3.33.29-.29-4.28-.85-.47-.1-.11-.46L1.7 2.6l-.29-1.19zm6.61 6.76a.76.76 0 1 0 0 1.52.76.76 0 0 0 0-1.52"/></svg>
-                        )}
-                      </button>
+                      <div className="absolute right-0 bottom-0 z-40 screen-only">
+                        <ActionRow
+                          icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
+                          label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
+                          accent={CARD_THEMES[slideId % CARD_THEMES.length].pill}
+                          onClick={() => toggleEditMode(slideId)}
+                        />
+                      </div>
                     )}
+
 
 
                     {/* Left navigation zone (32px wide) */}
