@@ -256,15 +256,19 @@ button {
 
 /* Pill label container — themed swatch + white label */
 .retro-pill {
-  --pill-swatch: 28px;
+  --pill-swatch: 32px;
   --pill-dot: 10px;
   position: relative;
-  padding: 3px 8px 3px calc(var(--pill-swatch) + 6px);
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px 0 calc(var(--pill-swatch) + 6px);
   background: #FFFFFF;
   border: 0 !important;
   border-radius: 0 !important;
   overflow: hidden;
 }
+
 .retro-pill .retro-label {
   color: #201C1D !important;
   font-weight: 500;
