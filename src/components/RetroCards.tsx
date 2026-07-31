@@ -607,6 +607,7 @@ const RetroCards: React.FC = () => {
     if (allQuestions.length === 0) return;
     const randomIndex = Math.floor(Math.random() * allQuestions.length);
     setCurrentQuestion(allQuestions[randomIndex]);
+    setQuestionComboIdx(Math.floor(Math.random() * LABEL_COMBOS.length));
   }, [allQuestions]);
 
   // Handle mobile Safari viewport height and card dimensions - debounced
