@@ -229,6 +229,8 @@ const RetroCards: React.FC = () => {
 
   // State for takeaway post-it notes (Erkenntnisse) — keyed by person key
   const [takeawayTexts, setTakeawayTexts] = useState<Record<string, string>>({});
+  // Random label color combo for the Questions slide (changes with each question)
+  const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * LABEL_COMBOS.length));
 
   // State for random questions
   const [currentQuestion, setCurrentQuestion] = useState("");
