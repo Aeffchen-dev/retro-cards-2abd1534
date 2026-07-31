@@ -1143,7 +1143,8 @@ const RetroCards: React.FC = () => {
                 icon="IconInfo"
                 label="Platziert eure Memojis auf der Skala"
                 accent="#E4E6E8"
-                iconColor="#201C1D"
+                iconColor="#8A8A8A"
+                labelColor="#8A8A8A"
                 onClick={() => toggleEditMode(cardId)}
               />
             </div>
