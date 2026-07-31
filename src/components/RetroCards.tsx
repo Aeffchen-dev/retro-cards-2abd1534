@@ -162,7 +162,7 @@ const QUESTION_COMBOS: { icon: string; square: string }[] = [
   { icon: BRAND.offBlack, square: BRAND.stackOrange },
   { icon: BRAND.darkPink, square: BRAND.pink },
   { icon: BRAND.offBlack, square: BRAND.yellow },
-  { icon: BRAND.offWhite, square: BRAND.offBlack },
+  
   { icon: BRAND.blue, square: BRAND.lightBlue },
 ];
 
