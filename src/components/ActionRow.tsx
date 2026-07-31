@@ -14,7 +14,7 @@ export interface ActionRowProps {
   iconColor?: string;
   /** Label text colour, defaults to #201C1D */
   labelColor?: string;
-  /** Background of the label field, defaults to #E4E6E8 */
+  /** Background of the label field, defaults to the accent (slide pill) colour */
   fieldBg?: string;
   /** Outlined style: no fills, black borders */
   outlined?: boolean;
@@ -32,10 +32,11 @@ const BASE_CLASS =
   "swiper-no-swiping screen-only relative z-40 w-auto max-w-full self-start inline-flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90";
 
 /**
- * Shared CTA row: coloured icon tile on the left + grey label field.
+ * Shared CTA row: coloured icon tile on the left + label field in the slide's pill colour.
  * Single source of truth for every call-to-action row in the app.
  */
-const GREY_TILE = "#E4E6E8";
+
+
 
 const ActionRow: React.FC<ActionRowProps> = ({
   icon,
@@ -65,7 +66,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
         style={{
-          background: outlined ? "transparent" : (fieldBg ?? GREY_TILE),
+          background: outlined ? "transparent" : (fieldBg ?? accent),
           color: labelColor ?? "#201C1D",
           border,
           borderLeft: outlined ? "none" : undefined,
