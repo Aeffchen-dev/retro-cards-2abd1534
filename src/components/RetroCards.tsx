@@ -336,6 +336,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2) return BRAND.stackOrange;
       // Last 4 weeks: swapped green combo
       if (slideId === 3) return BRAND.green;
+      // Feedback: pink
+      if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
