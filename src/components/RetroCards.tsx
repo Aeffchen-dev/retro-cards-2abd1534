@@ -1015,7 +1015,7 @@ const RetroCards: React.FC = () => {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navigateCard]);
+  }, [navigateCard, swiperRef, slides.length]);
 
 
   const clearAllUserData = useCallback(() => {
