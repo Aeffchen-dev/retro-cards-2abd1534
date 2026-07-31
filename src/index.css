@@ -192,15 +192,28 @@
 }
 
 /* Retro Cards specific styles */
-.retro-title {
-  font-family: "Stack Sans Text", "Figtree", Arial, sans-serif;
-  font-weight: 500;
+/* ---- Unified type scale ----
+   Display  : Stack Sans Notch 400 / 38.4px  (.retro-title, .retro-heading)
+   Body     : Figtree 500 / 16px             (.retro-label, .retro-body, .retro-body-copy, button)
+   Small    : Figtree 500 / 12px             (.retro-small)                                     */
+
+.retro-title,
+.retro-heading {
+  font-family: "Stack Sans Notch", "Stack Sans Notch Local", "Stack Sans Text", "Figtree", Arial, sans-serif;
+  font-weight: 400;
   font-style: normal;
   font-feature-settings: "ss02";
-  font-size: 32px;
+  font-size: 38.4px;
   line-height: 1.05;
   letter-spacing: -0.02em;
+}
+
+.retro-title {
   color: var(--retro-body-bg, var(--retro-white));
+}
+
+.retro-heading {
+  color: #201C1D;
 }
 
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
@@ -208,18 +221,9 @@
   --retro-white-rgb: 238 238 238;
 }
 
-
-.retro-label {
-  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
-  font-weight: 500;
-  font-feature-settings: "ss01", "ss02", "cv11";
-  font-size: 16px;
-  line-height: 22px;
-  letter-spacing: 0.005em;
-  color: var(--retro-body-bg, var(--retro-white));
-}
-
-/* Buttons share the pill-label typography */
+.retro-label,
+.retro-body,
+.retro-body-copy,
 button {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
@@ -229,27 +233,25 @@ button {
   letter-spacing: 0.005em;
 }
 
-.retro-heading {
-  font-family: "Stack Sans Text", "Figtree", Arial, sans-serif;
-  font-weight: 500;
-  font-style: normal;
-  font-feature-settings: "ss02";
-  font-size: 38.4px;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: #201C1D;
+.retro-label {
+  color: var(--retro-body-bg, var(--retro-white));
 }
 
 .retro-body,
 .retro-body-copy {
+  color: #201C1D;
+}
+
+.retro-small {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 12px;
+  line-height: 16px;
   letter-spacing: 0.005em;
   color: #201C1D;
 }
+
 
 /* Hide in-card pills — pill is now rendered above the card */
 .retro-card-container .retro-pill { display: none !important; }
