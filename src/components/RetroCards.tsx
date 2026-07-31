@@ -3,6 +3,7 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import StarRating from "@/components/StarRating";
+import { Camera } from "lucide-react";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
