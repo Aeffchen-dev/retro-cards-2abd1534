@@ -1705,19 +1705,19 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconDownload"
                 label="Ergebnisse sichern"
-                accent={BRAND.turquoise}
+                accent={LABEL_COMBOS[2].icon}
                 iconColor="#FFFFFF"
-                fieldBg={BRAND.turquoise}
-                labelColor="#FFFFFF"
+                fieldBg="#E4E6E8"
+                labelColor="#201C1D"
                 onClick={() => window.print()}
               />
               <ActionRow
                 icon="IconTrash"
                 label="Meine Einträge löschen"
-                accent={BRAND.turquoise}
+                accent={LABEL_COMBOS[2].icon}
                 iconColor="#FFFFFF"
-                fieldBg={BRAND.turquoise}
-                labelColor="#FFFFFF"
+                fieldBg="#E4E6E8"
+                labelColor="#201C1D"
                 onClick={() => clearAllUserData()}
               />
             </div>
