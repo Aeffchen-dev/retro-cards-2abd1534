@@ -1291,7 +1291,8 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconArrowRightSm"
                 label="Swipe um weiter zu navigieren"
-                accent={pillColorOf(SLIDE_LOGO)}
+                accent="transparent"
+                outlined
                 onClick={() => swiperRef?.slideNext()}
               />
             </div>

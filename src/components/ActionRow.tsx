@@ -16,6 +16,8 @@ export interface ActionRowProps {
   labelColor?: string;
   /** Background of the label field, defaults to #E4E6E8 */
   fieldBg?: string;
+  /** Outlined style: no fills, black borders */
+  outlined?: boolean;
   /** Click handler (ignored when `href` is set and no handler is needed) */
   onClick?: (e: React.MouseEvent) => void;
   /** Render as a link instead of a button */
@@ -43,24 +45,31 @@ const ActionRow: React.FC<ActionRowProps> = ({
   iconColor,
   labelColor,
   fieldBg,
+  outlined = false,
   onClick,
   href,
   target,
   className = "",
   style,
 }) => {
-  const resolvedIconColor = iconColor ?? "#201C1D";
+  const resolvedIconColor = outlined ? (iconColor ?? "#201C1D") : (iconColor ?? "#201C1D");
+  const border = outlined ? "1px solid #201C1D" : undefined;
   const content = (
     <>
       <span
         className="shrink-0 w-8 h-8 flex items-center justify-center"
-        style={{ background: accent, color: resolvedIconColor }}
+        style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
         {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} /> : null)}
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
-        style={{ background: fieldBg ?? GREY_TILE, color: labelColor ?? "#201C1D" }}
+        style={{
+          background: outlined ? "transparent" : (fieldBg ?? GREY_TILE),
+          color: labelColor ?? "#201C1D",
+          border,
+          borderLeft: outlined ? "none" : undefined,
+        }}
       >
 
 
