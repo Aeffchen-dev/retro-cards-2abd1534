@@ -43,8 +43,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   className = "",
   style,
 }) => {
-  const isGreyTile = accent.trim().toUpperCase() === GREY_TILE;
-  const resolvedIconColor = iconColor ?? (isGreyTile ? "#201C1D" : "#FFFFFF");
+  const resolvedIconColor = iconColor ?? "#201C1D";
   const content = (
     <>
       <span
