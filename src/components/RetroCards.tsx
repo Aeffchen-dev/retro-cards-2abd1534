@@ -503,15 +503,15 @@ const RetroCards: React.FC = () => {
     };
   }, [currentCard, activeQuestion]);
 
-  // Peek effect: neighbours sit at 80% scale, rotated 5deg inwards.
+  // Peek effect: neighbours sit at 70% scale, rotated 2deg inwards.
   const handleSwiperProgress = useCallback((swiper: SwiperType) => {
     swiper.slides.forEach((slideEl: HTMLElement) => {
       const p = Math.max(-1, Math.min(1, (slideEl as any).progress || 0));
       const t = Math.abs(p);
-      const scale = 1 - 0.2 * t;
-      const rotate = 5 * p;
+      const scale = 1 - 0.3 * t;
+      const rotate = 2 * p;
       slideEl.style.transformOrigin = "center center";
-      slideEl.style.transform = `translateX(${10 * p}%) rotate(${rotate}deg) scale(${scale})`;
+      slideEl.style.transform = `translateX(${15 * p}%) rotate(${rotate}deg) scale(${scale})`;
       slideEl.style.zIndex = `${Math.round((1 - t) * 10)}`;
     });
   }, []);
@@ -1878,7 +1878,7 @@ const RetroCards: React.FC = () => {
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
             spaceBetween={16}
-            slidesPerView={1 / 0.8}
+            slidesPerView={1 / 0.9}
             centeredSlides={true}
             watchSlidesProgress={true}
             onProgress={handleSwiperProgress}
