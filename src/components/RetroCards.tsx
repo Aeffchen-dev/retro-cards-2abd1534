@@ -1442,8 +1442,8 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = pillColorOf(SLIDE_SETUP); // tag/label colour of this slide
-        const SETUP_ON_ACCENT = "#201C1D"; // dark text/icons on the accent
+        const SETUP_ACCENT = BRAND.blue; // label colour of this slide
+        const SETUP_ON_ACCENT = BRAND.white; // light text/icons on the accent
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
@@ -1618,7 +1618,7 @@ const RetroCards: React.FC = () => {
                   <StackIcon
                     name="IconCheckmark"
                     size={16}
-                    color={setupData.openRelationship ? '#201C1D' : 'rgba(32,28,29,0.3)'}
+                    color={setupData.openRelationship ? BRAND.white : 'rgba(255,255,255,0.4)'}
                   />
                 </span>
 
