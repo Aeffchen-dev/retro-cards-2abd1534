@@ -1196,7 +1196,7 @@ const RetroCards: React.FC = () => {
                   </span>
                   <span
                     className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: i % 2 === 0 ? '#6EC5B8' : '#C6E6C1', borderLeft: '1px solid #201C1D' }}
+                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length], borderLeft: '1px solid #201C1D' }}
                     aria-hidden="true"
                   >
 
