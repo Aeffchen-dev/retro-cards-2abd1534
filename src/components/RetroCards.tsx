@@ -2072,7 +2072,7 @@ const RetroCards: React.FC = () => {
       </div>
 
       {/* Pagination dots (centered) + counter at card edge */}
-      <div className="relative w-full px-5 pb-4 min-h-[22px] flex items-center screen-only">
+      <div className="relative w-full px-2 pb-4 min-h-[22px] flex items-center screen-only">
         <div className="flex-1 flex items-center justify-center gap-1.5 flex-wrap">
           {slides.map((slideId, i) => (
             <button
