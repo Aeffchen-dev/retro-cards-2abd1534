@@ -1191,30 +1191,16 @@ const RetroCards: React.FC = () => {
                 ["IconSpeechBubbleQuestion", "Was beschäftigt mich grade?"],
                 ["IconSpeechBubble", "Die letzten 4 Wochen in einem Wort"],
               ] as const).map(([iconName, label], i) => (
-                <div
+                <ActionRow
                   key={i}
-                  role="button"
-                  tabIndex={0}
+                  icon={iconName}
+                  label={String(label)}
+                  accent={pillColorOf(3)}
+                  className="question-font"
                   onClick={() => openQuestionEdit(3, i, String(label))}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openQuestionEdit(3, i, String(label)); } }}
-                  className="swiper-no-swiping flex items-center gap-0 h-8 w-full cursor-pointer hover:opacity-80 transition-opacity"
-                  style={{ touchAction: 'manipulation' }}
-                >
-                  <span
-                    className="shrink-0 w-8 h-8 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: pillColorOf(3) }}
-                    aria-hidden="true"
-                  >
-                    <StackIcon name={iconName} size={16} color="#FFFFFF" />
-                  </span>
-                  <span
-                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-3 min-w-0"
-                    style={{ backgroundColor: '#E9ECEF', color: '#212529' }}
-                  >
-                    <span className="truncate">{label}</span>
-                  </span>
-                </div>
+                />
               ))}
+
             </div>
 
 
