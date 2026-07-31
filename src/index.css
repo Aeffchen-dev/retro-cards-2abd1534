@@ -772,24 +772,32 @@ textarea.bg-retro-post-it:focus,
   position: relative;
   display: inline-block;
   color: #E9682A;
-  transform: skewY(-6deg);
   text-shadow:
-    /* right end cap: pink */
-    0.02em 0.01em 0 #EFA6F7,
-    0.04em 0.02em 0 #EFA6F7,
-    0.06em 0.03em 0 #EFA6F7,
-    0.08em 0.04em 0 #EFA6F7,
-    0.10em 0.05em 0 #EFA6F7,
-    0.12em 0.06em 0 #EFA6F7,
-    /* front-left face: periwinkle */
-    -0.01em 0.03em 0 #A29CFF,
-    -0.02em 0.06em 0 #A29CFF,
-    -0.03em 0.09em 0 #A29CFF,
-    -0.04em 0.12em 0 #A29CFF,
-    -0.05em 0.15em 0 #A29CFF,
-    -0.06em 0.18em 0 #A29CFF,
-    -0.07em 0.21em 0 #A29CFF,
-    -0.08em 0.24em 0 #A29CFF;
+    0.006em 0.003em 0 #EFA6F7,
+    0.012em 0.006em 0 #EFA6F7,
+    0.018em 0.009em 0 #EFA6F7,
+    0.024em 0.012em 0 #EFA6F7,
+    0.030em 0.015em 0 #EFA6F7,
+    0.036em 0.018em 0 #EFA6F7,
+    0.042em 0.021em 0 #EFA6F7,
+    0.048em 0.024em 0 #EFA6F7,
+    0.054em 0.027em 0 #EFA6F7,
+    0.060em 0.030em 0 #EFA6F7,
+    -0.004em 0.008em 0 #A29CFF,
+    -0.008em 0.016em 0 #A29CFF,
+    -0.012em 0.024em 0 #A29CFF,
+    -0.016em 0.032em 0 #A29CFF,
+    -0.020em 0.040em 0 #A29CFF,
+    -0.024em 0.048em 0 #A29CFF,
+    -0.028em 0.056em 0 #A29CFF,
+    -0.032em 0.064em 0 #A29CFF,
+    -0.036em 0.072em 0 #A29CFF,
+    -0.040em 0.080em 0 #A29CFF,
+    -0.044em 0.088em 0 #A29CFF,
+    -0.048em 0.096em 0 #A29CFF,
+    -0.052em 0.104em 0 #A29CFF,
+    -0.056em 0.112em 0 #A29CFF,
+    -0.060em 0.120em 0 #A29CFF;
 }
 
 
