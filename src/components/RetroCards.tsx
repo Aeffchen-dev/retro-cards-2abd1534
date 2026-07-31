@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
+import StarRating from "@/components/StarRating";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -240,6 +241,8 @@ const RetroCards: React.FC = () => {
 
   // State for takeaway post-it notes (Erkenntnisse) — keyed by person key
   const [takeawayTexts, setTakeawayTexts] = useState<Record<string, string>>({});
+  // Star ratings for the Intimacy slide — keyed by person key
+  const [intimacyRatings, setIntimacyRatings] = useState<Record<string, number>>({});
   // Random label color combo for the Questions slide (changes with each question)
   const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * QUESTION_COMBOS.length));
 
@@ -386,6 +389,8 @@ const RetroCards: React.FC = () => {
     const savedPostItTexts = loadFromStorage<any>(STORAGE_KEYS.POST_IT_TEXTS);
     const savedTakeawayTexts = loadFromStorage<any>(STORAGE_KEYS.TAKEAWAY_TEXTS);
     const savedQuestion = loadFromStorage<string>(STORAGE_KEYS.CURRENT_QUESTION);
+    const savedIntimacyRatings = loadFromStorage<Record<string, number>>(STORAGE_KEYS.INTIMACY_RATINGS);
+    if (savedIntimacyRatings) setIntimacyRatings(savedIntimacyRatings);
 
     // Migrate legacy {niklas, jana} shape to keyed record
     const migratePostIts = (v: any): Record<string, string> => {
@@ -428,6 +433,11 @@ const RetroCards: React.FC = () => {
     if (isInitialMount.current) return;
     saveToStorage(STORAGE_KEYS.TAKEAWAY_TEXTS, takeawayTexts);
   }, [takeawayTexts]);
+
+  useEffect(() => {
+    if (isInitialMount.current) return;
+    saveToStorage(STORAGE_KEYS.INTIMACY_RATINGS, intimacyRatings);
+  }, [intimacyRatings]);
 
   useEffect(() => {
     if (isInitialMount.current) return;
@@ -1647,6 +1657,22 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full">Sind wir uns körperlich nah?</h2>
+              <div className="flex flex-col items-start gap-4 w-full">
+                {persons.map((person, idx) => (
+                  <div key={person.key} className="flex flex-col items-start gap-1 w-full">
+                    <span className="retro-body-copy">
+                      {personPlaceholder(person, idx, "Bewertung", "Meine Bewertung", "Bewertung meines Partners")}
+                    </span>
+                    <StarRating
+                      value={intimacyRatings[person.key] || 0}
+                      starColor="#201C1D"
+                      onChange={(v) =>
+                        setIntimacyRatings({ ...intimacyRatings, [person.key]: v })
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         );
