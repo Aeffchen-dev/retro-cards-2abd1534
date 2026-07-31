@@ -269,6 +269,16 @@ const RetroCards: React.FC = () => {
 
   const totalCards = slides.length;
 
+  // The pill/label colour of a slide is derived from its POSITION in the slides
+  // array (same as the rendered pill), not from its slide id.
+  const pillColorOf = useCallback(
+    (slideId: number) => {
+      const idx = slides.indexOf(slideId);
+      return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
+    },
+    [slides]
+  );
+
   // Track if initial load is complete to avoid saving on mount
   const isInitialMount = useRef(true);
 
@@ -1080,7 +1090,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconImage"
                 label="Kamera öffnen"
-                accent={CARD_THEMES[0].pill}
+                accent={pillColorOf(0)}
                 onClick={() => openCamera()}
               />
             </div>
@@ -1270,7 +1280,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconArrowRightSm"
                 label="Swipe um weiter zu navigieren"
-                accent={CARD_THEMES[SLIDE_LOGO % CARD_THEMES.length].pill}
+                accent={pillColorOf(SLIDE_LOGO)}
                 onClick={() => swiperRef?.slideNext()}
               />
             </div>
@@ -1297,7 +1307,7 @@ const RetroCards: React.FC = () => {
         );
 
       case SLIDE_SETUP: {
-        const SETUP_ACCENT = CARD_THEMES[SLIDE_SETUP % CARD_THEMES.length].pill; // tag/label colour of this slide
+        const SETUP_ACCENT = pillColorOf(SLIDE_SETUP); // tag/label colour of this slide
         const SETUP_ON_ACCENT = "#201C1D"; // dark text/icons on the accent
         const SETUP_TEXT = "#201C1D"; // dark text on white slide bg
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
@@ -1568,13 +1578,13 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconDownload"
                 label="Ergebnisse sichern"
-                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
+                accent={pillColorOf(9)}
                 onClick={() => window.print()}
               />
               <ActionRow
                 icon="IconTrash"
                 label="Meine Einträge löschen"
-                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
+                accent={pillColorOf(9)}
                 onClick={() => clearAllUserData()}
               />
             </div>
@@ -1596,7 +1606,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconRefresh"
                 label="Nächste Frage"
-                accent={CARD_THEMES[10 % CARD_THEMES.length].pill}
+                accent={pillColorOf(10)}
                 onClick={getRandomQuestion}
               />
             </div>
@@ -1761,7 +1771,7 @@ const RetroCards: React.FC = () => {
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
-                          accent={CARD_THEMES[slideId % CARD_THEMES.length].pill}
+                          accent={pillColorOf(slideId)}
                           onClick={() => toggleEditMode(slideId)}
                         />
                       </div>
