@@ -66,7 +66,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
         style={{
-          background: outlined ? "transparent" : (fieldBg ?? accent),
+          background: outlined ? "transparent" : (fieldBg ?? "#E4E6E8"),
           color: labelColor ?? "#201C1D",
           border,
           borderLeft: outlined ? "none" : undefined,
