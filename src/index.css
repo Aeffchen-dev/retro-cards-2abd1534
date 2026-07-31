@@ -767,20 +767,29 @@ textarea.bg-retro-post-it:focus,
     question-word-settle 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }
 
-/* 3D extruded logo title: orange/pink to the right, blue on the left side */
+/* Isometric 3D logo title: orange top face, periwinkle left side, pink right side */
 .logo-glitch {
   position: relative;
   display: inline-block;
-  color: #FF5E00;
+  color: #E9682A;
   text-shadow:
-    -1px 1px 0 #2B6DEF,
-    -2px 2px 0 #2B6DEF,
-    -3px 3px 0 #2B6DEF,
-    1px 1px 0 #FF47D1,
-    2px 2px 0 #FF47D1,
-    3px 3px 0 #FF47D1,
-    4px 4px 0 #FF47D1;
+    /* right side: pink */
+    1px 1px 0 #F0A6FA,
+    2px 2px 0 #F0A6FA,
+    3px 3px 0 #F0A6FA,
+    4px 4px 0 #F0A6FA,
+    5px 5px 0 #F0A6FA,
+    /* left side: periwinkle */
+    -1px 1px 0 #A5A0FF,
+    -2px 2px 0 #A5A0FF,
+    -3px 3px 0 #A5A0FF,
+    -4px 4px 0 #A5A0FF,
+    -5px 5px 0 #A5A0FF,
+    -6px 6px 0 #A5A0FF,
+    -7px 7px 0 #A5A0FF,
+    -8px 8px 0 #A5A0FF;
 }
+
 
 
 
