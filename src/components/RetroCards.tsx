@@ -1414,20 +1414,20 @@ const RetroCards: React.FC = () => {
         return (
           <div className="relative flex flex-col items-start w-full h-full text-left" style={{ paddingTop: '35%' }}>
             <h1
-              className="retro-title logo-slide-anim flex flex-col items-start"
-              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#FF5E00' }}
+              className="retro-title logo-slide-anim flex flex-col items-start gap-[14px]"
+              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#FF5E00', marginTop: '14px' }}
             >
               <span
-                className="logo-glitch"
+                className="logo-glitch logo-3d-block"
                 data-text="Retro"
-                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+                style={{ padding: '0 12px' }}
               >
                 Retro
               </span>
               <span
-                className="logo-glitch"
+                className="logo-glitch logo-3d-block"
                 data-text="Cards"
-                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+                style={{ padding: '0 12px' }}
               >
                 Cards
               </span>
