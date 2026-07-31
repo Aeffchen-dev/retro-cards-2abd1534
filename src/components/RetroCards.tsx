@@ -386,8 +386,7 @@ const RetroCards: React.FC = () => {
   // Page background: near-black tint of the current slide's label colour, morphing on transition
   useEffect(() => {
     const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
-    const aq = activeQuestion[currentCard];
-    const source = aq ? QUESTION_COLORS[aq.idx % QUESTION_COLORS.length] : theme?.pill;
+    const source = theme?.pill;
     if (source) {
       const h = source.replace("#", "");
       const r = parseInt(h.slice(0, 2), 16);
