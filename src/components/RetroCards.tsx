@@ -1783,16 +1783,18 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const baseTheme = CARD_THEMES[index % CARD_THEMES.length];
-              // Memory Time slide is always purple; health checks use the swapped orange combo
-              const theme = slideId === 0
-                ? { ...baseTheme, accent: BRAND.purple, pill: BRAND.purple, pillDot: BRAND.darkPurple }
-                : (slideId === 1 || slideId === 2)
-                  ? { ...baseTheme, accent: BRAND.stackOrange, pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange }
-                  : slideId === 3
-                    ? { ...baseTheme, accent: BRAND.green, pill: BRAND.green, pillDot: BRAND.darkGreen }
-                    : slideId === SLIDE_REFLECTION
-                      ? { ...baseTheme, accent: BRAND.pink, pill: BRAND.pink, pillDot: BRAND.darkPink }
-                      : baseTheme;
+              // Per-slide color overrides (square = pill, icon = pillDot)
+              const overrides: Record<number, { pill: string; pillDot: string }> = {
+                0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
+                1: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
+                2: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
+                3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
+                7: { pill: BRAND.darkPurple, pillDot: BRAND.white },
+                8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
+                [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
+              };
+              const ov = overrides[slideId];
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
