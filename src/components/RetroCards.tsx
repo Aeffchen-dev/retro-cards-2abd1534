@@ -1630,7 +1630,7 @@ const RetroCards: React.FC = () => {
 
             </div>
 
-            <div className="mt-auto pt-7">
+            <div className="w-full mt-6">
               <ActionRow
                 icon="IconArrowRight"
                 label="Los geht's"
