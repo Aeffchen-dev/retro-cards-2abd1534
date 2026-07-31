@@ -111,6 +111,7 @@ interface MemojisPosition {
 // primaries, each paired with its dark counterpart for the pill dot.
 // One colour per "last 4 weeks" question — drives the page background in edit mode
 const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
+const QUESTION_GREEN = "#2D6A4F";
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
   { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
@@ -1176,7 +1177,7 @@ const RetroCards: React.FC = () => {
                 Was war die letzten 4 Wochen so los?
               </h2>
             </div>
-            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '12px' }}>
+            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '4px' }}>
               {([
                 ["IconAchievements", "Das habe(n) ich / wir richtig gerockt"],
                 ["IconHeart", "Ein schöner Moment"],
@@ -1196,14 +1197,14 @@ const RetroCards: React.FC = () => {
                 >
                   <span
                     className="shrink-0 w-8 h-8 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length] }}
+                    style={{ backgroundColor: QUESTION_GREEN }}
                     aria-hidden="true"
                   >
                     <StackIcon name={iconName} size={16} color="#FFFFFF" />
                   </span>
                   <span
-                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-2 min-w-0"
-                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D' }}
+                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-3 min-w-0"
+                    style={{ backgroundColor: '#E9ECEF', color: '#212529' }}
                   >
                     <span className="truncate">{label}</span>
                   </span>
