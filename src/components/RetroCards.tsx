@@ -1883,13 +1883,13 @@ const RetroCards: React.FC = () => {
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
                 0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
-                1: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
-                2: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
+                1: { pill: BRAND.turquoise, pillDot: BRAND.white },
+                2: { pill: BRAND.turquoise, pillDot: BRAND.white },
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
                 4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                7: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
-                8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
+                7: { pill: BRAND.turquoise, pillDot: BRAND.white },
+                8: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
                 // Archive matches the Setup slide combo
                 9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
