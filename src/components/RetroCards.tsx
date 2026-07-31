@@ -512,7 +512,6 @@ const RetroCards: React.FC = () => {
       const rotate = 5 * p;
       slideEl.style.transformOrigin = "center center";
       slideEl.style.transform = `translateX(${10 * p}%) rotate(${rotate}deg) scale(${scale})`;
-      slideEl.style.opacity = `${1 - 0.35 * t}`;
       slideEl.style.zIndex = `${Math.round((1 - t) * 10)}`;
     });
   }, []);
@@ -1878,8 +1877,8 @@ const RetroCards: React.FC = () => {
             <Swiper
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
-            spaceBetween={0}
-            slidesPerView={1 / 0.9}
+            spaceBetween={16}
+            slidesPerView={1 / 0.8}
             centeredSlides={true}
             watchSlidesProgress={true}
             onProgress={handleSwiperProgress}
