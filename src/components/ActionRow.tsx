@@ -3,7 +3,9 @@ import StackIcon from "./StackIcon";
 
 export interface ActionRowProps {
   /** Icon name from the Stacks-Icons set */
-  icon: React.ComponentProps<typeof StackIcon>["name"];
+  icon?: React.ComponentProps<typeof StackIcon>["name"];
+  /** Custom icon node (overrides `icon`) */
+  iconNode?: React.ReactNode;
   /** Label shown in the grey field */
   label: string;
   /** Background colour of the icon tile */
