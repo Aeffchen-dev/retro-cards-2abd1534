@@ -1630,16 +1630,17 @@ const RetroCards: React.FC = () => {
               </button>
               </div>
 
+              <div className="w-full mt-auto">
+                <ActionRow
+                  icon="IconArrowRight"
+                  label="Los geht's"
+                  accent={BRAND.turquoise}
+                  onClick={() => swiperRef?.slideNext()}
+                />
+              </div>
+
             </div>
 
-            <div className="w-full mt-6">
-              <ActionRow
-                icon="IconArrowRight"
-                label="Los geht's"
-                accent={BRAND.turquoise}
-                onClick={() => swiperRef?.slideNext()}
-              />
-            </div>
           </div>
         );
       }
