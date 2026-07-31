@@ -1777,10 +1777,12 @@ const RetroCards: React.FC = () => {
           >
             {slides.map((slideId, index) => {
               const baseTheme = CARD_THEMES[index % CARD_THEMES.length];
-              // Memory Time slide is always purple
+              // Memory Time slide is always purple; health checks use the swapped orange combo
               const theme = slideId === 0
                 ? { ...baseTheme, accent: BRAND.purple, pill: BRAND.purple, pillDot: BRAND.darkPurple }
-                : baseTheme;
+                : (slideId === 1 || slideId === 2)
+                  ? { ...baseTheme, accent: BRAND.stackOrange, pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange }
+                  : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
