@@ -353,8 +353,11 @@ const RetroCards: React.FC = () => {
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
       if (slideId === 8) return BRAND.blue;
-      // Intimacy: dark purple square with white icon
-      if (slideId === 7) return BRAND.darkPurple;
+      // Talk-about / Nicht monogam: swapped
+      if (slideId === 4) return BRAND.darkPurple;
+      if (slideId === 5) return BRAND.stackOrange;
+      // Intimacy: yellow
+      if (slideId === 7) return BRAND.yellow;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return LABEL_COMBOS[2].square;
       // Questions: random combo per question
@@ -1825,7 +1828,9 @@ const RetroCards: React.FC = () => {
                 1: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
                 2: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
-                7: { pill: BRAND.darkPurple, pillDot: BRAND.white },
+                4: { pill: BRAND.darkPurple, pillDot: BRAND.purple },
+                5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
+                7: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
                 8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
                 // Archive matches the Setup slide combo
@@ -1922,7 +1927,7 @@ const RetroCards: React.FC = () => {
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
                           accent={pillColorOf(slideId)}
-                          iconColor={slideId === 7 ? "#FFFFFF" : undefined}
+                          iconColor={undefined}
                           onClick={() => toggleEditMode(slideId)}
                         />
                       </div>
