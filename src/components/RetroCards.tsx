@@ -336,6 +336,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2) return BRAND.stackOrange;
       // Last 4 weeks: swapped green combo
       if (slideId === 3) return BRAND.green;
+      // Feedback: pink
+      if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
@@ -1786,7 +1788,9 @@ const RetroCards: React.FC = () => {
                   ? { ...baseTheme, accent: BRAND.stackOrange, pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange }
                   : slideId === 3
                     ? { ...baseTheme, accent: BRAND.green, pill: BRAND.green, pillDot: BRAND.darkGreen }
-                    : baseTheme;
+                    : slideId === SLIDE_REFLECTION
+                      ? { ...baseTheme, accent: BRAND.pink, pill: BRAND.pink, pillDot: BRAND.darkPink }
+                      : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
