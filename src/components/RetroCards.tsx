@@ -1289,7 +1289,7 @@ const RetroCards: React.FC = () => {
             <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '0px' }}>
               <ActionRow
                 icon="IconArrowRightSm"
-                label="Swipe um weiter zu navigieren"
+                label="Weiter swipen"
                 accent="transparent"
                 outlined
                 onClick={() => swiperRef?.slideNext()}
