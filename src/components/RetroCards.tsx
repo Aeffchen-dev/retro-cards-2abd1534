@@ -344,10 +344,14 @@ const RetroCards: React.FC = () => {
       if (slideId === 8) return BRAND.blue;
       // Intimacy: dark purple square with white icon
       if (slideId === 7) return BRAND.darkPurple;
+      // Archive: same colors as the Setup slide
+      if (slideId === 9) return LABEL_COMBOS[2].square;
+      // Questions: random combo per question
+      if (slideId === 10) return LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
-    [slides]
+    [slides, questionComboIdx]
   );
 
   // Track if initial load is complete to avoid saving on mount
