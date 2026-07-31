@@ -1960,7 +1960,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-[16px] rounded-tl-[28px] p-[28px] shadow-2xl overflow-y-auto"
 
                     style={{
                       ...cardStyle,
@@ -1976,7 +1976,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
+                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-[16px] rounded-tl-[28px]" style={{ ...cardStyle, paddingBottom: '76px' }}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
