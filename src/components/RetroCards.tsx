@@ -6,6 +6,7 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
+import bgGraphic from "@/assets/bg-graphic.jpg.asset.json";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
