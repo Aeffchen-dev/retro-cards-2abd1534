@@ -6,12 +6,14 @@ interface RevealTextProps {
   color?: string;
   /** Delay between words in ms */
   stagger?: number;
+  /** Wait before the first word appears — synced to the slide transition */
+  startDelay?: number;
   /** Play the reveal only while the slide is active */
   active?: boolean;
 }
 
 /** Word-by-word reveal: each word pops in colored, then settles to black. */
-const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, active = true }) => {
+const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, startDelay = 380, active = true }) => {
   const [runId, setRunId] = useState(0);
   const wasActive = useRef(false);
   const containerRef = useRef<HTMLSpanElement>(null);
