@@ -1797,7 +1797,7 @@ const RetroCards: React.FC = () => {
                         className="question-word"
                         style={{
                           animationDelay: `${i * 60}ms`,
-                          color: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
+                          color: "#201C1D",
                         }}
                       >
                         {word}&nbsp;
