@@ -1691,7 +1691,21 @@ const RetroCards: React.FC = () => {
                   />
                 </div>
               </div>
+              <PostItField
+                accent={pillColorOf(7)}
+                label="Eine Idee für uns"
+                placeholder="Etwas Neues, dass du zusammen ausprobieren möchtest"
+                minHeight={120}
+                value={editModeNotes[7]?.idea || ""}
+                onChange={(v) =>
+                  setEditModeNotes(prev => ({
+                    ...prev,
+                    7: { ...(prev[7] || {}), idea: v }
+                  }))
+                }
+              />
             </div>
+
           </div>
         );
 
