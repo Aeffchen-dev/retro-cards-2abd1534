@@ -714,5 +714,9 @@ textarea.bg-retro-post-it:focus,
   opacity: 1;
 }
 
-/* All app text shares the pill-label weight */
-#root, #root * { font-weight: 500; }
+/* All app text shares the pill-label typography */
+#root, #root * {
+  font-weight: 500;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
+  font-feature-settings: "ss01", "ss02", "cv11";
+}
