@@ -330,6 +330,8 @@ const RetroCards: React.FC = () => {
   // array (same as the rendered pill), not from its slide id.
   const pillColorOf = useCallback(
     (slideId: number) => {
+      // Memory Time slide is always purple
+      if (slideId === 0) return BRAND.purple;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
@@ -1772,7 +1774,11 @@ const RetroCards: React.FC = () => {
             noSwiping={true}
           >
             {slides.map((slideId, index) => {
-              const theme = CARD_THEMES[index % CARD_THEMES.length];
+              const baseTheme = CARD_THEMES[index % CARD_THEMES.length];
+              // Memory Time slide is always purple
+              const theme = slideId === 0
+                ? { ...baseTheme, accent: BRAND.purple, pill: BRAND.purple, pillDot: BRAND.darkPurple }
+                : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
