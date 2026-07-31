@@ -107,6 +107,9 @@ interface MemojisPosition {
 // Stack Overflow brand palette only (stackoverflow.design/brand/color).
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
+// One colour per "last 4 weeks" question — drives the page background in edit mode
+const QUESTION_COLORS = ["#FF5E00", "#F39FFF", "#FFCC00", "#4FC3D9", "#5EBA7D", "#A98BFF"];
+
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
   { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
