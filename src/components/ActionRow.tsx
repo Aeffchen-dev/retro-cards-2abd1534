@@ -34,8 +34,6 @@ const BASE_CLASS =
 /**
  * Shared CTA row: coloured icon tile on the left + grey label field.
  * Single source of truth for every call-to-action row in the app.
- */
-const GREY_TILE = "#E4E6E8";
 
 const ActionRow: React.FC<ActionRowProps> = ({
   icon,
