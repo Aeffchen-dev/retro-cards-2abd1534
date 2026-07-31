@@ -6,24 +6,34 @@ interface RevealTextProps {
   color?: string;
   /** Delay between words in ms */
   stagger?: number;
+  /** Wait before the first word appears — synced to the slide transition */
+  startDelay?: number;
   /** Play the reveal only while the slide is active */
   active?: boolean;
 }
 
 /** Word-by-word reveal: each word pops in colored, then settles to black. */
-const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, active = true }) => {
+const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, startDelay = 380, active = true }) => {
   const [runId, setRunId] = useState(0);
+  // Slide-entry reveals wait for the transition; in-place text changes start immediately.
+  const [delayMs, setDelayMs] = useState(startDelay);
   const wasActive = useRef(false);
   const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (active && !wasActive.current) {
       wasActive.current = true;
+      setDelayMs(startDelay);
       setRunId((n) => n + 1);
     } else if (!active) {
       wasActive.current = false;
     }
-  }, [active]);
+  }, [active, startDelay]);
+
+  useEffect(() => {
+    if (active && wasActive.current) setDelayMs(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text]);
 
   // Restart the animation on the actual DOM nodes so it replays reliably,
   // even if React reuses the same elements.
@@ -49,7 +59,7 @@ const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, acti
           key={`${runId}-${word}-${i}`}
           className="question-word"
           style={{
-            animationDelay: `${i * stagger}ms, ${i * stagger + 90}ms`,
+            animationDelay: `${delayMs + i * stagger}ms, ${delayMs + i * stagger + 90}ms`,
             ["--reveal-color" as string]: color || "#201C1D",
           } as React.CSSProperties}
         >
