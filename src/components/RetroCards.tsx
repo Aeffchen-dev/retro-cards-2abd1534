@@ -1187,7 +1187,7 @@ const RetroCards: React.FC = () => {
                   </span>
                   <span
                     className="retro-body-copy flex flex-1 items-center h-12 px-3 min-w-0"
-                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D', fontFamily: '"Stack Sans Notch", "Figtree", Arial, sans-serif', fontFeatureSettings: '"ss02"' }}
+                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D', fontFamily: '"Stack Sans Text", "Figtree", Arial, sans-serif', fontFeatureSettings: '"ss02"' }}
                   >
                     <span className="truncate">{label}</span>
                   </span>
