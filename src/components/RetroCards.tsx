@@ -1085,10 +1085,15 @@ const RetroCards: React.FC = () => {
                 e.stopPropagation();
                 openCamera();
               }}
-              className="swiper-no-swiping relative z-40 inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#201C1D', marginTop: '28px' }}
+              className="swiper-no-swiping screen-only relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+              style={{ marginTop: '28px' }}
             >
-              Kamera öffnen
+              <span className="shrink-0 w-12 h-12 flex items-center justify-center" style={{ background: theme.pill }}>
+                <StackIcon name="IconImage" size={20} color="#FFFFFF" />
+              </span>
+              <span className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap" style={{ background: '#E4E6E8', color: '#201C1D' }}>
+                Kamera öffnen
+              </span>
             </button>
           </div>
 
