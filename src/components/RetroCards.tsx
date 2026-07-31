@@ -1034,7 +1034,7 @@ const RetroCards: React.FC = () => {
     className = "",
     style,
   }: {
-    icon: string;
+    icon: React.ComponentProps<typeof StackIcon>["name"];
     label: string;
     onClick?: (e: React.MouseEvent) => void;
     accent: string;
