@@ -1177,14 +1177,14 @@ const RetroCards: React.FC = () => {
                 Was war die letzten 4 Wochen so los?
               </h2>
             </div>
-            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '4px' }}>
+            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '16px' }}>
               {([
-                ["IconAchievements", "Das habe(n) ich / wir richtig gerockt"],
+                ["IconTrophy", "Das habe(n) ich / wir richtig gerockt"],
                 ["IconHeart", "Ein schöner Moment"],
                 ["IconLightbulb", "Das habe ich gelernt"],
-                ["IconFaceMindBlown", "Das hat mich Kraft gekostet"],
+                ["IconFaceFrown", "Das hat mich Kraft gekostet"],
                 ["IconSpeechBubbleQuestion", "Was beschäftigt mich grade?"],
-                ["IconMessage", "Die letzten 4 Wochen in einem Wort"],
+                ["IconSpeechBubble", "Die letzten 4 Wochen in einem Wort"],
               ] as const).map(([iconName, label], i) => (
                 <div
                   key={i}
@@ -1197,7 +1197,7 @@ const RetroCards: React.FC = () => {
                 >
                   <span
                     className="shrink-0 w-8 h-8 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: QUESTION_GREEN }}
+                    style={{ backgroundColor: pillColorOf(3) }}
                     aria-hidden="true"
                   >
                     <StackIcon name={iconName} size={16} color="#FFFFFF" />
