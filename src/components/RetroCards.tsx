@@ -1923,7 +1923,7 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: slideId === 4 ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-[28px]">
+                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-2">
 
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
@@ -2072,7 +2072,7 @@ const RetroCards: React.FC = () => {
       </div>
 
       {/* Pagination dots (centered) + counter at card edge */}
-      <div className="relative w-full px-5 pb-4 min-h-[22px] flex items-center screen-only">
+      <div className="relative w-full px-2 pb-4 min-h-[22px] flex items-center screen-only">
         <div className="flex-1 flex items-center justify-center gap-1.5 flex-wrap">
           {slides.map((slideId, i) => (
             <button
