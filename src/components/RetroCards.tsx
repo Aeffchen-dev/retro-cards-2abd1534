@@ -1789,9 +1789,24 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Questions</span>
               </div>
-              <h2 className="retro-heading w-full">
-                {questionsLoaded && currentQuestion ? currentQuestion : "Frage wird geladen..."}
+              <h2 key={currentQuestion} className="retro-heading w-full">
+                {questionsLoaded && currentQuestion
+                  ? currentQuestion.split(" ").map((word, i) => (
+                      <span
+                        key={`${word}-${i}`}
+                        className="inline-block opacity-0 animate-fade-in"
+                        style={{
+                          animationDelay: `${i * 60}ms`,
+                          animationFillMode: "forwards",
+                          color: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
+                        }}
+                      >
+                        {word}&nbsp;
+                      </span>
+                    ))
+                  : "Frage wird geladen..."}
               </h2>
+
             </div>
             <div className="absolute z-40 flex items-center" style={{ left: '28px', bottom: '28px' }}>
               <ActionRow
