@@ -767,28 +767,31 @@ textarea.bg-retro-post-it:focus,
     question-word-settle 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }
 
-/* Isometric 3D logo title: orange top face, periwinkle left side, pink right side */
+/* Isometric block logo title: orange top face, periwinkle front-left, pink right cap */
 .logo-glitch {
   position: relative;
   display: inline-block;
   color: #E9682A;
+  transform: skewY(-6deg);
   text-shadow:
-    /* right side: pink */
-    1px 1px 0 #F0A6FA,
-    2px 2px 0 #F0A6FA,
-    3px 3px 0 #F0A6FA,
-    4px 4px 0 #F0A6FA,
-    5px 5px 0 #F0A6FA,
-    /* left side: periwinkle */
-    -1px 1px 0 #A5A0FF,
-    -2px 2px 0 #A5A0FF,
-    -3px 3px 0 #A5A0FF,
-    -4px 4px 0 #A5A0FF,
-    -5px 5px 0 #A5A0FF,
-    -6px 6px 0 #A5A0FF,
-    -7px 7px 0 #A5A0FF,
-    -8px 8px 0 #A5A0FF;
+    /* right end cap: pink */
+    0.02em 0.01em 0 #EFA6F7,
+    0.04em 0.02em 0 #EFA6F7,
+    0.06em 0.03em 0 #EFA6F7,
+    0.08em 0.04em 0 #EFA6F7,
+    0.10em 0.05em 0 #EFA6F7,
+    0.12em 0.06em 0 #EFA6F7,
+    /* front-left face: periwinkle */
+    -0.01em 0.03em 0 #A29CFF,
+    -0.02em 0.06em 0 #A29CFF,
+    -0.03em 0.09em 0 #A29CFF,
+    -0.04em 0.12em 0 #A29CFF,
+    -0.05em 0.15em 0 #A29CFF,
+    -0.06em 0.18em 0 #A29CFF,
+    -0.07em 0.21em 0 #A29CFF,
+    -0.08em 0.24em 0 #A29CFF;
 }
+
 
 
 
