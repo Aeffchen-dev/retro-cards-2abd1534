@@ -6,7 +6,7 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
-import bgGraphic from "@/assets/bg-graphic.jpg.asset.json";
+import bgGraphic from "@/assets/bg-graphic.jpg";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1868,7 +1868,7 @@ const RetroCards: React.FC = () => {
         aria-hidden="true"
         className="pointer-events-none select-none absolute inset-0 z-0 screen-only"
         style={{
-          backgroundImage: `url(${bgGraphic.url})`,
+          backgroundImage: `url(${bgGraphic})`,
           backgroundSize: "cover",
           backgroundPosition: "right center",
           backgroundRepeat: "no-repeat",
