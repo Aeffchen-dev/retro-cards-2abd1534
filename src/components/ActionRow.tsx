@@ -32,8 +32,11 @@ const BASE_CLASS =
   "swiper-no-swiping screen-only relative z-40 w-auto max-w-full self-start inline-flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90";
 
 /**
- * Shared CTA row: coloured icon tile on the left + grey label field.
+ * Shared CTA row: coloured icon tile on the left + label field in the slide's pill colour.
  * Single source of truth for every call-to-action row in the app.
+ */
+
+
 
 const ActionRow: React.FC<ActionRowProps> = ({
   icon,
