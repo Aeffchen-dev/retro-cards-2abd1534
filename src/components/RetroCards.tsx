@@ -1448,6 +1448,9 @@ const RetroCards: React.FC = () => {
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
         const SETUP_GREY_FILL = "#E4E6E8";
+        // Every other coloured element on this slide follows the slide pill colour
+        const SETUP_PILL = pillColorOf(cardIndex);
+        const SETUP_PILL_ON = "#FFFFFF";
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-8 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-3 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
         const fieldStyle = { background: SETUP_GREY_FILL, color: SETUP_TEXT, border: "none" } as React.CSSProperties;
         const emojiFieldStyle = { background: SETUP_ACCENT, color: SETUP_ON_ACCENT, border: "none" } as React.CSSProperties;
