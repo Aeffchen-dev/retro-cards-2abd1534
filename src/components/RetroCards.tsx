@@ -2119,32 +2119,6 @@ const RetroCards: React.FC = () => {
         </div>
       </div>
 
-      {/* Pagination dots (centered) + counter at card edge */}
-      <div className="relative w-full px-2 pb-4 min-h-[22px] flex items-center screen-only">
-        <div className="flex-1 flex items-center justify-center gap-1.5 flex-wrap">
-          {slides.map((slideId, i) => (
-            <button
-              key={slideId}
-              type="button"
-              aria-label={`Zu Karte ${i + 1}`}
-              aria-current={i === currentCard}
-              onClick={(e) => { e.stopPropagation(); swiperRef?.slideTo(i); }}
-              className="h-1.5 rounded-full transition-all duration-300 border-0 p-0 cursor-pointer"
-              style={{
-                width: i === currentCard ? 20 : 6,
-                background: CARD_THEMES[i % CARD_THEMES.length].pill,
-                opacity: i === currentCard ? 1 : 0.35,
-              }}
-            />
-          ))}
-        </div>
-        <div
-          className="absolute right-5 top-1/2 -translate-y-1/2 retro-body text-retro-white"
-          style={{ opacity: 0.25 }}
-        >
-          {currentCard + 1} / {totalCards}
-        </div>
-      </div>
 
 
 
