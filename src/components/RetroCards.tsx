@@ -1434,9 +1434,8 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 — post-it style field */}
-              <div className="flex items-center gap-4 w-full mb-4">
-                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
-                <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex flex-col gap-2 w-full mb-4">
+                <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME1_PLACEHOLDER}
                   </div>
@@ -1451,12 +1450,12 @@ const RetroCards: React.FC = () => {
                     />
                   </div>
                 </div>
+                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
               </div>
 
               {/* Person 2 — post-it style field */}
-              <div className="flex items-center gap-4 w-full mb-4">
-                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
-                <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex flex-col gap-2 w-full mb-4">
+                <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME2_PLACEHOLDER}
                   </div>
@@ -1471,7 +1470,9 @@ const RetroCards: React.FC = () => {
                     />
                   </div>
                 </div>
+                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
               </div>
+
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
