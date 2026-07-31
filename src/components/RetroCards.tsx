@@ -1657,11 +1657,21 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full">Sind wir uns körperlich nah?</h2>
-              <StarRating
-                value={intimacyRatings.shared || 0}
-                starColor="#201C1D"
-                onChange={(v) => setIntimacyRatings({ ...intimacyRatings, shared: v })}
-              />
+              <div className="flex flex-col w-full">
+                <div
+                  className="inline-flex self-start items-center h-8 px-3 retro-body-copy text-[#201C1D]"
+                  style={{ backgroundColor: pillColorOf(7) }}
+                >
+                  Bewerte
+                </div>
+                <div className="w-full bg-retro-post-it p-3">
+                  <StarRating
+                    value={intimacyRatings.shared || 0}
+                    starColor="#201C1D"
+                    onChange={(v) => setIntimacyRatings({ ...intimacyRatings, shared: v })}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         );
