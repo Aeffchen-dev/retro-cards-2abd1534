@@ -1345,7 +1345,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   accent={pillColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                  placeholder="z. B. Urlaubsplanung, Aufgaben im Haushalt, Zeit zu zweit …"
+                  placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
                   onChange={(v) => setPostItTexts({ ...postItTexts, [person.key]: v })}
                 />
@@ -1360,7 +1360,7 @@ const RetroCards: React.FC = () => {
                   minHeight={160}
                   accent={pillColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                  placeholder="z. B. Urlaubsplanung, Aufgaben im Haushalt, Zeit zu zweit …"
+                  placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
                 />
               ))}
@@ -1721,7 +1721,7 @@ const RetroCards: React.FC = () => {
               <PostItField
                 accent={pillColorOf(7)}
                 label="Eine Idee für uns"
-                placeholder="Etwas Neues, dass du zusammen ausprobieren möchtest"
+                placeholder="Deine Antwort"
                 minHeight={120}
                 value={editModeNotes[7]?.idea || ""}
                 onChange={(v) =>
@@ -1751,7 +1751,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   accent={pillColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
+                  placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
                   onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
                 />
@@ -1766,7 +1766,7 @@ const RetroCards: React.FC = () => {
                   minHeight={160}
                   accent={pillColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
+                  placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
                 />
               ))}
