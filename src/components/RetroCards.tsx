@@ -1407,7 +1407,7 @@ const RetroCards: React.FC = () => {
               </button>
 
               {/* Toggle */}
-              <div className="flex items-center justify-between w-full h-12 px-3 rounded-none border border-[#201C1D]">
+              <div className="flex items-center justify-between w-full h-12 px-3 rounded-none border-none" style={{ background: SETUP_GREY_FILL }}>
                 <button
                   type="button"
                   onClick={(e) => {
