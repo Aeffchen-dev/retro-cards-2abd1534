@@ -1196,14 +1196,14 @@ const RetroCards: React.FC = () => {
                 >
                   <span
                     className="shrink-0 w-8 h-8 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length] }}
+                    style={{ backgroundColor: QUESTION_GREEN }}
                     aria-hidden="true"
                   >
                     <StackIcon name={iconName} size={16} color="#FFFFFF" />
                   </span>
                   <span
-                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-2 min-w-0"
-                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D' }}
+                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-3 min-w-0"
+                    style={{ backgroundColor: '#E9ECEF', color: '#212529' }}
                   >
                     <span className="truncate">{label}</span>
                   </span>
