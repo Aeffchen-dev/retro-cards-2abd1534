@@ -750,14 +750,19 @@ textarea.bg-retro-post-it:focus,
 
 
 /* Word-by-word reveal for the random question headline */
-@keyframes question-word-in {
-  from { opacity: 0; transform: translateY(10px); color: var(--reveal-color, #201C1D); }
-  60% { opacity: 1; transform: translateY(0); color: var(--reveal-color, #201C1D); }
-  to { opacity: 1; transform: translateY(0); color: #201C1D; }
+@keyframes question-word-enter {
+  from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes question-word-settle {
+  from { color: var(--reveal-color, #201C1D); }
+  to { color: #201C1D; }
 }
 .question-word {
   display: inline-block;
   opacity: 0;
   color: var(--reveal-color, #201C1D);
-  animation: question-word-in 0.9s ease-out forwards;
+  animation:
+    question-word-enter 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    question-word-settle 0.6s linear 0.25s forwards;
 }
