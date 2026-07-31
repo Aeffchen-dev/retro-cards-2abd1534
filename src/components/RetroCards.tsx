@@ -1165,14 +1165,14 @@ const RetroCards: React.FC = () => {
               </h2>
             </div>
             <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '12px' }}>
-              {[
-                ["🏆", "Das habe(n) ich / wir richtig gerockt"],
-                ["🥰", "Ein schöner Moment"],
-                ["💡", "Das habe ich gelernt"],
-                ["💥", "Das hat mich Kraft gekostet"],
-                ["🧠", "Was beschäftigt mich grade?"],
-                ["💬", "Die letzten 4 Wochen in einem Wort"],
-              ].map(([emoji, label], i) => (
+              {([
+                ["IconAchievements", "Das habe(n) ich / wir richtig gerockt"],
+                ["IconHeart", "Ein schöner Moment"],
+                ["IconLightbulb", "Das habe ich gelernt"],
+                ["IconFaceMindBlown", "Das hat mich Kraft gekostet"],
+                ["IconSpeechBubbleQuestion", "Was beschäftigt mich grade?"],
+                ["IconMessage", "Die letzten 4 Wochen in einem Wort"],
+              ] as const).map(([iconName, label], i) => (
                 <div
                   key={i}
                   role="button"
@@ -1184,10 +1184,10 @@ const RetroCards: React.FC = () => {
                 >
                   <span
                     className="shrink-0 w-12 h-12 flex items-center justify-center screen-only"
-                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length], fontSize: '20px', lineHeight: 1 }}
+                    style={{ backgroundColor: QUESTION_COLORS[i % QUESTION_COLORS.length] }}
                     aria-hidden="true"
                   >
-                    {emoji}
+                    <StackIcon name={iconName} size={20} color="#FFFFFF" />
                   </span>
                   <span
                     className="flex flex-1 items-center h-12 px-3 min-w-0"
