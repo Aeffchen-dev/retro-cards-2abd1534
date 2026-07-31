@@ -1496,7 +1496,7 @@ const RetroCards: React.FC = () => {
               {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
                 <PostItField
                   key={key}
-                  accent={pillColorOf(5)}
+                  accent={pillColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
@@ -1511,7 +1511,7 @@ const RetroCards: React.FC = () => {
                   key={key}
                   readOnly
                   minHeight={100}
-                  accent={pillColorOf(5)}
+                  accent={pillColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
