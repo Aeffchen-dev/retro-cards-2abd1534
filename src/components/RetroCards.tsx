@@ -1567,12 +1567,10 @@ const RetroCards: React.FC = () => {
                   className="shrink-0 w-8 h-8 flex items-center justify-center"
                   style={{ background: SETUP_ACCENT }}
                 >
-                  <span
-                    className="w-4 h-4"
-                    style={{
-                      border: '1px solid #201C1D',
-                      background: setupData.openRelationship ? '#201C1D' : 'transparent',
-                    }}
+                  <StackIcon
+                    name="IconCheckmark"
+                    size={16}
+                    color={setupData.openRelationship ? '#201C1D' : 'rgba(32,28,29,0.3)'}
                   />
                 </span>
 
