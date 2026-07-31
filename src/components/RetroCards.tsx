@@ -1025,6 +1025,45 @@ const RetroCards: React.FC = () => {
     }
   }, []);
 
+  // Shared action row: coloured icon tile on the left + grey label field
+  const ActionRow = ({
+    icon,
+    label,
+    onClick,
+    accent,
+    className = "",
+    style,
+  }: {
+    icon: React.ComponentProps<typeof StackIcon>["name"];
+    label: string;
+    onClick?: (e: React.MouseEvent) => void;
+    accent: string;
+    className?: string;
+    style?: React.CSSProperties;
+  }) => (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.(e);
+      }}
+      className={`swiper-no-swiping screen-only relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90 ${className}`}
+      style={style}
+    >
+      <span className="shrink-0 w-12 h-12 flex items-center justify-center" style={{ background: accent }}>
+        <StackIcon name={icon} size={20} color="#FFFFFF" />
+      </span>
+      <span
+        className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap"
+        style={{ background: '#E4E6E8', color: '#201C1D' }}
+      >
+        {label}
+      </span>
+    </button>
+  );
+
+
+
   const renderCard = (cardIndex: number) => {
     switch (cardIndex) {
       case 0:
@@ -1070,22 +1109,13 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                openCamera();
-              }}
-              className="swiper-no-swiping screen-only relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+            <ActionRow
+              icon="IconImage"
+              label="Kamera öffnen"
+              accent={CARD_THEMES[0].pill}
+              onClick={() => openCamera()}
               style={{ marginTop: '28px' }}
-            >
-              <span className="shrink-0 w-12 h-12 flex items-center justify-center" style={{ background: CARD_THEMES[0].pill }}>
-                <StackIcon name="IconImage" size={20} color="#FFFFFF" />
-              </span>
-              <span className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap" style={{ background: '#E4E6E8', color: '#201C1D' }}>
-                Kamera öffnen
-              </span>
-            </button>
+            />
           </div>
 
         );
@@ -1140,8 +1170,13 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute left-0 right-0 bottom-0 h-12 flex items-center screen-only" style={{ borderTop: '1px solid #201C1D', paddingLeft: '28px', paddingRight: '60px', color: '#6A737C', fontSize: '12px', lineHeight: 1.4 }}>
-              Platziert eure Memojis auf der Skala
+            <div className="absolute left-0 right-0 bottom-0 screen-only">
+              <ActionRow
+                icon="IconPencil"
+                label="Platziert eure Memojis auf der Skala"
+                accent={CARD_THEMES[cardId % CARD_THEMES.length].pill}
+                onClick={() => toggleEditMode(cardId)}
+              />
             </div>
 
           </div>
@@ -1261,8 +1296,13 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute flex items-center" style={{ left: 0, bottom: '-28px', height: '48px' }}>
-              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#6A737C' }}>Swipe um weiter zu navigieren</span>
+            <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '-28px' }}>
+              <ActionRow
+                icon="IconArrowRight"
+                label="Swipe um weiter zu navigieren"
+                accent={CARD_THEMES[SLIDE_LOGO % CARD_THEMES.length].pill}
+                onClick={() => swiperRef?.slideNext()}
+              />
             </div>
 
 
@@ -1443,17 +1483,13 @@ const RetroCards: React.FC = () => {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                swiperRef?.slideNext();
-              }}
-              className="relative z-40 self-start inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#201C1D', marginTop: '28px' }}
-            >
-              Los geht's
-            </button>
+            <ActionRow
+              icon="IconArrowRight"
+              label="Los geht's"
+              accent={SETUP_ACCENT}
+              onClick={() => swiperRef?.slideNext()}
+              style={{ marginTop: '28px' }}
+            />
           </div>
         );
       }
@@ -1553,21 +1589,19 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full">Sichert eure Inhalte</h2>
             </div>
-            <div className="flex flex-col gap-3">
-              <button
+            <div className="flex flex-col gap-3 w-full">
+              <ActionRow
+                icon="IconDownload"
+                label="Ergebnisse sichern"
+                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
                 onClick={() => window.print()}
-                className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
-              >
-                <StackIcon name="IconDownload" size={20} className="text-retro-white" />
-                <span className="retro-body">Ergebnisse sichern</span>
-              </button>
-              <button
-                onClick={clearAllUserData}
-                className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
-              >
-                <StackIcon name="IconTrash" size={20} className="text-retro-white" />
-                <span className="retro-body">Meine Einträge löschen</span>
-              </button>
+              />
+              <ActionRow
+                icon="IconTrash"
+                label="Meine Einträge löschen"
+                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
+                onClick={() => clearAllUserData()}
+              />
             </div>
           </div>
         );
@@ -1584,13 +1618,12 @@ const RetroCards: React.FC = () => {
               </h2>
             </div>
             <div className="flex-1 flex items-end justify-center w-full">
-              <div
+              <ActionRow
+                icon="IconRefresh"
+                label="Neue Frage"
+                accent={CARD_THEMES[10 % CARD_THEMES.length].pill}
                 onClick={getRandomQuestion}
-                className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-              >
-                <StackIcon name="IconRefresh" size={20} className="text-retro-white" />
-                <span className="retro-body">Neue Frage</span>
-              </div>
+              />
             </div>
           </div>
         );
