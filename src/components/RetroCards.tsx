@@ -1614,13 +1614,12 @@ const RetroCards: React.FC = () => {
               </h2>
             </div>
             <div className="flex-1 flex items-end justify-center w-full">
-              <div
+              <ActionRow
+                icon="IconRefresh"
+                label="Neue Frage"
+                accent={CARD_THEMES[10 % CARD_THEMES.length].pill}
                 onClick={getRandomQuestion}
-                className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-              >
-                <StackIcon name="IconRefresh" size={20} className="text-retro-white" />
-                <span className="retro-body">Neue Frage</span>
-              </div>
+              />
             </div>
           </div>
         );
