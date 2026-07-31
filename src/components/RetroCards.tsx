@@ -1703,13 +1703,15 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconDownload"
                 label="Ergebnisse sichern"
-                accent={pillColorOf(9)}
+                accent={BRAND.blue}
+                iconColor="#FFFFFF"
                 onClick={() => window.print()}
               />
               <ActionRow
                 icon="IconTrash"
                 label="Meine Einträge löschen"
-                accent={pillColorOf(9)}
+                accent={BRAND.blue}
+                iconColor="#FFFFFF"
                 onClick={() => clearAllUserData()}
               />
             </div>
