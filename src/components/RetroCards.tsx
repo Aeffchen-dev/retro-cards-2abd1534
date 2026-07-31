@@ -125,6 +125,7 @@ const BRAND = {
   pink: "#F39FFF",
   yellow: "#FFCC00",
   blue: "#5074EF",
+  turquoise: "#12A5A0",
   green: "#86AF25",
   offBlack: "#201C1D",
   offWhite: "#F0EFEE",
