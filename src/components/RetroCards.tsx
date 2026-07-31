@@ -1226,7 +1226,9 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-start w-full h-full relative">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">To talk about</span>
+                <span className="retro-label">
+                  {persons.map((p, i) => p.name || `Partner ${i + 1}`).join(" & ")} Themen
+                </span>
               </div>
               <h2 className="question-font retro-heading w-full">
                 Darüber möchte ich mit dir sprechen
@@ -1236,6 +1238,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
+                  accent={pillColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="z. B. Urlaubsplanung, Aufgaben im Haushalt, Zeit zu zweit …"
                   value={postItTexts[person.key] || ""}
