@@ -1878,7 +1878,7 @@ const RetroCards: React.FC = () => {
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
             spaceBetween={16}
-            slidesPerView={1 / 0.9}
+            slidesPerView={1 / 0.8}
             centeredSlides={true}
             watchSlidesProgress={true}
             onProgress={handleSwiperProgress}
