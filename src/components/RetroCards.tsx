@@ -1665,7 +1665,9 @@ const RetroCards: React.FC = () => {
                 >
                   Bewerte
                 </div>
-                <div className="w-full bg-retro-post-it p-3">
+                <div className="w-full bg-retro-post-it rounded-none p-3">
+                  <div className="w-full">
+
                   <StarRating
                     value={intimacyRatings.shared || 0}
                     starColor="#201C1D"
