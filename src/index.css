@@ -8,6 +8,15 @@
   font-display: swap;
 }
 
+/* Self-host the question typeface so it renders reliably in preview/mobile WebViews. */
+@font-face {
+  font-family: "Stack Sans Notch Local";
+  src: url("/fonts/stack-sans-notch-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: "Kokoro";
   src: url("/fonts/kokoro-bolditalic-webfont.woff2") format("woff2");
@@ -721,4 +730,11 @@ textarea.bg-retro-post-it:focus,
   font-weight: 500;
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-feature-settings: "ss01", "ss02", "cv11";
+}
+
+/* Must follow the global typography rule above. */
+#root .question-font {
+  font-family: "Stack Sans Notch Local", "Stack Sans Notch", sans-serif;
+  font-weight: 500;
+  font-feature-settings: normal;
 }

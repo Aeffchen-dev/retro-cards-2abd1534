@@ -1186,8 +1186,8 @@ const RetroCards: React.FC = () => {
                     <StackIcon name={iconName} size={16} color="#FFFFFF" />
                   </span>
                   <span
-                    className="retro-body-copy flex flex-1 items-center h-8 px-2 min-w-0"
-                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D', fontFamily: '"Stack Sans Notch", "Figtree", Arial, sans-serif' }}
+                    className="question-font retro-body-copy flex flex-1 items-center h-8 px-2 min-w-0"
+                    style={{ backgroundColor: '#E4E6E8', color: '#201C1D' }}
                   >
                     <span className="truncate">{label}</span>
                   </span>
@@ -1206,7 +1206,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">To talk about</span>
               </div>
-              <h2 className="retro-heading w-full">
+              <h2 className="question-font retro-heading w-full">
                 Darüber möchte ich mit dir sprechen
               </h2>
             </div>
