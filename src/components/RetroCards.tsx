@@ -999,17 +999,23 @@ const RetroCards: React.FC = () => {
         const tag = target.tagName;
         if (tag === "INPUT" || tag === "TEXTAREA" || target.isContentEditable) return;
       }
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") {
         e.preventDefault();
         navigateCard("prev");
-      } else if (e.key === "ArrowRight" || e.key === " ") {
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") {
         e.preventDefault();
         navigateCard("next");
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        swiperRef?.slideTo(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        swiperRef?.slideTo(slides.length - 1);
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navigateCard]);
+  }, [navigateCard, swiperRef, slides.length]);
 
 
   const clearAllUserData = useCallback(() => {
