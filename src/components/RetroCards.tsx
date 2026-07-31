@@ -1553,10 +1553,10 @@ const RetroCards: React.FC = () => {
                           const next = setupData.extraPartners.filter((_, i) => i !== idx);
                           setSetupData({ ...setupData, extraPartners: next });
                         }}
-                        className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
-                        style={{ background: SETUP_ACCENT }}
+                        className="relative z-40 shrink-0 w-8 h-8 rounded-none flex items-center justify-center transition-opacity hover:opacity-80"
+                        style={{ background: SETUP_GREY_FILL }}
                       >
-                        <StackIcon name="IconClearSm" size={10} color={SETUP_ON_ACCENT} />
+                        <StackIcon name="IconClearSm" size={12} color={SETUP_TEXT} />
                       </button>
                     </div>
                     <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
