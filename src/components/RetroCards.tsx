@@ -1139,9 +1139,10 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="absolute left-0 right-0 bottom-0 screen-only">
               <ActionRow
-                icon="IconPencil"
+                icon="IconInfo"
                 label="Platziert eure Memojis auf der Skala"
-                accent={CARD_THEMES[cardId % CARD_THEMES.length].pill}
+                accent="#E4E6E8"
+                iconColor="#201C1D"
                 onClick={() => toggleEditMode(cardId)}
               />
             </div>

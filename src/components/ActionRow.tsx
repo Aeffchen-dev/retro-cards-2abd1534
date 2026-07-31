@@ -8,6 +8,8 @@ export interface ActionRowProps {
   label: string;
   /** Background colour of the icon tile */
   accent: string;
+  /** Icon colour, defaults to white */
+  iconColor?: string;
   /** Click handler (ignored when `href` is set and no handler is needed) */
   onClick?: (e: React.MouseEvent) => void;
   /** Render as a link instead of a button */
@@ -29,6 +31,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   icon,
   label,
   accent,
+  iconColor = "#FFFFFF",
   onClick,
   href,
   target,
@@ -41,7 +44,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         className="shrink-0 w-8 h-8 flex items-center justify-center"
         style={{ background: accent }}
       >
-        <StackIcon name={icon} size={16} color="#FFFFFF" />
+        <StackIcon name={icon} size={16} color={iconColor} />
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
