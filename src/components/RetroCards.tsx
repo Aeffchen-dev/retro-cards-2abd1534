@@ -1302,7 +1302,7 @@ const RetroCards: React.FC = () => {
         const SETUP_FIELD_BG = "#C6D1E1"; // input fill
 
         const SETUP_GREY_FILL = "#E4E6E8";
-        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-12 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-3 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
+        const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-8 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-3 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
         const fieldStyle = { background: SETUP_GREY_FILL, color: SETUP_TEXT, border: "none" } as React.CSSProperties;
         const emojiFieldStyle = { background: SETUP_ACCENT, color: SETUP_ON_ACCENT, border: "none" } as React.CSSProperties;
         const rowCls = "flex items-center gap-0 w-full mb-2";
@@ -1312,7 +1312,7 @@ const RetroCards: React.FC = () => {
           placeholder: string,
           onChange: (val: string) => void
         ) => (
-          <div className="relative shrink-0 w-12 h-12">
+          <div className="relative shrink-0 w-8 h-8">
             <input
               type="text"
               inputMode="text"
@@ -1321,9 +1321,9 @@ const RetroCards: React.FC = () => {
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
               style={emojiFieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
+              className="emoji-picker-input w-full h-full rounded-none text-center text-base retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ON_ACCENT }}>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ON_ACCENT }}>
               <svg width="12" height="12" viewBox="0 0 20 20" aria-hidden="true" fill="#FFFFFF"><path d="m2.61 1.7.25.07L4.9 3.8l-.05-.01 3.4 3.4a2.25 2.25 0 0 1 3.23 2.03 2.26 2.26 0 1 1-4.3-.97L3.8 4.85l1.9 7.88 4.8.96 3.2-3.2-.96-4.8L7.7 4.48 5.67 2.45l7.88 1.9.46.1.1.48.85 4.28.3-.3 3.32 3.33-4.21 4.2-1.06-1.05 3.15-3.15-1.2-1.2-4.22 4.21 1.2 1.2 1.06 1.06-1.06 1.07-3.32-3.33.29-.29-4.28-.85-.47-.1-.11-.46L1.7 2.6l-.29-1.19zm6.61 6.76a.76.76 0 1 0 0 1.52.76.76 0 0 0 0-1.52"/></svg>
 
             </div>
@@ -1414,16 +1414,16 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-12 mb-4 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+                className="relative z-40 w-full flex items-center gap-0 h-8 mb-4 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
-                <span className="shrink-0 w-12 h-12 flex items-center justify-center text-2xl leading-none" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>+</span>
-                <span className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: '#6A737C' }}>
+                <span className="shrink-0 w-8 h-8 flex items-center justify-center text-base leading-none" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>+</span>
+                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: '#6A737C' }}>
                   Weiteren Partner hinzufügen
                 </span>
               </button>
 
               {/* Toggle */}
-              <div className="flex items-center justify-between w-full h-12 px-3 rounded-none border-none" style={{ background: SETUP_GREY_FILL }}>
+              <div className="flex items-center justify-between w-full h-8 px-3 rounded-none border-none" style={{ background: SETUP_GREY_FILL }}>
                 <button
                   type="button"
                   onClick={(e) => {
@@ -1685,7 +1685,7 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#C6D1E1', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-[28px]">
