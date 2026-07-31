@@ -130,7 +130,8 @@ const BRAND = {
   pink: "#F39FFF",
   yellow: "#FFCC00",
   blue: "#5074EF",
-  turquoise: "#12A5A0",
+  turquoise: "#0FB3A6",
+  turquoiseDot: "#A8E85C",
   green: "#86AF25",
   offBlack: "#201C1D",
   offWhite: "#F0EFEE",
@@ -1952,8 +1953,8 @@ const RetroCards: React.FC = () => {
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
                 0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
-                1: { pill: BRAND.turquoise, pillDot: BRAND.white },
-                2: { pill: BRAND.turquoise, pillDot: BRAND.white },
+                1: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
+                2: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
                 4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
