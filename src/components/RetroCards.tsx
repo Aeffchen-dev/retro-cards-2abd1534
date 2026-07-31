@@ -1555,26 +1555,29 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-10 screen-only">
               {persons.map((person, idx) => (
-                <textarea
+                <PostItField
                   key={person.key}
+                  label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
                   value={takeawayTexts[person.key] || ""}
-                  onChange={(e) =>
-                    setTakeawayTexts({ ...takeawayTexts, [person.key]: e.target.value })
-                  }
-                  className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                  style={{ borderRadius: "0px" } as React.CSSProperties}
-                  placeholder={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
                 />
               ))}
             </div>
             {/* Print-only: takeaway notes with line breaks per person */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-6 mt-10">
               {persons.map((person, idx) => (
-                <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base min-h-[120px] whitespace-pre-wrap">
-                  {takeawayTexts[person.key] || personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                </div>
+                <PostItField
+                  key={person.key}
+                  readOnly
+                  minHeight={120}
+                  label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
+                  placeholder="z. B. wir reden zu selten über Geld – das ändern wir …"
+                  value={takeawayTexts[person.key] || ""}
+                />
               ))}
             </div>
+
           </div>
         );
 
