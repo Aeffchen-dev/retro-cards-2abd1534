@@ -1076,13 +1076,14 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
-            <ActionRow
-              icon="IconImage"
-              label="Kamera öffnen"
-              accent={CARD_THEMES[0].pill}
-              onClick={() => openCamera()}
-              style={{ marginTop: '28px' }}
-            />
+            <div className="mt-auto pt-7">
+              <ActionRow
+                icon="IconImage"
+                label="Kamera öffnen"
+                accent={CARD_THEMES[0].pill}
+                onClick={() => openCamera()}
+              />
+            </div>
           </div>
 
         );
@@ -1451,13 +1452,14 @@ const RetroCards: React.FC = () => {
               </div>
             </div>
 
-            <ActionRow
-              icon="IconArrowRight"
-              label="Los geht's"
-              accent={SETUP_ACCENT}
-              onClick={() => swiperRef?.slideNext()}
-              style={{ marginTop: '28px' }}
-            />
+            <div className="mt-auto pt-7">
+              <ActionRow
+                icon="IconArrowRight"
+                label="Los geht's"
+                accent={SETUP_ACCENT}
+                onClick={() => swiperRef?.slideNext()}
+              />
+            </div>
           </div>
         );
       }
@@ -1557,7 +1559,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full">Sichert eure Inhalte</h2>
             </div>
-            <div className="flex flex-col gap-3 w-full">
+            <div className="flex flex-col items-start gap-3 w-full">
               <ActionRow
                 icon="IconDownload"
                 label="Ergebnisse sichern"
@@ -1585,7 +1587,7 @@ const RetroCards: React.FC = () => {
                 {questionsLoaded && currentQuestion ? currentQuestion : "Frage wird geladen..."}
               </h2>
             </div>
-            <div className="flex-1 flex items-end justify-center w-full">
+            <div className="flex-1 flex items-end justify-start w-full">
               <ActionRow
                 icon="IconRefresh"
                 label="Neue Frage"
@@ -1741,9 +1743,9 @@ const RetroCards: React.FC = () => {
                       </div>
                     ) : renderCard(slideId)}
 
-                    {/* Edit/Close action row - bottom right */}
+                    {/* Edit/Close action row - bottom left */}
                     {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
-                      <div className="absolute z-40 screen-only" style={{ right: '28px', bottom: '28px' }}>
+                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
