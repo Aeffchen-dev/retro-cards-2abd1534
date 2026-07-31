@@ -1310,7 +1310,7 @@ const RetroCards: React.FC = () => {
                 ["IconLightbulb", "Das habe ich gelernt"],
                 ["IconFaceFrown", "Das hat mich Kraft gekostet"],
                 ["IconSpeechBubbleQuestion", "Was beschäftigt mich grade?"],
-                ["IconSpeechBubble", "In einem Wort"],
+                ["IconSpeechBubble", "4 Wochen in einem Wort"],
               ] as const).map(([iconName, label], i) => (
                 <ActionRow
                   key={i}
