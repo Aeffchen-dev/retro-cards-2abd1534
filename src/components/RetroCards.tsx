@@ -1352,12 +1352,29 @@ const RetroCards: React.FC = () => {
 
       case 5:
         return (
-          <div className="flex flex-col items-start gap-14 w-full justify-center">
+          <div className="flex flex-col items-start w-full h-full relative">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Nicht monogam</span>
               </div>
               <h2 className="retro-heading w-full">Wie stehts mit Dates?</h2>
+            </div>
+            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6">
+              {persons.map((person, idx) => (
+                <PostItField
+                  key={person.key}
+                  accent={pillColorOf(5)}
+                  label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                  placeholder="Deine Antwort"
+                  value={editModeNotes[5]?.[person.key] || ""}
+                  onChange={(v) =>
+                    setEditModeNotes(prev => ({
+                      ...prev,
+                      5: { ...(prev[5] || {}), [person.key]: v }
+                    }))
+                  }
+                />
+              ))}
             </div>
           </div>
         );
