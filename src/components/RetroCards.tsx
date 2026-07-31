@@ -1764,7 +1764,7 @@ const RetroCards: React.FC = () => {
                 icon="IconDownload"
                 label="Ergebnisse sichern"
                 accent={pillColorOf(9)}
-                iconColor={dotColorOf(9)}
+                iconColor={LABEL_COMBOS[2].icon}
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
                 onClick={() => window.print()}
@@ -1773,7 +1773,7 @@ const RetroCards: React.FC = () => {
                 icon="IconTrash"
                 label="Meine Einträge löschen"
                 accent={pillColorOf(9)}
-                iconColor={dotColorOf(9)}
+                iconColor={LABEL_COMBOS[2].icon}
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
                 onClick={() => clearAllUserData()}
