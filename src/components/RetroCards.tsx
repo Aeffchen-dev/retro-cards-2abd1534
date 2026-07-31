@@ -1418,16 +1418,16 @@ const RetroCards: React.FC = () => {
               style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#FF5E00' }}
             >
               <span
-                className="logo-glitch"
+                className="logo-glitch logo-3d-block"
                 data-text="Retro"
-                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+                style={{ padding: '0 12px' }}
               >
                 Retro
               </span>
               <span
-                className="logo-glitch"
+                className="logo-glitch logo-3d-block"
                 data-text="Cards"
-                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
+                style={{ padding: '0 12px' }}
               >
                 Cards
               </span>
