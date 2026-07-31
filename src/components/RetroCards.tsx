@@ -1586,14 +1586,15 @@ const RetroCards: React.FC = () => {
                 {questionsLoaded && currentQuestion ? currentQuestion : "Frage wird geladen..."}
               </h2>
             </div>
-            <div className="flex-1 flex items-end justify-start w-full">
+            <div className="absolute z-40 flex items-center" style={{ left: '28px', bottom: '28px' }}>
               <ActionRow
                 icon="IconRefresh"
-                label="Neue Frage"
+                label="Nächste Frage"
                 accent={CARD_THEMES[10 % CARD_THEMES.length].pill}
                 onClick={getRandomQuestion}
               />
             </div>
+
           </div>
         );
 
