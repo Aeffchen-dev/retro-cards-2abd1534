@@ -51,7 +51,7 @@ const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, star
           key={`${runId}-${word}-${i}`}
           className="question-word"
           style={{
-            animationDelay: `${i * stagger}ms, ${i * stagger + 90}ms`,
+            animationDelay: `${startDelay + i * stagger}ms, ${startDelay + i * stagger + 90}ms`,
             ["--reveal-color" as string]: color || "#201C1D",
           } as React.CSSProperties}
         >
