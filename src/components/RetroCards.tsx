@@ -357,7 +357,7 @@ const RetroCards: React.FC = () => {
       // Takeaways: swapped blue combo
       if (slideId === 8) return BRAND.blue;
       // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.darkPurple;
+      if (slideId === 4) return BRAND.purple;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: yellow
       if (slideId === 7) return BRAND.yellow;
@@ -1854,7 +1854,7 @@ const RetroCards: React.FC = () => {
                 1: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
                 2: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
-                4: { pill: BRAND.darkPurple, pillDot: BRAND.purple },
+                4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
                 7: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
                 8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
