@@ -1712,43 +1712,47 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={cardStyle}>
+                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
                           className="retro-body text-retro-white/80 mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
                           style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4 }}
                         >
-                          {getSlideQuestion(slideId)}
+                          {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
                         </h2>
                         
                         {/* Post-it notes — one per person */}
                         <div className="flex flex-col flex-1 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
-                          {persons.map((person, idx) => (
-                            <textarea
-                              key={person.key}
-                              value={editModeNotes[slideId]?.[person.key] || ""}
-                              onChange={(e) =>
-                                setEditModeNotes(prev => ({
-                                  ...prev,
-                                  [slideId]: { ...(prev[slideId] || {}), [person.key]: e.target.value }
-                                }))
-                              }
-                              className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                              style={{ borderRadius: "0px" }}
-                              placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                            />
-                          ))}
+                          {persons.map((person, idx) => {
+                            const aq = activeQuestion[slideId];
+                            const noteKey = aq ? `q${aq.idx}-${person.key}` : person.key;
+                            return (
+                              <textarea
+                                key={noteKey}
+                                value={editModeNotes[slideId]?.[noteKey] || ""}
+                                onChange={(e) =>
+                                  setEditModeNotes(prev => ({
+                                    ...prev,
+                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: e.target.value }
+                                  }))
+                                }
+                                className="w-full flex-1 p-5 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
+                                style={{ borderRadius: "0px" }}
+                                placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                              />
+                            );
+                          })}
                         </div>
                       </div>
                     ) : renderCard(slideId)}
 
                     {/* Edit/Close button - top right with 48x48 touch target */}
-                    {slidesWithEditButton.includes(slideId) && slideId !== 3 && (
+                    {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
                       <button
                         onClick={() => toggleEditMode(slideId)}
                         className="swiper-no-swiping absolute w-12 h-12 flex items-center justify-center z-40 cursor-pointer hover:opacity-80 transition-all duration-300 screen-only"
-                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: 'transparent', borderTop: '1px solid #201C1D', borderLeft: '1px solid #201C1D' }}
+                        style={{ touchAction: 'manipulation', right: '0px', bottom: '0px', backgroundColor: editModeSlides[slideId] ? theme.bg : 'transparent', borderTop: '1px solid #201C1D', borderLeft: '1px solid #201C1D' }}
                       >
                         {editModeSlides[slideId] ? (
                           <StackIcon name="IconClear" size={28} color="#201C1D" />
@@ -1757,6 +1761,7 @@ const RetroCards: React.FC = () => {
                         )}
                       </button>
                     )}
+
 
                     {/* Navigation arrow on first card */}
                     {index === 0 && (
