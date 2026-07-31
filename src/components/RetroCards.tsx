@@ -1693,7 +1693,8 @@ const RetroCards: React.FC = () => {
           </div>
         );
 
-      case 7:
+      case 7: {
+        const INTIMACY_LABEL_BG = "#FF8A3D"; // lighter orange for label bars
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
@@ -1704,7 +1705,7 @@ const RetroCards: React.FC = () => {
               <div className="flex flex-col w-full">
                 <div
                   className="inline-flex self-start items-center h-8 px-3 retro-body-copy text-[#201C1D]"
-                  style={{ backgroundColor: pillColorOf(7) }}
+                  style={{ backgroundColor: INTIMACY_LABEL_BG }}
                 >
                   Bewerte
                 </div>
@@ -1719,7 +1720,7 @@ const RetroCards: React.FC = () => {
                 </div>
               </div>
               <PostItField
-                accent={pillColorOf(7)}
+                accent={INTIMACY_LABEL_BG}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
                 minHeight={120}
@@ -1735,6 +1736,7 @@ const RetroCards: React.FC = () => {
 
           </div>
         );
+      }
 
       case 8:
         return (
