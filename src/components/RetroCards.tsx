@@ -503,6 +503,27 @@ const RetroCards: React.FC = () => {
     };
   }, [currentCard, activeQuestion]);
 
+  // Peek effect: neighbours sit at 80% scale, rotated 5deg inwards.
+  const handleSwiperProgress = useCallback((swiper: SwiperType) => {
+    swiper.slides.forEach((slideEl: HTMLElement) => {
+      const p = Math.max(-1, Math.min(1, (slideEl as any).progress || 0));
+      const t = Math.abs(p);
+      const scale = 1 - 0.2 * t;
+      const rotate = -5 * p;
+      slideEl.style.transformOrigin = "center center";
+      slideEl.style.transform = `rotate(${rotate}deg) scale(${scale})`;
+      slideEl.style.opacity = `${1 - 0.35 * t}`;
+      slideEl.style.zIndex = `${Math.round((1 - t) * 10)}`;
+    });
+  }, []);
+
+  const handleSwiperTransition = useCallback((swiper: SwiperType, duration: number) => {
+    swiper.slides.forEach((slideEl: HTMLElement) => {
+      slideEl.style.transitionDuration = `${duration}ms`;
+      slideEl.style.transitionTimingFunction = "cubic-bezier(0.2, 0, 0, 1)";
+    });
+  }, []);
+
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {
     // Single source of truth for the active slide — no-op when unchanged
@@ -1858,7 +1879,11 @@ const RetroCards: React.FC = () => {
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
             spaceBetween={0}
-            slidesPerView={1}
+            slidesPerView={1 / 0.9}
+            centeredSlides={true}
+            watchSlidesProgress={true}
+            onProgress={handleSwiperProgress}
+            onSetTransition={handleSwiperTransition}
             speed={500}
             initialSlide={currentCard}
             onSwiper={setSwiperRef}
