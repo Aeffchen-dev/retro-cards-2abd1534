@@ -6,6 +6,8 @@ export interface StarRatingProps {
   readonly?: boolean;
   starColor?: string;
   className?: string;
+  /** Fixed pixel size per star. When set, the row hugs its content instead of stretching. */
+  starSize?: number;
 }
 
 const starPath =
@@ -18,6 +20,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   readonly = false,
   starColor = "currentColor",
   className = "",
+  starSize,
 }) => {
   const [rating, setRating] = useState(value);
   const [hoverRating, setHoverRating] = useState(0);
@@ -52,7 +55,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   };
 
   return (
-    <div className={`swiper-no-swiping flex w-full gap-2 ${className}`}>
+    <div className={`swiper-no-swiping flex ${starSize ? "w-auto" : "w-full"} gap-2 ${className}`}>
       {[1, 2, 3, 4, 5].map((starIndex) => {
         const fillLevel = getStarFill(starIndex);
         const clipId = `clip-${componentId}-${starIndex}`;
@@ -60,8 +63,8 @@ const StarRating: React.FC<StarRatingProps> = ({
           <button
             key={starIndex}
             type="button"
-            className="flex-1 aspect-square cursor-pointer transition-colors duration-200"
-            style={{ color: starColor, touchAction: "manipulation" }}
+            className={`${starSize ? "shrink-0" : "flex-1"} aspect-square cursor-pointer transition-colors duration-200`}
+            style={{ color: starColor, touchAction: "manipulation", ...(starSize ? { width: starSize, height: starSize } : {}) }}
             onClick={(e) => handleClick(starIndex, e)}
             onMouseEnter={() => !readonly && setHoverRating(starIndex)}
             onMouseLeave={() => !readonly && setHoverRating(0)}
