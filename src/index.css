@@ -819,15 +819,3 @@ textarea.bg-retro-post-it:focus,
 @media (prefers-reduced-motion: reduce) {
   .bg-graphic-animated { animation: none; }
 }
-
-/* Isometric 3D extruded blocks behind the logo headline */
-.logo-3d-block {
-  position: relative;
-  display: inline-block;
-  background: #FFFFFF;
-  box-shadow:
-    3px -3px 0 #FF5E00,
-    6px -6px 0 #FF5E00,
-    9px -9px 0 #FF5E00,
-    12px -12px 0 #2B0A12;
-}
