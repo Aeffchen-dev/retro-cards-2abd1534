@@ -111,7 +111,6 @@ interface MemojisPosition {
 // primaries, each paired with its dark counterpart for the pill dot.
 // One colour per "last 4 weeks" question — drives the page background in edit mode
 const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
-const QUESTION_GREEN = "#2D6A4F";
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
   { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
