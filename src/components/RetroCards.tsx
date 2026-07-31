@@ -548,7 +548,7 @@ const RetroCards: React.FC = () => {
 
   // Fetch questions from Google Sheets - truly non-blocking with cache
   useEffect(() => {
-    const QUESTIONS_CACHE_KEY = 'retro-cards-questions-cache-v4';
+    const QUESTIONS_CACHE_KEY = 'retro-cards-questions-cache-v5';
     let hasCachedData = false;
     
     // Try to load cached questions immediately for fast initial render
@@ -596,34 +596,46 @@ const RetroCards: React.FC = () => {
           // Yield to main thread before parsing
           await new Promise(resolve => setTimeout(resolve, 0));
           
-          // Parse CSV - split by newlines and get second column (question)
-          let rows = text.split('\n').filter(row => row.trim());
-          
-          // Skip first row (header) for both sheets
-          if (rows.length > 0) {
-            rows = rows.slice(1);
-          }
-          
-          rows.forEach(row => {
-            // Parse CSV columns - handle quoted values
-            const columns = row.match(/("([^"]*("")*)*"|[^,]*)(,|$)/g);
-            if (columns && columns.length >= 2) {
-              // Get first column (category) and check if it's "intro"
-              const firstCol = columns[0]?.replace(/,$/, '').replace(/^"|"$/g, '').replace(/""/g, '"').trim().toLowerCase();
-              
-              // Skip intro category questions
-              if (firstCol === 'intro') {
-                return;
+          // Proper CSV parse: handles quoted fields containing commas and newlines
+          const parseCSV = (input: string): string[][] => {
+            const rows: string[][] = [];
+            let row: string[] = [];
+            let field = "";
+            let inQuotes = false;
+            for (let i = 0; i < input.length; i++) {
+              const ch = input[i];
+              if (inQuotes) {
+                if (ch === '"') {
+                  if (input[i + 1] === '"') { field += '"'; i++; }
+                  else inQuotes = false;
+                } else field += ch;
+              } else if (ch === '"') {
+                inQuotes = true;
+              } else if (ch === ',') {
+                row.push(field); field = "";
+              } else if (ch === '\n') {
+                row.push(field); field = ""; rows.push(row); row = [];
+              } else if (ch !== '\r') {
+                field += ch;
               }
-              
-              // Get second column (index 1), remove trailing comma and quotes
-              const secondCol = columns[1]?.replace(/,$/, '').replace(/^"|"$/g, '').replace(/""/g, '"').trim();
-              
-              // Skip one-word questions
-              const wordCount = secondCol?.split(/\s+/).filter(word => word.length > 0).length || 0;
-              if (secondCol && secondCol.length > 0 && wordCount > 1) {
-                questions.push(secondCol);
-              }
+            }
+            row.push(field);
+            if (row.some(c => c.trim().length > 0)) rows.push(row);
+            return rows;
+          };
+
+          const rows = parseCSV(text).slice(1); // skip header
+
+          rows.forEach(columns => {
+            if (columns.length < 2) return;
+            const firstCol = (columns[0] || "").trim().toLowerCase();
+            if (firstCol === 'intro') return;
+
+            // Full second column = the entire question sentence (commas included)
+            const secondCol = (columns[1] || "").trim();
+            const wordCount = secondCol.split(/\s+/).filter(w => w.length > 0).length;
+            if (secondCol.length > 0 && wordCount > 1) {
+              questions.push(secondCol);
             }
           });
         } catch (error) {
