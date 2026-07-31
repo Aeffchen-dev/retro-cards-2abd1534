@@ -119,7 +119,7 @@ interface MemojisPosition {
 const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
+  { bg: "#FF5E00", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
   { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
