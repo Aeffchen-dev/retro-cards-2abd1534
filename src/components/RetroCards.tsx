@@ -1267,7 +1267,7 @@ const RetroCards: React.FC = () => {
             </p>
             <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '0px' }}>
               <ActionRow
-                icon="IconArrowRight"
+                icon="IconArrowRightAlt"
                 label="Swipe um weiter zu navigieren"
                 accent={CARD_THEMES[SLIDE_LOGO % CARD_THEMES.length].pill}
                 onClick={() => swiperRef?.slideNext()}
@@ -1454,7 +1454,7 @@ const RetroCards: React.FC = () => {
 
             <div className="mt-auto pt-7">
               <ActionRow
-                icon="IconArrowRight"
+                icon="IconArrowRightAlt"
                 label="Los geht's"
                 accent={SETUP_ACCENT}
                 onClick={() => swiperRef?.slideNext()}
