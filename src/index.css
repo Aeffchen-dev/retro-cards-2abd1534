@@ -771,13 +771,13 @@ textarea.bg-retro-post-it:focus,
 .logo-glitch {
   position: relative;
   display: inline-block;
-  color: #201C1D;
+  color: #FF5E00;
   text-shadow:
     -1px 1px 0 #2B6DEF,
     -2px 2px 0 #2B6DEF,
     -3px 3px 0 #2B6DEF,
-    1px 1px 0 #FF5E00,
-    2px 2px 0 #FF5E00,
+    1px 1px 0 #FF47D1,
+    2px 2px 0 #FF47D1,
     3px 3px 0 #FF47D1,
     4px 4px 0 #FF47D1;
 }
