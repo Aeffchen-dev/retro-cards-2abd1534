@@ -1179,7 +1179,7 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '16px' }}>
               {([
-                ["IconTrophy", "Das habe(n) ich / wir richtig gerockt"],
+                ["IconAchievements", "Das habe(n) ich / wir richtig gerockt"],
                 ["IconHeart", "Ein schöner Moment"],
                 ["IconLightbulb", "Das habe ich gelernt"],
                 ["IconFaceFrown", "Das hat mich Kraft gekostet"],
