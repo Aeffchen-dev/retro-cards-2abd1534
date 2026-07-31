@@ -185,7 +185,7 @@
 /* Retro Cards specific styles */
 .retro-title {
   font-family: "Stack Sans Notch", "Figtree", Arial, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
   font-size: 32px;
   line-height: 1.05;
@@ -221,7 +221,7 @@ button {
 
 .retro-heading {
   font-family: "Stack Sans Notch", "Figtree", Arial, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-style: normal;
   font-size: 38.4px;
   line-height: 1.05;
@@ -713,3 +713,6 @@ textarea.bg-retro-post-it:focus,
   color: rgba(32, 28, 29, 0.55);
   opacity: 1;
 }
+
+/* All app text shares the pill-label weight */
+#root, #root * { font-weight: 500; }
