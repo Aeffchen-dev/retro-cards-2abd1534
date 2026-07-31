@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
+import RevealText from "@/components/RevealText";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 
@@ -1173,9 +1174,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label" style={{ lineHeight: 1, display: 'flex', alignItems: 'center' }}>Memory Time</span>
               </div>
-              <h2 className="retro-heading w-full">
-                Schießt ein paar süße Fotos zusammen
-              </h2>
+              <h2 className="retro-heading w-full"><RevealText text="Schießt ein paar süße Fotos zusammen" color={pillColorOf(cardIndex)} /></h2>
             </div>
 
             {/* Print-only: Show captured photos in a single row */}
@@ -1219,7 +1218,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Health Check</span>
               </div>
-              <h2 className="retro-heading w-full">{heading}</h2>
+              <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="relative w-full flex-1 mt-10 mb-12 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
@@ -1278,9 +1277,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">The last 4 weeks</span>
               </div>
-              <h2 className="retro-heading w-full">
-                Was war die letzten 4 Wochen so los?
-              </h2>
+              <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '16px' }}>
               {([
@@ -1316,9 +1313,7 @@ const RetroCards: React.FC = () => {
                   {persons.map((p, i) => p.name || `Partner ${i + 1}`).join(" & ")} Themen
                 </span>
               </div>
-              <h2 className="question-font retro-heading w-full">
-                Darüber möchte ich mit dir sprechen
-              </h2>
+              <h2 className="question-font retro-heading w-full"><RevealText text="Darüber möchte ich mit dir sprechen" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
@@ -1357,7 +1352,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Nicht monogam</span>
               </div>
-              <h2 className="retro-heading w-full">Wie stehts mit Dates?</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Wie stehts mit Dates?" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6">
               {persons.map((person, idx) => (
@@ -1413,7 +1408,7 @@ const RetroCards: React.FC = () => {
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
-              <h2 className="retro-heading w-full">Stärkt eure Connection</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Stärkt eure Connection" color={pillColorOf(cardIndex)} /></h2>
               <div className="flex flex-col gap-4 w-full retro-body-copy">
 
                 <p>Retro Cards ist euer monatlicher Check-in für eure Beziehung. Nehmt euch Zeit füreinander, sprecht ehrlich über das, was euch bewegt, und stärkt, was euch verbindet.</p>
@@ -1471,7 +1466,7 @@ const RetroCards: React.FC = () => {
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
-              <h2 className="retro-heading w-full">Wer macht mit?</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Wer macht mit?" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col w-full mt-8">
 
@@ -1635,7 +1630,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Feedback</span>
               </div>
-              <h2 className="retro-heading w-full">Feedback</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Feedback" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
@@ -1674,7 +1669,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
-              <h2 className="retro-heading w-full">Sind wir uns körperlich nah?</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Sind wir uns körperlich nah?" color={pillColorOf(cardIndex)} /></h2>
               <div className="flex flex-col w-full">
                 <div
                   className="inline-flex self-start items-center h-8 px-3 retro-body-copy text-[#201C1D]"
@@ -1716,9 +1711,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Takeaways</span>
               </div>
-              <h2 className="retro-heading w-full">
-                Das nehmen wir aus der Retro mit
-              </h2>
+              <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir aus der Retro mit" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
@@ -1757,7 +1750,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Archive</span>
               </div>
-              <h2 className="retro-heading w-full">Sichert eure Inhalte</h2>
+              <h2 className="retro-heading w-full"><RevealText text="Sichert eure Inhalte" color={pillColorOf(cardIndex)} /></h2>
             </div>
             <div className="flex flex-col items-start gap-3 w-full">
               <ActionRow
