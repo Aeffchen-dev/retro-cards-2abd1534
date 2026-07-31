@@ -1881,7 +1881,7 @@ const RetroCards: React.FC = () => {
 
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden py-2">
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"
@@ -1971,7 +1971,7 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: slideId === 4 ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-4">
+                <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
 
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
