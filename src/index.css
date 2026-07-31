@@ -767,43 +767,30 @@ textarea.bg-retro-post-it:focus,
     question-word-settle 0.24s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 }
 
-/* Pink glitch effect for the logo title */
+/* Color-swap flicker for the logo title */
 .logo-glitch {
   position: relative;
   display: inline-block;
+  animation: logoColorSwap 4.2s infinite steps(1, end);
 }
-.logo-glitch::before,
-.logo-glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  padding: inherit;
-  pointer-events: none;
+.logo-glitch:nth-of-type(2) {
+  animation-duration: 5.3s;
+  animation-delay: -1.7s;
 }
-.logo-glitch::before {
-  color: #F39FFF;
-  animation: logoGlitchA 2.6s infinite steps(2, end);
-}
-.logo-glitch::after {
-  color: #FF47D1;
-  animation: logoGlitchB 3.1s infinite steps(2, end);
-}
-@keyframes logoGlitchA {
-  0%, 92%, 100% { transform: translate(0, 0); opacity: 0; }
-  93% { transform: translate(-3px, 1px); opacity: 0.85; }
-  95% { transform: translate(2px, -2px); opacity: 0.6; }
-  97% { transform: translate(-1px, 2px); opacity: 0.8; }
-}
-@keyframes logoGlitchB {
-  0%, 88%, 100% { transform: translate(0, 0); opacity: 0; }
-  89% { transform: translate(3px, -1px); opacity: 0.7; }
-  92% { transform: translate(-2px, 2px); opacity: 0.5; }
-  94% { transform: translate(1px, -2px); opacity: 0.75; }
+@keyframes logoColorSwap {
+  0%, 46%, 100% { color: #FF5E00; }
+  47% { color: #FF47D1; }
+  48.5% { color: #FF5E00; }
+  62% { color: #0FB3A6; }
+  63.5% { color: #FF5E00; }
+  85% { color: #FFC02B; }
+  86% { color: #FF47D1; }
+  87.5% { color: #FF5E00; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .logo-glitch::before,
-  .logo-glitch::after { animation: none; opacity: 0; }
+  .logo-glitch { animation: none; }
 }
+
 
 /* Subtle ambient drift for the background graphic */
 @keyframes bgDrift {
