@@ -229,6 +229,8 @@ const RetroCards: React.FC = () => {
 
   // State for takeaway post-it notes (Erkenntnisse) — keyed by person key
   const [takeawayTexts, setTakeawayTexts] = useState<Record<string, string>>({});
+  // Random label color combo for the Questions slide (changes with each question)
+  const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * LABEL_COMBOS.length));
 
   // State for random questions
   const [currentQuestion, setCurrentQuestion] = useState("");
@@ -342,10 +344,14 @@ const RetroCards: React.FC = () => {
       if (slideId === 8) return BRAND.blue;
       // Intimacy: dark purple square with white icon
       if (slideId === 7) return BRAND.darkPurple;
+      // Archive: same colors as the Setup slide
+      if (slideId === 9) return LABEL_COMBOS[2].square;
+      // Questions: random combo per question
+      if (slideId === 10) return LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
-    [slides]
+    [slides, questionComboIdx]
   );
 
   // Track if initial load is complete to avoid saving on mount
@@ -607,6 +613,7 @@ const RetroCards: React.FC = () => {
     if (allQuestions.length === 0) return;
     const randomIndex = Math.floor(Math.random() * allQuestions.length);
     setCurrentQuestion(allQuestions[randomIndex]);
+    setQuestionComboIdx(Math.floor(Math.random() * LABEL_COMBOS.length));
   }, [allQuestions]);
 
   // Handle mobile Safari viewport height and card dimensions - debounced
@@ -1794,6 +1801,13 @@ const RetroCards: React.FC = () => {
                 7: { pill: BRAND.darkPurple, pillDot: BRAND.white },
                 8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
+                // Archive matches the Setup slide combo
+                9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
+                // Questions gets a random combo per question
+                10: {
+                  pill: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square,
+                  pillDot: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].icon,
+                },
               };
               const ov = overrides[slideId];
               const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov } : baseTheme;
