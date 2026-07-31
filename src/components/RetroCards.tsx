@@ -58,6 +58,12 @@ interface SetupData {
   extraPartners: ExtraPartner[];
 }
 
+const REFLECTION_FIELDS = [
+  ["nice", "Das fand ich schön", "z. B. unser spontaner Abend am Fluss letzte Woche …"],
+  ["thanks", "Dafür möchte ich Danke sagen", "z. B. dass du dich um alles gekümmert hast, als ich krank war …"],
+  ["idea", "Das wünsche ich mir", "z. B. mehr gemeinsame Zeit ohne Handy …"],
+] as const;
+
 const NAME1_PLACEHOLDER = "Dein Name";
 const NAME2_PLACEHOLDER = "Name deines Partners";
 const EMOJI1_PLACEHOLDER = "🧚‍♂️";
