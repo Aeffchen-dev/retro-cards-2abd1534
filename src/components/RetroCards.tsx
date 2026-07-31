@@ -1742,7 +1742,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit/Close action row - bottom right */}
                     {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
-                      <div className="absolute right-0 bottom-0 z-40 screen-only">
+                      <div className="absolute z-40 screen-only" style={{ right: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
