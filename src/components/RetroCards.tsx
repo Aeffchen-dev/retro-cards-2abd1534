@@ -1864,11 +1864,16 @@ const RetroCards: React.FC = () => {
       }}
     >
       {/* Decorative page background graphic */}
-      <img
-        src={bgGraphic.url}
-        alt=""
+      <div
         aria-hidden="true"
-        className="pointer-events-none select-none absolute inset-y-0 right-0 h-full w-auto max-w-none object-cover opacity-70 screen-only"
+        className="pointer-events-none select-none absolute inset-0 z-0 screen-only"
+        style={{
+          backgroundImage: `url(${bgGraphic.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "right center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.85,
+        }}
       />
 
       {/* Header spacer */}
