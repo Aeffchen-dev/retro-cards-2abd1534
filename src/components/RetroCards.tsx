@@ -269,6 +269,16 @@ const RetroCards: React.FC = () => {
 
   const totalCards = slides.length;
 
+  // The pill/label colour of a slide is derived from its POSITION in the slides
+  // array (same as the rendered pill), not from its slide id.
+  const pillColorOf = useCallback(
+    (slideId: number) => {
+      const idx = slides.indexOf(slideId);
+      return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
+    },
+    [slides]
+  );
+
   // Track if initial load is complete to avoid saving on mount
   const isInitialMount = useRef(true);
 
