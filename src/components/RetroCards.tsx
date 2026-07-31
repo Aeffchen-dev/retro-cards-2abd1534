@@ -1404,38 +1404,68 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col w-full mt-8">
 
-              {/* Person 1 */}
-              <div className={rowCls}>
-                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
-                <div className="name-input-wrapper first-name-input-wrapper flex-1">
-                  <input
-                    type="text"
-                    value={setupData.name1}
-                    onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
-                    placeholder={NAME1_PLACEHOLDER}
-                    style={fieldStyle}
-                    className={nameInputCls}
-                  />
+              {/* Person 1 — post-it style field */}
+              <div className="flex flex-col w-full mb-4">
+                <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
+                  {NAME1_PLACEHOLDER}
+                </div>
+                <div className="flex items-center w-full" style={{ background: SETUP_GREY_FILL }}>
+                  {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
+                  <div className="name-input-wrapper first-name-input-wrapper flex-1">
+                    <input
+                      type="text"
+                      value={setupData.name1}
+                      onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
+                      placeholder="Deine Antwort"
+                      style={fieldStyle}
+                      className={nameInputCls}
+                    />
+                  </div>
                 </div>
               </div>
-              {/* Person 2 */}
-              <div className={rowCls}>
-                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
-                <div className="name-input-wrapper flex-1">
-                  <input
-                    type="text"
-                    value={setupData.name2}
-                    onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
-                    placeholder={NAME2_PLACEHOLDER}
-                    style={fieldStyle}
-                    className={nameInputCls}
-                  />
+
+              {/* Person 2 — post-it style field */}
+              <div className="flex flex-col w-full mb-4">
+                <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
+                  {NAME2_PLACEHOLDER}
+                </div>
+                <div className="flex items-center w-full" style={{ background: SETUP_GREY_FILL }}>
+                  {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
+                  <div className="name-input-wrapper flex-1">
+                    <input
+                      type="text"
+                      value={setupData.name2}
+                      onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
+                      placeholder="Deine Antwort"
+                      style={fieldStyle}
+                      className={nameInputCls}
+                    />
+                  </div>
                 </div>
               </div>
-              {/* Extra partners */}
+
+              {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className={rowCls}>
-                  <div className="flex-1 flex items-center gap-0">
+                <div key={idx} className="flex flex-col w-full mb-4">
+                  <div className="flex items-center justify-between w-full">
+                    <div className="inline-flex items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
+                      {`Partner ${idx + 3}`}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Partner entfernen"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const next = setupData.extraPartners.filter((_, i) => i !== idx);
+                        setSetupData({ ...setupData, extraPartners: next });
+                      }}
+                      className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
+                      style={{ background: SETUP_ACCENT }}
+                    >
+                      <StackIcon name="IconClearSm" size={10} color={SETUP_ON_ACCENT} />
+                    </button>
+                  </div>
+                  <div className="flex items-center w-full" style={{ background: SETUP_GREY_FILL }}>
                     {emojiPicker(p.emoji, "🧚", (val) => {
                       const next = [...setupData.extraPartners];
                       next[idx] = { ...next[idx], emoji: val };
@@ -1450,28 +1480,15 @@ const RetroCards: React.FC = () => {
                           next[idx] = { ...next[idx], name: e.target.value };
                           setSetupData({ ...setupData, extraPartners: next });
                         }}
-                        placeholder={`Partner ${idx + 3}`}
+                        placeholder="Deine Antwort"
                         style={fieldStyle}
-                    className={nameInputCls}
+                        className={nameInputCls}
                       />
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    aria-label="Partner entfernen"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const next = setupData.extraPartners.filter((_, i) => i !== idx);
-                      setSetupData({ ...setupData, extraPartners: next });
-                    }}
-                    className="relative z-40 shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-transform hover:scale-105"
-                    style={{ background: SETUP_ACCENT }}
-                  >
-                    <StackIcon name="IconClearSm" size={10} color={SETUP_ON_ACCENT} />
-
-                  </button>
                 </div>
               ))}
+
               {/* Add partner button */}
               <button
                 type="button"
