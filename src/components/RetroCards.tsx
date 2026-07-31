@@ -1194,7 +1194,7 @@ const RetroCards: React.FC = () => {
             )}
             <div className="mt-auto pt-7">
               <ActionRow
-                icon="IconImage"
+                iconNode={<Camera size={16} />}
                 label="Kamera öffnen"
                 accent={pillColorOf(0)}
                 onClick={() => openCamera()}
