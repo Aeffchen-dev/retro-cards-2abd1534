@@ -1398,13 +1398,14 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-12 px-3 mb-4 retro-body-copy text-[#6A737C] transition-colors hover:text-[#201C1D] no-underline rounded-none border border-[#201C1D]"
+                className="relative z-40 w-full flex items-center gap-0 h-12 mb-4 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
-                <span className="text-left whitespace-nowrap">
-                  <span>+ </span>
+                <span className="shrink-0 w-12 h-12 flex items-center justify-center text-2xl leading-none" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>+</span>
+                <span className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: '#6A737C' }}>
                   Weiteren Partner hinzufügen
                 </span>
               </button>
+
               {/* Toggle */}
               <div className="flex items-center justify-between w-full h-12 px-3 rounded-none border border-[#201C1D]">
                 <button
