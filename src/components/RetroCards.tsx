@@ -1801,6 +1801,13 @@ const RetroCards: React.FC = () => {
                 7: { pill: BRAND.darkPurple, pillDot: BRAND.white },
                 8: { pill: BRAND.blue, pillDot: BRAND.lightBlue },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
+                // Archive matches the Setup slide combo
+                9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
+                // Questions gets a random combo per question
+                10: {
+                  pill: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square,
+                  pillDot: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].icon,
+                },
               };
               const ov = overrides[slideId];
               const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov } : baseTheme;
