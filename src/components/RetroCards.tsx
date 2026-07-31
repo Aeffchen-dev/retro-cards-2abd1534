@@ -1878,7 +1878,7 @@ const RetroCards: React.FC = () => {
             modules={[Navigation, Pagination, Keyboard]}
             keyboard={{ enabled: true, onlyInViewport: true, pageUpDown: false }}
             spaceBetween={16}
-            slidesPerView={1 / 0.9}
+            slidesPerView={1}
             centeredSlides={true}
             watchSlidesProgress={true}
             onProgress={handleSwiperProgress}
@@ -1960,7 +1960,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[80%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-[16px] rounded-tl-none p-[28px] shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[80%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl overflow-y-auto"
 
                     style={{
                       ...cardStyle,
@@ -1976,7 +1976,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
-                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-[16px] rounded-tl-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
+                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
@@ -2060,7 +2060,7 @@ const RetroCards: React.FC = () => {
               {/* Skip Logo, Intro, Setup, Archive (9) and Questions (10) in print */}
               {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (
                 <div className="print-slide-page" style={{ order: index * 2 }}>
-                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-[16px] rounded-tl-none">
+                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-none">
                     {renderCard(slideId)}
                   </div>
                 </div>
@@ -2069,7 +2069,7 @@ const RetroCards: React.FC = () => {
               {/* Notes page right after its slide - on its own page */}
               {slidesWithEditButton.includes(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
-                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-[16px] rounded-tl-none">
+                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-none">
                     {/* Question text */}
                     <h2 
                       className="retro-body mb-6"
