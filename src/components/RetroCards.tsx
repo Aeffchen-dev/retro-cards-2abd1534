@@ -360,8 +360,8 @@ const RetroCards: React.FC = () => {
       // Talk-about / Nicht monogam: swapped
       if (slideId === 4) return BRAND.purple;
       if (slideId === 5) return BRAND.stackOrange;
-      // Intimacy: same as health check
-      if (slideId === 7) return BRAND.turquoise;
+      // Intimacy: orange
+      if (slideId === 7) return BRAND.stackOrange;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return LABEL_COMBOS[2].square;
       // Questions: random combo per question
@@ -1888,7 +1888,7 @@ const RetroCards: React.FC = () => {
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
                 4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                7: { pill: BRAND.turquoise, pillDot: BRAND.white },
+                7: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
                 8: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
                 // Archive matches the Setup slide combo
