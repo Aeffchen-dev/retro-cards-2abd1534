@@ -1490,7 +1490,7 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full"><RevealText text="Wer macht mit?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col w-full mt-8 gap-6">
+            <div className="flex flex-col w-full flex-1 mt-8 gap-6 justify-between">
 
               {/* Person 1 — post-it style field */}
               <div className="flex flex-col gap-2 w-full">
@@ -1580,7 +1580,8 @@ const RetroCards: React.FC = () => {
 
 
 
-              {/* Add partner button */}
+              {/* Add partner + toggle group — fixed 8px spacing */}
+              <div className="flex flex-col w-full gap-2">
               <button
                 type="button"
                 onClick={(e) => {
@@ -1627,6 +1628,7 @@ const RetroCards: React.FC = () => {
                   Nicht monogam
                 </span>
               </button>
+              </div>
 
             </div>
 
