@@ -1138,7 +1138,7 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute left-0 right-0 bottom-0 screen-only">
+            <div className="absolute left-0 bottom-0 screen-only">
               <ActionRow
                 icon="IconInfo"
                 label="Platziert eure Memojis auf der Skala"
@@ -1745,7 +1745,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit/Close action row - bottom left */}
                     {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
-                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
+                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '68px' : '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
