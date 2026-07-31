@@ -1762,19 +1762,19 @@ const RetroCards: React.FC = () => {
                             const aq = activeQuestion[slideId];
                             const noteKey = aq ? `q${aq.idx}-${person.key}` : person.key;
                             return (
-                              <textarea
+                              <PostItField
                                 key={noteKey}
+                                label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                                placeholder="z. B. was uns dazu gerade eingefallen ist …"
                                 value={editModeNotes[slideId]?.[noteKey] || ""}
-                                onChange={(e) =>
+                                onChange={(v) =>
                                   setEditModeNotes(prev => ({
                                     ...prev,
-                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: e.target.value }
+                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: v }
                                   }))
                                 }
-                                className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                                style={{ borderRadius: "0px" }}
-                                placeholder={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                               />
+
                             );
                           })}
                         </div>
