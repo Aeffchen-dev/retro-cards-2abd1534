@@ -1399,7 +1399,7 @@ const RetroCards: React.FC = () => {
           placeholder: string,
           onChange: (val: string) => void
         ) => (
-          <div className="relative shrink-0 w-12 h-12">
+          <div className="swiper-no-swiping inline-flex items-center gap-0 h-8 self-start">
             <input
               type="text"
               inputMode="text"
@@ -1407,16 +1407,25 @@ const RetroCards: React.FC = () => {
               onChange={(e) => onChange(sanitizeEmoji(e.target.value))}
               onFocus={(e) => e.currentTarget.select()}
               placeholder={placeholder}
+              aria-label="Emoji auswählen"
               style={emojiFieldStyle}
-              className="emoji-picker-input w-full h-full rounded-none text-center text-2xl retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10 focus:opacity-10"
+              className="emoji-picker-input shrink-0 w-8 h-8 rounded-none text-center text-base retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center pointer-events-none" style={{ background: SETUP_ON_ACCENT }}>
-              <svg width="14" height="14" viewBox="0 0 20 20" aria-hidden="true" fill="#FFFFFF"><path d="m2.61 1.7.25.07L4.9 3.8l-.05-.01 3.4 3.4a2.25 2.25 0 0 1 3.23 2.03 2.26 2.26 0 1 1-4.3-.97L3.8 4.85l1.9 7.88 4.8.96 3.2-3.2-.96-4.8L7.7 4.48 5.67 2.45l7.88 1.9.46.1.1.48.85 4.28.3-.3 3.32 3.33-4.21 4.2-1.06-1.05 3.15-3.15-1.2-1.2-4.22 4.21 1.2 1.2 1.06 1.06-1.06 1.07-3.32-3.33.29-.29-4.28-.85-.47-.1-.11-.46L1.7 2.6l-.29-1.19zm6.61 6.76a.76.76 0 1 0 0 1.52.76.76 0 0 0 0-1.52"/></svg>
-
-
-            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const input = (e.currentTarget.previousElementSibling as HTMLInputElement | null);
+                input?.focus();
+              }}
+              className="h-8 flex items-center px-3 retro-body-copy whitespace-nowrap border-none rounded-none"
+              style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}
+            >
+              Emoji auswählen
+            </button>
           </div>
         );
+
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
@@ -1425,9 +1434,8 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col w-full mt-8">
 
               {/* Person 1 — post-it style field */}
-              <div className="flex items-center gap-4 w-full mb-4">
-                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
-                <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex flex-col gap-2 w-full mb-4">
+                <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME1_PLACEHOLDER}
                   </div>
@@ -1442,12 +1450,12 @@ const RetroCards: React.FC = () => {
                     />
                   </div>
                 </div>
+                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
               </div>
 
               {/* Person 2 — post-it style field */}
-              <div className="flex items-center gap-4 w-full mb-4">
-                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
-                <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex flex-col gap-2 w-full mb-4">
+                <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME2_PLACEHOLDER}
                   </div>
@@ -1462,17 +1470,14 @@ const RetroCards: React.FC = () => {
                     />
                   </div>
                 </div>
+                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
               </div>
+
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex items-center gap-4 w-full mb-4">
-                  {emojiPicker(p.emoji, "🧚", (val) => {
-                    const next = [...setupData.extraPartners];
-                    next[idx] = { ...next[idx], emoji: val };
-                    setSetupData({ ...setupData, extraPartners: next });
-                  })}
-                  <div className="flex flex-col flex-1 min-w-0">
+                <div key={idx} className="flex flex-col gap-2 w-full mb-4">
+                  <div className="flex flex-col w-full min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <div className="inline-flex items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                         {`Partner ${idx + 3}`}
@@ -1506,8 +1511,14 @@ const RetroCards: React.FC = () => {
                       />
                     </div>
                   </div>
+                  {emojiPicker(p.emoji, "🧚", (val) => {
+                    const next = [...setupData.extraPartners];
+                    next[idx] = { ...next[idx], emoji: val };
+                    setSetupData({ ...setupData, extraPartners: next });
+                  })}
                 </div>
               ))}
+
 
 
               {/* Add partner button */}
