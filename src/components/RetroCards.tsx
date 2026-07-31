@@ -1420,14 +1420,14 @@ const RetroCards: React.FC = () => {
               <span
                 className="logo-glitch"
                 data-text="Retro"
-                style={{ backgroundColor: '#3A3A3A', padding: '0 12px' }}
+                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
               >
                 Retro
               </span>
               <span
                 className="logo-glitch"
                 data-text="Cards"
-                style={{ backgroundColor: '#3A3A3A', padding: '0 12px' }}
+                style={{ backgroundColor: '#FFFFFF', padding: '0 12px' }}
               >
                 Cards
               </span>
@@ -2009,7 +2009,7 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: (slideId === 4 || slideId === SLIDE_LOGO) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: slideId === 4 ? '#FFFFFF' : slideId === SLIDE_LOGO ? '#C6D1E1' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
