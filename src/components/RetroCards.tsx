@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
-import { Camera } from "lucide-react";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1095,7 +1094,7 @@ const RetroCards: React.FC = () => {
             )}
             <div className="mt-auto pt-7">
               <ActionRow
-                iconNode={<Camera size={16} strokeWidth={2} />}
+                icon="IconImage"
                 label="Kamera öffnen"
                 accent={pillColorOf(0)}
                 onClick={() => openCamera()}
