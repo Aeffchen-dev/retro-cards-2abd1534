@@ -1699,11 +1699,11 @@ const RetroCards: React.FC = () => {
                 >
                   Bewerte
                 </div>
-                <div className="inline-flex self-start items-center h-8 px-2 bg-retro-post-it border-none" style={{ borderRadius: 0 }}>
+                <div className="inline-flex self-start items-center h-10 px-2 bg-retro-post-it border-none" style={{ borderRadius: 0 }}>
 
                   <StarRating
                     value={intimacyRatings.shared || 0}
-                    starSize={20}
+                    starSize={28}
                     starColor="#201C1D"
                     onChange={(v) => setIntimacyRatings({ ...intimacyRatings, shared: v })}
                   />
