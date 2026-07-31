@@ -1417,7 +1417,7 @@ const RetroCards: React.FC = () => {
                 className="relative z-40 w-full flex items-center gap-0 h-8 mb-2 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
                 <span className="shrink-0 w-8 h-8 flex items-center justify-center leading-none" style={{ background: SETUP_ACCENT }}>
-                  <StackIcon name="IconPlusSm" size={16} color="#FFFFFF" />
+                  <StackIcon name="IconPlus" size={16} color="#FFFFFF" />
                 </span>
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Weiteren Partner hinzufügen
@@ -1437,12 +1437,17 @@ const RetroCards: React.FC = () => {
               >
                 <span
                   className="shrink-0 w-8 h-8 flex items-center justify-center"
-                  style={{ background: 'transparent', border: '1px solid #201C1D' }}
+                  style={{ background: SETUP_ACCENT }}
                 >
-                  {setupData.openRelationship && (
-                    <span className="w-4 h-4" style={{ background: '#201C1D' }} />
-                  )}
+                  <span
+                    className="w-4 h-4"
+                    style={{
+                      border: '1px solid #201C1D',
+                      background: setupData.openRelationship ? '#201C1D' : 'transparent',
+                    }}
+                  />
                 </span>
+
 
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Nicht monogam
