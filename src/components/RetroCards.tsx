@@ -1929,7 +1929,7 @@ const RetroCards: React.FC = () => {
                                 key={noteKey}
                                 accent={pillColorOf(slideId)}
                                 label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                placeholder="z. B. was uns dazu gerade eingefallen ist …"
+                                placeholder="Deine Antwort"
                                 value={editModeNotes[slideId]?.[noteKey] || ""}
                                 onChange={(v) =>
                                   setEditModeNotes(prev => ({
