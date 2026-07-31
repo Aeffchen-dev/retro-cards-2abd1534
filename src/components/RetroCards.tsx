@@ -1170,8 +1170,13 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute left-0 right-0 bottom-0 h-12 flex items-center screen-only" style={{ borderTop: '1px solid #201C1D', paddingLeft: '28px', paddingRight: '60px', color: '#6A737C', fontSize: '12px', lineHeight: 1.4 }}>
-              Platziert eure Memojis auf der Skala
+            <div className="absolute left-0 right-0 bottom-0 screen-only">
+              <ActionRow
+                icon="IconPen"
+                label="Platziert eure Memojis auf der Skala"
+                accent={CARD_THEMES[cardId % CARD_THEMES.length].pill}
+                onClick={() => toggleEditMode(cardId)}
+              />
             </div>
 
           </div>
