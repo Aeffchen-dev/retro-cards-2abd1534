@@ -1497,33 +1497,30 @@ const RetroCards: React.FC = () => {
               <h2 className="retro-heading w-full">Feedback</h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-10 screen-only">
-              {([
-                ["nice", "Das fand ich schön"],
-                ["thanks", "Dafür möchte ich Danke sagen"],
-                ["idea", "Das wünsche ich mir"],
-              ] as const).map(([key, placeholder]) => (
-                <textarea
+              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+                <PostItField
                   key={key}
-                  value={reflectionTexts[key] || ""}
-                  onChange={(e) => setReflectionTexts({ ...reflectionTexts, [key]: e.target.value })}
-                  className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
-                  style={{ borderRadius: "0px" } as React.CSSProperties}
+                  label={label}
                   placeholder={placeholder}
+                  value={reflectionTexts[key] || ""}
+                  onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />
               ))}
             </div>
             {/* Print-only */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-4 mt-10">
-              {([
-                ["nice", "Das fand ich schön"],
-                ["thanks", "Dafür möchte ich Danke sagen"],
-                ["idea", "Das wünsche ich mir"],
-              ] as const).map(([key, placeholder]) => (
-                <div key={key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base min-h-[100px] whitespace-pre-wrap">
-                  {reflectionTexts[key] || placeholder}
-                </div>
+              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+                <PostItField
+                  key={key}
+                  readOnly
+                  minHeight={100}
+                  label={label}
+                  placeholder={placeholder}
+                  value={reflectionTexts[key] || ""}
+                />
               ))}
             </div>
+
           </div>
         );
 
