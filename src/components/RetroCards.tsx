@@ -222,6 +222,8 @@ const RetroCards: React.FC = () => {
 
   // State for edit mode on slides — keyed by slide id (case number)
   const [editModeSlides, setEditModeSlides] = useState<Record<number, boolean>>({});
+  // Which question row of a slide is being edited (slide 3 rows)
+  const [activeQuestion, setActiveQuestion] = useState<Record<number, { idx: number; label: string } | null>>({});
   // Edit-mode notes keyed by slideId -> { [personKey]: text } (migrates from legacy {note1, note2})
   const [editModeNotes, setEditModeNotes] = useState<Record<number, Record<string, string>>>(() => {
     const saved = loadFromStorage<Record<number, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
