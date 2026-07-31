@@ -371,8 +371,10 @@ const RetroCards: React.FC = () => {
   // Page background: near-black tint of the current slide's label colour, morphing on transition
   useEffect(() => {
     const theme = CARD_THEMES[currentCard % CARD_THEMES.length];
-    if (theme) {
-      const h = theme.pill.replace("#", "");
+    const aq = activeQuestion[currentCard];
+    const source = aq ? QUESTION_COLORS[aq.idx % QUESTION_COLORS.length] : theme?.pill;
+    if (source) {
+      const h = source.replace("#", "");
       const r = parseInt(h.slice(0, 2), 16);
       const g = parseInt(h.slice(2, 4), 16);
       const b = parseInt(h.slice(4, 6), 16);
@@ -384,7 +386,7 @@ const RetroCards: React.FC = () => {
     return () => {
       document.body.style.backgroundColor = "";
     };
-  }, [currentCard]);
+  }, [currentCard, activeQuestion]);
 
   // Handle slide change - memoized to prevent unnecessary re-renders
   const handleSlideChange = useCallback((swiper: SwiperType) => {
