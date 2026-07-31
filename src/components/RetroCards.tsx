@@ -1476,13 +1476,8 @@ const RetroCards: React.FC = () => {
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex items-center gap-4 w-full mb-4">
-                  {emojiPicker(p.emoji, "🧚", (val) => {
-                    const next = [...setupData.extraPartners];
-                    next[idx] = { ...next[idx], emoji: val };
-                    setSetupData({ ...setupData, extraPartners: next });
-                  })}
-                  <div className="flex flex-col flex-1 min-w-0">
+                <div key={idx} className="flex flex-col gap-2 w-full mb-4">
+                  <div className="flex flex-col w-full min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <div className="inline-flex items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                         {`Partner ${idx + 3}`}
@@ -1516,8 +1511,14 @@ const RetroCards: React.FC = () => {
                       />
                     </div>
                   </div>
+                  {emojiPicker(p.emoji, "🧚", (val) => {
+                    const next = [...setupData.extraPartners];
+                    next[idx] = { ...next[idx], emoji: val };
+                    setSetupData({ ...setupData, extraPartners: next });
+                  })}
                 </div>
               ))}
+
 
 
               {/* Add partner button */}
