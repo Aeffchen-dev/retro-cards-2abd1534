@@ -1138,7 +1138,7 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute left-0 bottom-0 screen-only">
+            <div className="absolute screen-only" style={{ left: '28px', bottom: '28px' }}>
               <ActionRow
                 icon="IconInfo"
                 label="Platziert eure Memojis auf der Skala"
