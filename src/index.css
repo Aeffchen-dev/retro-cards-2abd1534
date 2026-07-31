@@ -731,13 +731,21 @@ textarea.bg-retro-post-it:focus,
   font-weight: 500;
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-feature-settings: "ss01", "ss02", "cv11";
+  letter-spacing: 0.005em;
+  font-style: normal;
+  text-transform: none;
 }
 
 /* Must follow the global typography rule above. */
 #root .question-font,
+#root .question-font *,
 #root .retro-heading,
-#root .retro-title {
+#root .retro-heading *,
+#root .retro-title,
+#root .retro-title * {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", sans-serif;
   font-weight: 400;
   font-feature-settings: normal;
+  letter-spacing: -0.02em;
 }
+
