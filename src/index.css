@@ -733,8 +733,10 @@ textarea.bg-retro-post-it:focus,
 }
 
 /* Must follow the global typography rule above. */
-#root .question-font {
-  font-family: "Stack Sans Notch Local", "Stack Sans Notch", sans-serif;
-  font-weight: 500;
+#root .question-font,
+#root .retro-heading,
+#root .retro-title {
+  font-family: "Stack Sans Notch", "Stack Sans Notch Local", sans-serif;
+  font-weight: 400;
   font-feature-settings: normal;
 }
