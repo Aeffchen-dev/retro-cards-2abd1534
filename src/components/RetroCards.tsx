@@ -330,6 +330,8 @@ const RetroCards: React.FC = () => {
   // array (same as the rendered pill), not from its slide id.
   const pillColorOf = useCallback(
     (slideId: number) => {
+      // Memory Time slide is always purple
+      if (slideId === 0) return BRAND.purple;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
