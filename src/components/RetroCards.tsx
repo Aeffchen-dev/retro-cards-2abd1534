@@ -355,8 +355,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
       if (slideId === 1 || slideId === 2) return BRAND.turquoise;
-      // Last 4 weeks: swapped green combo
-      if (slideId === 3) return BRAND.green;
+      // Last 4 weeks: orange
+      if (slideId === 3) return BRAND.stackOrange;
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
@@ -1969,7 +1969,7 @@ const RetroCards: React.FC = () => {
                 0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 1: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
                 2: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
-                3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
+                3: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
                 4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
                 7: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
