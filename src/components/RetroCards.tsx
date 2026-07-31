@@ -118,16 +118,66 @@ interface MemojisPosition {
 // One colour per "last 4 weeks" question — drives the page background in edit mode
 const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
 
-const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] = [
-  { bg: "#F39FFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#5074EF", pill: "#5074EF", pillDot: "#00165E" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#FFCC00", pill: "#FFCC00", pillDot: "#423101" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#FF5E00", pill: "#FF5E00", pillDot: "#31070F" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#86AF25", pill: "#86AF25", pillDot: "#263603" },
-  { bg: "#FFFFFF", text: "#201C1D", accent: "#9D9CFF", pill: "#9D9CFF", pillDot: "#390A91" },
+// Stack Overflow brand palette (stackoverflow.design/brand/color)
+const BRAND = {
+  stackOrange: "#FF5E00",
+  purple: "#9D9CFF",
+  pink: "#F39FFF",
+  yellow: "#FFCC00",
+  blue: "#5074EF",
+  green: "#86AF25",
+  offBlack: "#201C1D",
+  offWhite: "#F0EFEE",
+  lightBlue: "#C6D1E1",
+  lightBrown: "#998B7A",
+  darkOrange: "#31070F",
+  mediumOrange: "#6E1527",
+  darkPurple: "#390A91",
+  darkPink: "#4D1955",
+  darkGreen: "#263603",
+  darkYellow: "#423101",
+  darkBlue: "#00165E",
+  white: "#FFFFFF",
+} as const;
+
+// Approved label color combinations (icon color on square color) from the
+// "Label color guidance" section of the brand docs. Order = rotation order.
+const LABEL_COMBOS: { icon: string; square: string }[] = [
+  { icon: BRAND.offBlack, square: BRAND.stackOrange },
+  { icon: BRAND.purple, square: BRAND.darkPurple },
+  { icon: BRAND.blue, square: BRAND.lightBlue },
+  { icon: BRAND.lightBrown, square: BRAND.darkYellow },
+  { icon: BRAND.stackOrange, square: BRAND.mediumOrange },
+  { icon: BRAND.lightBlue, square: BRAND.stackOrange },
+  { icon: BRAND.green, square: BRAND.darkGreen },
+  { icon: BRAND.pink, square: BRAND.darkPink },
 ];
+
+// Card backgrounds stay neutral (brand background colors); the accent/pill of
+// each slide is driven by the approved label combination for that index.
+const CARD_BACKGROUNDS = [
+  BRAND.pink,
+  BRAND.white,
+  BRAND.white,
+  BRAND.white,
+  BRAND.white,
+  BRAND.white,
+  BRAND.white,
+  BRAND.white,
+];
+
+const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
+  CARD_BACKGROUNDS.map((bg, i) => {
+    const combo = LABEL_COMBOS[i % LABEL_COMBOS.length];
+    return {
+      bg,
+      text: BRAND.offBlack,
+      accent: combo.square,
+      pill: combo.square,
+      pillDot: combo.icon,
+    };
+  });
+
 
 
 const RetroCards: React.FC = () => {
