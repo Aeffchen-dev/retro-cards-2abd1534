@@ -1291,8 +1291,13 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute flex items-center" style={{ left: 0, bottom: '-28px', height: '48px' }}>
-              <span style={{ fontSize: '12px', lineHeight: 1.4, color: '#6A737C' }}>Swipe um weiter zu navigieren</span>
+            <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '-28px' }}>
+              <ActionRow
+                icon="IconArrowRight"
+                label="Swipe um weiter zu navigieren"
+                accent={CARD_THEMES[SLIDE_LOGO % CARD_THEMES.length].pill}
+                onClick={() => swiperRef?.slideNext()}
+              />
             </div>
 
 
