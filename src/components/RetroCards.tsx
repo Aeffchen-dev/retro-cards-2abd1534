@@ -1699,7 +1699,13 @@ const RetroCards: React.FC = () => {
                   <div
                     className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[720px] min-h-0 mx-auto flex flex-col justify-start items-start gap-6 sm:gap-10 rounded-none p-[28px] shadow-2xl overflow-y-auto"
 
-                    style={cardStyle}
+                    style={{
+                      ...cardStyle,
+                      ...(slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId])
+                        ? { paddingBottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '112px' : '72px' }
+                        : {}),
+                    }}
+
                   >
 
 
