@@ -77,6 +77,7 @@ export const STORAGE_KEYS = {
   MEMOJI_POSITIONS: 'retro-cards-memoji-positions',
   POST_IT_TEXTS: 'retro-cards-post-it-texts',
   TAKEAWAY_TEXTS: 'retro-cards-takeaway-texts',
+  INTIMACY_RATINGS: 'retro-cards-intimacy-ratings',
   CURRENT_QUESTION: 'retro-cards-current-question',
   EDIT_MODE_NOTES: 'retro-cards-edit-mode-notes',
   SETUP_DATA: 'retro-cards-setup-data',
