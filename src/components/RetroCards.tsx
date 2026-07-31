@@ -153,6 +153,16 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
   { icon: BRAND.pink, square: BRAND.darkPink },
 ];
 
+// Palette used for the randomly coloured Questions slide
+const QUESTION_COMBOS: { icon: string; square: string }[] = [
+  { icon: BRAND.stackOrange, square: BRAND.darkOrange },
+  { icon: BRAND.offBlack, square: BRAND.stackOrange },
+  { icon: BRAND.darkPink, square: BRAND.pink },
+  { icon: BRAND.offBlack, square: BRAND.yellow },
+  { icon: BRAND.offWhite, square: BRAND.offBlack },
+  { icon: BRAND.blue, square: BRAND.lightBlue },
+];
+
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
 const CARD_BACKGROUNDS = [
@@ -230,7 +240,7 @@ const RetroCards: React.FC = () => {
   // State for takeaway post-it notes (Erkenntnisse) — keyed by person key
   const [takeawayTexts, setTakeawayTexts] = useState<Record<string, string>>({});
   // Random label color combo for the Questions slide (changes with each question)
-  const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * LABEL_COMBOS.length));
+  const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * QUESTION_COMBOS.length));
 
   // State for random questions
   const [currentQuestion, setCurrentQuestion] = useState("");
@@ -347,7 +357,7 @@ const RetroCards: React.FC = () => {
       // Archive: same colors as the Setup slide
       if (slideId === 9) return LABEL_COMBOS[2].square;
       // Questions: random combo per question
-      if (slideId === 10) return LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square;
+      if (slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
@@ -613,7 +623,7 @@ const RetroCards: React.FC = () => {
     if (allQuestions.length === 0) return;
     const randomIndex = Math.floor(Math.random() * allQuestions.length);
     setCurrentQuestion(allQuestions[randomIndex]);
-    setQuestionComboIdx(Math.floor(Math.random() * LABEL_COMBOS.length));
+    setQuestionComboIdx(Math.floor(Math.random() * QUESTION_COMBOS.length));
   }, [allQuestions]);
 
   // Handle mobile Safari viewport height and card dimensions - debounced
@@ -1817,8 +1827,8 @@ const RetroCards: React.FC = () => {
                 9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
                 // Questions gets a random combo per question
                 10: {
-                  pill: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].square,
-                  pillDot: LABEL_COMBOS[questionComboIdx % LABEL_COMBOS.length].icon,
+                  pill: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
+                  pillDot: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon,
                 },
               };
               const ov = overrides[slideId];
