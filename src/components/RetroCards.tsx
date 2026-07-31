@@ -1414,9 +1414,9 @@ const RetroCards: React.FC = () => {
         return (
           <div className="relative flex flex-col items-center w-full h-full text-center" style={{ paddingTop: '35%' }}>
             <h1
-              className="retro-title logo-slide-anim"
-
-              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#FF5E00' }}
+              className="retro-title logo-slide-anim logo-glitch"
+              data-text="Retro Cards"
+              style={{ fontSize: '92px', lineHeight: 0.84, fontWeight: 500, color: '#3A3A3A' }}
             >
               Retro Cards
             </h1>
