@@ -1281,7 +1281,7 @@ const RetroCards: React.FC = () => {
                   icon={iconName}
                   label={String(label)}
                   accent={pillColorOf(3)}
-                  className="question-font"
+                  className="retro-body-copy"
                   onClick={() => openQuestionEdit(3, i, String(label))}
                 />
               ))}
