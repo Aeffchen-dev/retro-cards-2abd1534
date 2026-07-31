@@ -1840,7 +1840,7 @@ const RetroCards: React.FC = () => {
   };
 
   return (
-    <ActiveSlideContext.Provider value={currentCard}>
+    <ActiveSlideContext.Provider value={slides[currentCard] ?? currentCard}>
     <div
       className="bg-retro-black text-retro-white overflow-hidden select-none flex flex-col"
       style={{
