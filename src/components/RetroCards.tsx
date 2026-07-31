@@ -1784,7 +1784,9 @@ const RetroCards: React.FC = () => {
                 ? { ...baseTheme, accent: BRAND.purple, pill: BRAND.purple, pillDot: BRAND.darkPurple }
                 : (slideId === 1 || slideId === 2)
                   ? { ...baseTheme, accent: BRAND.stackOrange, pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange }
-                  : baseTheme;
+                  : slideId === 3
+                    ? { ...baseTheme, accent: BRAND.green, pill: BRAND.green, pillDot: BRAND.darkGreen }
+                    : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
