@@ -19,7 +19,7 @@ export interface ActionRowProps {
 }
 
 const BASE_CLASS =
-  "swiper-no-swiping screen-only relative z-40 w-auto max-w-full self-start inline-flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90";
+  "swiper-no-swiping screen-only relative z-40 w-auto max-w-full self-start inline-flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90";
 
 /**
  * Shared CTA row: coloured icon tile on the left + grey label field.
@@ -38,13 +38,13 @@ const ActionRow: React.FC<ActionRowProps> = ({
   const content = (
     <>
       <span
-        className="shrink-0 w-12 h-12 flex items-center justify-center"
+        className="shrink-0 w-8 h-8 flex items-center justify-center"
         style={{ background: accent }}
       >
-        <StackIcon name={icon} size={20} color="#FFFFFF" />
+        <StackIcon name={icon} size={16} color="#FFFFFF" />
       </span>
       <span
-        className="h-12 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
+        className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
         style={{ background: "#E4E6E8", color: "#201C1D" }}
       >
         {label}
