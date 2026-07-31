@@ -777,6 +777,7 @@ textarea.bg-retro-post-it:focus,
   content: attr(data-text);
   position: absolute;
   inset: 0;
+  padding: inherit;
   pointer-events: none;
 }
 .logo-glitch::before {
