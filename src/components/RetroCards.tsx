@@ -1731,7 +1731,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconDownload"
                 label="Ergebnisse sichern"
-                accent={LABEL_COMBOS[2].icon}
+                accent={BRAND.darkBlue}
                 iconColor="#FFFFFF"
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
@@ -1740,7 +1740,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon="IconTrash"
                 label="Meine Einträge löschen"
-                accent={LABEL_COMBOS[2].icon}
+                accent={BRAND.darkBlue}
                 iconColor="#FFFFFF"
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
