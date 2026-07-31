@@ -357,6 +357,13 @@ const RetroCards: React.FC = () => {
       ...prev,
       [slideIndex]: !prev[slideIndex]
     }));
+    setActiveQuestion(prev => ({ ...prev, [slideIndex]: null }));
+  }, []);
+
+  // Open edit mode for one specific question row of a slide
+  const openQuestionEdit = useCallback((slideIndex: number, qIdx: number, label: string) => {
+    setActiveQuestion(prev => ({ ...prev, [slideIndex]: { idx: qIdx, label } }));
+    setEditModeSlides(prev => ({ ...prev, [slideIndex]: true }));
   }, []);
 
   // Page background: near-black tint of the current slide's label colour, morphing on transition
