@@ -1473,17 +1473,13 @@ const RetroCards: React.FC = () => {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                swiperRef?.slideNext();
-              }}
-              className="relative z-40 self-start inline-flex items-center justify-center retro-label !text-white rounded-full px-6 py-3 hover:opacity-90 transition-opacity"
-              style={{ background: '#201C1D', marginTop: '28px' }}
-            >
-              Los geht's
-            </button>
+            <ActionRow
+              icon="IconArrowRight"
+              label="Los geht's"
+              accent={SETUP_ACCENT}
+              onClick={() => swiperRef?.slideNext()}
+              style={{ marginTop: '28px' }}
+            />
           </div>
         );
       }
