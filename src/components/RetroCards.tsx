@@ -340,6 +340,8 @@ const RetroCards: React.FC = () => {
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
       if (slideId === 8) return BRAND.blue;
+      // Intimacy: dark purple square with white icon
+      if (slideId === 7) return BRAND.darkPurple;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
