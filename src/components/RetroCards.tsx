@@ -1950,7 +1950,7 @@ const RetroCards: React.FC = () => {
               const cardStyle = { backgroundColor: slideId === 4 ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
-                <div className="w-full h-full min-h-0 flex flex-col items-center overflow-hidden px-4">
+                <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-4">
 
                   {SLIDE_PILLS[slideId] && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
@@ -1960,7 +1960,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative flex-1 w-full max-w-[500px] max-h-[80%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl overflow-y-auto"
+                    className="retro-card-container relative w-full max-w-[500px] h-[88%] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl overflow-y-auto"
 
                     style={{
                       ...cardStyle,
