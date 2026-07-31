@@ -511,7 +511,7 @@ const RetroCards: React.FC = () => {
       const scale = 1 - 0.2 * t;
       const rotate = -5 * p;
       slideEl.style.transformOrigin = "center center";
-      slideEl.style.transform = `rotate(${rotate}deg) scale(${scale})`;
+      slideEl.style.transform = `translateX(${-10 * p}%) rotate(${rotate}deg) scale(${scale})`;
       slideEl.style.opacity = `${1 - 0.35 * t}`;
       slideEl.style.zIndex = `${Math.round((1 - t) * 10)}`;
     });
