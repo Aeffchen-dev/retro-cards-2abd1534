@@ -1721,8 +1721,8 @@ const RetroCards: React.FC = () => {
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
                         <h2 
-                          className="retro-body text-retro-white/80 mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
-                          style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4 }}
+                          className="retro-body mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
+                          style={{ fontSize: isMobile ? '14px' : '16px', lineHeight: 1.4, color: '#201C1D' }}
                         >
                           {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
                         </h2>
