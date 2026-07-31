@@ -1164,7 +1164,7 @@ const RetroCards: React.FC = () => {
                 Was war die letzten 4 Wochen so los?
               </h2>
             </div>
-            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '28px' }}>
+            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '12px' }}>
               {[
                 ["🏆", "Das habe(n) ich / wir richtig gerockt"],
                 ["🥰", "Ein schöner Moment"],
