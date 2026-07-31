@@ -1583,21 +1583,19 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full">Sichert eure Inhalte</h2>
             </div>
-            <div className="flex flex-col gap-3">
-              <button
+            <div className="flex flex-col gap-3 w-full">
+              <ActionRow
+                icon="IconDownload"
+                label="Ergebnisse sichern"
+                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
                 onClick={() => window.print()}
-                className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
-              >
-                <StackIcon name="IconDownload" size={20} className="text-retro-white" />
-                <span className="retro-body">Ergebnisse sichern</span>
-              </button>
-              <button
-                onClick={clearAllUserData}
-                className="flex items-center gap-3 py-3 px-6 rounded-full bg-transparent hover:bg-retro-white/10 transition-colors cursor-pointer"
-              >
-                <StackIcon name="IconTrash" size={20} className="text-retro-white" />
-                <span className="retro-body">Meine Einträge löschen</span>
-              </button>
+              />
+              <ActionRow
+                icon="IconTrash"
+                label="Meine Einträge löschen"
+                accent={CARD_THEMES[9 % CARD_THEMES.length].pill}
+                onClick={() => clearAllUserData()}
+              />
             </div>
           </div>
         );
