@@ -1953,8 +1953,8 @@ const RetroCards: React.FC = () => {
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
                 0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
-                1: { pill: BRAND.turquoise, pillDot: BRAND.white },
-                2: { pill: BRAND.turquoise, pillDot: BRAND.white },
+                1: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
+                2: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
                 3: { pill: BRAND.green, pillDot: BRAND.darkGreen },
                 4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
