@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useIsSlideActive } from "./ActiveSlideContext";
 
 interface RevealTextProps {
   text: string;
@@ -8,12 +9,14 @@ interface RevealTextProps {
   stagger?: number;
   /** Wait before the first word appears — synced to the slide transition */
   startDelay?: number;
-  /** Play the reveal only while the slide is active */
-  active?: boolean;
+  /** Index of the slide this text lives on — activity is read from context */
+  slideIndex?: number;
 }
 
 /** Word-by-word reveal: each word pops in colored, then settles to black. */
-const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, startDelay = 380, active = true }) => {
+const RevealTextBase: React.FC<RevealTextProps> = ({ text, color, stagger = 65, startDelay = 380, slideIndex }) => {
+  // Single source of truth: the active slide index from context.
+  const active = useIsSlideActive(slideIndex);
   const [runId, setRunId] = useState(0);
   // Slide-entry reveals wait for the transition; in-place text changes start immediately.
   const [delayMs, setDelayMs] = useState(startDelay);
@@ -69,5 +72,8 @@ const RevealText: React.FC<RevealTextProps> = ({ text, color, stagger = 65, star
     </span>
   );
 };
+
+/** Memoized: re-renders only when its own props change, not on every parent render. */
+const RevealText = React.memo(RevealTextBase);
 
 export default RevealText;
