@@ -350,18 +350,18 @@ const RetroCards: React.FC = () => {
       // Memory Time slide is always purple
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
-      if (slideId === 1 || slideId === 2) return BRAND.stackOrange;
+      if (slideId === 1 || slideId === 2) return BRAND.turquoise;
       // Last 4 weeks: swapped green combo
       if (slideId === 3) return BRAND.green;
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
-      if (slideId === 8) return BRAND.blue;
+      if (slideId === 8) return BRAND.yellow;
       // Talk-about / Nicht monogam: swapped
       if (slideId === 4) return BRAND.purple;
       if (slideId === 5) return BRAND.stackOrange;
-      // Intimacy: yellow
-      if (slideId === 7) return BRAND.yellow;
+      // Intimacy: same as health check
+      if (slideId === 7) return BRAND.turquoise;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return LABEL_COMBOS[2].square;
       // Questions: random combo per question
