@@ -153,6 +153,16 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
   { icon: BRAND.pink, square: BRAND.darkPink },
 ];
 
+// Palette used for the randomly coloured Questions slide
+const QUESTION_COMBOS: { icon: string; square: string }[] = [
+  { icon: BRAND.stackOrange, square: BRAND.darkOrange },
+  { icon: BRAND.offBlack, square: BRAND.stackOrange },
+  { icon: BRAND.darkPink, square: BRAND.pink },
+  { icon: BRAND.offBlack, square: BRAND.yellow },
+  { icon: BRAND.offWhite, square: BRAND.offBlack },
+  { icon: BRAND.blue, square: BRAND.lightBlue },
+];
+
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
 const CARD_BACKGROUNDS = [
