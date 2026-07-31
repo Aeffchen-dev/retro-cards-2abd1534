@@ -1213,7 +1213,7 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
-            <div className="mt-auto pt-7">
+            <div className="w-full mt-6">
               <ActionRow
                 iconNode={<Camera size={16} />}
                 label="Kamera öffnen"
@@ -1490,10 +1490,10 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full"><RevealText text="Wer macht mit?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col w-full mt-8">
+            <div className="flex flex-col w-full mt-8 gap-6">
 
               {/* Person 1 — post-it style field */}
-              <div className="flex flex-col gap-2 w-full mb-4">
+              <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME1_PLACEHOLDER}
@@ -1513,7 +1513,7 @@ const RetroCards: React.FC = () => {
               </div>
 
               {/* Person 2 — post-it style field */}
-              <div className="flex flex-col gap-2 w-full mb-4">
+              <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME2_PLACEHOLDER}
@@ -1535,7 +1535,7 @@ const RetroCards: React.FC = () => {
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex flex-col gap-2 w-full mb-4">
+                <div key={idx} className="flex flex-col gap-2 w-full">
                   <div className="flex flex-col w-full min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <div className="inline-flex items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
@@ -1590,7 +1590,7 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-8 mb-2 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+                className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
                 <span className="shrink-0 w-8 h-8 flex items-center justify-center leading-none" style={{ background: SETUP_ACCENT }}>
                   <StackIcon name="IconPlus" size={16} color="#FFFFFF" />
