@@ -1899,7 +1899,7 @@ const RetroCards: React.FC = () => {
           height={1920}
           decoding="async"
           fetchPriority="high"
-          className="absolute inset-0 w-full h-full object-cover object-right"
+          className="absolute inset-0 w-full h-full object-cover object-right bg-graphic-animated"
           style={{ opacity: 0.85 }}
         />
       </div>
