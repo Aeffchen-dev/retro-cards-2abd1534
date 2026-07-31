@@ -52,8 +52,9 @@ const ActionRow: React.FC<ActionRowProps> = ({
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
-        style={{ background: "#E4E6E8", color: "#201C1D" }}
+        style={{ background: accent, color: "#201C1D" }}
       >
+
         {label}
       </span>
     </>
