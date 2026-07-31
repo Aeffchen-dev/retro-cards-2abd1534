@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import StackIcon from "@/components/StackIcon";
+import ActionRow from "@/components/ActionRow";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1025,42 +1026,8 @@ const RetroCards: React.FC = () => {
     }
   }, []);
 
-  // Shared action row: coloured icon tile on the left + grey label field
-  const ActionRow = ({
-    icon,
-    label,
-    onClick,
-    accent,
-    className = "",
-    style,
-  }: {
-    icon: React.ComponentProps<typeof StackIcon>["name"];
-    label: string;
-    onClick?: (e: React.MouseEvent) => void;
-    accent: string;
-    className?: string;
-    style?: React.CSSProperties;
-  }) => (
-    <button
-      type="button"
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick?.(e);
-      }}
-      className={`swiper-no-swiping screen-only relative z-40 w-full flex items-center gap-0 h-12 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90 ${className}`}
-      style={style}
-    >
-      <span className="shrink-0 w-12 h-12 flex items-center justify-center" style={{ background: accent }}>
-        <StackIcon name={icon} size={20} color="#FFFFFF" />
-      </span>
-      <span
-        className="flex-1 h-12 flex items-center px-3 text-left whitespace-nowrap"
-        style={{ background: '#E4E6E8', color: '#201C1D' }}
-      >
-        {label}
-      </span>
-    </button>
-  );
+
+
 
 
 
