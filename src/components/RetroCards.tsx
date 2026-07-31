@@ -1804,7 +1804,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Questions</span>
               </div>
-              <h2 key={currentQuestion} className="retro-heading w-full">
+              <h2 key={currentQuestion} className="retro-heading w-full" style={{ fontSize: "0.9em" }}>
                 {questionsLoaded && currentQuestion
                   ? currentQuestion.split(" ").map((word, i) => (
                       <span
@@ -2060,7 +2060,7 @@ const RetroCards: React.FC = () => {
               {/* Skip Logo, Intro, Setup, Archive (9) and Questions (10) in print */}
               {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (
                 <div className="print-slide-page" style={{ order: index * 2 }}>
-                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-[28px]">
+                  <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-[16px] rounded-tl-[28px]">
                     {renderCard(slideId)}
                   </div>
                 </div>
@@ -2069,7 +2069,7 @@ const RetroCards: React.FC = () => {
               {/* Notes page right after its slide - on its own page */}
               {slidesWithEditButton.includes(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
-                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-[28px]">
+                  <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-[16px] rounded-tl-[28px]">
                     {/* Question text */}
                     <h2 
                       className="retro-body mb-6"
