@@ -1796,7 +1796,7 @@ const RetroCards: React.FC = () => {
                         key={`${word}-${i}`}
                         className="question-word"
                         style={{
-                          animationDelay: `${i * 160}ms, ${i * 160 + 160}ms`,
+                          animationDelay: `${i * 110}ms, ${i * 110 + 140}ms`,
                           ["--reveal-color" as string]: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
                         } as React.CSSProperties}
                       >
