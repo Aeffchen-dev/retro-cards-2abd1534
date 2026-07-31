@@ -6,6 +6,7 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
+import bgGraphic from "@/assets/bg-graphic.jpg";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1862,12 +1863,25 @@ const RetroCards: React.FC = () => {
         bottom: 0,
       }}
     >
+      {/* Decorative page background graphic */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none select-none absolute inset-0 z-0 screen-only"
+        style={{
+          backgroundImage: `url(${bgGraphic})`,
+          backgroundSize: "cover",
+          backgroundPosition: "right center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.85,
+        }}
+      />
+
       {/* Header spacer */}
-      <div className="w-full px-4 py-2" />
+      <div className="relative z-10 w-full px-4 py-2" />
 
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
+      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden pt-2 pb-4">
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"
