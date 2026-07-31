@@ -332,6 +332,8 @@ const RetroCards: React.FC = () => {
     (slideId: number) => {
       // Memory Time slide is always purple
       if (slideId === 0) return BRAND.purple;
+      // Health check slides: swapped orange combo
+      if (slideId === 1 || slideId === 2) return BRAND.stackOrange;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
