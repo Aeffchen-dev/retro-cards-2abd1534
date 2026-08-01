@@ -1826,7 +1826,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Questions</span>
               </div>
-              <h2 key={currentQuestion} className="retro-heading w-full">
+              <h2 key={currentQuestion} className="retro-heading w-full break-words">
                 {questionsLoaded && currentQuestion
                   ? currentQuestion.split(" ").map((word, i) => (
                       <span
