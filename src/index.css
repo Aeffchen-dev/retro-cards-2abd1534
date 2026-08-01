@@ -798,8 +798,10 @@ textarea.bg-retro-post-it:focus,
 }
 .question-word {
   display: inline-block;
-  word-break: break-word;
   overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
   opacity: 0;
   color: var(--reveal-color, #201C1D);
   animation:
