@@ -1849,6 +1849,7 @@ const RetroCards: React.FC = () => {
                 icon="IconRefresh"
                 label="Nächste Frage"
                 accent={pillColorOf(10)}
+                fieldBg={QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].fieldBg}
                 onClick={getRandomQuestion}
               />
             </div>
