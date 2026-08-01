@@ -1634,11 +1634,9 @@ const RetroCards: React.FC = () => {
                   className="shrink-0 w-8 h-8 flex items-center justify-center"
                   style={{ background: SETUP_PILL }}
                 >
-                  <StackIcon
-                    name="IconCheckmark"
-                    size={16}
-                    color={setupData.openRelationship ? SETUP_PILL_ON : `${SETUP_PILL_ON}66`}
-                  />
+                  {setupData.openRelationship && (
+                    <StackIcon name="IconCheckmark" size={16} color={SETUP_PILL_ON} />
+                  )}
                 </span>
 
 
