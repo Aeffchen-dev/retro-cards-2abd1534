@@ -798,6 +798,8 @@ textarea.bg-retro-post-it:focus,
 }
 .question-word {
   display: inline-block;
+  word-break: break-word;
+  overflow-wrap: break-word;
   opacity: 0;
   color: var(--reveal-color, #201C1D);
   animation:
