@@ -126,7 +126,7 @@ const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", 
 // Stack Overflow brand palette — exact values from the brand color sheet
 const BRAND = {
   stackOrange: "#FF4D00",
-  purple: "#A78BFF",
+  purple: "#B026FF",
   brightPurple: "#8B5CFF",
   pink: "#FF6BEF",
   yellow: "#FFD400",
