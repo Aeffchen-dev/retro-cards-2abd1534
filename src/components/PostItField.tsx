@@ -13,6 +13,20 @@ interface PostItFieldProps {
   accent?: string;
 }
 
+/** Pick dark or white label text so it always reads on the accent colour. */
+const readableText = (hex?: string) => {
+  if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return "#201C1D";
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+  const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  // contrast against #201C1D (L ~ 0.014) vs #FFFFFF
+  const withDark = (L + 0.05) / (0.014 + 0.05);
+  const withWhite = 1.05 / (L + 0.05);
+  return withDark >= withWhite ? "#201C1D" : "#FFFFFF";
+};
+
 /**
  * Post-it style input with a 32px label bar directly above (0px gap).
  * The label bar hugs its content width and is filled with the slide pill colour.
@@ -29,9 +43,10 @@ export const PostItField: React.FC<PostItFieldProps> = ({
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
-      className="inline-flex self-start items-center h-8 pl-3 pr-3 retro-body-copy text-[#201C1D]"
+      className="inline-flex self-start items-center h-8 pl-3 pr-3 retro-body-copy"
       style={{
         backgroundColor: accent || "var(--retro-post-it, #E4E6E8)",
+        color: readableText(accent),
       }}
     >
       {label}
