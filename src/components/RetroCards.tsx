@@ -1690,8 +1690,10 @@ const RetroCards: React.FC = () => {
                   icon="IconArrowRight"
                   label="Los geht's"
                   accent={SETUP_ACCENT}
+                  iconColor="#201C1D"
                   onClick={() => swiperRef?.slideNext()}
                 />
+
               </div>
 
             </div>
