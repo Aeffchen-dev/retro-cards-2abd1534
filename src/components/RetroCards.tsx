@@ -165,7 +165,7 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 // Palette used for the randomly coloured Questions slide
 // For the dark orange theme the link item icon tile uses a light orange fill.
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
-  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: "#FFA36D" },
+  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: c("orange", 300) },
   { icon: BRAND.offBlack, square: BRAND.stackOrange },
   { icon: BRAND.darkPink, square: BRAND.pink },
   { icon: BRAND.offBlack, square: BRAND.yellow },
