@@ -7,7 +7,7 @@ import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
-import { c } from "@/lib/colorScales";
+import { c, type ColorName } from "@/lib/colorScales";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -122,7 +122,7 @@ interface MemojisPosition {
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
 // One colour per "last 4 weeks" question — drives the page background in edit mode
-const QUESTION_COLORS = [c("green", 700), c("green", 600), c("green", 500), c("green", 400), c("green", 300), c("green", 200)];
+const QUESTION_COLORS = [c("magenta", 500), c("orange", 500), c("cobalt", 500), c("teal", 500), c("amber", 500), c("violet", 500)];
 
 // Every brand token is a step of a generated colour scale (src/lib/colorScales)
 const BRAND = {
@@ -165,37 +165,36 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 // Palette used for the randomly coloured Questions slide
 // For the dark orange theme the link item icon tile uses a light orange fill.
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
-  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: c("orange", 300) },
-  { icon: BRAND.offBlack, square: BRAND.stackOrange },
-  { icon: BRAND.darkPink, square: BRAND.pink },
-  { icon: BRAND.offBlack, square: BRAND.yellow },
-  { icon: BRAND.blue, square: BRAND.lightBlue },
+  { icon: c("orange", 100), square: c("orange", 600), linkTile: c("orange", 300) },
+  { icon: c("magenta", 100), square: c("magenta", 500), linkTile: c("magenta", 300) },
+  { icon: c("cobalt", 100), square: c("cobalt", 600), linkTile: c("cobalt", 300) },
+  { icon: c("teal", 900), square: c("teal", 500), linkTile: c("teal", 300) },
+  { icon: c("violet", 100), square: c("violet", 500), linkTile: c("violet", 300) },
 ];
 
-// Card backgrounds stay neutral (brand background colors); the accent/pill of
-// each slide is driven by the approved label combination for that index.
-const CARD_BACKGROUNDS = [
-  BRAND.pink,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
+
+// Bold rebrand: every slide owns a hue family from the generated scales.
+// bg = light tint (100), pill/accent = saturated core (500/600), dot = deep shade.
+const SLIDE_HUES: ColorName[] = [
+  "pink",
+  "teal",
+  "orange",
+  "cobalt",
+  "amber",
+  "magenta",
+  "lime",
+  "violet",
 ];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  CARD_BACKGROUNDS.map((bg, i) => {
-    const combo = LABEL_COMBOS[i % LABEL_COMBOS.length];
-    return {
-      bg,
-      text: BRAND.offBlack,
-      accent: combo.square,
-      pill: combo.square,
-      pillDot: combo.icon,
-    };
-  });
+  SLIDE_HUES.map((hue, i) => ({
+    bg: i === 0 ? c(hue, 300) : c(hue, 100),
+    text: BRAND.offBlack,
+    accent: c(hue, 600),
+    pill: c(hue, 500),
+    pillDot: c(hue, 800),
+  }));
+
 
 
 
