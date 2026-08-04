@@ -381,6 +381,22 @@ const RetroCards: React.FC = () => {
     [slides, questionComboIdx]
   );
 
+  // Post-it label bars use a companion colour — never the same as the pill.
+  const labelColorOf = useCallback(
+    (slideId: number) => {
+      if (slideId === 0 || slideId === 4) return BRAND.darkPurple;
+      if (slideId === 1 || slideId === 2) return BRAND.darkGreen;
+      if (slideId === 3 || slideId === 5) return BRAND.mediumOrange;
+      if (slideId === SLIDE_REFLECTION) return BRAND.darkPink;
+      if (slideId === 7) return "#4FB8FF";
+      if (slideId === 8) return BRAND.darkGreen;
+      if (slideId === 9) return BRAND.darkBlue;
+      if (slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;
+      return BRAND.offBlack;
+    },
+    [questionComboIdx]
+  );
+
   // Track if initial load is complete to avoid saving on mount
   const isInitialMount = useRef(true);
 
