@@ -6,7 +6,7 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
-import bgGraphic from "@/assets/bg-graphic.webp";
+import BgVector from "@/components/BgVector";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1921,15 +1921,8 @@ const RetroCards: React.FC = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <img
-          src={bgGraphic}
-          alt=""
-          aria-hidden="true"
-          width={1021}
-          height={1920}
-          decoding="async"
-          fetchPriority="high"
-          className="absolute inset-0 w-full h-full object-cover object-right bg-graphic-animated"
+        <BgVector
+          className="absolute inset-0 w-full h-full bg-graphic-animated"
           style={{ opacity: 0.85 }}
         />
       </div>
