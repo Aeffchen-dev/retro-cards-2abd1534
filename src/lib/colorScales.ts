@@ -72,6 +72,7 @@ export const BASE_COLORS = {
   violet: "#5343A8",
   indigo: "#9D9CFF",
   blue: "#009DFF",
+  cobalt: "#5074EF",
   deepBlue: "#034E7D",
   sky: "#9DD9FF",
   steelBlue: "#C6D0E0",
