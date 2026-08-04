@@ -172,30 +172,28 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
   { icon: BRAND.blue, square: BRAND.lightBlue },
 ];
 
-// Card backgrounds stay neutral (brand background colors); the accent/pill of
-// each slide is driven by the approved label combination for that index.
-const CARD_BACKGROUNDS = [
-  BRAND.pink,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
-  BRAND.white,
+// Bold rebrand: every slide owns a hue family from the generated scales.
+// bg = light tint (100), pill/accent = saturated core (500/600), dot = deep shade.
+const SLIDE_HUES: ColorName[] = [
+  "pink",
+  "teal",
+  "orange",
+  "cobalt",
+  "amber",
+  "magenta",
+  "lime",
+  "violet",
 ];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  CARD_BACKGROUNDS.map((bg, i) => {
-    const combo = LABEL_COMBOS[i % LABEL_COMBOS.length];
-    return {
-      bg,
-      text: BRAND.offBlack,
-      accent: combo.square,
-      pill: combo.square,
-      pillDot: combo.icon,
-    };
-  });
+  SLIDE_HUES.map((hue, i) => ({
+    bg: i === 0 ? c(hue, 300) : c(hue, 100),
+    text: BRAND.offBlack,
+    accent: c(hue, 600),
+    pill: c(hue, 500),
+    pillDot: c(hue, 800),
+  }));
+
 
 
 
