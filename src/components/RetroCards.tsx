@@ -377,8 +377,8 @@ const RetroCards: React.FC = () => {
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
-      // Talk-about: orange pill with pink label
-      if (slideId === 4) return BRAND.stackOrange;
+      // Talk-about: blue pill with yellow label
+      if (slideId === 4) return BRAND.blue;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
@@ -396,7 +396,7 @@ const RetroCards: React.FC = () => {
   const labelColorOf = useCallback(
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
-      if (slideId === 4) return BRAND.pink;            // orange pill → pink label
+      if (slideId === 4) return BRAND.yellow;          // blue pill → yellow label
       if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return BRAND.babyBlue;        // orange pill → baby blue
       if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
