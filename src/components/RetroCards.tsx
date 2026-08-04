@@ -132,6 +132,8 @@ const BRAND = {
   yellow: "#F5C542",
   lime: "#E5F135",
   brightLavender: "#C8C7FF",
+  babyBlue: "#9DD3FF",
+  neonPurple: "#8A2BFF",
   olive: "#5C8727",
   maroon: "#5C1524",
   blue: "#009DFF",
@@ -372,7 +374,7 @@ const RetroCards: React.FC = () => {
       // Takeaways: swapped blue combo
       if (slideId === 8) return BRAND.lime;
       // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.stackOrange;
+      if (slideId === 4) return BRAND.babyBlue;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
@@ -390,14 +392,14 @@ const RetroCards: React.FC = () => {
   const labelColorOf = useCallback(
     (slideId: number) => {
       if (slideId === 0) return BRAND.stackOrange;
-      if (slideId === 4) return BRAND.purple;
+      if (slideId === 4) return BRAND.neonPurple;
       if (slideId === 1 || slideId === 2) return BRAND.lime;
       if (slideId === 3 || slideId === 5) return BRAND.pink;
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       if (slideId === 7) return BRAND.pink;
-      if (slideId === 8) return BRAND.brightLavender;
-      if (slideId === 9) return BRAND.yellow;
-      if (slideId === 10) return BRAND.yellow;
+      if (slideId === 8) return BRAND.purple;
+      if (slideId === 9) return "#FFC400";
+      if (slideId === 10) return "#FFC400";
       return BRAND.lightBlue;
     },
     [questionComboIdx]
@@ -1919,7 +1921,7 @@ const RetroCards: React.FC = () => {
       >
         <BgVector
           className="absolute inset-0 w-full h-full bg-graphic-animated"
-          style={{ opacity: 0.85 }}
+          style={{ opacity: 1 }}
         />
       </div>
 
@@ -1989,7 +1991,7 @@ const RetroCards: React.FC = () => {
                 1: { pill: BRAND.olive, pillDot: BRAND.lime },
                 2: { pill: BRAND.olive, pillDot: BRAND.lime },
                 3: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
-                4: { pill: BRAND.stackOrange, pillDot: BRAND.purple },
+                4: { pill: BRAND.babyBlue, pillDot: BRAND.neonPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.lime, pillDot: BRAND.brightPurple },
