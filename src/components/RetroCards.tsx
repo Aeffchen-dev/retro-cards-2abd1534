@@ -135,6 +135,7 @@ const BRAND = {
   babyBlue: "#7FD9FF",
   neonPurple: "#9B30FF",
   olive: "#4E7A0F",
+  neonGreen: "#63E82B",
   maroon: "#5C1524",
   blue: "#00A9FF",
   turquoise: "#00E58F",
@@ -370,7 +371,7 @@ const RetroCards: React.FC = () => {
       // Memory Time slide is always purple
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
-      if (slideId === 1 || slideId === 2) return BRAND.olive;
+      if (slideId === 1 || slideId === 2) return BRAND.neonGreen;
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
@@ -1995,8 +1996,8 @@ const RetroCards: React.FC = () => {
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
                 0: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
-                1: { pill: BRAND.olive, pillDot: BRAND.lime },
-                2: { pill: BRAND.olive, pillDot: BRAND.lime },
+                1: { pill: BRAND.neonGreen, pillDot: BRAND.lime },
+                2: { pill: BRAND.neonGreen, pillDot: BRAND.lime },
                 3: { pill: BRAND.stackOrange, pillDot: "#FFC4EA" },
                 4: { pill: "#F39FFF", pillDot: "#FF4A0C" },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
