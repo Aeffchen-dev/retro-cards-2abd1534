@@ -123,27 +123,30 @@ interface MemojisPosition {
 // One colour per "last 4 weeks" question — drives the page background in edit mode
 const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
 
-// Stack Overflow brand palette (stackoverflow.design/brand/color)
+// Stack Overflow brand palette — exact values from the brand color sheet
 const BRAND = {
-  stackOrange: "#FF5E00",
+  stackOrange: "#FF5817",
   purple: "#9D9CFF",
-  pink: "#F39FFF",
-  yellow: "#FFCC00",
-  blue: "#5074EF",
-  turquoise: "#0FB3A6",
-  turquoiseDot: "#A8E85C",
-  green: "#86AF25",
-  offBlack: "#201C1D",
-  offWhite: "#F0EFEE",
-  lightBlue: "#C6D1E1",
-  lightBrown: "#998B7A",
-  darkOrange: "#31070F",
-  mediumOrange: "#6E1527",
-  darkPurple: "#390A91",
-  darkPink: "#4D1955",
-  darkGreen: "#263603",
-  darkYellow: "#423101",
-  darkBlue: "#00165E",
+  pink: "#FF04FF",
+  yellow: "#FFA100",
+  blue: "#009DFF",
+  turquoise: "#25713A",
+  turquoiseDot: "#A5D968",
+  green: "#A5D968",
+  offBlack: "#1D1D1D",
+  offWhite: "#E2E2E2",
+  lightBlue: "#C6D0E0",
+  skyBlue: "#9DD9FF",
+  lightBrown: "#575757",
+  darkOrange: "#371318",
+  mediumOrange: "#E15E00",
+  darkPurple: "#5343A8",
+  midPurple: "#A85BA8",
+  darkPink: "#492049",
+  darkGreen: "#103C1C",
+  darkYellow: "#6C2D01",
+  darkBlue: "#034E7D",
+  darkRed: "#692932",
   white: "#FFFFFF",
 } as const;
 
@@ -152,10 +155,10 @@ const BRAND = {
 const LABEL_COMBOS: { icon: string; square: string }[] = [
   { icon: BRAND.offBlack, square: BRAND.stackOrange },
   { icon: BRAND.purple, square: BRAND.darkPurple },
-  { icon: BRAND.blue, square: BRAND.lightBlue },
-  { icon: BRAND.lightBrown, square: BRAND.darkYellow },
-  { icon: BRAND.stackOrange, square: BRAND.mediumOrange },
-  { icon: BRAND.lightBlue, square: BRAND.stackOrange },
+  { icon: BRAND.darkBlue, square: BRAND.skyBlue },
+  { icon: BRAND.yellow, square: BRAND.darkYellow },
+  { icon: BRAND.stackOrange, square: BRAND.darkRed },
+  { icon: BRAND.lightBlue, square: BRAND.blue },
   { icon: BRAND.green, square: BRAND.darkGreen },
   { icon: BRAND.pink, square: BRAND.darkPink },
 ];
@@ -165,15 +168,16 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
   { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: "#FFA36D" },
   { icon: BRAND.offBlack, square: BRAND.stackOrange },
-  { icon: BRAND.darkPink, square: BRAND.pink },
+  { icon: BRAND.darkPink, square: BRAND.midPurple },
   { icon: BRAND.offBlack, square: BRAND.yellow },
-  { icon: BRAND.blue, square: BRAND.lightBlue },
+  { icon: BRAND.darkBlue, square: BRAND.skyBlue },
 ];
+
 
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
 const CARD_BACKGROUNDS = [
-  BRAND.pink,
+  "#F39FFF",
   BRAND.white,
   BRAND.white,
   BRAND.white,
