@@ -16,20 +16,24 @@ const ORANGE = "#FF4A0C";
 // --- 3D helpers -------------------------------------------------------------
 type V3 = [number, number, number];
 
-const SLAB_COUNT = 18;
-const LEN = 330; // half length along local X
-const THICK = 40; // half thickness along local Z
-const HEIGHT = 30; // half height along Y
+const SLAB_COUNT = 24;
+const LEN = 340; // half length along local X
+const THICK = 105; // half thickness along local Z
+const HEIGHT = 20; // half height along Y
 
-const CAM_Z = 1250; // camera distance
-const FOCAL = 1750; // focal length
-const CX = 700; // screen center x
+const SCALE = 0.72; // orthographic scale
+const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
+const CX = 860; // screen center x
 const CY = H / 2;
 
+const CP = Math.cos(PITCH);
+const SP = Math.sin(PITCH);
+
+// Orthographic camera with a fixed downward tilt (matches the reference art).
 function project([x, y, z]: V3): [number, number, number] {
-  const zc = z + CAM_Z;
-  const s = FOCAL / Math.max(zc, 1);
-  return [CX + x * s, CY + y * s, zc];
+  const ys = y * CP - z * SP;
+  const depth = y * SP + z * CP;
+  return [CX + x * SCALE, CY + ys * SCALE, depth];
 }
 
 function shade(hex: string, k: number): string {
@@ -44,11 +48,11 @@ type Face = { pts: string; fill: string; depth: number };
 
 function buildFaces(phase: number): Face[] {
   const faces: Face[] = [];
-  const spanY = 2900;
+  const spanY = 3800;
 
   for (let i = 0; i < SLAB_COUNT; i++) {
     const t = i / (SLAB_COUNT - 1);
-    const a = -0.28 + i * 0.34 + phase;
+    const a = -0.28 + i * 0.30 + phase;
     const cy = -spanY / 2 + t * spanY;
     const cos = Math.cos(a);
     const sin = Math.sin(a);
@@ -84,15 +88,6 @@ function buildFaces(phase: number): Face[] {
 
     for (const q of quads) {
       const proj = q.idx.map((k) => project(v[k]));
-      // backface culling via 2D signed area
-      let area = 0;
-      for (let n = 0; n < proj.length; n++) {
-        const [x1, y1] = proj[n];
-        const [x2, y2] = proj[(n + 1) % proj.length];
-        area += x1 * y2 - x2 * y1;
-      }
-      if (area <= 0) continue;
-
       const depth = proj.reduce((s, pt) => s + pt[2], 0) / proj.length;
       // subtle directional light based on face normal orientation
       const light = 1;
