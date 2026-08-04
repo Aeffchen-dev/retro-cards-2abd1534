@@ -13,19 +13,26 @@ interface PostItFieldProps {
   accent?: string;
 }
 
-/** Pick dark or white label text so it always reads on the accent colour. */
-const readableText = (hex?: string) => {
-  if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return "#201C1D";
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
-  const L = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
-  // contrast against #201C1D (L ~ 0.014) vs #FFFFFF
-  const withDark = (L + 0.05) / (0.014 + 0.05);
-  const withWhite = 1.05 / (L + 0.05);
-  return withDark >= withWhite ? "#201C1D" : "#FFFFFF";
+/** Label text is always black — lighten the accent until contrast is sufficient. */
+const TEXT = "#201C1D";
+const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const lum = (r: number, g: number, b: number) =>
+  0.2126 * lin(r / 255) + 0.7152 * lin(g / 255) + 0.0722 * lin(b / 255);
+
+const readableBg = (hex?: string) => {
+  if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return hex || "var(--retro-post-it, #E4E6E8)";
+  let r = parseInt(hex.slice(1, 3), 16);
+  let g = parseInt(hex.slice(3, 5), 16);
+  let b = parseInt(hex.slice(5, 7), 16);
+  const target = 0.34; // ~4.5:1 against #201C1D
+  for (let i = 0; i < 24 && lum(r, g, b) < target; i++) {
+    r = Math.round(r + (255 - r) * 0.12);
+    g = Math.round(g + (255 - g) * 0.12);
+    b = Math.round(b + (255 - b) * 0.12);
+  }
+  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 };
+
 
 /**
  * Post-it style input with a 32px label bar directly above (0px gap).
