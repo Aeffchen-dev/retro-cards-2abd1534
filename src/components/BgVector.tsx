@@ -16,10 +16,10 @@ const ORANGE = "#FF4A0C";
 // --- 3D helpers -------------------------------------------------------------
 type V3 = [number, number, number];
 
-const SLAB_COUNT = 26;
+const SLAB_COUNT = 24;
 const LEN = 340; // half length along local X
 const THICK = 105; // half thickness along local Z
-const HEIGHT = 26; // half height along Y
+const HEIGHT = 20; // half height along Y
 
 const SCALE = 0.72; // orthographic scale
 const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
@@ -48,7 +48,7 @@ type Face = { pts: string; fill: string; depth: number };
 
 function buildFaces(phase: number): Face[] {
   const faces: Face[] = [];
-  const spanY = 2600;
+  const spanY = 3800;
 
   for (let i = 0; i < SLAB_COUNT; i++) {
     const t = i / (SLAB_COUNT - 1);
