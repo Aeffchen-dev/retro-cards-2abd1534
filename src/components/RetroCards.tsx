@@ -1356,12 +1356,12 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '16px' }}>
               {([
-                ["IconAchievements", "Ein voller Erfolg"],
-                ["IconHeart", "Ein schöner Moment"],
-                ["IconLightbulb", "Das habe ich gelernt"],
-                ["IconFaceFrown", "Das hat mich Kraft gekostet"],
-                ["IconSpeechBubbleQuestion", "Was beschäftigt mich grade?"],
-                ["IconSpeechBubble", "4 Wochen in einem Wort"],
+                ["IconTrendingUp", "Ein voller Erfolg"],
+                ["IconFaceJoy", "Ein schöner Moment"],
+                ["IconPeak", "Das habe ich gelernt"],
+                ["IconTrendingDown", "Das hat mich Kraft gekostet"],
+                ["IconEyes", "Was beschäftigt mich grade?"],
+                ["IconStar", "4 Wochen in einem Wort"],
               ] as const).map(([iconName, label], i) => (
                 <ActionRow
                   key={i}
