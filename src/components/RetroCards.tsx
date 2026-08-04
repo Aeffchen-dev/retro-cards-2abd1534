@@ -1730,7 +1730,7 @@ const RetroCards: React.FC = () => {
         );
 
       case 7: {
-        const INTIMACY_LABEL_BG = "#4FB8FF"; // lighter blue for label bars
+        const INTIMACY_LABEL_BG = "#9BD6FF"; // soft blue for label bars
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
