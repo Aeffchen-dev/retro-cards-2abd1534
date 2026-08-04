@@ -398,8 +398,8 @@ const RetroCards: React.FC = () => {
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       if (slideId === 7) return BRAND.pink;
       if (slideId === 8) return BRAND.purple;
-      if (slideId === 9) return BRAND.yellow;
-      if (slideId === 10) return BRAND.yellow;
+      if (slideId === 9) return "#FFC400";
+      if (slideId === 10) return "#FFC400";
       return BRAND.lightBlue;
     },
     [questionComboIdx]
