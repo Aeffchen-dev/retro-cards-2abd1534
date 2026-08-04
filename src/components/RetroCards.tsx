@@ -381,6 +381,22 @@ const RetroCards: React.FC = () => {
     [slides, questionComboIdx]
   );
 
+  // Post-it label bars use a companion colour — never the same as the pill.
+  const labelColorOf = useCallback(
+    (slideId: number) => {
+      if (slideId === 0 || slideId === 4) return BRAND.darkPurple;
+      if (slideId === 1 || slideId === 2) return BRAND.darkGreen;
+      if (slideId === 3 || slideId === 5) return BRAND.mediumOrange;
+      if (slideId === SLIDE_REFLECTION) return BRAND.darkPink;
+      if (slideId === 7) return "#4FB8FF";
+      if (slideId === 8) return BRAND.darkGreen;
+      if (slideId === 9) return BRAND.darkBlue;
+      if (slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;
+      return BRAND.offBlack;
+    },
+    [questionComboIdx]
+  );
+
   // Track if initial load is complete to avoid saving on mount
   const isInitialMount = useRef(true);
 
@@ -1365,7 +1381,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(4)}
+                  accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
@@ -1380,7 +1396,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   readOnly
                   minHeight={160}
-                  accent={pillColorOf(4)}
+                  accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
@@ -1404,7 +1420,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(5)}
+                  accent={labelColorOf(5)}
                   label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                   placeholder="Deine Antwort"
                   value={editModeNotes[5]?.[person.key] || ""}
@@ -1687,7 +1703,7 @@ const RetroCards: React.FC = () => {
               {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
                 <PostItField
                   key={key}
-                  accent={pillColorOf(SLIDE_REFLECTION)}
+                  accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
@@ -1702,7 +1718,7 @@ const RetroCards: React.FC = () => {
                   key={key}
                   readOnly
                   minHeight={140}
-                  accent={pillColorOf(SLIDE_REFLECTION)}
+                  accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
@@ -1740,7 +1756,7 @@ const RetroCards: React.FC = () => {
                 </div>
               </div>
               <PostItField
-                accent={INTIMACY_LABEL_BG}
+                accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
                 minHeight={120}
@@ -1771,7 +1787,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(8)}
+                  accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
@@ -1786,7 +1802,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   readOnly
                   minHeight={160}
-                  accent={pillColorOf(8)}
+                  accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
@@ -2052,7 +2068,7 @@ const RetroCards: React.FC = () => {
                             return (
                               <PostItField
                                 key={noteKey}
-                                accent={pillColorOf(slideId)}
+                                accent={labelColorOf(slideId)}
                                 label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                                 placeholder="Deine Antwort"
                                 value={editModeNotes[slideId]?.[noteKey] || ""}
