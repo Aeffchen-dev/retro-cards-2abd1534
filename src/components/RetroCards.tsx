@@ -182,7 +182,7 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 ];
 
 // "The last 4 weeks" link items — one brand hue per row (Stack colour system)
-const ROSA_SHADES = ["#FF5817", "#5343A8", "#D983C2", "#B68F00", "#692932", "#037DCC"];
+const ROSA_SHADES = ["#F2661F", "#5C1524", "#E79BFF", "#F2661F", "#5C1524", "#E79BFF"];
 
 
 
