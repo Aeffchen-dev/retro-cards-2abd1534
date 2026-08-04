@@ -174,7 +174,7 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 
 
 // Bold rebrand: every slide owns a hue family from the generated scales.
-// bg = light tint (100), pill/accent = saturated core (500/600), dot = deep shade.
+// Card background stays white; only accents/pills/dots carry the hue.
 const SLIDE_HUES: ColorName[] = [
   "pink",
   "teal",
@@ -187,8 +187,8 @@ const SLIDE_HUES: ColorName[] = [
 ];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  SLIDE_HUES.map((hue, i) => ({
-    bg: i === 0 ? c(hue, 300) : c(hue, 100),
+  SLIDE_HUES.map((hue) => ({
+    bg: BRAND.white,
     text: BRAND.offBlack,
     accent: c(hue, 600),
     pill: c(hue, 500),
