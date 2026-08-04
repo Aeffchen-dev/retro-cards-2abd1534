@@ -94,3 +94,33 @@ export const SCALES = Object.fromEntries(
 
 /** Shorthand accessor: `c("orange", 700)` */
 export const c = (name: ColorName, step: ScaleStep = 500) => SCALES[name][step];
+
+/* ---------- contrast helpers ---------- */
+
+const relLum = (hex: string) => {
+  const [r, g, b] = hexToRgb(hex).map((v) => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+
+export const contrast = (a: string, b: string) => {
+  const l1 = relLum(a);
+  const l2 = relLum(b);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+};
+
+/** Darkest-needed step of a hue that carries white text/icons at >= 4.5:1. */
+export const accentStep = (name: ColorName): string => {
+  const steps: ScaleStep[] = [500, 600, 700, 800, 900];
+  const hit = steps.find((s) => contrast(SCALES[name][s], WHITE) >= 4.5);
+  return SCALES[name][hit ?? 900];
+};
+
+/** A step of the same hue that stays readable on top of `on` (>= 3:1). */
+export const dotStep = (name: ColorName, on: string): string => {
+  const steps: ScaleStep[] = [900, 800, 200, 100, 50];
+  const hit = steps.find((s) => contrast(SCALES[name][s], on) >= 3);
+  return SCALES[name][hit ?? 900];
+};
