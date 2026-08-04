@@ -165,12 +165,13 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 // Palette used for the randomly coloured Questions slide
 // For the dark orange theme the link item icon tile uses a light orange fill.
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
-  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: c("orange", 300) },
-  { icon: BRAND.offBlack, square: BRAND.stackOrange },
-  { icon: BRAND.darkPink, square: BRAND.pink },
-  { icon: BRAND.offBlack, square: BRAND.yellow },
-  { icon: BRAND.blue, square: BRAND.lightBlue },
+  { icon: c("orange", 100), square: c("orange", 600), linkTile: c("orange", 300) },
+  { icon: c("magenta", 100), square: c("magenta", 500), linkTile: c("magenta", 300) },
+  { icon: c("cobalt", 100), square: c("cobalt", 600), linkTile: c("cobalt", 300) },
+  { icon: c("teal", 900), square: c("teal", 500), linkTile: c("teal", 300) },
+  { icon: c("violet", 100), square: c("violet", 500), linkTile: c("violet", 300) },
 ];
+
 
 // Bold rebrand: every slide owns a hue family from the generated scales.
 // bg = light tint (100), pill/accent = saturated core (500/600), dot = deep shade.
