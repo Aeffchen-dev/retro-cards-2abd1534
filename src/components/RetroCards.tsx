@@ -1296,7 +1296,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="relative w-full flex-1 mt-10 mb-12 print-memoji-container">
+            <div className="relative w-full flex-1 my-10 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 <div className="text-4xl">🤩</div>
                 <div className="text-4xl">🙂</div>
