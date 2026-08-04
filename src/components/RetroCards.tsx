@@ -7,7 +7,7 @@ import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
-import { c, type ColorName } from "@/lib/colorScales";
+import { c, accentStep, dotStep, type ColorName } from "@/lib/colorScales";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -174,7 +174,7 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 
 
 // Bold rebrand: every slide owns a hue family from the generated scales.
-// bg = light tint (100), pill/accent = saturated core (500/600), dot = deep shade.
+// Card background stays white; only accents/pills/dots carry the hue.
 const SLIDE_HUES: ColorName[] = [
   "pink",
   "teal",
@@ -187,13 +187,16 @@ const SLIDE_HUES: ColorName[] = [
 ];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  SLIDE_HUES.map((hue, i) => ({
-    bg: i === 0 ? c(hue, 300) : c(hue, 100),
-    text: BRAND.offBlack,
-    accent: c(hue, 600),
-    pill: c(hue, 500),
-    pillDot: c(hue, 800),
-  }));
+  SLIDE_HUES.map((hue) => {
+    const pill = c(hue, 500);
+    return {
+      bg: BRAND.white,
+      text: BRAND.offBlack,
+      accent: accentStep(hue),
+      pill,
+      pillDot: dotStep(hue, pill),
+    };
+  });
 
 
 
