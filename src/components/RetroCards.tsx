@@ -391,15 +391,16 @@ const RetroCards: React.FC = () => {
   // Post-it label bars use a companion colour — never the same as the pill.
   const labelColorOf = useCallback(
     (slideId: number) => {
-      if (slideId === 0) return BRAND.stackOrange;
-      if (slideId === 4) return BRAND.neonPurple;
-      if (slideId === 1 || slideId === 2) return BRAND.lime;
-      if (slideId === 3 || slideId === 5) return BRAND.pink;
-      if (slideId === SLIDE_REFLECTION) return BRAND.pink;
-      if (slideId === 7) return BRAND.pink;
-      if (slideId === 8) return BRAND.purple;
-      if (slideId === 9) return "#FFD400";
-      if (slideId === 10) return "#FFD400";
+      if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
+      if (slideId === 4) return BRAND.brightLavender;  // baby blue pill → lavender
+      if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
+      if (slideId === 3) return BRAND.babyBlue;        // orange pill → baby blue
+      if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
+      if (slideId === SLIDE_REFLECTION) return BRAND.yellow;   // pink pill → yellow
+      if (slideId === 7) return BRAND.pink;            // maroon pill → pink
+      if (slideId === 8) return BRAND.brightLavender;  // lime pill → lavender
+      if (slideId === 9) return BRAND.yellow;
+      if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
     },
     [questionComboIdx]
