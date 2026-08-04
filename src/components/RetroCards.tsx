@@ -6,7 +6,7 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
-import bgGraphic from "@/assets/bg-graphic.webp";
+import BgVector from "@/components/BgVector";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1915,21 +1915,10 @@ const RetroCards: React.FC = () => {
         className="pointer-events-none select-none absolute inset-0 z-0 screen-only overflow-hidden"
         style={{
           backgroundColor: "#201C1D",
-          backgroundImage: `url("data:image/webp;base64,UklGRjwBAABXRUJQVlA4IDABAACQBwCdASoYAC4APrVKnUonJCKhtVQIAOAWiWYAvgM0QQjUucow+mzEeB7525X0UYDRWQAF6BQeUYUGM6SLH7Wlc71YAMAA/vhOdTvJX2yzhq4E+B5/rV3OKp417CyfZcw0XnQQIszpMlirfmadyyPJsr9POMY2oznVEblBRTZ8BBijQDJDfzax+w1Bazr7iKsm7M7S6u2lQeOv4jIzcwKEWWi7EPr0mQkAwvOtemgF9pnav7N1Xm98DMxNba/54AskRhrGXZ78Ckdw4LpDsunrb2ZuATmExhO4eTLZyb44P7smoCsQnuw5Fn0Btg2wox6QGW6f/axTzbcH9fY8c1r3bCdaIfdXjMCH9z5F0kGndNmBTCtjTrjrSAYLSkXrmjwWQktvF3t04J4bfvk42AAA")`,
-          backgroundSize: "cover",
-          backgroundPosition: "right center",
-          backgroundRepeat: "no-repeat",
         }}
       >
-        <img
-          src={bgGraphic}
-          alt=""
-          aria-hidden="true"
-          width={1021}
-          height={1920}
-          decoding="async"
-          fetchPriority="high"
-          className="absolute inset-0 w-full h-full object-cover object-right bg-graphic-animated"
+        <BgVector
+          className="absolute inset-0 w-full h-full bg-graphic-animated"
           style={{ opacity: 0.85 }}
         />
       </div>
