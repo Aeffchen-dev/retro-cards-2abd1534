@@ -128,7 +128,7 @@ const BRAND = {
   stackOrange: "#FF5817",
   purple: "#9D9CFF",
   brightPurple: "#8F7BFF",
-  pink: "#FF47D1",
+  pink: "#E86BB0",
   yellow: "#FFA100",
   blue: "#009DFF",
   turquoise: "#19C37D",
@@ -1714,7 +1714,7 @@ const RetroCards: React.FC = () => {
         );
 
       case 7: {
-        const INTIMACY_LABEL_BG = "#FF8A3D"; // lighter orange for label bars
+        const INTIMACY_LABEL_BG = "#4FB8FF"; // lighter blue for label bars
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
