@@ -125,28 +125,28 @@ const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", 
 
 // Stack Overflow brand palette — exact values from the brand color sheet
 const BRAND = {
-  stackOrange: "#FF5817",
-  purple: "#9D9CFF",
-  brightPurple: "#8F7BFF",
-  pink: "#E9A0FF",
-  yellow: "#F5C542",
-  lime: "#E5F135",
-  brightLavender: "#C8C7FF",
-  babyBlue: "#9DD3FF",
-  neonPurple: "#8A2BFF",
-  olive: "#5C8727",
+  stackOrange: "#FF4D00",
+  purple: "#A78BFF",
+  brightPurple: "#8B5CFF",
+  pink: "#FF6BEF",
+  yellow: "#FFD400",
+  lime: "#DFFF1C",
+  brightLavender: "#C9A8FF",
+  babyBlue: "#7FD9FF",
+  neonPurple: "#9B30FF",
+  olive: "#4E7A0F",
   maroon: "#5C1524",
-  blue: "#009DFF",
-  turquoise: "#19C37D",
+  blue: "#00A9FF",
+  turquoise: "#00E58F",
   turquoiseDot: "#103C1C",
-  green: "#A5D968",
+  green: "#B6FF4D",
   offBlack: "#1D1D1D",
   offWhite: "#E2E2E2",
   lightBlue: "#C6D0E0",
-  skyBlue: "#9DD9FF",
+  skyBlue: "#7FE0FF",
   lightBrown: "#575757",
   darkOrange: "#371318",
-  mediumOrange: "#E15E00",
+  mediumOrange: "#FF7A00",
   darkPurple: "#5343A8",
   midPurple: "#A85BA8",
   darkPink: "#492049",
@@ -398,8 +398,8 @@ const RetroCards: React.FC = () => {
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       if (slideId === 7) return BRAND.pink;
       if (slideId === 8) return BRAND.purple;
-      if (slideId === 9) return "#FFC400";
-      if (slideId === 10) return "#FFC400";
+      if (slideId === 9) return "#FFD400";
+      if (slideId === 10) return "#FFD400";
       return BRAND.lightBlue;
     },
     [questionComboIdx]
