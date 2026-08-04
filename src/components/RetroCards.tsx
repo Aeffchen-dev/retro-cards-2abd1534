@@ -7,7 +7,7 @@ import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
-import { c, type ColorName } from "@/lib/colorScales";
+import { c, accentStep, dotStep, type ColorName } from "@/lib/colorScales";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
