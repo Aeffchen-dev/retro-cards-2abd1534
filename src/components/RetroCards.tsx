@@ -2000,7 +2000,7 @@ const RetroCards: React.FC = () => {
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
-                [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.babyBlue },
+                [SLIDE_REFLECTION]: { pill: BRAND.neonPurple, pillDot: BRAND.babyBlue },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
