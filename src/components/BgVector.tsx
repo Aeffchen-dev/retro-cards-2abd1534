@@ -95,7 +95,7 @@ function buildFaces(phase: number): Face[] {
 
       const depth = proj.reduce((s, pt) => s + pt[2], 0) / proj.length;
       // subtle directional light based on face normal orientation
-      const light = q.lit * (0.82 + 0.18 * Math.abs(cos));
+      const light = 1;
       faces.push({
         pts: proj.map((pt) => `${pt[0].toFixed(1)},${pt[1].toFixed(1)}`).join(" "),
         fill: shade(q.color, light),
