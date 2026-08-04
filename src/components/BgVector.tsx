@@ -17,11 +17,11 @@ const ORANGE = "#FF4A0C";
 type V3 = [number, number, number];
 
 const SLAB_COUNT = 24;
-const LEN = 340; // half length along local X
-const THICK = 105; // half thickness along local Z
-const HEIGHT = 68; // half height along Y
+const LEN = 380; // half length along local X
+const THICK = 150; // half thickness along local Z
+const HEIGHT = 30; // half height along Y
 
-const SCALE = 1.15; // orthographic scale
+const SCALE = 1.0; // orthographic scale
 const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
 const CX = 700; // screen center x
 const CY = H / 2;
