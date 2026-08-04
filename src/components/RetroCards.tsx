@@ -7,6 +7,7 @@ import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
+import { c } from "@/lib/colorScales";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -121,31 +122,32 @@ interface MemojisPosition {
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
 // One colour per "last 4 weeks" question — drives the page background in edit mode
-const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
+const QUESTION_COLORS = [c("green", 700), c("green", 600), c("green", 500), c("green", 400), c("green", 300), c("green", 200)];
 
-// Stack Overflow brand palette (stackoverflow.design/brand/color)
+// Every brand token is a step of a generated colour scale (src/lib/colorScales)
 const BRAND = {
-  stackOrange: "#FF5E00",
-  purple: "#9D9CFF",
-  pink: "#F39FFF",
-  yellow: "#FFCC00",
-  blue: "#5074EF",
-  turquoise: "#0FB3A6",
-  turquoiseDot: "#A8E85C",
-  green: "#86AF25",
-  offBlack: "#201C1D",
-  offWhite: "#F0EFEE",
-  lightBlue: "#C6D1E1",
-  lightBrown: "#998B7A",
-  darkOrange: "#31070F",
-  mediumOrange: "#6E1527",
-  darkPurple: "#390A91",
-  darkPink: "#4D1955",
-  darkGreen: "#263603",
-  darkYellow: "#423101",
-  darkBlue: "#00165E",
+  stackOrange: c("orange", 500),
+  purple: c("indigo", 500),
+  pink: c("pink", 500),
+  yellow: c("yellow", 500),
+  blue: c("cobalt", 500),
+  turquoise: c("teal", 500),
+  turquoiseDot: c("lime", 400),
+  green: c("lime", 600),
+  offBlack: c("neutral", 900),
+  offWhite: c("neutral", 50),
+  lightBlue: c("steelBlue", 500),
+  lightBrown: c("brown", 300),
+  darkOrange: c("wine", 700),
+  mediumOrange: c("maroon", 600),
+  darkPurple: c("violet", 600),
+  darkPink: c("plum", 600),
+  darkGreen: c("forest", 600),
+  darkYellow: c("brown", 800),
+  darkBlue: c("deepBlue", 800),
   white: "#FFFFFF",
 } as const;
+
 
 // Approved label color combinations (icon color on square color) from the
 // "Label color guidance" section of the brand docs. Order = rotation order.
@@ -163,7 +165,7 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 // Palette used for the randomly coloured Questions slide
 // For the dark orange theme the link item icon tile uses a light orange fill.
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
-  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: "#FFA36D" },
+  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: c("orange", 300) },
   { icon: BRAND.offBlack, square: BRAND.stackOrange },
   { icon: BRAND.darkPink, square: BRAND.pink },
   { icon: BRAND.offBlack, square: BRAND.yellow },
