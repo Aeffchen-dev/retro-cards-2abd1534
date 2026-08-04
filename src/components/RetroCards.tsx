@@ -373,8 +373,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2) return BRAND.olive;
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
-      // Feedback: pink
-      if (slideId === SLIDE_REFLECTION) return BRAND.pink;
+      // Feedback: purple
+      if (slideId === SLIDE_REFLECTION) return BRAND.neonPurple;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: blue pill with yellow label
