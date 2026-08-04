@@ -131,6 +131,7 @@ const BRAND = {
   pink: "#E9A0FF",
   yellow: "#F5C542",
   lime: "#E5F135",
+  brightLavender: "#C8C7FF",
   olive: "#5C8727",
   maroon: "#5C1524",
   blue: "#009DFF",
@@ -371,7 +372,7 @@ const RetroCards: React.FC = () => {
       // Takeaways: swapped blue combo
       if (slideId === 8) return BRAND.lime;
       // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.purple;
+      if (slideId === 4) return BRAND.stackOrange;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
@@ -388,12 +389,13 @@ const RetroCards: React.FC = () => {
   // Post-it label bars use a companion colour — never the same as the pill.
   const labelColorOf = useCallback(
     (slideId: number) => {
-      if (slideId === 0 || slideId === 4) return BRAND.stackOrange;
+      if (slideId === 0) return BRAND.stackOrange;
+      if (slideId === 4) return BRAND.purple;
       if (slideId === 1 || slideId === 2) return BRAND.lime;
       if (slideId === 3 || slideId === 5) return BRAND.pink;
-      if (slideId === SLIDE_REFLECTION) return BRAND.yellow;
+      if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       if (slideId === 7) return BRAND.pink;
-      if (slideId === 8) return BRAND.purple;
+      if (slideId === 8) return BRAND.brightLavender;
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
@@ -1998,10 +2000,10 @@ const RetroCards: React.FC = () => {
                 1: { pill: BRAND.olive, pillDot: BRAND.lime },
                 2: { pill: BRAND.olive, pillDot: BRAND.lime },
                 3: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
-                4: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
+                4: { pill: BRAND.stackOrange, pillDot: BRAND.purple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
-                8: { pill: BRAND.lime, pillDot: BRAND.offBlack },
+                8: { pill: BRAND.lime, pillDot: BRAND.brightPurple },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.stackOrange },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
