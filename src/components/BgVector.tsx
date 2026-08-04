@@ -88,15 +88,6 @@ function buildFaces(phase: number): Face[] {
 
     for (const q of quads) {
       const proj = q.idx.map((k) => project(v[k]));
-      // backface culling via 2D signed area
-      let area = 0;
-      for (let n = 0; n < proj.length; n++) {
-        const [x1, y1] = proj[n];
-        const [x2, y2] = proj[(n + 1) % proj.length];
-        area += x1 * y2 - x2 * y1;
-      }
-      if (area <= 0) continue;
-
       const depth = proj.reduce((s, pt) => s + pt[2], 0) / proj.length;
       // subtle directional light based on face normal orientation
       const light = 1;
