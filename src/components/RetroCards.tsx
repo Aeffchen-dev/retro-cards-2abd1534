@@ -177,7 +177,7 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
 const CARD_BACKGROUNDS = [
-  BRAND.pink,
+  "#F39FFF",
   BRAND.white,
   BRAND.white,
   BRAND.white,
