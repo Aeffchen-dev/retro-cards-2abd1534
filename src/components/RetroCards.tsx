@@ -1381,7 +1381,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(4)}
+                  accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
@@ -1396,7 +1396,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   readOnly
                   minHeight={160}
-                  accent={pillColorOf(4)}
+                  accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
                   value={postItTexts[person.key] || ""}
@@ -1420,7 +1420,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(5)}
+                  accent={labelColorOf(5)}
                   label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                   placeholder="Deine Antwort"
                   value={editModeNotes[5]?.[person.key] || ""}
@@ -1703,7 +1703,7 @@ const RetroCards: React.FC = () => {
               {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
                 <PostItField
                   key={key}
-                  accent={pillColorOf(SLIDE_REFLECTION)}
+                  accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
@@ -1718,7 +1718,7 @@ const RetroCards: React.FC = () => {
                   key={key}
                   readOnly
                   minHeight={140}
-                  accent={pillColorOf(SLIDE_REFLECTION)}
+                  accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
@@ -1787,7 +1787,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
-                  accent={pillColorOf(8)}
+                  accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
@@ -1802,7 +1802,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   readOnly
                   minHeight={160}
-                  accent={pillColorOf(8)}
+                  accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
                   value={takeawayTexts[person.key] || ""}
@@ -2068,7 +2068,7 @@ const RetroCards: React.FC = () => {
                             return (
                               <PostItField
                                 key={noteKey}
-                                accent={pillColorOf(slideId)}
+                                accent={labelColorOf(slideId)}
                                 label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                                 placeholder="Deine Antwort"
                                 value={editModeNotes[slideId]?.[noteKey] || ""}
