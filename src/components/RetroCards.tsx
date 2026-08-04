@@ -127,11 +127,12 @@ const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", 
 const BRAND = {
   stackOrange: "#FF5817",
   purple: "#9D9CFF",
-  pink: "#FF04FF",
+  brightPurple: "#8F7BFF",
+  pink: "#FF47D1",
   yellow: "#FFA100",
   blue: "#009DFF",
-  turquoise: "#25713A",
-  turquoiseDot: "#A5D968",
+  turquoise: "#19C37D",
+  turquoiseDot: "#103C1C",
   green: "#A5D968",
   offBlack: "#1D1D1D",
   offWhite: "#E2E2E2",
@@ -356,7 +357,7 @@ const RetroCards: React.FC = () => {
   const pillColorOf = useCallback(
     (slideId: number) => {
       // Memory Time slide is always purple
-      if (slideId === 0) return BRAND.purple;
+      if (slideId === 0) return BRAND.brightPurple;
       // Health check slides: swapped orange combo
       if (slideId === 1 || slideId === 2) return BRAND.turquoise;
       // Last 4 weeks: orange
@@ -364,12 +365,12 @@ const RetroCards: React.FC = () => {
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
-      if (slideId === 8) return BRAND.yellow;
+      if (slideId === 8) return BRAND.green;
       // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.purple;
+      if (slideId === 4) return BRAND.brightPurple;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
-      if (slideId === 7) return BRAND.stackOrange;
+      if (slideId === 7) return BRAND.blue;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return LABEL_COMBOS[2].square;
       // Questions: random combo per question
@@ -679,7 +680,12 @@ const RetroCards: React.FC = () => {
     if (allQuestions.length === 0) return;
     const randomIndex = Math.floor(Math.random() * allQuestions.length);
     setCurrentQuestion(allQuestions[randomIndex]);
-    setQuestionComboIdx(Math.floor(Math.random() * QUESTION_COMBOS.length));
+    setQuestionComboIdx((prev) => {
+      if (QUESTION_COMBOS.length < 2) return prev;
+      let next = prev;
+      while (next === prev) next = Math.floor(Math.random() * QUESTION_COMBOS.length);
+      return next;
+    });
   }, [allQuestions]);
 
   // Handle mobile Safari viewport height and card dimensions - debounced
@@ -1968,14 +1974,14 @@ const RetroCards: React.FC = () => {
               const baseTheme = CARD_THEMES[index % CARD_THEMES.length];
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
-                0: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
+                0: { pill: BRAND.brightPurple, pillDot: BRAND.darkPurple },
                 1: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
                 2: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
                 3: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                4: { pill: BRAND.purple, pillDot: BRAND.darkPurple },
+                4: { pill: BRAND.brightPurple, pillDot: BRAND.darkPurple },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                7: { pill: BRAND.stackOrange, pillDot: BRAND.mediumOrange },
-                8: { pill: BRAND.yellow, pillDot: BRAND.offBlack },
+                7: { pill: BRAND.blue, pillDot: BRAND.darkBlue },
+                8: { pill: BRAND.green, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
                 // Archive matches the Setup slide combo
                 9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
