@@ -375,10 +375,10 @@ const RetroCards: React.FC = () => {
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
-      // Takeaways: swapped blue combo
-      if (slideId === 8) return BRAND.lime;
-      // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.babyBlue;
+      // Takeaways: turquoise combo
+      if (slideId === 8) return BRAND.turquoise;
+      // Talk-about: orange pill with pink label
+      if (slideId === 4) return BRAND.stackOrange;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
