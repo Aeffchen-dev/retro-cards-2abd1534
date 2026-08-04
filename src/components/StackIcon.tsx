@@ -14,21 +14,41 @@ interface StackIconProps {
   size?: number;
   color?: string;
   className?: string;
+  /** Render as outline (stroked silhouette) instead of solid fill. Default: true */
+  outline?: boolean;
+  strokeWidth?: number;
 }
 
 /**
  * Renders an icon from the Stack Exchange Stacks-Icons set.
  * Hard-coded fills are stripped so the icon inherits `currentColor`.
  */
-const StackIcon: React.FC<StackIconProps> = ({ name, size = 18, color, className }) => {
+const StackIcon: React.FC<StackIconProps> = ({
+  name,
+  size = 18,
+  color,
+  className,
+  outline = true,
+  strokeWidth = 1.1,
+}) => {
   const svg = useMemo(() => {
     const raw = ICON_OVERRIDES[name as string] ?? (StacksIcons as Record<string, string>)[name as string];
     if (!raw) return "";
-    return raw
+    let out = raw
       .replace(/fill="(?!none)[^"]*"/g, 'fill="currentColor"')
       .replace(/width="\d+"/, `width="${size}"`)
       .replace(/height="\d+"/, `height="${size}"`);
-  }, [name, size]);
+    if (outline) {
+      out = out
+        .replace(/fill="currentColor"/g, 'fill="none"')
+        .replace(
+          /<svg /,
+          `<svg fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linejoin="round" stroke-linecap="round" `
+        );
+    }
+    return out;
+  }, [name, size, outline, strokeWidth]);
+
 
   return (
     <span
