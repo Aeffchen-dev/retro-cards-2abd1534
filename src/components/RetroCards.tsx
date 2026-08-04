@@ -122,7 +122,7 @@ interface MemojisPosition {
 // Cards: Pure White bg + Off-Black text. Accents cycle through the brand
 // primaries, each paired with its dark counterpart for the pill dot.
 // One colour per "last 4 weeks" question — drives the page background in edit mode
-const QUESTION_COLORS = ["#1E5F3A", "#2F7D4F", "#45A164", "#5EBA7D", "#8FD3A3", "#C6E6C1"];
+const QUESTION_COLORS = [c("green", 700), c("green", 600), c("green", 500), c("green", 400), c("green", 300), c("green", 200)];
 
 // Every brand token is a step of a generated colour scale (src/lib/colorScales)
 const BRAND = {
