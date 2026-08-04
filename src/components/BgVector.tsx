@@ -20,18 +20,18 @@ type Slab = {
   sideFill: string;
 };
 
-function buildSlabs(): Slab[] {
-  const count = 26;
+function buildSlabs(phase = 0): Slab[] {
+  const count = 22;
   const slabs: Slab[] = [];
-  const halfW = 300; // slab half length
-  const depth = 70; // visual thickness of the top face
-  const height = 44; // slab side height
+  const halfW = 390; // slab half length
+  const depth = 110; // visual thickness of the top face
+  const height = 74; // slab side height
   const stepY = (H + 160) / count;
 
   for (let i = 0; i < count; i++) {
     const t = i / (count - 1);
-    const a = -0.28 + i * 0.26; // rotation around the vertical axis
-    const cx = 760 - t * 60;
+    const a = -0.28 + i * 0.26 + phase; // rotation around the vertical axis
+    const cx = 780 - t * 70;
     const y = -60 + i * stepY;
 
     const cos = Math.cos(a);
@@ -60,7 +60,23 @@ function buildSlabs(): Slab[] {
 }
 
 export default function BgVector({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  const slabs = useMemo(buildSlabs, []);
+  const [phase, setPhase] = React.useState(0);
+
+  React.useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const dt = now - last;
+      last = now;
+      setPhase((p) => (p + dt * 0.00012) % (Math.PI * 2));
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const slabs = useMemo(() => buildSlabs(phase), [phase]);
   return (
     <svg
       className={className}
