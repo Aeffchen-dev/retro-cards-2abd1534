@@ -21,15 +21,19 @@ const LEN = 340; // half length along local X
 const THICK = 105; // half thickness along local Z
 const HEIGHT = 26; // half height along Y
 
-const CAM_Z = 1250; // camera distance
-const FOCAL = 1750; // focal length
-const CX = 790; // screen center x
+const SCALE = 0.9; // orthographic scale
+const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
+const CX = 760; // screen center x
 const CY = H / 2;
 
+const CP = Math.cos(PITCH);
+const SP = Math.sin(PITCH);
+
+// Orthographic camera with a fixed downward tilt (matches the reference art).
 function project([x, y, z]: V3): [number, number, number] {
-  const zc = z + CAM_Z;
-  const s = FOCAL / Math.max(zc, 1);
-  return [CX + x * s, CY + y * s, zc];
+  const ys = y * CP - z * SP;
+  const depth = y * SP + z * CP;
+  return [CX + x * SCALE, CY + ys * SCALE, depth];
 }
 
 function shade(hex: string, k: number): string {
@@ -44,7 +48,7 @@ type Face = { pts: string; fill: string; depth: number };
 
 function buildFaces(phase: number): Face[] {
   const faces: Face[] = [];
-  const spanY = 2500;
+  const spanY = 2600;
 
   for (let i = 0; i < SLAB_COUNT; i++) {
     const t = i / (SLAB_COUNT - 1);
