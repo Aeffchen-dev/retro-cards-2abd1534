@@ -8,6 +8,7 @@ import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
 import { c, accentStep, dotStep, type ColorName } from "@/lib/colorScales";
+import { SLIDE_HUES, SLIDE_THEMES } from "@/lib/slideThemes";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
