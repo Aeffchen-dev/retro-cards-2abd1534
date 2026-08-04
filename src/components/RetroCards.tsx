@@ -135,7 +135,7 @@ const BRAND = {
   babyBlue: "#7FD9FF",
   neonPurple: "#9B30FF",
   spiralBlue: "#4E6BEE",
-  darkTurquoise: "#0B7A6E",
+  darkTurquoise: "#054C45",
   olive: "#4E7A0F",
   neonGreen: "#63E82B",
   maroon: "#5C1524",
