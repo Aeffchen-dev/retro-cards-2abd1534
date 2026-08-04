@@ -21,7 +21,7 @@ const LEN = 340; // half length along local X
 const THICK = 105; // half thickness along local Z
 const HEIGHT = 34; // half height along Y
 
-const SCALE = 0.95; // orthographic scale
+const SCALE = 0.85; // orthographic scale
 const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
 const CX = 700; // screen center x
 const CY = H / 2;
