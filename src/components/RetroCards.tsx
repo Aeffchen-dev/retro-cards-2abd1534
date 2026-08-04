@@ -181,6 +181,10 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
   { icon: BRAND.lime, square: BRAND.olive },
 ];
 
+// "The last 4 weeks" link items — one shade of rosa per row (dark → light)
+const ROSA_SHADES = ["#B5197E", "#D42D9B", "#E85AB4", "#F27ECA", "#FBA3DC", "#FFC4EA"];
+
+
 
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
