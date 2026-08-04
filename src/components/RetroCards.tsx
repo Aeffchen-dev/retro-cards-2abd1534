@@ -1996,7 +1996,7 @@ const RetroCards: React.FC = () => {
                 1: { pill: BRAND.olive, pillDot: BRAND.lime },
                 2: { pill: BRAND.olive, pillDot: BRAND.lime },
                 3: { pill: BRAND.stackOrange, pillDot: "#FFC4EA" },
-                4: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
+                4: { pill: BRAND.blue, pillDot: "#EAFF00" },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
