@@ -8,6 +8,7 @@ import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import bgGraphic from "@/assets/bg-graphic.webp";
 import { c, accentStep, dotStep, type ColorName } from "@/lib/colorScales";
+import { SLIDE_HUES, SLIDE_THEMES } from "@/lib/slideThemes";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -173,30 +174,10 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 ];
 
 
-// Bold rebrand: every slide owns a hue family from the generated scales.
-// Card background stays white; only accents/pills/dots carry the hue.
-const SLIDE_HUES: ColorName[] = [
-  "pink",
-  "teal",
-  "orange",
-  "cobalt",
-  "amber",
-  "magenta",
-  "lime",
-  "violet",
-];
-
+// Slide themes live in src/lib/slideThemes.ts (covered by unit tests).
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  SLIDE_HUES.map((hue) => {
-    const pill = c(hue, 500);
-    return {
-      bg: BRAND.white,
-      text: BRAND.offBlack,
-      accent: accentStep(hue),
-      pill,
-      pillDot: dotStep(hue, pill),
-    };
-  });
+  SLIDE_THEMES;
+
 
 
 
