@@ -382,7 +382,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: rosa pill with orange accents
       if (slideId === 4) return "#F39FFF";
-      if (slideId === 5) return BRAND.stackOrange;
+      if (slideId === 5) return BRAND.neonPurple;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
       // Archive: same colors as the Setup slide
@@ -402,7 +402,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 4) return "#FF7A3D";              // rosa pill → warm orange label
       if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return BRAND.babyBlue;        // orange pill → baby blue
-      if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
+      if (slideId === 5) return BRAND.lime;            // neon purple pill → lime
       if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // label matches turquoise pill
@@ -2002,7 +2002,7 @@ const RetroCards: React.FC = () => {
                 2: { pill: BRAND.neonGreen, pillDot: BRAND.darkTurquoise },
                 3: { pill: BRAND.stackOrange, pillDot: "#FFC4EA" },
                 4: { pill: "#F39FFF", pillDot: "#FF4A0C" },
-                5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
+                5: { pill: BRAND.neonPurple, pillDot: BRAND.lime },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
