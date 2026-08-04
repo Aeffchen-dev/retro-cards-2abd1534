@@ -1756,7 +1756,7 @@ const RetroCards: React.FC = () => {
                 </div>
               </div>
               <PostItField
-                accent={INTIMACY_LABEL_BG}
+                accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
                 minHeight={120}
