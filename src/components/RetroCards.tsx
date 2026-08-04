@@ -134,6 +134,7 @@ const BRAND = {
   brightLavender: "#C9A8FF",
   babyBlue: "#7FD9FF",
   neonPurple: "#9B30FF",
+  spiralBlue: "#4E6BEE",
   olive: "#4E7A0F",
   neonGreen: "#63E82B",
   maroon: "#5C1524",
@@ -375,7 +376,7 @@ const RetroCards: React.FC = () => {
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
-      if (slideId === SLIDE_REFLECTION) return BRAND.neonPurple;
+      if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: rosa pill with orange accents
@@ -2003,7 +2004,7 @@ const RetroCards: React.FC = () => {
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
-                [SLIDE_REFLECTION]: { pill: BRAND.neonPurple, pillDot: BRAND.babyBlue },
+                [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
