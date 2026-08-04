@@ -1,9 +1,9 @@
 import React, { useMemo } from "react";
 
 /**
- * Vector recreation of the page background graphic:
- * a twisting spiral stack of 3D slabs (pink / blue tops, orange sides)
- * on the dark charcoal page colour. Fully resolution independent.
+ * Real 3D vector recreation of the page background graphic:
+ * a helix of extruded slabs, projected with a perspective camera and
+ * painter-sorted per face, with light-direction shading.
  */
 const W = 1021;
 const H = 1920;
@@ -13,50 +13,98 @@ const PINK = "#F39FFF";
 const BLUE = "#4E6BEE";
 const ORANGE = "#FF4A0C";
 
-type Slab = {
-  top: string;
-  side: string;
-  fill: string;
-  sideFill: string;
-};
+// --- 3D helpers -------------------------------------------------------------
+type V3 = [number, number, number];
 
-function buildSlabs(phase = 0): Slab[] {
-  const count = 22;
-  const slabs: Slab[] = [];
-  const halfW = 390; // slab half length
-  const depth = 110; // visual thickness of the top face
-  const height = 74; // slab side height
-  const stepY = (H + 160) / count;
+const SLAB_COUNT = 22;
+const LEN = 330; // half length along local X
+const THICK = 40; // half thickness along local Z
+const HEIGHT = 34; // half height along Y
 
-  for (let i = 0; i < count; i++) {
-    const t = i / (count - 1);
-    const a = -0.28 + i * 0.26 + phase; // rotation around the vertical axis
-    const cx = 780 - t * 70;
-    const y = -60 + i * stepY;
+const CAM_Z = 1250; // camera distance
+const FOCAL = 1250; // focal length
+const CX = 700; // screen center x
+const CY = H / 2;
 
+function project([x, y, z]: V3): [number, number, number] {
+  const zc = z + CAM_Z;
+  const s = FOCAL / Math.max(zc, 1);
+  return [CX + x * s, CY + y * s, zc];
+}
+
+function shade(hex: string, k: number): string {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.round(Math.min(255, ((n >> 16) & 255) * k));
+  const g = Math.round(Math.min(255, ((n >> 8) & 255) * k));
+  const b = Math.round(Math.min(255, (n & 255) * k));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, "0")}`;
+}
+
+type Face = { pts: string; fill: string; depth: number };
+
+function buildFaces(phase: number): Face[] {
+  const faces: Face[] = [];
+  const spanY = 2100;
+
+  for (let i = 0; i < SLAB_COUNT; i++) {
+    const t = i / (SLAB_COUNT - 1);
+    const a = -0.28 + i * 0.26 + phase;
+    const cy = -spanY / 2 + t * spanY;
     const cos = Math.cos(a);
     const sin = Math.sin(a);
 
-    const xL = cx - halfW * cos;
-    const xR = cx + halfW * cos;
-    const yL = y + halfW * sin * 0.34;
-    const yR = y - halfW * sin * 0.34;
+    // local -> world (rotate around Y axis, translate on Y)
+    const p = (lx: number, ly: number, lz: number): V3 => [
+      lx * cos + lz * sin,
+      cy + ly,
+      -lx * sin + lz * cos,
+    ];
 
-    // top face: front edge -> back edge (pushed up + slightly right)
-    const bx = depth * 0.35 * sin;
-    const by = -depth * Math.abs(cos) * 0.9 - 14;
+    const v: V3[] = [
+      p(-LEN, -HEIGHT, -THICK), // 0
+      p(LEN, -HEIGHT, -THICK), // 1
+      p(LEN, -HEIGHT, THICK), // 2
+      p(-LEN, -HEIGHT, THICK), // 3
+      p(-LEN, HEIGHT, -THICK), // 4
+      p(LEN, HEIGHT, -THICK), // 5
+      p(LEN, HEIGHT, THICK), // 6
+      p(-LEN, HEIGHT, THICK), // 7
+    ];
 
-    const top = `${xL},${yL} ${xR},${yR} ${xR + bx},${yR + by} ${xL + bx},${yL + by}`;
-    const side = `${xL},${yL} ${xR},${yR} ${xR},${yR + height} ${xL},${yL + height}`;
+    const base = t < 0.42 ? PINK : BLUE;
 
-    slabs.push({
-      top,
-      side,
-      fill: t < 0.42 ? PINK : BLUE,
-      sideFill: ORANGE,
-    });
+    const quads: { idx: number[]; color: string; lit: number }[] = [
+      { idx: [0, 1, 2, 3], color: base, lit: 1.0 }, // top
+      { idx: [4, 5, 6, 7], color: base, lit: 0.45 }, // bottom
+      { idx: [3, 2, 6, 7], color: ORANGE, lit: 0.95 }, // front side
+      { idx: [1, 0, 4, 5], color: ORANGE, lit: 0.6 }, // back side
+      { idx: [0, 3, 7, 4], color: ORANGE, lit: 0.75 }, // left cap
+      { idx: [2, 1, 5, 6], color: ORANGE, lit: 0.85 }, // right cap
+    ];
+
+    for (const q of quads) {
+      const proj = q.idx.map((k) => project(v[k]));
+      // backface culling via 2D signed area
+      let area = 0;
+      for (let n = 0; n < proj.length; n++) {
+        const [x1, y1] = proj[n];
+        const [x2, y2] = proj[(n + 1) % proj.length];
+        area += x1 * y2 - x2 * y1;
+      }
+      if (area <= 0) continue;
+
+      const depth = proj.reduce((s, pt) => s + pt[2], 0) / proj.length;
+      // subtle directional light based on face normal orientation
+      const light = q.lit * (0.82 + 0.18 * Math.abs(cos));
+      faces.push({
+        pts: proj.map((pt) => `${pt[0].toFixed(1)},${pt[1].toFixed(1)}`).join(" "),
+        fill: shade(q.color, light),
+        depth,
+      });
+    }
   }
-  return slabs;
+
+  return faces.sort((a, b) => b.depth - a.depth);
 }
 
 export default function BgVector({ className, style }: { className?: string; style?: React.CSSProperties }) {
@@ -76,7 +124,8 @@ export default function BgVector({ className, style }: { className?: string; sty
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  const slabs = useMemo(() => buildSlabs(phase), [phase]);
+  const faces = useMemo(() => buildFaces(phase), [phase]);
+
   return (
     <svg
       className={className}
@@ -89,11 +138,8 @@ export default function BgVector({ className, style }: { className?: string; sty
       focusable="false"
     >
       <rect width={W} height={H} fill={DARK} />
-      {slabs.map((s, i) => (
-        <g key={i}>
-          <polygon points={s.side} fill={s.sideFill} />
-          <polygon points={s.top} fill={s.fill} />
-        </g>
+      {faces.map((f, i) => (
+        <polygon key={i} points={f.pts} fill={f.fill} shapeRendering="geometricPrecision" />
       ))}
     </svg>
   );
