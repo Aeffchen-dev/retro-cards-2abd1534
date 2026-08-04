@@ -16,13 +16,13 @@ const ORANGE = "#FF4A0C";
 // --- 3D helpers -------------------------------------------------------------
 type V3 = [number, number, number];
 
-const SLAB_COUNT = 22;
+const SLAB_COUNT = 18;
 const LEN = 330; // half length along local X
 const THICK = 40; // half thickness along local Z
-const HEIGHT = 34; // half height along Y
+const HEIGHT = 30; // half height along Y
 
 const CAM_Z = 1250; // camera distance
-const FOCAL = 1250; // focal length
+const FOCAL = 1750; // focal length
 const CX = 700; // screen center x
 const CY = H / 2;
 
@@ -44,11 +44,11 @@ type Face = { pts: string; fill: string; depth: number };
 
 function buildFaces(phase: number): Face[] {
   const faces: Face[] = [];
-  const spanY = 2100;
+  const spanY = 2900;
 
   for (let i = 0; i < SLAB_COUNT; i++) {
     const t = i / (SLAB_COUNT - 1);
-    const a = -0.28 + i * 0.26 + phase;
+    const a = -0.28 + i * 0.34 + phase;
     const cy = -spanY / 2 + t * spanY;
     const cos = Math.cos(a);
     const sin = Math.sin(a);
@@ -71,7 +71,7 @@ function buildFaces(phase: number): Face[] {
       p(-LEN, HEIGHT, THICK), // 7
     ];
 
-    const base = t < 0.42 ? PINK : BLUE;
+    const base = t < 0.5 ? PINK : BLUE;
 
     const quads: { idx: number[]; color: string; lit: number }[] = [
       { idx: [0, 1, 2, 3], color: base, lit: 1.0 }, // top
