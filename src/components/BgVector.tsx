@@ -23,7 +23,7 @@ const HEIGHT = 34; // half height along Y
 
 const SCALE = 0.95; // orthographic scale
 const PITCH = 0.46; // camera tilt (radians) so slab tops stay visible
-const CX = 860; // screen center x
+const CX = 620; // screen center x
 const CY = H / 2;
 
 const CP = Math.cos(PITCH);
