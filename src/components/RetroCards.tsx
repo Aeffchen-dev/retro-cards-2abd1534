@@ -181,6 +181,10 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
   { icon: BRAND.lime, square: BRAND.olive },
 ];
 
+// "The last 4 weeks" link items — one shade of rosa per row (dark → light)
+const ROSA_SHADES = ["#B5197E", "#D42D9B", "#E85AB4", "#F27ECA", "#FBA3DC", "#FFC4EA"];
+
+
 
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
 // each slide is driven by the approved label combination for that index.
@@ -371,10 +375,10 @@ const RetroCards: React.FC = () => {
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
-      // Takeaways: swapped blue combo
-      if (slideId === 8) return BRAND.lime;
-      // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.babyBlue;
+      // Takeaways: turquoise combo
+      if (slideId === 8) return BRAND.turquoise;
+      // Talk-about: orange pill with pink label
+      if (slideId === 4) return BRAND.stackOrange;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
       if (slideId === 7) return BRAND.maroon;
@@ -392,13 +396,13 @@ const RetroCards: React.FC = () => {
   const labelColorOf = useCallback(
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
-      if (slideId === 4) return BRAND.brightLavender;  // baby blue pill → lavender
+      if (slideId === 4) return BRAND.pink;            // orange pill → pink label
       if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return BRAND.babyBlue;        // orange pill → baby blue
       if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
-      if (slideId === SLIDE_REFLECTION) return BRAND.yellow;   // pink pill → yellow
+      if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
-      if (slideId === 8) return BRAND.brightLavender;  // lime pill → lavender
+      if (slideId === 8) return BRAND.yellow;          // turquoise pill → yellow
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
@@ -1363,7 +1367,7 @@ const RetroCards: React.FC = () => {
                   key={i}
                   icon={iconName}
                   label={String(label)}
-                  accent={pillColorOf(3)}
+                  accent={ROSA_SHADES[i % ROSA_SHADES.length]}
                   className="retro-body-copy"
                   onClick={() => openQuestionEdit(3, i, String(label))}
                 />
@@ -1991,11 +1995,11 @@ const RetroCards: React.FC = () => {
                 0: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
                 1: { pill: BRAND.olive, pillDot: BRAND.lime },
                 2: { pill: BRAND.olive, pillDot: BRAND.lime },
-                3: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
-                4: { pill: BRAND.babyBlue, pillDot: BRAND.neonPurple },
+                3: { pill: BRAND.stackOrange, pillDot: "#FFC4EA" },
+                4: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
-                8: { pill: BRAND.lime, pillDot: BRAND.brightPurple },
+                8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.stackOrange },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
