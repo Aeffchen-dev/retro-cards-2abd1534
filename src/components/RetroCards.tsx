@@ -402,7 +402,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
       if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
-      if (slideId === 8) return BRAND.yellow;          // turquoise pill → yellow
+      if (slideId === 8) return BRAND.turquoise;       // label matches turquoise pill
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
