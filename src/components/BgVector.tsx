@@ -16,7 +16,7 @@ const ORANGE = "#FF4A0C";
 // --- 3D helpers -------------------------------------------------------------
 type V3 = [number, number, number];
 
-const SLAB_COUNT = 14;
+const SLAB_COUNT = 18;
 const LEN = 330; // half length along local X
 const THICK = 40; // half thickness along local Z
 const HEIGHT = 30; // half height along Y
@@ -71,7 +71,7 @@ function buildFaces(phase: number): Face[] {
       p(-LEN, HEIGHT, THICK), // 7
     ];
 
-    const base = t < 0.42 ? PINK : BLUE;
+    const base = t < 0.5 ? PINK : BLUE;
 
     const quads: { idx: number[]; color: string; lit: number }[] = [
       { idx: [0, 1, 2, 3], color: base, lit: 1.0 }, // top
