@@ -396,13 +396,13 @@ const RetroCards: React.FC = () => {
   const labelColorOf = useCallback(
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
-      if (slideId === 4) return BRAND.brightLavender;  // baby blue pill → lavender
+      if (slideId === 4) return BRAND.pink;            // orange pill → pink label
       if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return BRAND.babyBlue;        // orange pill → baby blue
       if (slideId === 5) return BRAND.skyBlue;         // orange pill → sky blue
-      if (slideId === SLIDE_REFLECTION) return BRAND.yellow;   // pink pill → yellow
+      if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
-      if (slideId === 8) return BRAND.brightLavender;  // lime pill → lavender
+      if (slideId === 8) return BRAND.yellow;          // turquoise pill → yellow
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
