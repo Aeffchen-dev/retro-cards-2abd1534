@@ -384,15 +384,15 @@ const RetroCards: React.FC = () => {
   // Post-it label bars use a companion colour — never the same as the pill.
   const labelColorOf = useCallback(
     (slideId: number) => {
-      if (slideId === 0 || slideId === 4) return "#C6BCFF";
-      if (slideId === 1 || slideId === 2) return "#9BE8C4";
-      if (slideId === 3 || slideId === 5) return "#FFB98A";
-      if (slideId === SLIDE_REFLECTION) return "#F7B7DA";
-      if (slideId === 7) return "#9BD6FF";
-      if (slideId === 8) return "#DCF0B4";
-      if (slideId === 9) return "#BFE4FF";
-      if (slideId === 10) return "#E2E2E2";
-      return "#D6D6D6";
+      if (slideId === 0 || slideId === 4) return "#A5D968";
+      if (slideId === 1 || slideId === 2) return "#FFC24D";
+      if (slideId === 3 || slideId === 5) return "#9DD9FF";
+      if (slideId === SLIDE_REFLECTION) return "#A5D968";
+      if (slideId === 7) return "#FFB01F";
+      if (slideId === 8) return "#FF9CE0";
+      if (slideId === 9) return "#FFC24D";
+      if (slideId === 10) return "#F1F2F4";
+      return "#F1F2F4";
     },
     [questionComboIdx]
   );
@@ -1730,7 +1730,7 @@ const RetroCards: React.FC = () => {
         );
 
       case 7: {
-        const INTIMACY_LABEL_BG = "#9BD6FF"; // soft blue for label bars
+        const INTIMACY_LABEL_BG = "#FFB01F"; // bright amber label bars against blue pill
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
