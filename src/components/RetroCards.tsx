@@ -187,13 +187,16 @@ const SLIDE_HUES: ColorName[] = [
 ];
 
 const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pillDot: string }[] =
-  SLIDE_HUES.map((hue) => ({
-    bg: BRAND.white,
-    text: BRAND.offBlack,
-    accent: c(hue, 600),
-    pill: c(hue, 500),
-    pillDot: c(hue, 800),
-  }));
+  SLIDE_HUES.map((hue) => {
+    const pill = c(hue, 500);
+    return {
+      bg: BRAND.white,
+      text: BRAND.offBlack,
+      accent: accentStep(hue),
+      pill,
+      pillDot: dotStep(hue, pill),
+    };
+  });
 
 
 
