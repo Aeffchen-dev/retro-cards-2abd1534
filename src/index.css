@@ -827,14 +827,4 @@ textarea.bg-retro-post-it:focus,
   .bg-graphic-animated { animation: none; }
 }
 
-/* Questions slide: 10% smaller headline */
-#root .question-heading,
-.question-heading {
-  font-size: 34.56px !important;
-}
-@media (max-width: 767px) {
-  #root .question-heading,
-  .question-heading {
-    font-size: 1.8rem !important;
-  }
-}
+/* Questions slide: same headline size as all other slides */
