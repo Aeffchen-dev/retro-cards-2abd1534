@@ -128,8 +128,11 @@ const BRAND = {
   stackOrange: "#FF5817",
   purple: "#9D9CFF",
   brightPurple: "#8F7BFF",
-  pink: "#E86BB0",
-  yellow: "#FFA100",
+  pink: "#E9A0FF",
+  yellow: "#F5C542",
+  lime: "#E5F135",
+  olive: "#5C8727",
+  maroon: "#5C1524",
   blue: "#009DFF",
   turquoise: "#19C37D",
   turquoiseDot: "#103C1C",
@@ -167,11 +170,12 @@ const LABEL_COMBOS: { icon: string; square: string }[] = [
 // Palette used for the randomly coloured Questions slide
 // For the dark orange theme the link item icon tile uses a light orange fill.
 const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
-  { icon: BRAND.stackOrange, square: BRAND.darkOrange, linkTile: "#FFA36D" },
-  { icon: BRAND.offBlack, square: BRAND.stackOrange },
-  { icon: BRAND.darkPink, square: BRAND.midPurple },
+  { icon: BRAND.pink, square: BRAND.maroon, linkTile: BRAND.pink },
+  { icon: BRAND.pink, square: BRAND.stackOrange },
+  { icon: BRAND.stackOrange, square: BRAND.pink },
   { icon: BRAND.offBlack, square: BRAND.yellow },
-  { icon: BRAND.darkBlue, square: BRAND.skyBlue },
+  { icon: BRAND.maroon, square: BRAND.lightBlue },
+  { icon: BRAND.lime, square: BRAND.olive },
 ];
 
 
@@ -357,22 +361,22 @@ const RetroCards: React.FC = () => {
   const pillColorOf = useCallback(
     (slideId: number) => {
       // Memory Time slide is always purple
-      if (slideId === 0) return BRAND.brightPurple;
+      if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
-      if (slideId === 1 || slideId === 2) return BRAND.turquoise;
+      if (slideId === 1 || slideId === 2) return BRAND.olive;
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: pink
       if (slideId === SLIDE_REFLECTION) return BRAND.pink;
       // Takeaways: swapped blue combo
-      if (slideId === 8) return BRAND.green;
+      if (slideId === 8) return BRAND.lime;
       // Talk-about / Nicht monogam: swapped
-      if (slideId === 4) return BRAND.brightPurple;
+      if (slideId === 4) return BRAND.purple;
       if (slideId === 5) return BRAND.stackOrange;
       // Intimacy: orange
-      if (slideId === 7) return BRAND.blue;
+      if (slideId === 7) return BRAND.maroon;
       // Archive: same colors as the Setup slide
-      if (slideId === 9) return LABEL_COMBOS[2].square;
+      if (slideId === 9) return BRAND.lightBlue;
       // Questions: random combo per question
       if (slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square;
       const idx = slides.indexOf(slideId);
@@ -384,15 +388,15 @@ const RetroCards: React.FC = () => {
   // Post-it label bars use a companion colour — never the same as the pill.
   const labelColorOf = useCallback(
     (slideId: number) => {
-      if (slideId === 0 || slideId === 4) return "#A5D968";
-      if (slideId === 1 || slideId === 2) return "#FFC24D";
-      if (slideId === 3 || slideId === 5) return "#9DD9FF";
-      if (slideId === SLIDE_REFLECTION) return "#A5D968";
-      if (slideId === 7) return "#FFB01F";
-      if (slideId === 8) return "#FF9CE0";
-      if (slideId === 9) return "#FFC24D";
-      if (slideId === 10) return "#F1F2F4";
-      return "#F1F2F4";
+      if (slideId === 0 || slideId === 4) return BRAND.stackOrange;
+      if (slideId === 1 || slideId === 2) return BRAND.lime;
+      if (slideId === 3 || slideId === 5) return BRAND.pink;
+      if (slideId === SLIDE_REFLECTION) return BRAND.yellow;
+      if (slideId === 7) return BRAND.pink;
+      if (slideId === 8) return BRAND.purple;
+      if (slideId === 9) return BRAND.yellow;
+      if (slideId === 10) return BRAND.yellow;
+      return BRAND.lightBlue;
     },
     [questionComboIdx]
   );
@@ -1730,7 +1734,7 @@ const RetroCards: React.FC = () => {
         );
 
       case 7: {
-        const INTIMACY_LABEL_BG = "#FFB01F"; // bright amber label bars against blue pill
+        const INTIMACY_LABEL_BG = BRAND.pink; // brand pink label bars against the maroon pill
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
@@ -1990,17 +1994,17 @@ const RetroCards: React.FC = () => {
               const baseTheme = CARD_THEMES[index % CARD_THEMES.length];
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
-                0: { pill: BRAND.brightPurple, pillDot: BRAND.darkPurple },
-                1: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
-                2: { pill: BRAND.turquoise, pillDot: BRAND.turquoiseDot },
-                3: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                4: { pill: BRAND.brightPurple, pillDot: BRAND.darkPurple },
-                5: { pill: BRAND.stackOrange, pillDot: BRAND.offBlack },
-                7: { pill: BRAND.blue, pillDot: BRAND.darkBlue },
-                8: { pill: BRAND.green, pillDot: BRAND.darkGreen },
-                [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.darkPink },
+                0: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
+                1: { pill: BRAND.olive, pillDot: BRAND.lime },
+                2: { pill: BRAND.olive, pillDot: BRAND.lime },
+                3: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
+                4: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
+                5: { pill: BRAND.stackOrange, pillDot: BRAND.pink },
+                7: { pill: BRAND.maroon, pillDot: BRAND.pink },
+                8: { pill: BRAND.lime, pillDot: BRAND.offBlack },
+                [SLIDE_REFLECTION]: { pill: BRAND.pink, pillDot: BRAND.stackOrange },
                 // Archive matches the Setup slide combo
-                9: { pill: LABEL_COMBOS[2].square, pillDot: LABEL_COMBOS[2].icon },
+                9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
                 10: {
                   pill: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
