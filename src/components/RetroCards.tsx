@@ -405,7 +405,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
-      if (slideId === 8) return "#4E6BEE";             // spiral blue labels
+      if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
       return BRAND.lightBlue;
@@ -1845,7 +1845,7 @@ const RetroCards: React.FC = () => {
                 icon="IconDownload"
                 label="Ergebnisse sichern"
                 accent={pillColorOf(9)}
-                iconColor={LABEL_COMBOS[2].icon}
+                iconColor="#201C1D"
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
                 onClick={() => window.print()}
@@ -1854,7 +1854,7 @@ const RetroCards: React.FC = () => {
                 icon="IconTrash"
                 label="Meine Einträge löschen"
                 accent={pillColorOf(9)}
-                iconColor={LABEL_COMBOS[2].icon}
+                iconColor="#201C1D"
                 fieldBg="#E4E6E8"
                 labelColor="#201C1D"
                 onClick={() => clearAllUserData()}
