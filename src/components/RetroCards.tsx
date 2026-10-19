@@ -1792,6 +1792,19 @@ const RetroCards: React.FC = () => {
               </div>
               <PostItField
                 accent={labelColorOf(7)}
+                label="Das war so hot"
+                placeholder="Deine Antwort"
+                minHeight={120}
+                value={editModeNotes[7]?.hot || ""}
+                onChange={(v) =>
+                  setEditModeNotes(prev => ({
+                    ...prev,
+                    7: { ...(prev[7] || {}), hot: v }
+                  }))
+                }
+              />
+              <PostItField
+                accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
                 minHeight={120}
