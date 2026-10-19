@@ -1,0 +1,2 @@
+- [x] Add Vorhaben after Feedback with four prompts and emoji allocation scale.
+- [x] Verify text entry, scale dragging, persistence, print and mobile layout.
