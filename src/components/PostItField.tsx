@@ -50,8 +50,9 @@ export const PostItField: React.FC<PostItFieldProps> = ({
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
-      className="inline-flex self-start items-center h-8 pl-3 pr-3 retro-body-copy"
+      className="inline-flex self-start items-center py-1 pl-3 pr-3 retro-body-copy"
       style={{
+        minHeight: "32px",
         backgroundColor: readableBg(accent),
         color: TEXT,
       }}
