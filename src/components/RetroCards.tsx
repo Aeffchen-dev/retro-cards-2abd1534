@@ -66,7 +66,7 @@ interface SetupData {
 }
 
 const REFLECTION_FIELDS = [
-  ["nice", "Das fand ich schön", "Deine Antwort"],
+  ["nice", "Spiegeln: Das sehe ich bei / in dir das du wissen solltest", "Deine Antwort"],
   ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort"],
   ["idea", "Das wünsche ich mir", "Deine Antwort"],
 ] as const;
