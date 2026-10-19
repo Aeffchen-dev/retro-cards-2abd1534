@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
+import VorhabenSlide from "@/components/VorhabenSlide";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
@@ -28,6 +29,7 @@ const SLIDE_INTRO = 100;
 const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
 const SLIDE_LOGO = 103;
+const SLIDE_VORHABEN = 104;
 
 // Pill label displayed ABOVE the card for each slide (null = no pill)
 const SLIDE_PILLS: Record<number, string | null> = {
@@ -39,6 +41,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   2: "Health Check",
   3: "The last 4 weeks",
   102: "Feedback",
+  104: "Vorhaben",
   4: "To talk about",
   5: "Nicht monogam",
   7: "Intimacy",
@@ -358,7 +361,7 @@ const RetroCards: React.FC = () => {
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
-    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, 3, SLIDE_REFLECTION, 4];
+    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, 3, SLIDE_REFLECTION, SLIDE_VORHABEN, 4];
     if (setupData.openRelationship) arr.push(5);
     arr.push(7, 8, 9, 10);
     return arr;
@@ -377,7 +380,7 @@ const RetroCards: React.FC = () => {
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
-      if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;
+      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.spiralBlue;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: rosa pill with orange accents
@@ -403,7 +406,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
-      if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // pink pill → blue labels
+      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.babyBlue; // blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
@@ -1708,6 +1711,20 @@ const RetroCards: React.FC = () => {
 
 
 
+      case SLIDE_VORHABEN:
+        return (
+          <VorhabenSlide
+            slideId={SLIDE_VORHABEN}
+            emoji1={displayEmoji1}
+            emoji2={displayEmoji2}
+            values={editModeNotes[SLIDE_VORHABEN] || {}}
+            onChange={(key, value) => setEditModeNotes(prev => ({
+              ...prev,
+              [SLIDE_VORHABEN]: { ...prev[SLIDE_VORHABEN], [key]: value },
+            }))}
+          />
+        );
+
       case SLIDE_REFLECTION:
         return (
           <div className="flex flex-col items-start w-full h-full">
@@ -2006,6 +2023,7 @@ const RetroCards: React.FC = () => {
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
+                [SLIDE_VORHABEN]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
