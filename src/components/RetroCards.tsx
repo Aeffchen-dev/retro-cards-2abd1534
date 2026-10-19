@@ -2033,7 +2033,7 @@ const RetroCards: React.FC = () => {
                 },
               };
               const ov = overrides[slideId];
-              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov } : baseTheme;
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN ? { bg: BRAND.white } : {}) } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);

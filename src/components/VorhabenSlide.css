@@ -11,6 +11,12 @@
   padding: 4px 12px;
   overflow-wrap: anywhere;
 }
+.vorhaben-slide .flex.flex-col > .inline-flex.self-start {
+  height: auto;
+  min-height: 32px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
 .vorhaben-scale-line { background: var(--vorhaben-ink); }
 .vorhaben-scale-tick { background: var(--vorhaben-ink); }
 .vorhaben-scale-arrow {
