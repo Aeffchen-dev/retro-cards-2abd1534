@@ -73,3 +73,4 @@
 - [x] Make the whole slider row a hit area: a click above or below the rule moves the dot to that x position; verified value, dot placement, persistence and keyboard on a statement card.
 - [x] Reword the scale helper to "Platziere den Kreis indem du ihn nach links oder rechts ziehst" (screen and print); verify it wraps without clipping on the statement cards and in the PDF.
 - [x] Constrain desktop Health Check content and helper rows to the actual card content width; verified all seven cards at 873px, 1440px and 393px widths, build OK and 19 passing tests.
+- [x] Draw the arrow hint inside the untouched dot smaller than the dot itself, keeping it centred; verified on a phone close-up, build OK.
