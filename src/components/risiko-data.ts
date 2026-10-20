@@ -126,6 +126,27 @@ export const captionLines = (caption: string): string[] => {
 
 export const softHyphenate = (caption: string) => caption.replace("eilweise", "eil\u00ADweise");
 
+/** The chapter the Mood Test opens with: its big question and the intro sentence
+ *  under it, in the couple's own words. Screen and print read the same text. */
+export const RISIKO_CHAPTER_HEADING = "Euer Beziehungsgefühl";
+export const RISIKO_CHAPTER_INFO = "Lest euch die folgenden Statements die eine glückliche Beziehungen ausmachen und überlegt was davon für eure Beziehung bereits zutrifft und was noch wachsen darf.";
+
+/** Every statement slider of the chapter, in card order. */
+export const RISIKO_MOOD_KEYS = [...RISIKO_STATEMENTS.map(([key]) => key), RISIKO_HOT[0]] as const;
+
+/** The chapter's average mood: the mean of all statement values, but only once
+ *  every slider has been dragged — before that the chapter shows no smiley at
+ *  all, rather than one the couple never set. */
+export const averageMood = (values: Record<string, string>): number | null => {
+  if (!RISIKO_MOOD_KEYS.every((key) => values[key]?.trim())) return null;
+  return RISIKO_MOOD_KEYS.reduce((sum, key) => sum + scaleValue(values[key]), 0) / RISIKO_MOOD_KEYS.length;
+};
+
+/** Which of the five scale faces a mood value points at: the faces stand at
+ *  0, 25, 50, 75 and 100, so the average simply rounds to its nearest anchor. */
+export const moodFaceIndex = (mood: number): number =>
+  Math.max(0, Math.min(4, Math.round((Math.max(0, Math.min(100, mood)) * 4) / 100)));
+
 
 
 /** Largest-remainder rounding keeps integer percentages at exactly the target. */
