@@ -394,6 +394,19 @@
   min-width: 0;
 }
 
+/* The sentence that explains a post-it's headline: the scale's own grey, no fill,
+   sitting straight under the coloured bar and above the writing area. It takes the
+   info rows' size — 16px on desktop, one step smaller on phones and tablets.
+   The colour needs both classes: the shared body-text rule further down would
+   otherwise paint it ink black. */
+.post-it-helper {
+  font-size: 16px;
+  line-height: 22px;
+}
+.post-it-helper.retro-body-copy {
+  color: var(--risiko-guide);
+}
+
 .risiko-block { container-type: inline-size; }
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
@@ -615,7 +628,8 @@ button {
    12px is the app's floor — no text anywhere is set smaller than that. */
 @media (max-width: 1023px) {
   .retro-info-row,
-  .risiko-scale-caption {
+  .risiko-scale-caption,
+  .post-it-helper {
     font-size: 12px;
     line-height: 16px;
   }

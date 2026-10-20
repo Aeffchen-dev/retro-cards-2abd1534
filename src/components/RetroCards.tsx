@@ -74,10 +74,11 @@ interface SetupData {
 }
 
 const REFLECTION_FIELDS = [
-  ["nice", "Du in meinen Augen: Teile etwas was du gedacht / gesehen hast", "Deine Antwort"],
-  ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort"],
-  ["idea", "Das wünsche ich mir", "Deine Antwort"],
+  ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
+  ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
+  ["idea", "Das wünsche ich mir", "Deine Antwort", ""],
 ] as const;
+
 
 const NAME1_PLACEHOLDER = "Dein Name";
 const NAME2_PLACEHOLDER = "Name deines Partners";
@@ -1838,30 +1839,34 @@ const RetroCards: React.FC = () => {
               <h2 className="retro-heading w-full"><RevealText text="Feedback" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
-              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+              {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
                 <PostItField
                   key={key}
                   accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
+                  helper={helper}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
                   onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />
               ))}
+
             </div>
             {/* Print-only */}
             <div className="hidden print-only flex-col flex-1 w-full justify-between gap-4 mt-10">
-              {REFLECTION_FIELDS.map(([key, label, placeholder]) => (
+              {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
                 <PostItField
                   key={key}
                   readOnly
                   minHeight={140}
                   accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
+                  helper={helper}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
                 />
               ))}
+
             </div>
 
           </div>
