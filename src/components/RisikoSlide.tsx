@@ -56,8 +56,6 @@ const TRAVEL_INSET = MARKER_SIZE / 2;
 // dashed guide) sits at its column's centre, while the circle keeps gliding
 // through the whole width under them.
 const COL_W = 100 / FACES.length;
-// The card's white shows through this gap, so the bands read as separate columns.
-const COLUMN_GAP = 6;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -213,18 +211,23 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* The two tiny labels sit at the very left and right of the card, on the
-          same line as the smileys; between them the scale runs edge to edge —
-          rule, columns and the circle's travel, inset by the circle's radius. */}
-      <div className="risiko-scale-row relative flex items-start gap-2 box-border">
-        <span className="risiko-scale-caption pointer-events-none" style={{ height: FACE_SIZE }}>Stimme nicht zu</span>
+      {/* The two labels take a line of their own above the columns — "Trifft nicht
+          zu" flush left, "Trifft zu" flush right — so the columns below get the
+          card's full width. */}
+      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border">
+        <div className="risiko-scale-captions flex items-center justify-between gap-2">
+          <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
+          <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
+        </div>
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col gap-1 box-border">
-          {/* Columns: one soft grey band per smiley, spanning the whole scale from
-              its top edge down to the bottom of the circle's row — so every smiley
-              sits inside its own band and the circle travels through the foot of it.
-              Painted before the faces, so the fill never covers a smiley. */}
+          {/* Columns: one soft grey band per smiley, filling the scale edge to edge
+              with nothing between them, from its top down to the foot of the
+              circle's row — so every smiley sits inside its own band and the circle
+              travels through it. Every second band takes a slightly deeper grey, so
+              the five fields still read as separate. Painted before the faces, so
+              the fill never covers a smiley. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={i} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${i * COL_W}% + ${COLUMN_GAP / 2}px)`, width: `calc(${COL_W}% - ${COLUMN_GAP}px)` }} />)}
+            {FACES.map((_, i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${i * COL_W}%`, width: `${COL_W}%` }} />)}
             {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: `${(i + 0.5) * COL_W}%`, top: HEADER_H }} />)}
           </div>
           <FaceLayer />
@@ -232,7 +235,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
             onChange={(v) => onChange(key, String(v))} />
         </div>
-        <span className="risiko-scale-caption pointer-events-none" style={{ height: FACE_SIZE }}>Stimme voll zu</span>
       </div>
     </div>
   );
