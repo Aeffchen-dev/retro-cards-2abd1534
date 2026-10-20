@@ -12,25 +12,32 @@ export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy un
 /** The display-size question on the card that asks about the work split. */
 export const RISIKO_ALLOCATION_HEADING = "Wer leistet aktuell wie viel der Beziehungsarbeit?";
 
-/** What counts as Beziehungsarbeit — the card's fixed examples, read under the
- *  question. Screen and print show the same list; nothing here is editable. */
+/** What counts as Beziehungsarbeit — the card's fixed examples, read as one
+ *  flowing sentence under the question. The items keep the couple's own wording
+ *  and are joined with commas; screen and print show the same text. */
+export const RISIKO_ALLOCATION_INTRO = "Unter Beziehungsarbeit versteht man";
+
 export const RISIKO_ALLOCATION_EXAMPLES = [
-  "Schwierige Gespräche initiieren",
-  "Im Streit nachgeben, um zu deeskalieren",
-  "Sich Fehler eingestehen",
-  "Sich als unschuldiger entschuldigen",
-  "Einen großen Kompromiss zusagen",
+  "schwierige Gespräche initiieren",
+  "im Streit nachgeben um zu deeskalieren",
+  "sich Fehler eingestehen",
+  "sich als unschuldiger entschuldigen",
+  "einen großen Kompromiss zusagen",
   "Verletzungen aufarbeiten",
-  "Den anderen emotional auffangen",
-  "Immer zuerst Nähe initiieren",
-  "Vermeintlich übertriebene Bedürfnisse ernst nehmen",
-  "Unvergessliche Events planen",
-  "Eine Schwäche an anderen wertschätzen",
-  "Die eigene Meinung runterschlucken, um zuzuhören",
-  "Unsanftes Feedback leise in sich arbeiten lassen",
-  "Veränderungen, die einen Nachteil bringen, mittragen",
-  "Auch mal zurückstecken",
+  "den anderen emotional auffangen",
+  "immer zuerst Nähe initiieren",
+  "vermeintlich übertriebene Bedürfnisse ernst nehmen",
+  "unvergessliche Events planen",
+  "eine Schwäche an anderen wertschätzen",
+  "die eigene Meinung runterschlucken um zuzuhören",
+  "unsanftes Feedback leise in sich arbeiten lassen",
+  "Veränderungen die einen Nachteil bringen mittragen",
+  "auch mal zurückstecken",
 ] as const;
+
+/** The sentence the card reads: intro, the comma-joined examples, a full stop. */
+export const allocationExamplesSentence = (): string =>
+  `${RISIKO_ALLOCATION_INTRO} ${RISIKO_ALLOCATION_EXAMPLES.join(", ")}.`;
 
 export interface RisikoPage {
   statements: (readonly [string, string])[];
