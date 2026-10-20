@@ -138,12 +138,19 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     );
   };
 
-  const body = (readOnly: boolean) => (
-    <div className="flex flex-col gap-3 w-full">
-      {page.statements.map(([k, t]) => statement(k, t, readOnly))}
-      {page.personKeys.length > 0 && allocation(readOnly)}
-    </div>
-  );
+  // Rows fill the whole card: the free height is shared out between them, and a
+  // lone row sits in the middle instead of floating at the top.
+  const body = (readOnly: boolean) => {
+    const rowCount = page.statements.length + (page.personKeys.length ? 1 : 0);
+    return (
+      <div className={`flex flex-col gap-3 w-full flex-1 min-h-0 ${rowCount > 1 ? "justify-between" : "justify-center"}`}>
+        {page.statements.map(([k, t]) => statement(k, t, readOnly))}
+        {page.personKeys.length > 0 && allocation(readOnly)}
+      </div>
+    );
+  };
+
+
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
@@ -152,8 +159,9 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
         <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
-        <div className="screen-only w-full relative">{body(false)}</div>
-        <div className="hidden print-only w-full relative">{body(true)}</div>
+        <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
+        <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
+
       </div>
       <div className="screen-only w-full mt-auto shrink-0 flex flex-col items-start gap-2">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
