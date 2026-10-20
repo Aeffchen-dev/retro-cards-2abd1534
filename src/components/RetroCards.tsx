@@ -2228,12 +2228,7 @@ const RetroCards: React.FC = () => {
                         // Risiko cards carry the card's own Aussage(n) into notes
                         // mode: one Aussage header per group, the fields once per
                         // group — two Aussagen, two sets of post-its.
-                        const risikoPage = isRisikoSlide(slideId) ? riskPages[riskSlideIds.indexOf(slideId)] : null;
-                        const groups: { key: string; title: string }[] | null = risikoPage
-                          ? (risikoPage.statements.length
-                              ? risikoPage.statements.map(([k, t]) => ({ key: k, title: t }))
-                              : [{ key: "work", title: RISIKO_ALLOCATION_HEADING }])
-                          : null;
+                        const groups = risikoNoteGroups(slideId);
                         return (
                         <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none overflow-hidden" style={{ ...cardStyle, paddingBottom: '76px' }}>
                           {groups ? (
@@ -2362,32 +2357,61 @@ const RetroCards: React.FC = () => {
                 </div>
               )}
               
-              {/* Notes page right after its slide - on its own page */}
-              {hasEditButton(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
+              {/* Notes page right after its slide - on its own page. Risiko cards
+                  repeat their Aussage as the header and the fields once per Aussage. */}
+              {hasEditButton(slideId) && (() => {
+                const groups = risikoNoteGroups(slideId);
+                const hasNotes = groups
+                  ? groups.some(g => persons.some(p => (editModeNotes[slideId]?.[`${g.key}-${p.key}`] || "").trim()))
+                  : persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim());
+                if (!hasNotes) return null;
+                return (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
                   <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-none">
-                    {/* Question text */}
-                    <h2 
-                      className="retro-body mb-6"
-                      style={{ fontSize: '16px', lineHeight: 1.4 }}
-                    >
-                      {getSlideQuestion(slideId)} — Notizen
-                    </h2>
-                    
-                    {/* Post-it notes — one per person with content */}
-                    <div className="flex flex-col flex-1 gap-4 w-full">
-                      {persons.map((person) => {
-                        const text = editModeNotes[slideId]?.[person.key];
-                        if (!text) return null;
-                        return (
-                          <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
-                            {text}
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {/* Question text / Aussage header */}
+                    {groups ? groups.map(g => (
+                      <div key={g.key} className="w-full flex flex-col flex-1 min-h-0 items-start mb-6">
+                        <h2 className="retro-body-copy mb-6" style={{ fontSize: '16px', lineHeight: 1.4 }} lang="de">
+                          {`\u201E${g.title}\u201C`}
+                        </h2>
+                        <div className="flex flex-col flex-1 min-h-0 gap-4 w-full">
+                          {persons.map((person) => {
+                            const text = editModeNotes[slideId]?.[`${g.key}-${person.key}`];
+                            if (!text) return null;
+                            return (
+                              <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
+                                {text}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )) : (
+                      <>
+                        <h2
+                          className="retro-body mb-6"
+                          style={{ fontSize: '16px', lineHeight: 1.4 }}
+                        >
+                          {getSlideQuestion(slideId)} — Notizen
+                        </h2>
+                        {/* Post-it notes — one per person with content */}
+                        <div className="flex flex-col flex-1 gap-4 w-full">
+                          {persons.map((person) => {
+                            const text = editModeNotes[slideId]?.[person.key];
+                            if (!text) return null;
+                            return (
+                              <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
+                                {text}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
+                );
+              })()}
               )}
             </div>
           ))}
