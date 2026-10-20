@@ -57,3 +57,6 @@ export const scaleValue = (stored?: string): number => {
   const value = stored?.trim() ? Number(stored) : 50;
   return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 50;
 };
+
+/** Continuous expression: -1 is sad, 0 neutral, +1 happy. */
+export const scaleExpression = (value: number): number => (scaleValue(String(value)) - 50) / 50;
