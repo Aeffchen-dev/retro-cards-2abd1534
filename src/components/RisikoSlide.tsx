@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, scaleField, RISIKO_FIELDS, RISIKO_FIELD_STEP, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn, inner
 // brows pulled up and one tear — big enough and low enough to read at 24px.
@@ -29,21 +29,24 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
-// Shared smiley header: one smiley per scale field, centred above it.
+// Shared smiley header: one smiley at each end and three between them, spread
+// across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 24;
-const FACE_W = FACE_SIZE - 1; // rendered face box
+const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its centre
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
 const CAPTION_H = 12; // tiny end labels above the smileys
+const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
+// The rule carries the same line weight as the smileys' own strokes: lucide draws
+// strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE that is 1.5px.
+const RULE_W = (FACE_SIZE * 1.5) / 24;
+// The circle stops half a face inside each end — exactly under the outer smileys —
+// and moves freely between them, so it can rest on any value, not just a field.
+const END_INSET = FACE_W / 2;
 // Workload circles stay round at 32px, and every partner reserves a wider band
 // (circle + room for its centred name), so names never reach into a neighbour's.
 const SLOT = 32, BAND = 44;
-// The scale is five adjoining fields, one under each smiley, so an answer lands
-// in a field you can point at rather than somewhere on an abstract line.
-const FIELD_W = 100 / RISIKO_FIELDS;
-// Where the chosen field sits: its centre, as a share of the row's width.
-const fieldCentre = (value: number) => (value / RISIKO_FIELD_STEP + 0.5) * FIELD_W;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
 // The eyes stay lighter than a full disc so the brows keep their own space.
@@ -57,12 +60,8 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center pointer-events-none shrink-0" style={{ height: FACE_SIZE }} aria-hidden="true">
-    {FACES.map((F, i) => (
-      <span key={i} className="risiko-face-cell flex items-center justify-center" style={{ width: `${FIELD_W}%` }}>
-        <Face Icon={F} />
-      </span>
-    ))}
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0" style={{ height: FACE_SIZE }} aria-hidden="true">
+    {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
 
@@ -129,14 +128,10 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
   <div className="risiko-track relative w-full shrink-0">
-    {/* Five adjoining fields, one under each smiley: the answer sits inside a field. */}
-    <div className="risiko-scale-fields" aria-hidden="true">
-      {FACES.map((_, i) => (
-        <span key={i} className="risiko-field" data-active={i === Math.round(value / RISIKO_FIELD_STEP)} style={{ width: `${FIELD_W}%` }} />
-      ))}
-    </div>
+    {/* The rule spans the full card width; only the circle's travel is inset. */}
+    <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `${fieldCentre(value)}%` }}>
+      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${value}% + ${markerInset(value, END_INSET)}px)` }}>
         {marker}
       </div>
     ) : (
@@ -144,7 +139,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
           style={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          value={[value]} min={0} max={100} step={RISIKO_FIELD_STEP}
+          value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
           onPointerCancel={() => setDragging(false)}
@@ -157,13 +152,12 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
             if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) { setDragging(true); setTouched(true); }
           }}
         >
-          {/* The whole row is the hit area, so a click above or below a field
-              jumps the circle into it; the fields are drawn separately and the
-              thumb stays invisible behind the circle. */}
+          {/* The whole row is the hit area, so a click above or below the rule
+              puts the circle at that spot; the thumb stays invisible behind it. */}
           <SliderPrimitive.Track className="relative w-full h-full" />
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: FACE_W, height: FACE_W }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `${fieldCentre(value)}%` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${value}% + ${markerInset(value, END_INSET)}px)` }}>
           {marker}
         </div>
       </>
@@ -174,7 +168,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
 
-  // Each statement is its own compact block: quote, smileys and a five-field scale.
+  // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
@@ -184,7 +178,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span>Stimme voll zu</span>
         </div>
         <FaceLayer />
-        <Track value={scaleField(scaleValue(values[key]))} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+        {/* One dashed guideline under each smiley, running the height of the
+            circle's row, so a free position still reads against a face. */}
+        <div className="risiko-columns absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
+          {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
+        </div>
+        <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
           onChange={(v) => onChange(key, String(v))} />
       </div>
     </div>
