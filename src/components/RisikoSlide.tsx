@@ -36,7 +36,7 @@ export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
-const FACE_SIZE = 24;
+const FACE_SIZE = 21;
 const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its centre
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
@@ -44,7 +44,8 @@ const MARKER_SIZE = 32;
 const CAPTION_H = 12; // tiny end labels above the smileys
 const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
 // The rule carries the same line weight as the smileys' own strokes: lucide draws
-// strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE that is 1.5px.
+// strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE the line lands at
+// FACE_SIZE × 1.5 / 24 — about 1.3px at 21px, thinner as the faces get smaller.
 const RULE_W = (FACE_SIZE * 1.5) / 24;
 // The circle stops half a face inside each end — exactly under the outer smileys —
 // and moves freely between them, so it can rest on any value, not just a field.
