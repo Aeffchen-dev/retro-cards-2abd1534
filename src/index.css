@@ -301,9 +301,10 @@
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 
-@media print {
-  :root { --risiko-face-size: 28px; }
-}
+/* The printed copy is a fixed A4 layout, not a device, so it keeps the full 28px
+   the print pages were tuned with — the token is set on its container, which the
+   faces inside inherit. */
+.print-only { --risiko-face-size: 28px; }
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
    just above it — 26px clears the tallest name, so a name's white backing never bites
