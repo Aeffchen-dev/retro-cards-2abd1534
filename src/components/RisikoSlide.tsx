@@ -154,8 +154,9 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
         <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
-        <div className="screen-only w-full relative">{body(false)}</div>
-        <div className="hidden print-only w-full relative">{body(true)}</div>
+        <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
+        <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
+
       </div>
       <div className="screen-only w-full mt-auto shrink-0 flex flex-col items-start gap-2">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
