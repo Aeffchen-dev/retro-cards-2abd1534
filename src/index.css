@@ -340,17 +340,21 @@
   );
 }
 
-/* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
+/* Tiny end labels flanking the smiley row: Stimme nicht zu … Stimme voll zu.
+   They sit on the very left and right of the card, level with the smileys, so
+   they never wrap and never squeeze the scale between them. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-}
-.risiko-scale-caption span {
   font-size: 10px;
   line-height: 12px;
   color: var(--risiko-caption);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
