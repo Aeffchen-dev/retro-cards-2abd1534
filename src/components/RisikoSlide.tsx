@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one fat,
 // classic drop hanging from the left eye and rolling down the cheek, so its
@@ -227,7 +227,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               the five fields still read as separate. Painted before the faces, so
               the fill never covers a smiley. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${i * COL_W}%`, width: `${COL_W}%` }} />)}
+            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, width: `${to - from}%` }} />)}
             {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: `${(i + 0.5) * COL_W}%`, top: HEADER_H }} />)}
           </div>
           <FaceLayer />

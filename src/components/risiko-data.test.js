@@ -151,17 +151,35 @@ describe("Risikofaktoren scale", () => {
 });
 
 describe("grey columns", () => {
-  test("one evenly spread band between every pair of smileys", () => {
-    expect(columnBands(5)).toEqual([[0, 25], [25, 50], [50, 75], [75, 100]]);
-    // Every band is as wide as the next and together they cover the smileys'
-    // whole range, so the circle always travels over evenly spread columns.
+  test("one band per smiley, sitting directly against each other", () => {
+    expect(columnBands(5)).toEqual([[0, 20], [20, 40], [40, 60], [60, 80], [80, 100]]);
     const bands = columnBands(5);
+    // Every band is as wide as the next, so each smiley owns an equal field.
     expect(new Set(bands.map(([from, to]) => to - from)).size).toBe(1);
+    // Together they fill the scale from edge to edge with nothing in between:
+    // the first starts at 0, the last ends at 100 and neighbours share an edge.
     expect(bands[0][0]).toBe(0);
     expect(bands[bands.length - 1][1]).toBe(100);
-    expect(bands.slice(1).every(([from], i) => from === bands[i][1])).toBe(true);
-    expect(columnBands(2)).toEqual([[0, 100]]);
-    expect(columnBands(1)).toEqual([]);
+    expect(bands.slice(1).map(([from], i) => from - bands[i][1])).toEqual([0, 0, 0, 0]);
+    expect(columnBands(2)).toEqual([[0, 50], [50, 100]]);
+    expect(columnBands(1)).toEqual([[0, 100]]);
+    expect(columnBands(0)).toEqual([]);
+  });
+  test("every second column is a slightly deeper grey", () => {
+    // The two fills are the only thing separating neighbouring fields, so they
+    // must differ — and the deeper one must actually be the deeper one.
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const hex = (token) => {
+      const found = css.match(new RegExp(`--${token}:\\s*#([0-9A-Fa-f]{6})`));
+      expect(found, `--${token} missing from index.css`).not.toBeNull();
+      return found[1].toLowerCase();
+    };
+    const [fill, alt] = [hex("risiko-column-fill"), hex("risiko-column-fill-alt")];
+    const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
+    expect(alt).not.toBe(fill);
+    expect(lightness(alt)).toBeLessThan(lightness(fill));
+    // the deeper grey is only a shade deeper, never a visible stripe
+    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(45);
   });
 });
 

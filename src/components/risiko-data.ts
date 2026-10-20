@@ -47,14 +47,14 @@ export const scaleEndInset = (markerSize: number): number => markerSize / 2;
 export const markerInset = (value: number, endInset: number): number =>
   endInset - (scaleValue(String(value)) * (2 * endInset)) / 100;
 
-/** Light-grey column bands for a scale with `faces` smileys: one band between
- *  every pair of neighbouring faces, as [start, end] scale values. Every band
- *  has the same width and together they cover the smileys' whole range, so the
- *  circle always travels over evenly spread columns. */
+/** Grey column bands for a scale with `faces` smileys: one band per smiley, as
+ *  [start, end] scale values. The bands sit directly against each other and
+ *  together span the whole scale from edge to edge, so the row of fields fills
+ *  its container with nothing showing between them. */
 export const columnBands = (faces: number): [number, number][] => {
-  if (faces < 2) return [];
-  const step = 100 / (faces - 1);
-  return Array.from({ length: faces - 1 }, (_, i) => [i * step, (i + 1) * step] as [number, number]);
+  if (faces < 1) return [];
+  const step = 100 / faces;
+  return Array.from({ length: faces }, (_, i) => [i * step, (i + 1) * step] as [number, number]);
 };
 
 
