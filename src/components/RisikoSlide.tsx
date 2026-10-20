@@ -3,12 +3,12 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import RevealText from "@/components/RevealText";
 import ActionRow from "@/components/ActionRow";
 import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, type RisikoPage } from "./risiko-data";
 
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its five column centres.
-const FACE_SIZE = 40;
+const FACE_SIZE = 24;
 const FACE_FILL = "var(--risiko-face-fill)";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
@@ -18,7 +18,7 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-10" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
@@ -41,16 +41,16 @@ const END_INSET = FACE_SIZE / 2; // px the track is shortened on each side so it
 
 const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) => {
   const expression = scaleExpression(value);
+  const { index, mix } = scaleFaceBlend(value);
   return (
     <span className={`risiko-expression-point ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot" />
-      <svg className="risiko-drag-face" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-        <circle cx="16" cy="16" r="14" />
-        <circle cx="11" cy="12" r="0.9" fill="currentColor" stroke="none" />
-        <circle cx="21" cy="12" r="0.9" fill="currentColor" stroke="none" />
-        <path d={`M 9 21 Q 16 ${21 + expression * 10} 23 21`} />
-        <path d={`M 8 8 L 13 ${8 - Math.min(0, expression) * 3} M 19 ${8 - Math.min(0, expression) * 3} L 24 8`} opacity={Math.max(0, -expression)} />
-      </svg>
+      <span className="risiko-drag-face">
+        {FACES.map((Icon, i) => (
+          <Icon key={i} size={32} strokeWidth={1.5} className="absolute inset-0"
+            style={{ opacity: i === index ? 1 - mix : i === index + 1 ? mix : 0 }} />
+        ))}
+      </span>
     </span>
   );
 };

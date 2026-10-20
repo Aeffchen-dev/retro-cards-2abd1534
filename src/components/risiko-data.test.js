@@ -1,7 +1,15 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
 
 describe("Risikofaktoren scale", () => {
+  test("drag face matches the five smileys at their scale positions", () => {
+    expect(scaleFaceBlend(0)).toEqual({ index: 0, mix: 0 });
+    expect(scaleFaceBlend(25)).toEqual({ index: 1, mix: 0 });
+    expect(scaleFaceBlend(50)).toEqual({ index: 2, mix: 0 });
+    expect(scaleFaceBlend(75)).toEqual({ index: 3, mix: 0 });
+    expect(scaleFaceBlend(100)).toEqual({ index: 3, mix: 1 });
+    expect(scaleFaceBlend(12.5)).toEqual({ index: 0, mix: 0.5 });
+  });
   test("expression follows drag position from sad to neutral to happy", () => {
     expect(scaleExpression(0)).toBe(-1);
     expect(scaleExpression(25)).toBe(-0.5);

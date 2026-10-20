@@ -60,3 +60,10 @@ export const scaleValue = (stored?: string): number => {
 
 /** Continuous expression: -1 is sad, 0 neutral, +1 happy. */
 export const scaleExpression = (value: number): number => (scaleValue(String(value)) - 50) / 50;
+
+/** Blend the exact scale faces, positioned at 0, 25, 50, 75 and 100. */
+export const scaleFaceBlend = (value: number): { index: number; mix: number } => {
+  const position = scaleValue(String(value)) / 25;
+  const index = Math.min(3, Math.floor(position));
+  return { index, mix: position - index };
+};
