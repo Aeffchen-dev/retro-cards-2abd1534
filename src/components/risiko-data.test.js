@@ -384,6 +384,25 @@ describe("column labels on a narrow phone", () => {
   });
 });
 
+describe("column names break into two lines", () => {
+  test("every name splits at a word boundary into two lines of even length", () => {
+    expect(SCALE_CAPTIONS.map(captionLines)).toEqual([
+      ["Trifft noch", "nicht zu"],
+      ["Trifft", "selten zu"],
+      ["Trifft", "teilweise zu"],
+      ["Trifft", "oft zu"],
+      ["Trifft", "immer zu"],
+    ]);
+  });
+  test("the longest half sets the labels' size: twelve letters, nothing longer", () => {
+    // "teilweise zu" is the one line a column has to hold; at 11px it measures 59px
+    // of the ~61px column, so 11px is the largest size every name fits on.
+    const halves = SCALE_CAPTIONS.flatMap(captionLines);
+    expect(Math.max(...halves.map((l) => l.length))).toBe(12);
+    expect(halves.every((l) => l.length <= 12)).toBe(true);
+  });
+});
+
 describe("the fixed sentence of Beziehungsarbeit examples on the work-split card", () => {
   test("reads the intro, the comma-joined examples and a full stop", () => {
     expect(allocationExamplesSentence()).toBe(
