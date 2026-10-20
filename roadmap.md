@@ -10,3 +10,4 @@
 - [x] Rename the Risikofaktoren slide's visible label to "Health Check" (pill, heading, printed notes page); verify on screen.
 - [x] Add "Wir zeigen uns aktiv, dass wir uns lieben" as the first question on the Health Check (Risikofaktoren) slide; verify fit and pagination.
 - [x] Keep the dashed column lines from running through the question text (white mask behind the labels); verify by pixel sampling.
+- [x] Remove the card title and page counter from the Health Check slides; set question text to the input-label size on a white plate; verify fit, drag and print.
