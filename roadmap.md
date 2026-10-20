@@ -164,3 +164,4 @@
 - [x] Info-Text wörtlich eingesetzt (12px mobil/Tablet, 16px Desktop), steht unter der Überschrift und über den Aussagen — auch im PDF (Seite 4) geprüft.
 - [x] Durchschnitts-Smiley: erscheint erst, wenn alle sieben Aussage-Slider gezogen wurden; Mittelwert rundet auf das nächste der fünf Skalen-Smileys (aria-label „Durchschnittliche Stimmung X von 100“); auf Karte und PDF verifiziert.
 - [x] Kapitel-Karte bei wenig Platz: fällt zuerst auf eine Aussage zurück, alle anderen Karten behalten zwei; Fallback auf eine Aussage überall bleibt. 61 Tests grün, Build OK.
+- [x] Die gestrichelten Linien am linken und rechten Rand des Skalenfelds entfernt: `columnEdges` liefert jetzt nur noch die vier Trennlinien zwischen benachbarten Spalten (20/40/60/80 %). Auf Karte, Arbeitsaufteilungs-Lane und im PDF gemessen — keine Linie bei 0 % oder 100 %, Smilies, schwarze Linie mit Kreis und die fünf Spaltennamen bleiben unversehrt; 61 Tests grün, Build OK.
