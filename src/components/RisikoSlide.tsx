@@ -263,7 +263,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           area, they leave its lower edge exactly on the rule for the guidelines. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
-        <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        <ActionRow className="risiko-helper" icon="IconInfo" label="Platziere den Kreis indem du ihn nach links oder rechts ziehst" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
   );
