@@ -278,9 +278,13 @@ describe("smallest text size", () => {
 });
 
 describe("scale columns and page split", () => {
-  test("names every column, from not yet to absolutely", () => {
+  test("names every column, from does not apply to fully applies", () => {
     expect([...SCALE_CAPTIONS]).toEqual([
-      "noch nicht", "eher nicht", "teils / teils", "eher schon", "absolut",
+      "Trifft noch nicht zu",
+      "Trifft selten zu",
+      "Trifft Teilweise zu",
+      "Trifft meistens zu",
+      "Trifft voll zu",
     ]);
     expect(SCALE_CAPTIONS.length).toBe(5);
   });
