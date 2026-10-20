@@ -263,6 +263,9 @@
      exactly this tall plus the strip its names live in — so a card with one
      work-split field shows fields as high as a card with two statements. */
   --risiko-field-h: 120px;
+  /* The space a statement's last line keeps above the scale. The smileys centre
+     themselves on it, so it has to stay one number the face row can read. */
+  --risiko-statement-gap: 12px;
 }
 /* Flex children must shrink to the actual content box, including when the
    statement area has a vertical scrollbar or a long helper sentence. */
@@ -564,7 +567,7 @@
   background: var(--risiko-label-bg);
   margin-top: 16px;
 }
-.risiko-block .risiko-statement { margin-bottom: 12px; }
+.risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* The scale's columns are drawn, not filled: dashed grey lines stand at the
    scale's own edges and between every pair of neighbouring columns, so the
    range the circle travels over still reads as five identical fields. They sit
