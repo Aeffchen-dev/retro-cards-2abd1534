@@ -243,11 +243,7 @@
   .risiko-page .retro-heading { font-size: 25px; }
 }
 .risiko-page .risiko-label {
-  font-size: 16px;
-  line-height: 22px;
   letter-spacing: 0;
-  background: var(--risiko-question-bg);
-  padding: 5px 12px;
 }
 .risiko-column { border-left: 1px dashed var(--risiko-column); }
 .risiko-expression-point {
