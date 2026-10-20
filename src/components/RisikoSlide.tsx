@@ -44,9 +44,9 @@ const HEADER_H = FACE_SIZE;
 // as the same line — clearly stronger than the fine dashed guides, and it never
 // touches the grey smileys' own stroke weight.
 const RULE_W = 4;
-// A slight padding above the smileys, which now sit at the top of their columns
-// instead of floating in the middle of them.
-const FACE_PAD = 8;
+// A barely-there padding above the smileys, which sit right at the top of their
+// columns — just enough that the field's edge never grazes a face.
+const FACE_PAD = 3;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The fields stretch to fill whatever height the card has left over, but they

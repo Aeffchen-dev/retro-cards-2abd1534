@@ -143,3 +143,4 @@
 
 
 - [x] Show each Risikofaktoren card's Aussage(n) in notes mode with one pair of post-its per Aussage (work-split card uses its own heading), matching print pages; legacy notes migrated; verified on screen, phone, reload and print; 47 tests pass.
+- [x] Bring the Health Check smileys right to the top of their grey columns: the padding above them cut from 8px to 3px; verified on desktop and phone (faces 3px under the column's top edge, marker still dead centre, guides and names untouched) and in the exported PDF (faces 7px inside the printed columns), 47 tests pass.
