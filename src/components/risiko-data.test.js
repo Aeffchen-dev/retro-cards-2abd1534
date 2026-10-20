@@ -162,17 +162,19 @@ describe("grey columns", () => {
     expect(columnBands(1)).toEqual([[0, 100]]);
     expect(columnBands(0)).toEqual([]);
   });
-  test("the dividers sit between every pair of columns and at both scale edges", () => {
-    // Five columns need six lines: the scale's own left and right edge plus one
-    // between every neighbour. Nothing is painted between them — the columns are
-    // drawn purely by these dividers.
-    expect(columnEdges(5)).toEqual([0, 20, 40, 60, 80, 100]);
-    expect(columnEdges(2)).toEqual([0, 50, 100]);
-    expect(columnEdges(1)).toEqual([0, 100]);
+  test("the dividers sit between every pair of columns, never at the scale's edges", () => {
+    // Five columns need four lines: one between every neighbour. The scale's own
+    // left and right edge carry nothing, so the row ends open. Nothing is painted
+    // between them — the columns are drawn purely by these dividers.
+    expect(columnEdges(5)).toEqual([20, 40, 60, 80]);
+    expect(columnEdges(2)).toEqual([50]);
+    expect(columnEdges(1)).toEqual([]);
     expect(columnEdges(0)).toEqual([]);
-    // every divider is a band boundary, and both ends of the scale carry one
+    // every divider is an interior band boundary; neither scale end carries one
     const bands = columnBands(5);
-    expect(columnEdges(5)).toEqual([0, ...bands.map(([, to]) => to)]);
+    expect(columnEdges(5)).toEqual(bands.slice(0, -1).map(([, to]) => to));
+    expect(columnEdges(5)).not.toContain(0);
+    expect(columnEdges(5)).not.toContain(100);
   });
   test("the columns carry no fill — only dashed lines, softer than the smileys' guides", () => {
     // The five fields read through their dividers alone. The smileys keep the
