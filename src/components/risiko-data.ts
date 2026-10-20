@@ -9,6 +9,9 @@ export const RISIKO_STATEMENTS = [
 
 export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
 
+/** The display-size question above the scale, same treatment as the first two Health Check slides. */
+export const RISIKO_HEADING = "Wie glücklich sind wir aktuell mit…?";
+
 export interface RisikoPage {
   statements: (readonly [string, string])[];
   personKeys: string[];

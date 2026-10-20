@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, type RisikoPage } from "./risiko-data";
+import RevealText from "@/components/RevealText";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_HEADING, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
