@@ -4,9 +4,10 @@ import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
-// The tear, shared by the scale's crying face and the dragged dot: one clear
-// drop hanging from the left eye, tip first so it shrinks back into the eye.
-const TEAR_L = "M8.9 9.7C8.9 9.7 7.05 12 7.05 12.2a1.45 1.45 0 0 0 2.9 0C9.95 12 8.9 9.7 8.9 9.7z";
+// The tear, shared by the scale's crying face and the dragged dot: one fat,
+// classic drop hanging from the left eye and rolling down the cheek, so its
+// round bulb stays clear of the mouth instead of crowding it.
+const TEAR_L = "M8.9 9.7C8.5 10.5 6.4 11.3 6.4 12.4A1.6 1.6 0 0 0 9.6 12.4C9.6 11.3 9.1 10.5 8.9 9.7z";
 
 // The saddest face on the scale, drawn in the same language as the faces next to
 // it: the same round-dot eyes, no brows and the happy smile's mouth mirrored into
@@ -105,7 +106,9 @@ const ARROW_W = 1.4;
 // Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
   const { eye, eyeW, brow, mouth, tear } = scaleFaceGeometry(value);
-  const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
+  // Open stroke, no fill: the mouth is the very same curve the happy smile
+  // draws, only flipped — one clean trace, exactly like the header smileys.
+  const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")}`;
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
