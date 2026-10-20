@@ -75,3 +75,4 @@
 - [x] Constrain desktop Health Check content and helper rows to the actual card content width; verified all seven cards at 873px, 1440px and 393px widths, build OK and 19 passing tests.
 - [x] Draw the arrow hint inside the untouched dot smaller than the dot itself, keeping it centred; verified on a phone close-up, build OK.
 - [x] Turn the Health Check scale into five adjoining fields, one under each smiley: answers snap into a field, the circle sits centred in it and that field is faintly filled; verified click, keyboard, persistence, phone layout and the PDF (18 tests passed).
+- [x] Make every draggable marker a round dot in all states (Risikofaktoren circle, Beziehungsarbeit avatars, Vorhaben allocation marker — arrow replaced by a dot); width and height always share one value so no marker can become an oval; verified on screen, while dragging, after reload and in print, build OK and 21 passing tests.
