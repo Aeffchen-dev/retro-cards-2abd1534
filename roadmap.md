@@ -1,3 +1,4 @@
+- [ ] Place Memojis beside clicked smileys on the first two Health Check cards; verify spacing, centering, dragging, persistence and print.
 - [x] Thicken the smiley slider rule to 2px, lock the dots to 32×32px and add a one-shot left/right hint inside untouched dots when visible; verified live dragging to 75%, persistence after reload, reduced-motion suppression, no runtime errors and 20 passing tests.
 - [x] Add Vorhaben after Feedback with four prompts and emoji allocation scale.
 - [x] Verify text entry, scale dragging, persistence, print and mobile layout.
