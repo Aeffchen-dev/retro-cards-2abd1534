@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_EXAMPLES, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -364,5 +364,19 @@ describe("column labels on a narrow phone", () => {
   test("keeps the wording the couple reads, hyphen or no hyphen", () => {
     expect([...SCALE_CAPTIONS].map((c) => softHyphenate(c).replace(/\u00AD/g, "")))
       .toEqual([...SCALE_CAPTIONS]);
+  });
+});
+
+describe("the fixed list of Beziehungsarbeit examples on the work-split card", () => {
+  test("lists exactly the examples the card reads under the question", () => {
+    expect(RISIKO_ALLOCATION_EXAMPLES.length).toBe(15);
+    expect(RISIKO_ALLOCATION_EXAMPLES[0]).toBe("Schwierige Gespräche initiieren");
+    expect(RISIKO_ALLOCATION_EXAMPLES[8]).toBe("Vermeintlich übertriebene Bedürfnisse ernst nehmen");
+    expect(RISIKO_ALLOCATION_EXAMPLES[11]).toBe("Die eigene Meinung runterschlucken, um zuzuhören");
+    expect(RISIKO_ALLOCATION_EXAMPLES[14]).toBe("Auch mal zurückstecken");
+  });
+  test("every example names one effort and is unique", () => {
+    expect(new Set(RISIKO_ALLOCATION_EXAMPLES).size).toBe(RISIKO_ALLOCATION_EXAMPLES.length);
+    for (const example of RISIKO_ALLOCATION_EXAMPLES) expect(example.length).toBeGreaterThan(0);
   });
 });
