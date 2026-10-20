@@ -7,3 +7,4 @@
 - Morph shared face geometry through the current Risikofaktoren header expressions without opacity blending, so draggable markers match every evenly spaced scale anchor continuously.
 - Size each printed page to the printable area (not the full sheet or the screen viewport) and anchor the print container to the sheet top, so every card lands on its own page without overflow or a blank first page.
 - Keep absolutely positioned card content inside the card's own content box — clamp with CSS `min()` against the container and measure the live container while dragging — so nothing can make a card horizontally scrollable.
+- A slider handle's decorative contents (avatar, label) must let the pointer through, and any slider whose root ignores pointer events needs its own click handler reading the live handle positions — otherwise a press on the handle is mistaken for a click on the empty track and only keyboard/centre presses work.
