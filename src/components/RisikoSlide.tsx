@@ -100,7 +100,10 @@ interface RisikoSlideProps {
   onWorkloadChange: (shares: Record<string, number>) => void;
   pill: string;
   onEdit: () => void;
+  /** Called when this card's statements do not fit its own height. */
+  onOverflow?: () => void;
 }
+
 
 const INK = "var(--retro-black)";
 // White drag hints inside the untouched dot: it can be pulled left or right.
@@ -212,7 +215,19 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, onOverflow }: RisikoSlideProps) => {
+  // A card whose statements are taller than the card itself asks the deck for
+  // fewer statements per card, so nothing is cut off at the card's lower edge.
+  const areaRef = useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const area = areaRef.current;
+    if (!area || !onOverflow) return;
+    const check = () => { if (area.scrollHeight > area.clientHeight + 2) onOverflow(); };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [onOverflow, page]);
+
 
   // Which partner a press on the work-split bar picked up: the bar keeps dragging
   // that one until the pointer is lifted, wherever on the bar the press landed.
@@ -435,7 +450,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       {page.statements.length === 0 && <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>}
-      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
+      <div ref={areaRef} className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>
