@@ -1,7 +1,11 @@
 import React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import RevealText from "@/components/RevealText";
-import { RISIKO_HOT, RISIKO_SMILEYS, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
+import ActionRow from "@/components/ActionRow";
+import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
+
+const FACES = [Angry, Frown, Meh, Smile, Laugh];
+import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 
 interface Person { key: string; name: string; emoji: string }
 interface RisikoSlideProps {
@@ -82,10 +86,10 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
     <div className="relative flex flex-col gap-3 w-full mt-4">
       {/* 5 columns across the whole page */}
       <div className="pointer-events-none absolute inset-0 grid grid-cols-5" aria-hidden="true">
-        {RISIKO_SMILEYS.map((_, i) => <div key={i} className={i ? "border-l border-dashed" : ""} style={{ borderColor: INK, opacity: 0.25 }} />)}
+        {FACES.map((_, i) => <div key={i} className={i ? "border-l border-dashed" : ""} style={{ borderColor: INK, opacity: 0.25 }} />)}
       </div>
-      <div className="grid grid-cols-5 text-center text-2xl" aria-hidden="true">
-        {RISIKO_SMILEYS.map((s) => <span key={s}>{s}</span>)}
+      <div className="grid grid-cols-5 justify-items-center" aria-hidden="true">
+        {FACES.map((Face, i) => <Face key={i} size={28} strokeWidth={1.5} color="#201C1D" />)}
       </div>
       {RISIKO_STATEMENTS.map(([k, t]) => statement(k, t, readOnly))}
       {allocation(readOnly)}
@@ -98,6 +102,9 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
       <h2 className="retro-heading w-full"><RevealText text="Risikofaktoren" color={pill} slideIndex={slideId} /></h2>
       <div className="screen-only w-full">{body(false)}</div>
       <div className="hidden print-only w-full">{body(true)}</div>
+      <div className="screen-only w-full mt-6">
+        <ActionRow icon="IconInfo" label="Zieht die Punkte zur Skala" accent="#F1F2F4" fieldBg="#F1F2F4" iconColor="#201C1D" labelColor="#201C1D" />
+      </div>
     </div>
   );
 };
