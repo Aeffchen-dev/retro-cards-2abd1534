@@ -319,7 +319,9 @@
   text-align: center;
   background: var(--risiko-label-bg);
   color: var(--workload-ink);
-  font-size: 11px;
+  /* With no margin between neighbouring circles the band is one circle wide, so
+     the font shrinks with it — a short name still fits under its own circle. */
+  font-size: min(11px, calc(var(--workload-band, 32px) * 0.28));
   line-height: 14px;
   font-weight: 700;
   padding: 0 3px;
@@ -333,7 +335,7 @@
   max-width: min(
     calc(var(--workload-cx) * 2),
     calc((100cqw - var(--workload-cx)) * 2),
-    calc(var(--workload-band, 32px) - 4px)
+    var(--workload-band, 32px)
   );
 }
 
