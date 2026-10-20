@@ -25,9 +25,10 @@ describe("Risikofaktoren scale", () => {
     expect(scaleValue("-5")).toBe(0);
     expect(scaleValue("120")).toBe(100);
   });
-  test("has the six statements, love first", () => {
+  test("has the six statements, being yourself first", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
-    expect(RISIKO_STATEMENTS[0]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
+    expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann ich selbst sein und fühle mich gesehen und respektiert"]);
+    expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
   });
   test("keeps two pages on large screens and adds one on phones", () => {
     const big = risikoPages(["p0", "p1"], 1800, 1280);
