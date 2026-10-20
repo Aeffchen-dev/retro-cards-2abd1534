@@ -36,7 +36,7 @@ describe("Risikofaktoren scale", () => {
     const small = risikoPages(["p0", "p1"], 844, 390);
     expect(small.length).toBe(3);
     expect(small[small.length - 1].statements).toEqual([]);
-    expect(small[small.length - 1].personKeys).toEqual(["p1"]);
+    expect(small[small.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(small.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
   });
   test("adds pages on short screens without losing or repeating questions", () => {
