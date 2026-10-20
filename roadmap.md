@@ -45,3 +45,4 @@
 - [x] Reword the Me-Time question to "Wir räumen einander ausreichend Me-Time ein und machen auch Dinge ohne den anderen"; verify plates grow, pagination and print still fit.
 - [x] Add "mit dir" to the being-yourself question ("Ich kann mit dir ich selbst sein und fühle mich gesehen und respektiert"); update the wording test, verify desktop, mobile and print.
 - [x] Set the Health Check scale rule to the same line weight as the smiley icons (2px); verify measured thickness on desktop, mobile and in the PDF.
+- [x] Give the "Macht Notizen" CTA on the Health Check pages the same styling as on the first two slides (lime tile, light-grey label field, near-black text); verify on desktop, mobile and in the PDF.
