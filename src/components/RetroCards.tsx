@@ -1737,6 +1737,7 @@ const RetroCards: React.FC = () => {
             pageCount={riskPages.length}
             persons={persons}
             pill={BRAND.neonGreen}
+            onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
@@ -2111,7 +2112,7 @@ const RetroCards: React.FC = () => {
 
                     style={{
                       ...cardStyle,
-                      ...(hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId])
+                      ...(hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && !isRisikoSlide(slideId)
                         ? { paddingBottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '112px' : '72px' }
                         : {}),
                     }}
@@ -2160,7 +2161,7 @@ const RetroCards: React.FC = () => {
                     ) : renderCard(slideId)}
 
                     {/* Edit/Close action row - bottom left */}
-                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
+                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '68px' : '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
