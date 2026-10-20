@@ -248,12 +248,14 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
 
 
-  // The statement is the card's headline; the work-split card asks its own question.
-  const heading = page.statements[0]?.[1] ?? RISIKO_ALLOCATION_HEADING;
+  // The statement is the card's headline and is shown as a quote; the work-split card
+  // asks its own question, which stays unquoted.
+  const statement = page.statements[0]?.[1];
+  const heading = statement ?? RISIKO_ALLOCATION_HEADING;
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
-      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{heading}</h2>
+      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{statement ? `\u201E${statement}\u201C` : heading}</h2>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         {/* The agreement scale belongs to a statement; the work split has its own line. */}
         {page.statements.length > 0 && (
