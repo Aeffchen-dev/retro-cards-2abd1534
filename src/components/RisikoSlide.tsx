@@ -46,16 +46,16 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// A little grey above the smileys, so the faces sit inside their columns instead
-// of being sliced by the columns' top edge.
+// A slight padding above the smileys, which now sit at the top of their columns
+// instead of floating in the middle of them.
 const FACE_PAD = 8;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The fields stretch to fill whatever height the card has left over, but they
-// never collapse below one comfortable band: the smiley row and the rule's row,
-// with a little grey above and below them. Anything taller than this floor is
-// shared out, and the invisible balance below the rule gives back first.
-const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK_H;
+// never collapse so far that the circle — which stays dead centre in them —
+// would run into the smileys pinned at their top. Anything taller than this
+// floor is shared out above and below the rule's row.
+const FIELD_MIN = (FACE_PAD + HEADER_H + 4 + MARKER_SIZE / 2) * 2;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -85,7 +85,7 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 box-border" style={{ height: FACE_SIZE }} aria-hidden="true">
+  <div className="risiko-face-header absolute left-0 right-0 pointer-events-none flex items-center justify-between box-border" style={{ top: FACE_PAD, height: FACE_SIZE }} aria-hidden="true">
     {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: facePos(i) }}><Face Icon={F} /></span>)}
   </div>
 );
@@ -257,7 +257,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft voll zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD, paddingBottom: FACE_PAD, minHeight: FIELD_MIN }}
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
@@ -268,28 +268,17 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
           </div>
-          {/* The faces and the rule are one pair, and that pair floats in the middle
-              of the fields, so the grey lies even above and below it. An invisible
-              copy of the smiley row sits below the rule to pull the pair's middle —
-              and with it the circle — onto the middle of the fields instead of
-              letting it hang under the smileys. When the card runs short of room,
-              that copy gives way first: neither the smiley row nor the rule's row
-              ever compress. */}
-          <div className="risiko-scale-group relative flex min-h-0 flex-col gap-1">
-            <FaceLayer />
-            <div className="relative min-h-0">
-              {/* The dashed guides hang off the rule's own row, not off the fields:
-                  they start under the smileys and end on the rule wherever the rule
-                  happens to sit. Painted before the slider, so the circle always
-                  covers the line running up to it. */}
-              <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "calc(var(--risiko-track-h) / 2)" }} aria-hidden="true">
-                {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
-              </div>
-              <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-                onChange={(v) => onChange(key, String(v))} />
-            </div>
-            <div className="risiko-scale-balance" style={{ height: HEADER_H, minHeight: 0 }} aria-hidden="true" />
+          {/* The smileys sit at the top of the fields, a slight padding below their
+              top edge, while the rule and the circle stay dead centre in them. The
+              dashed guides bridge the two: they start straight under the smileys and
+              run down to the rule, and they are painted before the slider, so the
+              circle always covers the line running up to it. */}
+          <FaceLayer />
+          <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: FACE_PAD + HEADER_H + 4, bottom: "50%" }} aria-hidden="true">
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
           </div>
+          <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+            onChange={(v) => onChange(key, String(v))} />
         </div>
       </div>
     </div>
