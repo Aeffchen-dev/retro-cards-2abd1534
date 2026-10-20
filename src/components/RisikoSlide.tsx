@@ -87,7 +87,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
         }}
       >
         <SliderPrimitive.Track className="relative w-full h-px" />
-        <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb block cursor-ew-resize rounded-full" style={{ width: FACE_W, height: FACE_W }}>
+        <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb cursor-ew-resize rounded-full" style={{ width: FACE_W, height: FACE_W }}>
           {marker}
         </SliderPrimitive.Thumb>
       </SliderPrimitive.Root>
