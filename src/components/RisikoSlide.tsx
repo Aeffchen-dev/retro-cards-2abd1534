@@ -49,10 +49,12 @@ const RULE_W = 2;
 // A little grey above the smileys, so the faces sit inside their columns instead
 // of being sliced by the columns' top edge.
 const FACE_PAD = 8;
+// The rule's row is this tall; it mirrors --risiko-track-h in index.css.
+const TRACK_H = 56;
 // The fields stretch to fill whatever height the card has left over, but they
 // never collapse below one comfortable band: the smileys and the rule as the
 // pair they are, with a little grey above and below that pair.
-const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK;
+const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK_H;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
