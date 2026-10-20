@@ -298,8 +298,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-column-guide--stub absolute" style={{ left: facePos(i) }} />)}
               {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide risiko-column-guide--long absolute" style={{ left: facePos(i) }} />)}
             </div>
-            {/* The smileys sit at the top of the field, a slight padding below its
-                top edge, while the rule and the circle stay dead centre in it. */}
+            {/* The smileys sit flush with the field's top edge, while the rule
+                and the circle centre on the long dashed line under them. */}
             <FaceLayer />
             <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
               onChange={(v) => onChange(key, String(v))} />
