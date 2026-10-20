@@ -185,7 +185,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
             const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
             const memojiEl = (
-              <span className="risiko-memoji flex items-center justify-center w-full h-full rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
+              <span className="risiko-memoji flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
             );
             if (readOnly) {
               return (
