@@ -3,6 +3,7 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
+import RisikoSlide from "@/components/RisikoSlide";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
@@ -30,6 +31,7 @@ const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
 const SLIDE_LOGO = 103;
 const SLIDE_VORHABEN = 104;
+const SLIDE_RISIKO = 105;
 
 // Pill label displayed ABOVE the card for each slide (null = no pill)
 const SLIDE_PILLS: Record<number, string | null> = {
@@ -42,6 +44,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   3: "The last 4 weeks",
   102: "Feedback",
   104: "Vorhaben",
+  105: "Risikofaktoren",
   4: "To talk about",
   5: "Nicht monogam",
   7: "Intimacy",
@@ -361,7 +364,7 @@ const RetroCards: React.FC = () => {
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
-    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, 3, SLIDE_REFLECTION, SLIDE_VORHABEN, 4];
+    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, SLIDE_RISIKO, 3, SLIDE_REFLECTION, SLIDE_VORHABEN, 4];
     if (setupData.openRelationship) arr.push(5);
     arr.push(7, 8, 9, 10);
     return arr;
@@ -376,7 +379,7 @@ const RetroCards: React.FC = () => {
       // Memory Time slide is always purple
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
-      if (slideId === 1 || slideId === 2) return BRAND.neonGreen;
+      if (slideId === 1 || slideId === 2 || slideId === SLIDE_RISIKO) return BRAND.neonGreen;
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
@@ -403,7 +406,7 @@ const RetroCards: React.FC = () => {
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
       if (slideId === 4) return "#FF7A3D";              // rosa pill → warm orange label
-      if (slideId === 1 || slideId === 2) return BRAND.lime;   // olive pill → lime
+      if (slideId === 1 || slideId === 2 || slideId === SLIDE_RISIKO) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.babyBlue; // blue labels
@@ -1711,6 +1714,21 @@ const RetroCards: React.FC = () => {
 
 
 
+      case SLIDE_RISIKO:
+        return (
+          <RisikoSlide
+            slideId={SLIDE_RISIKO}
+            persons={persons}
+            pill={BRAND.neonGreen}
+            label={BRAND.lime}
+            values={editModeNotes[SLIDE_RISIKO] || {}}
+            onChange={(key, value) => setEditModeNotes(prev => ({
+              ...prev,
+              [SLIDE_RISIKO]: { ...prev[SLIDE_RISIKO], [key]: value },
+            }))}
+          />
+        );
+
       case SLIDE_VORHABEN:
         return (
           <VorhabenSlide
@@ -2037,6 +2055,7 @@ const RetroCards: React.FC = () => {
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 [SLIDE_VORHABEN]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
+                [SLIDE_RISIKO]: { pill: BRAND.neonGreen, pillDot: BRAND.darkTurquoise },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
@@ -2046,7 +2065,7 @@ const RetroCards: React.FC = () => {
                 },
               };
               const ov = overrides[slideId];
-              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN ? { bg: BRAND.white } : {}) } : baseTheme;
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || slideId === SLIDE_RISIKO ? { bg: BRAND.white } : {}) } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
