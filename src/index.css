@@ -249,7 +249,9 @@
   /* mask the dashed column lines behind the question text (card is white) */
   background: var(--risiko-label-bg);
 }
-.risiko-column { border-left: 1px dashed var(--risiko-column); }
+/* Each column is as wide as a header face, so its line sits under that face's centre. */
+.risiko-column { flex: 0 0 auto; }
+.risiko-column-line { width: 0; border-left: 1px dashed var(--risiko-column); }
 .risiko-expression-point {
   position: relative;
   display: block;
@@ -266,10 +268,11 @@
 }
 .risiko-drag-face {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  left: 0;
-  top: 0;
+  width: 24px;
+  height: 24px;
+  left: 50%;
+  top: 50%;
+  margin: -12px 0 0 -12px;
   border-radius: 50%;
   background: var(--risiko-face-fill);
   opacity: 0;
