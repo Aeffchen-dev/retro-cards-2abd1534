@@ -183,10 +183,11 @@ describe("grey columns", () => {
     // both fills stay close together so the fields read as one soft block
     expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(24);
   });
-  test("the scale smileys and their dashed guides share one darker grey", () => {
-    // The five faces, the dashed line down each column and the two end labels are
-    // one and the same grey now; the lighter --risiko-caption tone only serves the
-    // Health Check cards' dashed lines, so the scale's grey stays the darker one.
+  test("the scale smileys sit a shade lighter than their guides and column names", () => {
+    // The dashed line down each column and the five column names share the
+    // scale's darker grey; the faces themselves are drawn a step lighter, so
+    // they read as the softest thing on the scale — but still dark enough to
+    // stand out from the pale column fill behind them.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const token = (name) => css.match(new RegExp(`--${name}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
@@ -195,10 +196,25 @@ describe("grey columns", () => {
     const face = slide.match(/export const FACE_GREY = "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
     expect(guide, "--risiko-guide missing from index.css").toBeTruthy();
     expect(face, "FACE_GREY missing from RisikoSlide.tsx").toBeTruthy();
-    expect(face).toBe(guide);
+    expect(lightness(face), "the smileys are not lighter than the guides").toBeGreaterThan(lightness(guide));
+    expect(lightness(face), "the smileys are not darker than the caption grey").toBeLessThan(lightness(token("risiko-caption")));
     expect(/border-left: 1px dashed var\(--risiko-guide\)/.test(css), "guides do not use --risiko-guide").toBe(true);
     expect(/color=\{FACE_GREY\}/.test(slide), "the scale faces do not use FACE_GREY").toBe(true);
     expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
+  });
+  test("the rule's ends are rounded and the fields stop at a screen-only height", () => {
+    // The rule carries a radius of half its own thickness, so it finishes in a
+    // half-circle rather than a square cut. The columns stop growing on screen
+    // — the printed card is sized to the sheet and keeps filling its whole page.
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const rule = slide.match(/background: INK,[^\n]*/)?.[0] ?? "";
+    expect(rule, "the rule line is missing").not.toBe("");
+    expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
+    const screen = css.split("@media screen")[1] ?? "";
+    expect(/\.risiko-scale-core \{ max-height: 120px; \}/.test(screen), "the fields are not capped on screen").toBe(true);
+    const print = css.split("@media print")[1] ?? "";
+    expect(print, "the printed fields are capped too").not.toContain("max-height: 120px");
   });
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
