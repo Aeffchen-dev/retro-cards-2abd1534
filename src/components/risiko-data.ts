@@ -1,7 +1,7 @@
 export const RISIKO_STATEMENTS = [
   ["self", "Ich kann ich selbst sein und fühle mich gesehen und respektiert"],
   ["love", "Wir zeigen uns aktiv, dass wir uns lieben"],
-  ["appreciation", "Wir kommunizieren wertschätzend"],
+  ["appreciation", "Unsere Kommunikation bleibt immer respektvoll"],
   ["conflicts", "Wir lösen Konflikte fair und als Team"],
   ["metime", "Wir räumen uns ausreichend Me-Time ein und machen auch Dinge ohne den anderen"],
   ["quality", "Wir verbringen genug Quality Time"],
