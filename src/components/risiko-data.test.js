@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -42,15 +42,15 @@ describe("workload split", () => {
 
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
-    // Crying: eyes squeezed shut and slanting down to the nose, a tear below
-    // each eye, and a downturn deeper than the sad face's.
-    expect(scaleFaceGeometry(0).eye).toEqual([7.2, 8.4, 10.2, 9.7, 16.8, 8.4, 13.8, 9.7]);
-    expect(scaleFaceGeometry(0).eyeW).toBe(1.2);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(15.2); // deeper downturn than the sad face
-    expect(scaleFaceGeometry(0).mouth[1]).toBe(18.2);
-    expect(scaleFaceGeometry(0).tear).toBe(1);
-    expect(scaleFaceGeometry(12.5).tear).toBe(0.5);
-    // The sad face right next to it keeps plain round dot eyes and no tear.
+    // Crying: the same round-dot eyes and the same brows-less face as the faces
+    // next to it — only a deeper downturn and a tear below each eye.
+    expect(scaleFaceGeometry(0).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
+    expect(scaleFaceGeometry(0).eyeW).toBe(1.5);
+    expect(scaleFaceGeometry(0).mouth[7]).toBe(14.6); // deeper downturn than the sad face
+    expect(scaleFaceGeometry(0).mouth[1]).toBe(17.4);
+    expect(scaleFaceGeometry(0).tear).toBe(CRYING_TEAR);
+    expect(scaleFaceGeometry(12.5).tear).toBeCloseTo(CRYING_TEAR / 2);
+    // The sad face right next to it has the same eyes, but no tear.
     expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
     expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
@@ -58,10 +58,9 @@ describe("Risikofaktoren scale", () => {
     expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
     expect(scaleFaceGeometry(100).mouth[19]).toBe(18);
-    // The crying face raises its inner brows; the sadness fades out by 25.
-    expect(scaleFaceGeometry(0).brow).toBe(1);
-    expect(scaleFaceGeometry(12.5).brow).toBe(0.5);
-    for (const value of [25, 50, 75, 87.5, 100]) {
+    // No face on this scale raises a brow — the crying end reads through its
+    // downturn and its tears alone.
+    for (const value of [0, 12.5, 25, 50, 75, 87.5, 100]) {
       expect(scaleFaceGeometry(value).brow).toBe(0);
     }
     expect(scaleFaceGeometry(25).tear).toBe(0);

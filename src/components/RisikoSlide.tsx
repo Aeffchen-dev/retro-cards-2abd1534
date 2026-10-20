@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The two tear streams, shared by the scale's crying face and the dragged dot:
 // a drop hanging from below each eye, tip first so it shrinks back into the eye.
@@ -58,7 +58,7 @@ const GUIDES = guidePositions(FACES.length);
 const SLOT = 32, BAND = 60;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
-// The eyes stay lighter than a full disc so the brows keep their own space.
+// The eyes stay heavier than the small scale faces, but keep the same shape.
 const MOUTH_W = 1;
 const EYE_W = 2.4;
 
@@ -98,8 +98,8 @@ const MorphFace = ({ value }: { value: number }) => {
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
-      {/* One eye is a single stroke: a dot at the happy end, a squeezed-shut
-          slash at the sad end — the same stroke, only shorter and flatter. */}
+      {/* One eye is a single stroke: a round dot at every anchor on this scale,
+          the same stroke the small smileys draw — only heavier inside the disc. */}
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
       <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={`translate(8.4 10.6) scale(${tear}) translate(-8.4 -10.6)`} />
       <path d={TEAR_R} fill={FACE_FILL} stroke="none" transform={`translate(15.6 10.6) scale(${tear}) translate(-15.6 -10.6)`} />
