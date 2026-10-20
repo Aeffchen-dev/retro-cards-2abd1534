@@ -1373,7 +1373,8 @@ const RetroCards: React.FC = () => {
                       left: `min(${posX}px, calc(100% - 56px))`,
                       top: anchoredTop ?? `min(${posY}px, calc(100% - 56px))`,
                       zIndex: 1000,
-                      '--print-top-percent': anchoredTop ?? `${(posY / (isMobile ? 400 : 520)) * 100}%`,
+                      '--print-top-percent': `${(posY / (isMobile ? 400 : 520)) * 100}%`,
+                      '--print-anchored-top': anchoredTop,
                       '--print-left-percent': faceIndex === undefined ? `${(posX / (isMobile ? 320 : 480)) * 100}%` : `${posX}px`,
                     } as React.CSSProperties}
                     onMouseDown={(e) => handleMemojiMouseDown(e, cardId, person.key)}
