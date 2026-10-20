@@ -72,3 +72,4 @@
 - [x] Make the five smileys on the first two Health Check slides a bit smaller again (40px → 34px); verify on phone and in the PDF.
 - [x] Make the whole slider row a hit area: a click above or below the rule moves the dot to that x position; verified value, dot placement, persistence and keyboard on a statement card.
 - [x] Reword the scale helper to "Platziere den Kreis indem du ihn nach links oder rechts ziehst" (screen and print); verify it wraps without clipping on the statement cards and in the PDF.
+- [ ] Constrain desktop Health Check content and helper rows to the actual card content width; verify all Health Check cards and narrow layouts.
