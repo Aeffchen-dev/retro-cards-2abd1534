@@ -37,3 +37,4 @@
 - [x] Enlarge the smileys on the first two Health Check slides to 48px; verify they clear the heading and the info row on desktop and mobile and still print intact.
 - [x] Add a sadder (crying) face to the bottom of the first two Health Check scales so the neutral face sits in the middle; verify centring, fit and the PDF.
 - [x] Align the small grey end labels above the scale flush with the outer smileys (no indent); verify on desktop, mobile and in the PDF.
+- [x] Show white left/right chevrons inside the untouched centre dot on the Health Check scales; verify centring, clarity and the PDF.
