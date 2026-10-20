@@ -261,7 +261,7 @@ describe("smiley scale spans its container", () => {
 describe("smallest text size", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
   const sizes = [...css.matchAll(/font-size:\s*([^;]+);/g)].map((m) => m[1].replace("!important", "").trim());
-  test("every text size in the stylesheet is at least 12px", () => {
+  test("every text size in the stylesheet is at least 12px, except the scale's column labels", () => {
     expect(sizes.length).toBeGreaterThan(10);
     const below = sizes.filter((size) => {
       if (size === "inherit") return false;
@@ -270,10 +270,16 @@ describe("smallest text size", () => {
       if (!px && !rem) return true; // a computed size could drop under the floor
       return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
     });
-    expect(below).toEqual([]);
+    // The one deliberate exception: the five column labels, sized to fit their column.
+    expect(below).toEqual(["9px"]);
+    expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 9px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
     expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
+  });
+  test("keeps the column labels' own size on phones instead of the info rows' 12px", () => {
+    const media = css.match(/@media \(max-width: 1023px\) \{[\s\S]*?\n\}/)[0];
+    expect(media).not.toMatch(/\.risiko-scale-caption/);
   });
 });
 
