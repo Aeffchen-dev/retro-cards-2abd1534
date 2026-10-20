@@ -135,3 +135,4 @@
 - [x] The last 4 weeks helper sentence now reads "Klicke auf die jeweilige Frage um Notizen zu machen"; verified on the card, 3 helper tests pass.
 - [x] Feedback question 1 now shows the remembering sentence as the writing area's grey placeholder on screen (print keeps it as a line); verified on desktop/phone/print, 46 tests pass.
 - [x] Column names moved to the foot of the grey fields, inside the colour; guides stop above them; verified on desktop/phone/print, 46 tests pass.
+- [x] Health Check scale softened: columns barely-there grey (#F4F5F7 / #ECEEF0), smileys a shade lighter (#8A8C94), rule ends rounded, fields capped at 120px on screen; names paint their own column's grey so a guide never crosses their letters; verified desktop/phone/small phone/print, 47 tests pass.
