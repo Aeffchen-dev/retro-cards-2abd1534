@@ -254,6 +254,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+      {/* The headline reads like the one on the first two Health Check cards. */}
+      <h2 className="risiko-heading retro-heading w-full shrink-0"><RevealText text={RISIKO_HEADING} color={pill} slideIndex={slideIndex} /></h2>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
           <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
