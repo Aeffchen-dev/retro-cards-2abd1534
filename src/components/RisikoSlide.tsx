@@ -46,23 +46,16 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The scale runs edge to edge across the container, so the circle's travel is
-// inset by its own radius: at 0 and 100 its outer edge lands exactly on the
-// container's edges — fully visible, never cut off, never overflowing.
-
-// The smileys are pulled in by the difference between that inset and their own
-// half-width, so every face centre sits exactly where the circle's centre does.
-
-// Evenly spread columns: one soft band between every pair of neighbouring
-// smileys. Their edges use the circle's own inset maths, so every edge sits
-// exactly under the face it belongs to and all bands come out the same width.
+// The circle travels the whole scale, edge to edge — not just between the outer
+// smileys — so its travel is inset by its own radius alone: at 0 and 100 its
+// outer edge lands exactly on the container's edges, fully visible, never cut
+// off and never overflowing.
+const TRAVEL_INSET = MARKER_SIZE / 2;
 
 // One equal column per smiley across the full scale width; each smiley (and its
-// dashed guide) sits at its column's centre, and the circle travels centre to centre.
+// dashed guide) sits at its column's centre, while the circle keeps gliding
+// through the whole width under them.
 const COL_W = 100 / FACES.length;
-const COL_EDGE = COL_W / 2;
-const COL_SPAN = 100 - COL_W;
-const FACE_INSET = `calc(${COL_EDGE}% - ${FACE_W / 2}px)`;
 // The card's white shows through this gap, so the bands read as separate columns.
 const COLUMN_GAP = 6;
 // Workload circles stay round at 32px, and every partner reserves exactly one
@@ -173,14 +166,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
     {/* The rule spans the full card width; only the circle's travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: FACE_INSET, right: FACE_INSET, top: 0, bottom: 0 }}
+          style={{ left: TRAVEL_INSET, right: TRAVEL_INSET, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -197,9 +190,11 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
           {/* The whole row is the hit area, so a click above or below the rule
               puts the circle at that spot; the thumb stays invisible behind it. */}
           <SliderPrimitive.Track className="relative w-full h-full" />
-          <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: FACE_W, height: FACE_W }} />
+          {/* The thumb is sized like the circle itself, so Radix's travel maths
+              — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
+          <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
           {marker}
         </div>
       </>
