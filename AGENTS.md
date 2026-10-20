@@ -1,4 +1,5 @@
 # Project rules
+- Trigger slider navigation hints only when the untouched marker enters view, animating its inner hint rather than its disc or answer; the deck keeps offscreen cards mounted, so mount-time animations would finish unseen.
 - Keep additional reflection-style slides in focused components using the existing notes persistence and print flow, so data clearing and exports remain consistent.
 - Use Radix Slider for the relationship-work scale so pointer, touch and keyboard input share accessible, bounded behavior.
 - Normalize workload shares with shared pure helpers and persist all changed partners in one state update; screen and print use the same normalized split to avoid mismatched totals.
