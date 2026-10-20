@@ -17,11 +17,12 @@ export interface RisikoPage {
   personKeys: string[];
 }
 
-/** One statement per card — the statement itself is the card's headline. */
+/** Two statements per card, each with its own scale. */
+export const RISIKO_PER_PAGE = 2;
 export function risikoPages(personKeys: string[]): RisikoPage[] {
-  const pages: RisikoPage[] = [...RISIKO_STATEMENTS, RISIKO_HOT].map(
-    (statement): RisikoPage => ({ statements: [statement], personKeys: [] }),
-  );
+  const all = [...RISIKO_STATEMENTS, RISIKO_HOT];
+  const pages: RisikoPage[] = [];
+  for (let i = 0; i < all.length; i += RISIKO_PER_PAGE) pages.push({ statements: all.slice(i, i + RISIKO_PER_PAGE), personKeys: [] });
   if (personKeys.length) pages.push({ statements: [], personKeys: [...personKeys] });
   return pages;
 }

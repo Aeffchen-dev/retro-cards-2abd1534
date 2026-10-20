@@ -86,16 +86,16 @@ describe("Risikofaktoren scale", () => {
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Wer leistet aktuell wie viel der Beziehungsarbeit?");
   });
-  test("gives every statement its own card and closes with the work split", () => {
+  test("shows two statements per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);
     expect(pages.map(p => p.statements.map(([key]) => key))).toEqual([
-      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["hot"], [],
+      ["self", "love"], ["appreciation", "conflicts"], ["metime", "quality"], ["hot"], [],
     ]);
     expect(pages[pages.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(pages.slice(0, -1).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("skips the work-split card when nobody is named", () => {
-    expect(risikoPages([]).length).toBe(7);
+    expect(risikoPages([]).length).toBe(4);
     expect(risikoPages([]).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("keeps every partner on one shared allocation line", () => {
