@@ -1444,6 +1444,19 @@ const RetroCards: React.FC = () => {
               ))}
 
             </div>
+            {/* Helper sentence under the questions, one card padding away from them. */}
+            <div className="w-full shrink-0" style={{ marginTop: '28px' }}>
+              <ActionRow
+                icon="IconInfo"
+                label="Klicke auf die jeweilige Fragen und macht Notizen dazu"
+                accent="#F1F2F4"
+                fieldBg="#F1F2F4"
+                iconColor="#201C1D"
+                labelColor="#201C1D"
+                className="hc-helper retro-body-copy"
+              />
+            </div>
+
 
 
           </div>
