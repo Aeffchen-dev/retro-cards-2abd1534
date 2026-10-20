@@ -255,10 +255,13 @@ describe("grey columns", () => {
 
   test("the slider rule is exactly as thick as the work-split bar", () => {
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    // the work-split bar is Tailwind's h-1, i.e. 4px
-    expect(/w-full h-1 flex/.test(slide), "the work-split bar is no longer h-1 (4px)").toBe(true);
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    // the work-split bar is 4px tall, however it is drawn
+    const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    const thick = Number(bar.match(/height:\s*(\d+)px/)?.[1]);
+    expect(thick, "the work-split bar's thickness is gone").toBe(4);
     const rule = Number(slide.match(/const RULE_W = (\d+)/)?.[1]);
-    expect(rule, "the slider rule does not match the work-split bar's 4px").toBe(4);
+    expect(rule, "the slider rule does not match the work-split bar's 4px").toBe(thick);
   });
 });
 
