@@ -128,17 +128,13 @@ describe("Risikofaktoren scale", () => {
     expect(withPartners.length).toBe(1);
     expect(withPartners[0].personKeys).toEqual(keys);
   });
-  test("keeps a visible gap between neighbouring work-split circles", () => {
-    // adjacent circles always sit exactly one band apart
-    expect(workloadBand(32, 60, 2)).toBe("min(60px, calc((100cqw - 32px) / 2))");
-    // on a normal card that band leaves clear air around every circle
-    for (const count of [2, 3, 5]) {
-      const band = Math.min(60, (440 - 32) / count);
-      expect(band - 32).toBeGreaterThanOrEqual(24);
-    }
-    // and it never eats the room the circles need to move, even with many partners
+  test("leaves no margin between neighbouring work-split circles", () => {
+    // adjacent circles sit exactly one band apart — a band is one circle wide,
+    // so neighbours touch with no margin between them
+    expect(workloadBand(32, 32, 2)).toBe("min(32px, calc((100cqw - 32px) / 2))");
+    // the band never eats the room the circles need to move, even with many partners
     for (const count of [2, 5, 8]) {
-      const band = Math.min(60, (300 - 32) / count);
+      const band = Math.min(32, (300 - 32) / count);
       expect(300 - band * (count - 1) - 32).toBeGreaterThan(0);
     }
   });
