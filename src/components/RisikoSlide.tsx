@@ -143,7 +143,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
           if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) { setDragging(true); setTouched(true); }
         }}
       >
-        <SliderPrimitive.Track className="relative w-full h-px" />
+        {/* The whole row is the hit area, so a click above or below the rule jumps
+            the dot to that x position; the visible line is drawn separately. */}
+        <SliderPrimitive.Track className="relative w-full h-full" />
         <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb cursor-ew-resize rounded-full" style={{ width: FACE_W, height: FACE_W }}>
           {marker}
         </SliderPrimitive.Thumb>
