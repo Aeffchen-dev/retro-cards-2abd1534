@@ -34,6 +34,15 @@ export const scaleValue = (stored?: string): number => {
   return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 50;
 };
 
+/** The scale is read as five adjoining fields, one under each smiley. */
+export const RISIKO_FIELDS = 5;
+/** Distance between two field centres, in scale points: 0, 25, 50, 75, 100. */
+export const RISIKO_FIELD_STEP = 100 / (RISIKO_FIELDS - 1);
+/** Every answer lands in a field, so it snaps to the nearest field centre. */
+export const scaleField = (value: number): number =>
+  Math.round(scaleValue(String(value)) / RISIKO_FIELD_STEP) * RISIKO_FIELD_STEP;
+
+
 /** Largest-remainder rounding keeps integer percentages at exactly the target. */
 function distributeShares(keys: string[], weights: number[], target: number): Record<string, number> {
   if (!keys.length) return {};
