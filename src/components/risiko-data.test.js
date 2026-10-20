@@ -280,7 +280,7 @@ describe("smallest text size", () => {
 describe("scale columns and page split", () => {
   test("names every column, from never applies to always applies", () => {
     expect([...SCALE_CAPTIONS]).toEqual([
-      "Trifft noch nie zu",
+      "Trifft noch nicht zu",
       "Trifft selten zu",
       "Trifft teilweise zu",
       "Trifft oft zu",
@@ -309,7 +309,7 @@ describe("column labels on a narrow phone", () => {
   });
 
   test("leaves every other label untouched", () => {
-    expect(softHyphenate("Trifft noch nie zu")).toBe("Trifft noch nie zu");
+    expect(softHyphenate("Trifft noch nicht zu")).toBe("Trifft noch nicht zu");
     expect(softHyphenate("Trifft selten zu")).toBe("Trifft selten zu");
     expect(softHyphenate("Trifft oft zu")).toBe("Trifft oft zu");
     expect(softHyphenate("Trifft immer zu")).toBe("Trifft immer zu");
