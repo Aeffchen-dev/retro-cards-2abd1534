@@ -433,7 +433,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             if (readOnly) {
               return (
                 <div key={p.key} className={`absolute z-10 workload-color-${i % 8}`}
-                  style={{ ...vars, width: slot, height: slot, top: "calc((var(--risiko-field-h) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
+                  style={{ ...vars, width: slot, height: slot, top: "calc((100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
                   {memojiEl}
                 </div>
               );

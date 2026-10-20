@@ -314,10 +314,13 @@
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
    just above it — 26px clears the tallest name, so a name's white backing never bites
    into the grey band and no guide runs through a partner's name.
-   The lane stands as tall as the statement scales' fields plus that strip, so the
-   work split is read on a grid of exactly the same height as every other card. */
+   On screen the lane stands as tall as the statement scales' fields plus that strip, so
+   the work split is read on a grid of exactly the same height as every other card. In
+   print it stretches over the card instead, the way the printed statement fields do.
+   Size containment lets everything inside centre itself on the lane's own height with
+   cqh, so the bar, the dots and the names follow the fields wherever they end. */
 .workload-lane {
-  container-type: inline-size;
+  container-type: size;
   --risiko-name-strip: 26px;
   height: calc(var(--risiko-field-h) + var(--risiko-name-strip));
 }
@@ -327,7 +330,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(var(--risiko-field-h) / 2 - 2px); /* half of the bar's own 4px height */
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 2px); /* half of the bar's own 4px height */
   height: 4px;
   display: flex;
 }
@@ -380,7 +383,7 @@
   /* Every name sits straight under its own dot and wraps onto further lines
      when it is wider than the room it has. The dot rides the fields' middle, so
      the drop to the names' strip is half the fields' height minus half the dot. */
-  top: calc(100% + (var(--risiko-field-h) - var(--workload-slot, 32px)) / 2 + 4px);
+  top: calc(100% + (100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2 + 4px);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -1140,6 +1143,9 @@ textarea.bg-retro-post-it:focus,
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
   .print-slide-page .risiko-scale-area { overflow: visible; }
+  /* The work-split fields stretch over the printed card too, instead of standing
+     at the screen's fixed height — the bar and the names follow the fields. */
+  .print-slide-page .workload-lane { height: auto; flex: 1 1 0; }
 
 
   /* Post-it text areas - maintain frontend layout */

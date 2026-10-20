@@ -228,7 +228,7 @@ describe("grey columns", () => {
     expect(slide, "the lane still carries a fixed height").not.toMatch(/workload-lane[^"]*h-\[\d+px\]/);
     // The bar rides the fields' middle, so both scales read the same way.
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(/top:\s*calc\(var\(--risiko-field-h\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
+    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
