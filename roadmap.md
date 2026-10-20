@@ -128,3 +128,4 @@
 - [x] Feedback slide's first question is now "Du in meinen Augen" with the remembering sentence in grey under the bar; verified on desktop, phone and small phone plus the printed page; 42 tests pass, build OK.
 - [x] Rename the five Health Check scale columns to "noch nicht" / "eher nicht" / "teils / teils" / "eher schon" / "absolut"; verified on desktop, phone, small phone and in the exported PDF; 42 tests pass, build OK.
 - [x] Rename the five Health Check scale columns again to "Trifft noch nicht zu" / "Trifft selten zu" / "Trifft Teilweise zu" / "Trifft meistens zu" / "Trifft voll zu".
+- [x] Fix the column labels so each word stays inside its own field: block text instead of a flex item, plus the correct German break point (Teil-/meis-) where a narrow column forces a split; taps on the rule's outer ends now place the dot too; 45 tests pass, build OK.
