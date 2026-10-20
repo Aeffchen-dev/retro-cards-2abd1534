@@ -43,3 +43,4 @@
 - [x] Reword the Health Check "hot" question to "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"; verify plates grow, pagination and print still fit.
 - [x] Show workload as adjoining width-based shares with non-overlapping draggable emojis, equal defaults, and matching Health Check helper styling; verify dragging, persistence and print.
 - [x] Reword the Me-Time question to "Wir räumen einander ausreichend Me-Time ein und machen auch Dinge ohne den anderen"; verify plates grow, pagination and print still fit.
+- [x] Add "mit dir" to the being-yourself question ("Ich kann mit dir ich selbst sein und fühle mich gesehen und respektiert"); update the wording test, verify desktop, mobile and print.

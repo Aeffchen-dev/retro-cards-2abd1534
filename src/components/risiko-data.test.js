@@ -79,7 +79,7 @@ describe("Risikofaktoren scale", () => {
   });
   test("has the six statements, being yourself first", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
-    expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann ich selbst sein und fühle mich gesehen und respektiert"]);
+    expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann mit dir ich selbst sein und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
   });
   test("keeps two pages on large screens and adds one on phones", () => {
