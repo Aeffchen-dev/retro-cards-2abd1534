@@ -144,9 +144,11 @@ export const captionLines = (caption: string): string[] => {
 
 export const softHyphenate = (caption: string) => caption.replace("eilweise", "eil\u00ADweise");
 
-/** The chapter the Mood Test opens with: its big question and the intro sentence
- *  under it, in the couple's own words. Screen and print read the same text. */
-export const RISIKO_CHAPTER_HEADING = "Testet euer Beziehungsgefühl";
+/** The chapter the Mood Test opens with. The chapter no longer stands as a big
+ *  question above the card (the user asked to "first test slide remove big
+ *  question and subline text move beginning of info text"), so its words open
+ *  the intro sentence instead — screen and print read the same text. */
+export const RISIKO_CHAPTER_OPEN = "Testet euer Beziehungsgefühl";
 export const RISIKO_CHAPTER_INFO = "Die Statements beschreiben, was eine glückliche Beziehung ausmacht. Vergleicht sie mit eurer eigenen Beziehung: Welches Gefühl dominiert am Ende?";
 
 /** Every statement slider of the chapter, in card order. */
