@@ -48,3 +48,4 @@
 - [x] Give the "Macht Notizen" CTA on the Health Check pages the same styling as on the first two slides (lime tile, light-grey label field, near-black text); verify on desktop, mobile and in the PDF.
 - [x] Make the dashed guidelines as visible as the smileys (2px in the smiley grey); verify measured thickness on screen and in the PDF.
 - [x] Add "mal" to the Me-Time question ("... und machen auch mal Dinge ohne den anderen"); verify desktop, mobile and print.
+- [x] Make the dashed guidelines finer (1px line, 8px dashes, 4px gaps) and even across all columns; verify by pixel measurement and in the PDF.
