@@ -20,3 +20,4 @@
 - [x] Move "Ich kann ich selbst sein und fühle mich gesehen und respektiert" to the first Health Check question; verify order and fit.
 - [x] Enlarge the Health Check smileys and drag point to 32px; verify each line sits centred under its smiley and the row spans the container width.
 - [x] Morph the draggable face through all five scale expressions, from angry to laughing; verify anchors, drag and dot reset.
+- [x] Set the Health Check question plate's left/right padding to 0 so it hugs the text; verify no clipping on desktop, mobile and small screens.
