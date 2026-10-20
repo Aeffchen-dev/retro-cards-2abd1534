@@ -1326,7 +1326,7 @@ const RetroCards: React.FC = () => {
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (
-                  <Face key={i} size={40} strokeWidth={1.5} color={FACE_GREY} />
+                  <Face key={i} size={34} strokeWidth={1.5} color={FACE_GREY} />
                 ))}
               </div>
               {/* Draggable Memojis — one per person */}
