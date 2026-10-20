@@ -10,7 +10,7 @@ describe("Risikofaktoren scale", () => {
     expect(scaleValue("-5")).toBe(0);
     expect(scaleValue("120")).toBe(100);
   });
-  test("has the six statements", () => {
-    expect(RISIKO_STATEMENTS.length).toBe(6);
+  test("has the five statements", () => {
+    expect(RISIKO_STATEMENTS.length).toBe(5);
   });
 });

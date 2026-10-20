@@ -253,6 +253,13 @@ button {
   color: #201C1D;
 }
 
+/* Statement labels on the Risikofaktoren scale rows — smaller than the
+   regular body copy so the larger smiley scale stays the focus. */
+.retro-body-copy-sm {
+  font-size: 14px;
+  line-height: 18px;
+}
+
 
 /* Hide in-card pills — pill is now rendered above the card */
 .retro-card-container .retro-pill { display: none !important; }
