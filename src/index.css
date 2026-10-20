@@ -318,7 +318,14 @@
    question keeps only a small gap to the intro sentence; the sentence carries
    the card's usual gap down to the first statement, so the fields still start
    where the other cards' do. */
-.risiko-chapter-heading { margin-bottom: 10px; }
+.risiko-chapter-heading {
+  margin-bottom: 10px;
+  /* "Beziehungsgefühl" is one long word: on a narrow card it breaks with a
+     proper German hyphen instead of reaching past the card's edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 .risiko-chapter-info {
   margin: 0 0 var(--risiko-scale-pad);
   font-size: 12px;
