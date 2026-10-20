@@ -78,7 +78,8 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
   <div className="risiko-track relative w-full h-10 shrink-0">
-    <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
+    {/* The rule spans the full card width; only the dot travel is inset. */}
+    <div className="absolute top-1/2 h-px" style={{ background: INK, left: 0, right: 0 }} />
     {readOnly ? (
       <div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
@@ -135,7 +136,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
         </div>
         <div className="relative w-full h-10 shrink-0">
-          <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
+          <div className="absolute top-1/2 h-px" style={{ background: INK, left: 0, right: 0 }} />
           {partners.map((p) => {
             const value = scaleValue(values[`work_${p.key}`] ?? values.allocation);
             const memojiEl = (
