@@ -283,7 +283,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                   happens to sit. Painted before the slider, so the circle always
                   covers the line running up to it. */}
               <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "calc(var(--risiko-track-h) / 2)" }} aria-hidden="true">
-                {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i) }} />)}
+                {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
               </div>
               <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
                 onChange={(v) => onChange(key, String(v))} />
