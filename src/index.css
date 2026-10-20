@@ -37,11 +37,13 @@
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
-    /* the columns wear the same grey as the info rows' label field */
-    --risiko-column-fill: #E4E6E8;
+    /* the columns sit a shade lighter than the info rows' label field */
+    --risiko-column-fill: #EBEDEF;
     /* every second column sits a whisker deeper — the two stay close together */
-    --risiko-column-fill-alt: #DCDEE1;
+    --risiko-column-fill-alt: #E4E6E8;
     --risiko-caption: #9B9BA3;
+    /* the scale smileys and their dashed guides: a darker grey than the labels */
+    --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
        the Health Check's own dark green, then the spiral's blue and the brand's
@@ -460,7 +462,7 @@
    circle draw on top. */
 .risiko-column-guide {
   width: 0;
-  border-left: 1px dashed var(--risiko-caption);
+  border-left: 1px dashed var(--risiko-guide);
   transform: translateX(-0.5px);
 }
 .risiko-column-band {
