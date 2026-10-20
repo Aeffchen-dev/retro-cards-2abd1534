@@ -603,6 +603,8 @@ textarea.bg-retro-post-it:focus,
     min-height: 0 !important;
     max-height: none !important;
     overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
     background: white !important;
   }
 
