@@ -1401,7 +1401,6 @@ textarea.bg-retro-post-it:focus,
   :root { --risiko-face-size: 28px; }
   .risiko-scale-captions { container-type: inline-size; }
   .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
-  .risiko-caption-line { display: block; white-space: nowrap; }
 }
 
 /* A 2px white gap between neighbouring shares of the work-split bar. */
