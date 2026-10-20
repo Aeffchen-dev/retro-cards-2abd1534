@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one clear
 // drop hanging from the left eye, tip first so it shrinks back into the eye.
@@ -47,14 +47,14 @@ const RULE_W = 2;
 // The scale runs edge to edge across the container, so the circle's travel is
 // inset by its own radius: at 0 and 100 its outer edge lands exactly on the
 // container's edges — fully visible, never cut off, never overflowing.
-const END_INSET = scaleEndInset(MARKER_SIZE);
+
 // The smileys are pulled in by the difference between that inset and their own
 // half-width, so every face centre sits exactly where the circle's centre does.
-const FACE_PAD = END_INSET - FACE_W / 2;
+
 // Evenly spread columns: one soft band between every pair of neighbouring
 // smileys. Their edges use the circle's own inset maths, so every edge sits
 // exactly under the face it belongs to and all bands come out the same width.
-const BANDS = columnBands(FACES.length);
+
 // One equal column per smiley across the full scale width; each smiley (and its
 // dashed guide) sits at its column's centre, and the circle travels centre to centre.
 const COL_W = 100 / FACES.length;
