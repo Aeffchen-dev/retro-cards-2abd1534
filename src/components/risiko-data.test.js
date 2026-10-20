@@ -1,7 +1,18 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
+  test("represents an even default as adjoining widths filling 100%", () => {
+    expect(workloadSegments(["a", "b"], workloadShares(["a", "b"], {}))).toEqual([
+      { key: "a", start: 0, end: 50, width: 50 }, { key: "b", start: 50, end: 100, width: 50 },
+    ]);
+  });
+  test("dragging a width boundary transfers work to its neighbour and clamps at 0 and 100", () => {
+    expect(adjustWorkloadBoundary(["a", "b"], { a: 50, b: 50 }, 0, 70)).toEqual({ a: 70, b: 30 });
+    expect(adjustWorkloadBoundary(["a", "b"], { a: 50, b: 50 }, 0, -20)).toEqual({ a: 0, b: 100 });
+    expect(adjustWorkloadBoundary(["a", "b"], { a: 50, b: 50 }, 0, 120)).toEqual({ a: 100, b: 0 });
+    expect(adjustWorkloadBoundary(["a", "b", "c"], { a: 34, b: 33, c: 33 }, 1, 80)).toEqual({ a: 34, b: 46, c: 20 });
+  });
   test("starts equally and normalizes legacy values to exactly 100%", () => {
     expect(workloadShares(["a", "b"], {})).toEqual({ a: 50, b: 50 });
     expect(workloadShares(["a", "b", "c"], {})).toEqual({ a: 34, b: 33, c: 33 });

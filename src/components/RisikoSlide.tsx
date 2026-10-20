@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Button } from "@/components/ui/button";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, adjustWorkloadShares, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
@@ -158,12 +158,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     </div>
   );
 
-  // All partner Memoji share one line: each is its own draggable thumb, the
-  // line reads 0% at the left end and 100% at the right end.
+  // Widths encode shares. Reserved avatar slots prevent collisions even at 0%.
   const allocation = (readOnly: boolean) => {
     const partners = persons.filter(p => page.personKeys.includes(p.key));
     const keys = partners.map(p => p.key);
     const shares = workloadShares(keys, values);
+    const segments = workloadSegments(keys, shares);
     return (
       <div className="risiko-auto-gap flex flex-col gap-1">
         <span className="retro-body-copy risiko-label relative z-10 self-start">Wer leistet wie viel der Beziehungsarbeit?</span>
@@ -171,35 +171,45 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
         </div>
-        <div className="relative w-full h-10 shrink-0">
-          <div className="absolute top-1/2 h-px" style={{ background: INK, left: 0, right: 0 }} />
-          {partners.map((p) => {
-            const value = shares[p.key];
+        <div className="workload-lane relative w-full h-10 shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
+          <div className="absolute bottom-0 w-full h-1 flex" aria-hidden="true">
+            {segments.map((segment, i) => <span key={segment.key} className={`workload-segment workload-segment-${i % 4}`} style={{ width: `${segment.width}%` }} />)}
+          </div>
+          {partners.map((p, i) => {
+            const boundaryIndex = Math.min(i, partners.length - 2);
+            const segment = segments[boundaryIndex];
+            const value = segment?.end ?? 100;
+            const min = segment?.start ?? 0;
+            const max = segments[boundaryIndex + 1]?.end ?? 100;
+            const slot = `min(32px, ${100 / partners.length}%)`;
+            const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
+            const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
             const memojiEl = (
-              <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{p.emoji}</span>
+              <span className="risiko-memoji flex items-center justify-center w-full h-full rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
             );
             if (readOnly) {
               return (
-                <div key={p.key} className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-                  style={{ left: `calc(${value}% + ${END_INSET - (value * 2 * END_INSET) / 100}px)` }}>
+                <div key={p.key} className="absolute top-1/2 z-10 -translate-y-1/2"
+                  style={{ width: slot, height: 32, left: `calc(${left} + (100% - min(${partners.length * 32}px, 100%)) * ${value / 100})` }}>
                   {memojiEl}
                 </div>
               );
             }
             return (
               <SliderPrimitive.Root key={p.key}
-                className="swiper-no-swiping absolute inset-0 flex items-center touch-none select-none z-10 pointer-events-none"
+                className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
+                style={{ left, right, top: 0, bottom: 0 }}
                 value={[value]} min={0} max={100} step={1}
-                onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadShares(keys, shares, p.key, v)); }}
+                onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadBoundary(keys, shares, boundaryIndex, v)); }}
                 onKeyDown={(e) => {
                   // keep the arrow keys from paging the card deck
                   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) e.stopPropagation();
                 }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
-                <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${value} Prozent`}
+                <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
                   ref={el => { workloadThumbs.current[p.key] = el; }}
                   className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
-                  style={{ width: FACE_W, height: FACE_W }}>
+                  style={{ width: `min(32px, calc(100vw / ${partners.length + 4}))`, height: 32 }}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
@@ -232,7 +242,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {!readOnly && (
         <div className="risiko-auto-gap risiko-footer w-full shrink-0 flex flex-col items-start gap-2">
           <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} fieldBg="transparent" labelColor={INK} onClick={onEdit} />
-          <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="transparent" fieldBg="transparent" iconColor={INK} labelColor={INK} />
+          <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
         </div>
       )}
     </div>
