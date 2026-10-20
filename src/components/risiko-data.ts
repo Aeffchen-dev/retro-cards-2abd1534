@@ -34,8 +34,16 @@ export const scaleValue = (stored?: string): number => {
   return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 50;
 };
 
-/** The circle's centre sits half a face in from each end, so it lines up with the
- *  outer smileys. The value is continuous, so it can stop anywhere in between. */
+/** How far the circle's centre stops short of each scale end. The scale spans its
+ *  whole container, so the inset is the circle's own radius: at 0 and 100 its edge
+ *  lands exactly on the container's edges — fully visible, never cut off, never
+ *  reaching past the card. */
+export const scaleEndInset = (markerSize: number): number => markerSize / 2;
+
+/** The circle's centre at a scale value, measured from the end of the travel. The
+ *  smileys and the dashed guides are placed with the same maths, so the circle
+ *  always sits exactly under the face it points at; the value is continuous, so it
+ *  can stop anywhere in between. */
 export const markerInset = (value: number, endInset: number): number =>
   endInset - (scaleValue(String(value)) * (2 * endInset)) / 100;
 

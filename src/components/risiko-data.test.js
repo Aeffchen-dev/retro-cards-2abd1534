@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -160,5 +160,23 @@ describe("work-split partner colours", () => {
   test("no two partners share a colour", () => {
     expect(colors).toHaveLength(8);
     expect(new Set(colors).size).toBe(8);
+  });
+});
+
+describe("smiley scale spans its container", () => {
+  const W = 440, FACE = 20, MARKER = 32;
+  const inset = scaleEndInset(MARKER);
+  const pad = inset - FACE / 2;
+  test("the circle's travel is inset by its own radius, so it is never cut off", () => {
+    // at both ends the circle's outer edge lands exactly on the container's edge
+    expect(markerInset(0, inset)).toBe(16);
+    expect(markerInset(100, inset)).toBe(-16);
+  });
+  test("every smiley centre sits exactly under the circle's matching position", () => {
+    for (let k = 0; k < 5; k++) {
+      const faceCentre = pad + FACE / 2 + (k * (W - 2 * pad - FACE)) / 4;
+      const circleCentre = (k * 25 * W) / 100 + markerInset(k * 25, inset);
+      expect(circleCentre).toBeCloseTo(faceCentre, 6);
+    }
   });
 });
