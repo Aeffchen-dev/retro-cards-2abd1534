@@ -180,7 +180,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      <div className="relative flex flex-col w-full gap-1">
+      {/* Side padding = the dot's overhang past the outer faces, so the 32px
+          circle stays fully visible at 0 and 100. */}
+      <div className="relative flex flex-col gap-1 box-border" style={{ marginInline: Math.ceil((32 - FACE_W) / 2) + 1 }}>
         <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
           <span>Stimme nicht zu</span>
           <span>Stimme voll zu</span>
