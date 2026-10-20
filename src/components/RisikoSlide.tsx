@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -480,7 +480,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
-      {page.statements.length === 0 && <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>}
+      {page.statements.length === 0 && (
+        <>
+          <h2 className="risiko-statement risiko-allocation-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
+          <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
+        </>
+      )}
       <div ref={areaRef} className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>

@@ -297,6 +297,21 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+/* The work-split card reads the question together with the fixed sentence of
+   what counts as Beziehungsarbeit, set straight under it as small body text in
+   one column. The question keeps only a small gap to the sentence; the sentence
+   carries the card's usual gap down to the work-split lane, so the fields still
+   start where the statement cards' do. */
+.risiko-allocation-statement { margin-bottom: 10px; }
+.risiko-allocation-examples {
+  margin: 0 0 var(--risiko-scale-pad);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--risiko-guide);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 
 /* The scale's grey smileys: the box and the drawing inside it follow
    --risiko-face-size, so the face can step down without the guides, the names or

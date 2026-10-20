@@ -1821,13 +1821,17 @@ const RetroCards: React.FC = () => {
 
 
 
+      {/* Only a statement page may ask for fewer statements per card: the
+          work-split page's fixed list can overflow a very short card, and
+          re-splitting the statements there would move the pages under the
+          deck and skip it. Its overflowing area simply scrolls instead. */}
       case riskSlideIds.find(id => id === cardIndex):
         return (
           <RisikoSlide
             page={riskPages[riskSlideIds.indexOf(cardIndex)]}
             persons={persons}
             pill={BRAND.neonGreen}
-            onOverflow={risikoPerPage > 1 ? () => setRisikoPerPage(1) : undefined}
+            onOverflow={risikoPerPage > 1 && riskPages[riskSlideIds.indexOf(cardIndex)].statements.length ? () => setRisikoPerPage(1) : undefined}
 
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}

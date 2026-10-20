@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -364,5 +364,28 @@ describe("column labels on a narrow phone", () => {
   test("keeps the wording the couple reads, hyphen or no hyphen", () => {
     expect([...SCALE_CAPTIONS].map((c) => softHyphenate(c).replace(/\u00AD/g, "")))
       .toEqual([...SCALE_CAPTIONS]);
+  });
+});
+
+describe("the fixed sentence of Beziehungsarbeit examples on the work-split card", () => {
+  test("reads the intro, the comma-joined examples and a full stop", () => {
+    expect(allocationExamplesSentence()).toBe(
+      "Unter Beziehungsarbeit versteht man schwierige Gespräche initiieren, " +
+      "im Streit nachgeben um zu deeskalieren, sich Fehler eingestehen, " +
+      "sich als unschuldiger entschuldigen, einen großen Kompromiss zusagen, " +
+      "Verletzungen aufarbeiten, den anderen emotional auffangen, " +
+      "immer zuerst Nähe initiieren, vermeintlich übertriebene Bedürfnisse ernst nehmen, " +
+      "unvergessliche Events planen, eine Schwäche an anderen wertschätzen, " +
+      "die eigene Meinung runterschlucken um zuzuhören, " +
+      "unsanftes Feedback leise in sich arbeiten lassen, " +
+      "Veränderungen die einen Nachteil bringen mittragen, auch mal zurückstecken."
+    );
+  });
+  test("separates every example with a comma and ends with a full stop", () => {
+    const sentence = allocationExamplesSentence();
+    expect(sentence.startsWith("Unter Beziehungsarbeit versteht man ")).toBe(true);
+    expect(sentence.endsWith(".")).toBe(true);
+    expect(sentence.split(", ").length).toBe(15);
+    expect(new Set(sentence.replace("Unter Beziehungsarbeit versteht man ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
   });
 });
