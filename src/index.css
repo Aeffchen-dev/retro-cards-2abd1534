@@ -588,10 +588,10 @@
 /* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */
 .is-shown .risiko-drag-face { transform: scale(1); }
 .is-shown .risiko-plain-dot { transform: scale(0); }
-/* One brief left/right sweep of the whole untouched dot — the disc itself
-   glides across the line while the arrow adds a wider pull on top, so the
-   two layers read as a visible nudge. The disc never stretches or moves its
-   saved position. Play only after entering view. */
+/* One brief hop of the whole untouched dot: the disc lifts off the line at each
+   end while the arrow adds a wider pull on top, so the circle itself visibly
+   walks left and right instead of only its hint. The disc never stretches or
+   moves its saved position. Play only after entering view. */
 @keyframes risiko-navigation-hint {
   0%, 100% { transform: translate(0, 0); }
   20% { transform: translate(-10px, -5px); }
