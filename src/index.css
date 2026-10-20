@@ -396,12 +396,17 @@
 
 /* The sentence that explains a post-it's headline: the scale's own grey, no fill,
    sitting straight under the coloured bar and above the writing area. It takes the
-   info rows' size — 16px on desktop, one step smaller on phones and tablets. */
+   info rows' size — 16px on desktop, one step smaller on phones and tablets.
+   The colour needs both classes: the shared body-text rule further down would
+   otherwise paint it ink black. */
 .post-it-helper {
-  color: var(--risiko-guide);
   font-size: 16px;
   line-height: 22px;
 }
+.post-it-helper.retro-body-copy {
+  color: var(--risiko-guide);
+}
+
 .risiko-block { container-type: inline-size; }
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
