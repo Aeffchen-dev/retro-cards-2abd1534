@@ -22,7 +22,7 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     <line x1="9" y1="9" x2="9.01" y2="9" />
     <line x1="15" y1="9" x2="15.01" y2="9" />
     <path d="M16 17.6s-1.5-2.4-4-2.4S8 17.6 8 17.6" />
-    <path d="M8.4 10.45c0 0-0.9 0.95-0.9 1.2a0.9 0.9 0 0 0 1.8 0c0-.45-0.9-1.2-0.9-1.2z" fill={color ?? "currentColor"} stroke="none" />
+    <path d="M9 10.6C9 10.6 8 12 8 13.1a1 1 0 0 0 2 0C10 12 9 10.6 9 10.6z" fill={color ?? "currentColor"} stroke="none" />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
@@ -81,8 +81,8 @@ const MorphFace = ({ value }: { value: number }) => {
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
-      <path d="M8.4 10.45c0 0-0.9 0.95-0.9 1.2a0.9 0.9 0 0 0 1.8 0c0-.45-0.9-1.2-0.9-1.2z"
-        fill={FACE_FILL} stroke="none" transform={`translate(8.4 11.65) scale(${tear}) translate(-8.4 -11.65)`} />
+      <path d="M9 10.6C9 10.6 8 12 8 13.1a1 1 0 0 0 2 0C10 12 9 10.6 9 10.6z"
+        fill={FACE_FILL} stroke="none" transform={`translate(9 10.6) scale(${tear}) translate(-9 -10.6)`} />
       <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
