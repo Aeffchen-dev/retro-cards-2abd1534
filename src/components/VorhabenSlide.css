@@ -20,8 +20,11 @@
 .vorhaben-scale-line { background: var(--vorhaben-ink); }
 .vorhaben-scale-tick { background: var(--vorhaben-ink); }
 /* The marker is a round dot — the same shape as the answer circle on the
-   Risikofaktoren scales — both on the slider and in the printed copy. */
+   Risikofaktoren scales — both on the slider and in the printed copy.
+   display:block matters: the slider's thumb is a span, and an inline span
+   ignores width and height. */
 .vorhaben-scale-dot {
+  display: block;
   width: 32px;
   height: 32px;
   border-radius: 50%;
