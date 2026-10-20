@@ -8,10 +8,11 @@ export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its five column centres.
 const FACE_SIZE = 24;
+const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
 const FACE_FILL = "var(--risiko-face-fill)";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
-  <span className="flex items-center justify-center rounded-full" style={{ width: FACE_SIZE - 1, height: FACE_SIZE - 1, background: FACE_FILL }}>
+  <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
     <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
   </span>
 );
@@ -33,8 +34,9 @@ interface RisikoSlideProps {
 }
 
 const INK = "var(--retro-black)";
-const END_INSET = FACE_SIZE / 2; // px the track is shortened on each side so its
-// ends line up with the centres of the outer faces
+// Radix clamps the thumb inside the track by half its own width, so a thumb as
+// wide as a face puts the track ends exactly under the outer face centres.
+const END_INSET = FACE_W / 2;
 
 const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) => {
   const expression = scaleExpression(value);
@@ -70,7 +72,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
     ) : (
       <SliderPrimitive.Root
         className="swiper-no-swiping absolute flex items-center touch-none select-none z-10"
-        style={{ left: END_INSET, right: END_INSET, top: 0, bottom: 0 }}
+        style={{ left: 0, right: 0, top: 0, bottom: 0 }}
         value={[value]} min={0} max={100} step={1}
         onPointerDown={() => setDragging(true)}
         onPointerUp={() => setDragging(false)}
@@ -85,7 +87,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
         }}
       >
         <SliderPrimitive.Track className="relative w-full h-px" />
-        <SliderPrimitive.Thumb aria-label={ariaLabel} className="block cursor-ew-resize rounded-full">
+        <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb block cursor-ew-resize rounded-full" style={{ width: FACE_W, height: FACE_W }}>
           {marker}
         </SliderPrimitive.Thumb>
       </SliderPrimitive.Root>
@@ -133,8 +135,8 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
         <FaceLayer />
-        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: FACE_SIZE / 2, right: FACE_SIZE / 2, top: FACE_SIZE }} aria-hidden="true">
-          {FACES.map((_, i) => <span key={i} className="risiko-column h-full" />)}
+        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
+          {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
         <div className="screen-only w-full relative">{body(false)}</div>
         <div className="hidden print-only w-full relative">{body(true)}</div>
