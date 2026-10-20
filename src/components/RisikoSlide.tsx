@@ -33,6 +33,7 @@ interface RisikoSlideProps {
   values: Record<string, string>;
   onChange: (key: string, value: string) => void;
   pill: string;
+  onEdit: () => void;
 }
 
 const INK = "var(--retro-black)";
@@ -97,7 +98,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
   );
 };
 
-const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, onChange, pill }: RisikoSlideProps) => {
+const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
   const memoji = (emoji: string) => (
     <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{emoji}</span>
   );
@@ -146,7 +147,8 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
         <div className="screen-only w-full relative">{body(false)}</div>
         <div className="hidden print-only w-full relative">{body(true)}</div>
       </div>
-      <div className="screen-only w-full mt-auto shrink-0">
+      <div className="screen-only w-full mt-auto shrink-0 flex flex-col items-start gap-2">
+        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
         <ActionRow className="risiko-helper" icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
