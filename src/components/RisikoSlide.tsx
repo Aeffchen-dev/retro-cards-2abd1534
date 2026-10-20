@@ -46,12 +46,16 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The fields stretch to fill whatever height the card has left over, but they
-// never collapse below one comfortable band: that floor is their own minimum.
-const COLUMN_MIN = 56;
 // A little grey above the smileys, so the faces sit inside their columns instead
 // of being sliced by the columns' top edge.
 const FACE_PAD = 8;
+// The rule's row is this tall; it mirrors --risiko-track-h in index.css.
+const TRACK_H = 56;
+// The fields stretch to fill whatever height the card has left over, but they
+// never collapse below one comfortable band: the smiley row and the rule's row,
+// with a little grey above and below them. Anything taller than this floor is
+// shared out, and the invisible balance below the rule gives back first.
+const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK_H;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -253,7 +257,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD }}
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD, paddingBottom: FACE_PAD, minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
@@ -261,14 +265,31 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               so every smiley and the circle sit inside their own band. Every second
               band takes a slightly deeper grey, so the five fields still read as
               separate. Painted before the faces, so the fill never covers a smiley. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0, minHeight: COLUMN_MIN }} aria-hidden="true">
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H, bottom: "calc(var(--risiko-track-h) / 2)" }} />)}
           </div>
-          <FaceLayer />
-
-          <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-            onChange={(v) => onChange(key, String(v))} />
+          {/* The faces and the rule are one pair, and that pair floats in the middle
+              of the fields, so the grey lies even above and below it. An invisible
+              copy of the smiley row sits below the rule to pull the pair's middle —
+              and with it the circle — onto the middle of the fields instead of
+              letting it hang under the smileys. When the card runs short of room,
+              that copy gives way first: neither the smiley row nor the rule's row
+              ever compress. */}
+          <div className="risiko-scale-group relative flex min-h-0 flex-col gap-1">
+            <FaceLayer />
+            <div className="relative min-h-0">
+              {/* The dashed guides hang off the rule's own row, not off the fields:
+                  they start under the smileys and end on the rule wherever the rule
+                  happens to sit. Painted before the slider, so the circle always
+                  covers the line running up to it. */}
+              <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "calc(var(--risiko-track-h) / 2)" }} aria-hidden="true">
+                {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
+              </div>
+              <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+                onChange={(v) => onChange(key, String(v))} />
+            </div>
+            <div className="risiko-scale-balance" style={{ height: HEADER_H, minHeight: 0 }} aria-hidden="true" />
+          </div>
         </div>
       </div>
     </div>
