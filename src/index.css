@@ -367,10 +367,13 @@
    columns' container, so each label sits in the field it names. One label per field,
    centred on it, and each one takes its own column's width so long labels wrap
    instead of crowding their neighbours. */
-.risiko-scale-captions {
-  /* How much of the field's foot the names claim: one line plus a small foot, and
-     two lines on phones and tablets. The dashed guides stop above this band. */
+.risiko-scale-core {
+  /* How much of the field's foot the column names claim: one line plus a small
+     foot, and two lines on phones and tablets. The dashed guides stop above this
+     band, so the var lives on the field itself, not on the names' own row. */
   --risiko-caption-band: 15px;
+}
+.risiko-scale-captions {
   position: absolute;
   left: 0;
   right: 0;
@@ -647,7 +650,7 @@ button {
   }
   /* The column names wrap to two lines in a phone column, so they claim twice
      as much of the field's foot there. */
-  .risiko-scale-captions {
+  .risiko-scale-core {
     --risiko-caption-band: 26px;
   }
 }
