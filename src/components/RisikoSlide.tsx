@@ -265,6 +265,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
                 style={{ ...vars, left: li, right: ri, top: 0, bottom: 20 }}
+                data-boundary={boundaryIndex} data-value={value}
                 value={[value]} min={0} max={100} step={1}
                 onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadBoundary(keys, shares, boundaryIndex, v)); }}
                 onKeyDown={(e) => {
