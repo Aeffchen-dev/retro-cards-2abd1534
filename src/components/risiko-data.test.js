@@ -106,7 +106,7 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
     expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann mit dir ich selbst sein und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
-    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
+    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Wer leistet aktuell wie viel der Beziehungsarbeit?");
