@@ -324,12 +324,6 @@ const RetroCards: React.FC = () => {
     ];
   }, [displayName1, displayName2, displayEmoji1, displayEmoji2, setupData.extraPartners]);
 
-  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
-  useEffect(() => {
-    const updateWidth = () => setViewportWidth(window.innerWidth);
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
   const riskPages = useMemo(() => risikoPages(persons.map(p => p.key)), [persons]);
   const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
 
