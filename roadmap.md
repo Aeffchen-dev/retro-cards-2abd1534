@@ -14,3 +14,5 @@
 - [x] Keep the smiley scale inside the container width, enlarge the smileys and centre every column line under its own smiley; verify alignment, drag travel and print.
 - [x] Spread the Health Check rows over the whole card height (lone row centred); verify fit on desktop and mobile.
 
+- [x] Shorten the Health Check helper text to "Punkt verschieben" so it renders at the default font size; verify on all widths.
+- [x] Reword the Me-Time question to "Wir räumen uns ausreichend Me-Time ein und machen auch Dinge ohne den anderen"; verify plates grow and pages still fit.

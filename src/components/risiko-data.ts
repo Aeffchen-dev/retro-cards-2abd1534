@@ -3,7 +3,7 @@ export const RISIKO_STATEMENTS = [
   ["appreciation", "Wir kommunizieren wertschätzend"],
   ["conflicts", "Wir lösen Konflikte fair"],
   ["self", "Wir vernachlässigen uns nicht selbst für den anderen"],
-  ["metime", "Wir haben genug Me Time"],
+  ["metime", "Wir räumen uns ausreichend Me-Time ein und machen auch Dinge ohne den anderen"],
   ["quality", "Wir verbringen genug Quality Time"],
 ] as const;
 
