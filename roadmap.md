@@ -9,3 +9,4 @@
 - [x] Swap the order of the "Macht Notizen" button and the helper text on every Risikofaktoren page; verify on screen.
 - [x] Rename the Risikofaktoren slide's visible label to "Health Check" (pill, heading, printed notes page); verify on screen.
 - [x] Add "Wir zeigen uns aktiv, dass wir uns lieben" as the first question on the Health Check (Risikofaktoren) slide; verify fit and pagination.
+- [x] Keep the dashed column lines from running through the question text (white mask behind the labels); verify by pixel sampling.
