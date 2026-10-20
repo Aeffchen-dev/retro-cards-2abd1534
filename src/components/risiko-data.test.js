@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_HEADING, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -463,8 +463,8 @@ describe("mood test chapter", () => {
     expect(moodFaceIndex(88)).toBe(4);
     expect(moodFaceIndex(100)).toBe(4);
   });
-  test("the chapter opens with the couple's own question and intro sentence", () => {
-    expect(RISIKO_CHAPTER_HEADING).toBe("Testet euer Beziehungsgefühl");
+  test("the chapter opens with the couple's own words inside the intro sentence", () => {
+    expect(RISIKO_CHAPTER_OPEN).toBe("Testet euer Beziehungsgefühl");
     expect(RISIKO_CHAPTER_INFO).toBe("Die Statements beschreiben, was eine glückliche Beziehung ausmacht. Vergleicht sie mit eurer eigenen Beziehung: Welches Gefühl dominiert am Ende?");
   });
   test("the chapter pill reads Mood Test on the statement cards and keeps Health Check on the first two", () => {
@@ -476,7 +476,7 @@ describe("mood test chapter", () => {
   });
   test("the chapter block and the mood smiley are rendered on the first statement card", () => {
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    expect(slide).toContain("RISIKO_CHAPTER_HEADING");
+    expect(slide).toContain("RISIKO_CHAPTER_OPEN");
     expect(slide).toContain("RISIKO_CHAPTER_INFO");
     expect(slide).toContain("averageMood(values)");
     expect(slide).toContain("moodFaceIndex(chapterMood)");
