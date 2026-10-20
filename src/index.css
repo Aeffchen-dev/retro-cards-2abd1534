@@ -291,12 +291,30 @@
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
+/* A statement reads in the same voice as the deck's big question — the display face
+   is handed to it by the shared question rule above — but one step under its 38.4px,
+   because under a statement sit the smileys, the scale and the notes. */
 .risiko-statement {
+  font-size: 26px;
+  line-height: 1.12;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
+}
+/* On a phone the card is a good deal narrower than the printed sheet, so a long
+   statement would run to eight lines and push the scale past the card's foot.
+   There the statement steps down a size; tablet, desktop and paper keep 26px. */
+@media (max-width: 767px) {
+  .risiko-statement { font-size: 22px; }
+}
+/* The smallest phones have no room to spare: the work-split card carries its long
+   question, the fixed sentence of examples and the lane, so there the statement
+   steps down once more and the examples sit a touch closer together. */
+@media (max-width: 380px) {
+  .risiko-statement { font-size: 19px; }
+  .risiko-allocation-examples { line-height: 1.25; }
 }
 /* The work-split card reads the question together with the fixed sentence of
    what counts as Beziehungsarbeit, set straight under it as small body text in
@@ -1333,13 +1351,15 @@ textarea.bg-retro-post-it:focus,
   text-transform: none;
 }
 
-/* Must follow the global typography rule above. */
+/* Must follow the global typography rule above. The Risikofaktoren statement reads
+   in this same voice — only its size, set further down, is its own. */
 #root .question-font,
 #root .question-font *,
 #root .retro-heading,
 #root .retro-heading *,
 #root .retro-title,
-#root .retro-title * {
+#root .retro-title *,
+#root .risiko-statement {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", sans-serif;
   font-weight: 400;
   font-feature-settings: normal;

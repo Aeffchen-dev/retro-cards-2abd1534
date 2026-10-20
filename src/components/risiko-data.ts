@@ -44,10 +44,11 @@ export interface RisikoPage {
   personKeys: string[];
 }
 
-/** Two statements per card, each with its own scale. */
-export const RISIKO_PER_PAGE = 2;
-/** Split the statements over cards of `perPage` statements each. A card that is
- *  too short for two asks for one, so the second statement is never clipped away. */
+/** One statement per card, each with its own scale. */
+export const RISIKO_PER_PAGE = 1;
+/** Split the statements over cards of `perPage` statements each. The default is one
+ *  statement to a card; a caller may still ask for more, and a card that is too short
+ *  for them asks for fewer, so no statement is ever clipped away. */
 export function risikoPages(personKeys: string[], perPage: number = RISIKO_PER_PAGE, firstPageSize?: number): RisikoPage[] {
   const all = [...RISIKO_STATEMENTS, RISIKO_HOT];
   const size = Math.max(1, Math.min(Math.floor(perPage) || RISIKO_PER_PAGE, all.length));
