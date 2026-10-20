@@ -62,6 +62,8 @@ interface RisikoSlideProps {
   onWorkloadChange: (shares: Record<string, number>) => void;
   pill: string;
   onEdit: () => void;
+  /** Swiper position of this page — drives the headline's word reveal. */
+  slideIndex?: number;
 }
 
 const INK = "var(--retro-black)";
@@ -150,7 +152,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex }: RisikoSlideProps) => {
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
