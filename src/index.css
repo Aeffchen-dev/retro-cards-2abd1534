@@ -690,10 +690,10 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
-  .risiko-plain-dot, .risiko-plain-dot svg { animation: none !important; }
+  .risiko-expression-point { animation: none !important; }
 }
 @media print {
-  .risiko-plain-dot, .risiko-plain-dot svg { animation: none !important; }
+  .risiko-expression-point { animation: none !important; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);
