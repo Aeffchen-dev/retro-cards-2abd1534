@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
-import { Button } from "@/components/ui/button";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, type RisikoPage } from "./risiko-data";
 
@@ -151,7 +150,6 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 };
 
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
-  const workloadThumbs = React.useRef<Record<string, HTMLSpanElement | null>>({});
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
@@ -175,8 +173,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
         </div>
         <div className="workload-lane relative w-full h-10 shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
-          <div className="absolute bottom-0 w-full h-1 flex" aria-hidden="true">
-            {segments.map((segment, i) => <span key={segment.key} className={`workload-segment workload-segment-${i % 4}`} style={{ width: `${segment.width}%` }} />)}
+          <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 flex" aria-hidden="true">
+            {segments.map((segment, i) => (
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
+                <span className="workload-percentage absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">{shares[segment.key]}%</span>
+              </span>
+            ))}
           </div>
           {partners.map((p, i) => {
             const boundaryIndex = Math.min(i, partners.length - 2);
@@ -188,7 +190,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
             const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
             const memojiEl = (
-              <span className="risiko-memoji flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
+              <span className={`risiko-memoji workload-avatar workload-color-${i % 8} flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none`} aria-hidden="true">{p.emoji}</span>
             );
             if (readOnly) {
               return (
@@ -210,7 +212,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
-                  ref={el => { workloadThumbs.current[p.key] = el; }}
                   className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
                   style={{ width: `min(32px, calc(100cqw / ${partners.length}))`, height: 32 }}>
                   {memojiEl}
@@ -218,19 +219,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               </SliderPrimitive.Root>
             );
           })}
-        </div>
-        <div className="relative z-10 flex flex-wrap w-full" style={{ background: "var(--risiko-label-bg)" }}>
-          {partners.map(p => readOnly ? (
-            <span key={p.key} className="retro-body-copy inline-flex items-center gap-1 min-h-8 px-1">
-              {p.emoji} {p.name} {shares[p.key]}%
-            </span>
-          ) : (
-            <Button key={p.key} variant="ghost" size="sm" className="h-8 px-1 gap-1 max-w-full whitespace-normal"
-              aria-label={`Anteil von ${p.name} anpassen: ${shares[p.key]} Prozent`}
-              onClick={() => workloadThumbs.current[p.key]?.focus()}>
-              <span aria-hidden="true">{p.emoji}</span><span className="break-words">{p.name}</span><span>{shares[p.key]}%</span>
-            </Button>
-          ))}
         </div>
       </div>
     );
