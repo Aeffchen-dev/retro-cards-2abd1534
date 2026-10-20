@@ -263,7 +263,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       const slackUp = b.top - above - 8;
       const slackDown = footTop === undefined ? 0 : footTop - b.bottom - 8;
       const shift = Math.min(Math.max(need, -slackUp), slackDown);
-      pageEl.dataset.centreDebug = JSON.stringify({ need: Math.round(need), slackUp: Math.round(slackUp), slackDown: Math.round(slackDown), shift: Math.round(shift), cardY: Math.round(card.y), cardH: Math.round(card.height), ruleY: Math.round(rule.y), ruleH: Math.round(rule.height), boxT: Math.round(b.top), boxB: Math.round(b.bottom), above: Math.round(above), footTop: footTop === undefined ? null : Math.round(footTop) });
       pageEl.style.setProperty("--risiko-centre-shift", `${Math.round(shift)}px`);
     };
     // The deck's own transform settles a beat after a card arrives: until then the
