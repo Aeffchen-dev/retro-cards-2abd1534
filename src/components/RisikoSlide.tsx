@@ -209,7 +209,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
                   ref={el => { workloadThumbs.current[p.key] = el; }}
                   className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
-                  style={{ width: `min(32px, calc(100vw / ${partners.length + 4}))`, height: 32 }}>
+                  style={{ width: `min(32px, calc(100cqw / ${partners.length}))`, height: 32 }}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
