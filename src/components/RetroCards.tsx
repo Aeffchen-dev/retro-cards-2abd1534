@@ -3,7 +3,7 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
-import RisikoSlide from "@/components/RisikoSlide";
+import RisikoSlide, { FACES, FACE_GREY } from "@/components/RisikoSlide";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
@@ -1306,11 +1306,10 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="relative w-full flex-1 my-10 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
-                <div className="text-4xl">🤩</div>
-                <div className="text-4xl">🙂</div>
-                <div className="text-4xl">🤨</div>
-                <div className="text-4xl">🙁</div>
-                <div className="text-4xl">😩</div>
+                {/* Same line-icon faces as the Risikofaktoren scale, best at the top */}
+                {[...FACES].reverse().map((Face, i) => (
+                  <Face key={i} size={40} strokeWidth={1.5} color={FACE_GREY} />
+                ))}
               </div>
               {/* Draggable Memojis — one per person */}
               {persons.map((person, i) => {
