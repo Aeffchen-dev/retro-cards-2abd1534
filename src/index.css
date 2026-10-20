@@ -1079,7 +1079,7 @@ textarea.bg-retro-post-it:focus,
     /* Use CSS custom properties for percentage-based positioning */
     /* min() keeps the emoji inside the printed card's own box. */
     left: min(var(--print-left-percent, 70%), calc(100% - 56px)) !important;
-    top: min(var(--print-top-percent, 20%), calc(100% - 56px)) !important;
+    top: var(--print-anchored-top, min(var(--print-top-percent, 20%), calc(100% - 56px))) !important;
   }
 
   .print-memoji img {
