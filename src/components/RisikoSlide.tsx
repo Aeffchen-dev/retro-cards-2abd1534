@@ -194,10 +194,33 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     const partners = persons.filter(p => page.personKeys.includes(p.key));
     const keys = partners.map(p => p.key);
     const shares = workloadShares(keys, values);
-    const segments = workloadSegments(keys, shares);
-    return (
-      <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
-        <div className="workload-lane relative w-full h-[60px] shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
+  const segments = workloadSegments(keys, shares);
+  // Clicking the bar moves the circle whose own position is nearest to the
+  // pointer, so a tap works like a drag: the circle lands under the finger.
+  const jumpToClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest(".risiko-thumb")) return; // that was a drag
+    const lane = e.currentTarget.getBoundingClientRect();
+    if (!lane.width) return;
+    const x = e.clientX - lane.left;
+    let nearest: { index: number; value: number; gap: number } | null = null;
+    for (const root of e.currentTarget.querySelectorAll<HTMLElement>("[data-boundary]")) {
+      const thumb = root.querySelector<HTMLElement>(".risiko-thumb");
+      if (!thumb) continue;
+      const box = root.getBoundingClientRect();
+      const dot = thumb.getBoundingClientRect();
+      const travel = box.width - dot.width;
+      if (travel <= 0) continue;
+      const from = box.left - lane.left + dot.width / 2;
+      const centre = from + (travel * Number(root.dataset.value)) / 100;
+      const gap = Math.abs(centre - x);
+      if (!nearest || gap < nearest.gap) nearest = { index: Number(root.dataset.boundary), value: ((x - from) / travel) * 100, gap };
+    }
+    if (nearest) onWorkloadChange(adjustWorkloadBoundary(keys, shares, nearest.index, nearest.value));
+  };
+  return (
+    <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
+      <div className="workload-lane relative w-full h-[60px] shrink-0" style={{ background: "var(--risiko-label-bg)" }}
+        onClick={readOnly ? undefined : jumpToClick}>
           <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
