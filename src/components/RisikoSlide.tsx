@@ -49,10 +49,10 @@ const MorphFace = ({ value }: { value: number }) => {
   const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
   return (
     <svg width={FACE_SIZE} height={FACE_SIZE} viewBox="0 0 24 24" fill="none"
-      stroke={FACE_FILL} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" fill={INK} />
-      <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} />
-      <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={1.5 * brow} />
+      <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
+      <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
   );
