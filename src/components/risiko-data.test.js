@@ -216,6 +216,14 @@ describe("grey columns", () => {
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
   });
+
+  test("the slider rule is exactly as thick as the work-split bar", () => {
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    // the work-split bar is Tailwind's h-1, i.e. 4px
+    expect(/w-full h-1 flex/.test(slide), "the work-split bar is no longer h-1 (4px)").toBe(true);
+    const rule = Number(slide.match(/const RULE_W = (\d+)/)?.[1]);
+    expect(rule, "the slider rule does not match the work-split bar's 4px").toBe(4);
+  });
 });
 
 describe("work-split partner colours", () => {
