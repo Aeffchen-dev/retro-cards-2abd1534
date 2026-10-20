@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -162,26 +162,41 @@ describe("grey columns", () => {
     expect(columnBands(1)).toEqual([[0, 100]]);
     expect(columnBands(0)).toEqual([]);
   });
-  test("every second column is a slightly deeper grey, both a shade lighter than the info fill", () => {
-    // The columns sit just above the info rows' label-field grey, and the two
-    // fills are the only thing separating neighbouring fields, so they must
-    // differ — and the deeper one must actually be the deeper one.
+  test("the dividers sit between every pair of columns and at both scale edges", () => {
+    // Five columns need six lines: the scale's own left and right edge plus one
+    // between every neighbour. Nothing is painted between them — the columns are
+    // drawn purely by these dividers.
+    expect(columnEdges(5)).toEqual([0, 20, 40, 60, 80, 100]);
+    expect(columnEdges(2)).toEqual([0, 50, 100]);
+    expect(columnEdges(1)).toEqual([0, 100]);
+    expect(columnEdges(0)).toEqual([]);
+    // every divider is a band boundary, and both ends of the scale carry one
+    const bands = columnBands(5);
+    expect(columnEdges(5)).toEqual([0, ...bands.map(([, to]) => to)]);
+  });
+  test("the columns carry no fill — only dashed lines, softer than the smileys' guides", () => {
+    // The five fields read through their dividers alone. The smileys keep the
+    // stronger dashed line of their own, so a divider may never compete with it:
+    // its grey has to stay the lighter of the two.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const hex = (token) => {
       const found = css.match(new RegExp(`--${token}:\\s*#([0-9A-Fa-f]{6})`));
       expect(found, `--${token} missing from index.css`).not.toBeNull();
       return found[1].toLowerCase();
     };
-    const actionRow = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
-    const infoFill = actionRow.match(/fieldBg \?\? "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
-    expect(infoFill, "info row default field grey missing").toBeTruthy();
-    const [fill, alt] = [hex("risiko-column-fill"), hex("risiko-column-fill-alt")];
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
-    expect(lightness(fill)).toBeGreaterThan(lightness(infoFill));
-    expect(alt).not.toBe(fill);
-    expect(lightness(alt)).toBeLessThan(lightness(fill));
-    // both fills stay close together so the fields read as one soft block
-    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(24);
+    const line = hex("risiko-column-line");
+    expect(lightness(line), "the column lines are not softer than the smileys' guides").toBeGreaterThan(lightness(hex("risiko-guide")));
+    // both stay well clear of ink black
+    expect(lightness(line)).toBeLessThan(720);
+    expect(/border-left: 1px dashed var\(--risiko-column-line\)/.test(css), "the column lines do not use --risiko-column-line").toBe(true);
+    // nothing is painted behind a column any more
+    expect(css).not.toMatch(/--risiko-column-fill/);
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    expect(slide).not.toMatch(/risiko-column-band/);
+    // and the dividers are drawn on both scales, screen and print alike
+    const edges = slide.match(/columnEdges\(FACES\.length\)/g) ?? [];
+    expect(edges.length, "the dividers are missing from a scale").toBeGreaterThanOrEqual(2);
   });
   test("the scale smileys sit a shade lighter than their guides and column names", () => {
     // The dashed line down each column and the five column names share the
@@ -245,12 +260,10 @@ describe("grey columns", () => {
     expect(block).not.toContain(".risiko-scale-caption");
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
-    // Each name paints its own column's grey behind it, so a dashed guide running
-    // down behind a two- or three-line name stops at the name's top edge instead of
-    // drawing through its letters — and every second name takes the deeper band.
-    expect(/background:\s*var\(--risiko-column-fill\)/.test(caption), "the labels do not paint their column's grey").toBe(true);
-    const even = css.match(/\.risiko-scale-caption:nth-child\(even\) \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(/background:\s*var\(--risiko-column-fill-alt\)/.test(even), "every second label does not take the deeper band").toBe(true);
+    // The columns carry no fill, so a name stands on the card's own ground: no
+    // grey plate behind it. The dashed lines simply stop above the names' band,
+    // so nothing ever draws through a name's letters.
+    expect(caption).not.toMatch(/background:/);
   });
 
   test("the slider rule is exactly as thick as the work-split bar", () => {
