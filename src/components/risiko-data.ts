@@ -19,13 +19,17 @@ export interface RisikoPage {
 
 /** Two statements per card, each with its own scale. */
 export const RISIKO_PER_PAGE = 2;
-export function risikoPages(personKeys: string[]): RisikoPage[] {
+/** Split the statements over cards of `perPage` statements each. A card that is
+ *  too short for two asks for one, so the second statement is never clipped away. */
+export function risikoPages(personKeys: string[], perPage: number = RISIKO_PER_PAGE): RisikoPage[] {
   const all = [...RISIKO_STATEMENTS, RISIKO_HOT];
+  const size = Math.max(1, Math.min(Math.floor(perPage) || RISIKO_PER_PAGE, all.length));
   const pages: RisikoPage[] = [];
-  for (let i = 0; i < all.length; i += RISIKO_PER_PAGE) pages.push({ statements: all.slice(i, i + RISIKO_PER_PAGE), personKeys: [] });
+  for (let i = 0; i < all.length; i += size) pages.push({ statements: all.slice(i, i + size), personKeys: [] });
   if (personKeys.length) pages.push({ statements: [], personKeys: [...personKeys] });
   return pages;
 }
+
 
 
 /** 0 = sad (left) … 100 = happy (right); default neutral middle. */
@@ -58,6 +62,18 @@ export const columnBands = (faces: number): [number, number][] => {
   const width = 100 / faces;
   return Array.from({ length: faces }, (_, i) => [i * width, (i + 1) * width] as [number, number]);
 };
+
+/** One label per scale column, from the leftmost field to the rightmost: the five
+ *  faces the circle can rest under, named in the couple's own words. Screen and
+ *  print read the same list, so the printed page never disagrees with the card. */
+export const SCALE_CAPTIONS = [
+  "Trifft nicht zu",
+  "Trifft eher nicht zu",
+  "Teils / teils",
+  "Trifft eher zu",
+  "Trifft voll zu",
+] as const;
+
 
 
 /** Largest-remainder rounding keeps integer percentages at exactly the target. */

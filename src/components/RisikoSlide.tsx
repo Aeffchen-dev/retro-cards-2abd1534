@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one fat,
 // classic drop hanging from the left eye and rolling down the cheek, so its
@@ -100,7 +100,10 @@ interface RisikoSlideProps {
   onWorkloadChange: (shares: Record<string, number>) => void;
   pill: string;
   onEdit: () => void;
+  /** Called when this card's statements do not fit its own height. */
+  onOverflow?: () => void;
 }
+
 
 const INK = "var(--retro-black)";
 // White drag hints inside the untouched dot: it can be pulled left or right.
@@ -212,7 +215,19 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, onOverflow }: RisikoSlideProps) => {
+  // A card whose statements are taller than the card itself asks the deck for
+  // fewer statements per card, so nothing is cut off at the card's lower edge.
+  const areaRef = useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const area = areaRef.current;
+    if (!area || !onOverflow) return;
+    const check = () => { if (area.scrollHeight > area.clientHeight + 2) onOverflow(); };
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, [onOverflow, page]);
+
 
   // Which partner a press on the work-split bar picked up: the bar keeps dragging
   // that one until the pointer is lifted, wherever on the bar the press landed.
@@ -250,14 +265,16 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* The two labels sit on the columns' own top edge — "Trifft nicht zu" flush
-          left, "Trifft voll zu" flush right, with no gap between them and the grey
-          fields — so each one reads as the heading of the field below it. */}
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
-        <div className="risiko-scale-captions flex items-center justify-between gap-2">
-          <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
-          <span className="risiko-scale-caption pointer-events-none">Trifft voll zu</span>
-        </div>
+        {/* Every column names itself: one label per grey field, centred on that
+            field's own top edge, so the circle always sits under the word it points at. */}
+        <div className="risiko-scale-captions" lang="de">
+
+        {SCALE_CAPTIONS.map((caption, i) => (
+          <span key={i} className="risiko-scale-caption pointer-events-none">{caption}</span>
+        ))}
+      </div>
+
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
@@ -433,7 +450,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       {page.statements.length === 0 && <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>}
-      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
+      <div ref={areaRef} className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>

@@ -4,7 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
-import { risikoPages } from "@/components/risiko-data";
+import { risikoPages, RISIKO_PER_PAGE } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
@@ -327,8 +327,12 @@ const RetroCards: React.FC = () => {
     ];
   }, [displayName1, displayName2, displayEmoji1, displayEmoji2, setupData.extraPartners]);
 
-  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key)), [persons]);
+  // A card that is too short for two statements gets one per card instead of a
+  // clipped second one; the same split drives screen and print.
+  const [risikoPerPage, setRisikoPerPage] = useState(RISIKO_PER_PAGE);
+  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage), [persons, risikoPerPage]);
   const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
+
 
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
@@ -1794,6 +1798,8 @@ const RetroCards: React.FC = () => {
             page={riskPages[riskSlideIds.indexOf(cardIndex)]}
             persons={persons}
             pill={BRAND.neonGreen}
+            onOverflow={risikoPerPage > 1 ? () => setRisikoPerPage(1) : undefined}
+
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onWorkloadChange={(shares) => setEditModeNotes(prev => ({

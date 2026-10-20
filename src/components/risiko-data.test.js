@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -276,3 +276,24 @@ describe("smallest text size", () => {
     expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
   });
 });
+
+describe("scale columns and page split", () => {
+  test("names every column, from not true to fully true", () => {
+    expect([...SCALE_CAPTIONS]).toEqual([
+      "Trifft nicht zu", "Trifft eher nicht zu", "Teils / teils", "Trifft eher zu", "Trifft voll zu",
+    ]);
+    expect(SCALE_CAPTIONS.length).toBe(5);
+  });
+
+  test("splits the statements over cards of the asked size without losing one", () => {
+    const two = risikoPages([], 2);
+    const one = risikoPages([], 1);
+    expect(two.map((p) => p.statements.length)).toEqual([2, 2, 2, 1]);
+    expect(one.map((p) => p.statements.length)).toEqual([1, 1, 1, 1, 1, 1, 1]);
+    const keys = (pages) => pages.flatMap((p) => p.statements.map((s) => s[0]));
+    expect(keys(one)).toEqual(keys(two));
+    expect(keys(one).length).toBe(RISIKO_STATEMENTS.length + 1);
+    expect(risikoPages([], 0).map((p) => p.statements.length)).toEqual(two.map((p) => p.statements.length));
+  });
+});
+
