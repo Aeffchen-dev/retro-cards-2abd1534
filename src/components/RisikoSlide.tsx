@@ -8,9 +8,9 @@ import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 const FACES = [Angry, Frown, Meh, Smile, Laugh];
 const FACE_GREY = "#9B9BA3";
 // The faces sit directly on the track line (not above it) with a white
-// fill so the line is hidden behind each face. They are larger than the
-// 14px dot so the dot reads as sitting on top of a still-visible face.
-const FACE_SIZE = 32;
+// fill so the line is hidden behind each face. The dot is smaller than a
+// face and drawn above it (z-10), so the face's rim stays visible around it.
+const FACE_SIZE = 22;
 const FACE_FILL = "#FFFFFF";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
