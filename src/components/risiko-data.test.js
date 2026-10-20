@@ -505,8 +505,13 @@ describe("the statement's own type", () => {
   test("reads in the big question's display face, one step under the question", () => {
     const statement = css.match(/\.risiko-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(statement, ".risiko-statement missing from index.css").toBeTruthy();
-    expect(statement, "the statement does not use the question's display face")
-      .toMatch(/font-family:\s*"Stack Sans Notch"/);
+    // The display face comes from the rule that already dresses the big question,
+    // so the statement cannot drift away from it; the global `#root *` rule would
+    // otherwise paint every element Figtree.
+    const questionRule = css.match(/#root \.question-font,[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(questionRule, "the shared question rule is missing").toBeTruthy();
+    expect(questionRule, "the statement does not stand in the question's own rule")
+      .toMatch(/#root \.risiko-statement/);
     const size = Number(statement.match(/font-size:\s*(\d+(?:\.\d+)?)px/)?.[1]);
     const heading = Number((css.match(/\.retro-title,\s*\.retro-heading \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [])[1]);
     expect(size, "the statement has no size of its own").toBeGreaterThan(0);
