@@ -301,8 +301,8 @@
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
   color: var(--workload-ink);
-  font-size: 11px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 13px;
   font-weight: 600;
   padding: 0 3px;
   white-space: nowrap;
@@ -314,16 +314,17 @@
    never end up on top of each other; a name longer than its space is shortened. */
 .workload-name {
   position: absolute;
-  top: calc(100% + 4px);
+  /* Partners take alternating rows, so two names can never end up on top of each
+     other — not even when their circles sit right next to each other. */
+  top: calc(100% + 2px + var(--workload-name-row, 0) * 14px);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   background: var(--risiko-label-bg);
   color: var(--workload-ink);
-  /* With no margin between neighbouring circles the band is one circle wide, so
-     the font shrinks with it — a short name still fits under its own circle. */
-  font-size: min(11px, calc(var(--workload-band, 32px) * 0.28));
-  line-height: 14px;
+  /* 12px is the smallest text size in the app, so a name never shrinks below it. */
+  font-size: 12px;
+  line-height: 13px;
   font-weight: 700;
   padding: 0 3px;
   white-space: nowrap;
@@ -333,10 +334,12 @@
   --workload-cx: calc(var(--workload-li, 0px)
     + (100cqw - var(--workload-li, 0px) - var(--workload-ri, 0px) - var(--workload-slot, 32px)) * var(--workload-v, 50) / 100
     + var(--workload-slot, 32px) / 2);
+  /* A name may use all the room its own row has: up to the lane edges, and up to
+     whatever the component says is free on that row. */
   max-width: min(
     calc(var(--workload-cx) * 2),
     calc((100cqw - var(--workload-cx)) * 2),
-    var(--workload-band, 32px)
+    var(--workload-name-cap, 100cqw)
   );
 }
 
@@ -348,8 +351,8 @@
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   color: var(--risiko-caption);
   display: flex;
   align-items: center;

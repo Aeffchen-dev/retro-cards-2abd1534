@@ -293,7 +293,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const releaseBar = () => { workloadDrag.current = null; };
   return (
     <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
-      <div className="workload-lane relative w-full h-[60px] shrink-0 touch-none select-none swiper-no-swiping"
+      <div className="workload-lane relative w-full h-[68px] shrink-0 touch-none select-none swiper-no-swiping"
         style={{ background: "var(--risiko-label-bg)" }}
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
@@ -325,6 +325,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const vars = {
               "--workload-li": li, "--workload-ri": ri, "--workload-slot": slot,
               "--workload-v": String(value), "--workload-band": band,
+              // Names take alternating rows. With two partners each row holds a
+              // single name, so it may use the whole lane; from three partners up
+              // two names share a row, so each is kept within two bands.
+              "--workload-name-row": String(i % 2),
+              "--workload-name-cap": partners.length <= 2 ? "100cqw" : "calc(var(--workload-band, 32px) * 2)",
             } as React.CSSProperties;
             const memojiEl = (
               <>
