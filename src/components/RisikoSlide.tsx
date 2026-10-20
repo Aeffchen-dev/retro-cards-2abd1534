@@ -222,14 +222,16 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       <div className="risiko-scale-row relative flex items-start gap-2 box-border">
         <span className="risiko-scale-caption pointer-events-none" style={{ height: FACE_SIZE }}>Stimme nicht zu</span>
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col gap-1 box-border">
-          <FaceLayer />
-          {/* Columns: one soft grey band between every pair of neighbouring
-              smileys, running the height of the circle's row, so a free position
-              still reads against a face. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
+          {/* Columns: one soft grey band per smiley, spanning the whole scale from
+              its top edge down to the bottom of the circle's row — so every smiley
+              sits inside its own band and the circle travels through the foot of it.
+              Painted before the faces, so the fill never covers a smiley. */}
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {FACES.map((_, i) => <span key={i} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${i * COL_W}% + ${COLUMN_GAP / 2}px)`, width: `calc(${COL_W}% - ${COLUMN_GAP}px)` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute top-0 bottom-0" style={{ left: `${(i + 0.5) * COL_W}%` }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: `${(i + 0.5) * COL_W}%`, top: HEADER_H }} />)}
           </div>
+          <FaceLayer />
+
           <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
             onChange={(v) => onChange(key, String(v))} />
         </div>
