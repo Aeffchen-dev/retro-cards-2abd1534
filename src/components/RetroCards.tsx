@@ -373,6 +373,8 @@ const RetroCards: React.FC = () => {
   // Slide ids with edit button: health-personal(1), health-relationship(2), last-4-weeks(3),
   // reflection(102), dates(5), intimacy(7)
   const slidesWithEditButton = [1, 2, 3, 7];
+  // Every Risikofaktoren page gets a Notizen CTA like the Health Check slides
+  const hasEditButton = (slideId: number) => slidesWithEditButton.includes(slideId) || isRisikoSlide(slideId);
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
@@ -598,6 +600,7 @@ const RetroCards: React.FC = () => {
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
+    if (isRisikoSlide(slideId)) return "Risikofaktoren";
     return questions[slideId] || "";
   }, [isMobile]);
 
@@ -2108,7 +2111,7 @@ const RetroCards: React.FC = () => {
 
                     style={{
                       ...cardStyle,
-                      ...(slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId])
+                      ...(hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId])
                         ? { paddingBottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '112px' : '72px' }
                         : {}),
                     }}
@@ -2119,7 +2122,7 @@ const RetroCards: React.FC = () => {
 
 
                     {/* Edit Mode View */}
-                    {editModeSlides[slideId] && slidesWithEditButton.includes(slideId) ? (
+                    {editModeSlides[slideId] && hasEditButton(slideId) ? (
                       <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
                         {/* Question text - animated to top left, smaller, with right padding for close icon */}
 
@@ -2157,7 +2160,7 @@ const RetroCards: React.FC = () => {
                     ) : renderCard(slideId)}
 
                     {/* Edit/Close action row - bottom left */}
-                    {slidesWithEditButton.includes(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
+                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '68px' : '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
@@ -2211,7 +2214,7 @@ const RetroCards: React.FC = () => {
               )}
               
               {/* Notes page right after its slide - on its own page */}
-              {slidesWithEditButton.includes(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
+              {hasEditButton(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
                   <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-none">
                     {/* Question text */}
