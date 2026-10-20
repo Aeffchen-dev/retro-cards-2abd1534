@@ -280,7 +280,17 @@
 .workload-color-5 { --workload-color: var(--workload-partner-5); }
 .workload-color-6 { --workload-color: var(--workload-partner-6); }
 .workload-color-7 { --workload-color: var(--workload-partner-7); }
-.workload-avatar { background: var(--workload-color) !important; }
+/* The circle is a white disc ringed in its partner's name colour: the Memoji stays
+   readable and the ring still ties the circle to that partner's segment. */
+.risiko-memoji.workload-avatar {
+  background: var(--risiko-face-fill);
+  box-shadow: 0 0 0 2px var(--workload-ink);
+}
+/* One ink-pulled partner colour, shared by the name, the circle's ring and the share
+   figure, so all three read as the same partner. */
+.workload-name, .workload-percentage, .workload-avatar {
+  --workload-ink: color-mix(in srgb, var(--workload-color) 55%, #101010);
+}
 /* The share sits above the rule, never on it. */
 .workload-percentage {
   position: absolute;
@@ -288,7 +298,7 @@
   bottom: calc(100% + 3px);
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
-  color: var(--retro-black);
+  color: var(--workload-ink);
   font-size: 11px;
   line-height: 12px;
   font-weight: 600;
@@ -307,7 +317,7 @@
   transform: translateX(-50%);
   text-align: center;
   background: var(--risiko-label-bg);
-  color: color-mix(in srgb, var(--workload-color) 55%, #101010);
+  color: var(--workload-ink);
   font-size: 11px;
   line-height: 14px;
   font-weight: 700;
