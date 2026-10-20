@@ -59,6 +59,14 @@ describe("Risikofaktoren scale", () => {
     expect(pages.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
     expect(pages.flatMap(p => p.personKeys)).toEqual(["p0", "p1"]);
   });
+  test("keeps every partner's memoji on one shared allocation line", () => {
+    for (const [height, width] of [[1800, 1280], [844, 390], [600, 320]]) {
+      const pages = risikoPages(["p0", "p1"], height, width);
+      const withPartners = pages.filter(p => p.personKeys.length);
+      expect(withPartners.length).toBe(1);
+      expect(withPartners[0].personKeys).toEqual(["p0", "p1"]);
+    }
+  });
   test("adds pages for additional partners", () => {
     const keys = Array.from({length: 12}, (_, i) => `p${i}`);
     const pages = risikoPages(keys, 844, 390);

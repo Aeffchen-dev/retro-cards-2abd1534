@@ -114,9 +114,6 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 };
 
 const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
-  const memoji = (emoji: string) => (
-    <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{emoji}</span>
-  );
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
@@ -126,17 +123,47 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     </div>
   );
 
-  // Every partner gets their own draggable lane on the shared columns.
+  // All partner Memoji share one line: each is its own draggable thumb, the
+  // line reads 0% at the left end and 100% at the right end.
   const allocation = (readOnly: boolean) => {
-    const title = persons.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit";
+    const partners = persons.filter(p => page.personKeys.includes(p.key));
     return (
       <div className="risiko-auto-gap flex flex-col gap-1">
-        <span className="retro-body-copy risiko-label relative z-10 self-start">{title}</span>
-        {persons.filter(p => page.personKeys.includes(p.key)).map((p) => (
-          <Track key={p.key} value={scaleValue(values[`work_${p.key}`] ?? values.allocation)} readOnly={readOnly}
-            ariaLabel={`Beziehungsarbeit ${p.name}`} onChange={(v) => onChange(`work_${p.key}`, String(v))}
-            hasValue={(values[`work_${p.key}`] ?? values.allocation) !== undefined} thumb={memoji(p.emoji)} />
-        ))}
+        <span className="retro-body-copy risiko-label relative z-10 self-start">Wer leistet wie viel der Beziehungsarbeit?</span>
+        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H, paddingLeft: END_INSET, paddingRight: END_INSET }}>
+          <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
+          <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
+        </div>
+        <div className="relative w-full h-10 shrink-0">
+          <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
+          {partners.map((p) => {
+            const value = scaleValue(values[`work_${p.key}`] ?? values.allocation);
+            const memojiEl = (
+              <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{p.emoji}</span>
+            );
+            if (readOnly) {
+              return (
+                <div key={p.key} className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                  style={{ left: `calc(${value}% + ${END_INSET - (value * 2 * END_INSET) / 100}px)` }}>
+                  {memojiEl}
+                </div>
+              );
+            }
+            return (
+              <SliderPrimitive.Root key={p.key}
+                className="swiper-no-swiping absolute inset-0 flex items-center touch-none select-none z-10 pointer-events-none"
+                value={[value]} min={0} max={100} step={1}
+                onValueChange={([v]) => { if (v !== undefined) onChange(`work_${p.key}`, String(v)); }}>
+                <SliderPrimitive.Track className="relative w-full h-px" />
+                <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`}
+                  className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
+                  style={{ width: FACE_W, height: FACE_W }}>
+                  {memojiEl}
+                </SliderPrimitive.Thumb>
+              </SliderPrimitive.Root>
+            );
+          })}
+        </div>
       </div>
     );
   };
