@@ -293,9 +293,11 @@
    request. It still grows with its text and never gets squeezed or cut off. */
 /* A statement reads in the same voice as the deck's big question — the display face
    is handed to it by the shared question rule above — but one step under its 38.4px,
-   because under a statement sit the smileys, the scale and the notes. */
+   because under a statement sit the smileys, the scale and the notes. The size is
+   set by the chapter's longest statement: at 16px that one still closes within
+   three lines on the card, and every statement reads at that same size. */
 .risiko-statement {
-  font-size: 26px;
+  font-size: 16px;
   line-height: 1.12;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
@@ -303,17 +305,17 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
-/* On a phone the card is a good deal narrower than the printed sheet, so a long
-   statement would run to eight lines and push the scale past the card's foot.
-   There the statement steps down a size; tablet, desktop and paper keep 26px. */
+/* A phone's card is a good deal narrower than the deck's, so there the statement
+   steps down to the smallest size the deck allows anywhere — 12px. That is as
+   close to three lines as the longest statement comes on a phone's width (it
+   needs four); any smaller and it would read below the deck's readable floor. */
 @media (max-width: 767px) {
-  .risiko-statement { font-size: 22px; }
+  .risiko-statement { font-size: 12px; }
 }
 /* The smallest phones have no room to spare: the work-split card carries its long
-   question, the fixed sentence of examples and the lane, so there the statement
-   steps down once more and the examples sit a touch closer together. */
+   question, the fixed sentence of examples and the lane, so there the examples
+   sit a touch closer together. */
 @media (max-width: 380px) {
-  .risiko-statement { font-size: 19px; }
   .risiko-allocation-examples { line-height: 1.25; }
 }
 /* The work-split card reads the question together with the fixed sentence of
@@ -336,14 +338,6 @@
    question keeps only a small gap to the intro sentence; the sentence carries
    the card's usual gap down to the first statement, so the fields still start
    where the other cards' do. */
-.risiko-chapter-heading {
-  margin-bottom: 10px;
-  /* "Beziehungsgefühl" is one long word: on a narrow card it breaks with a
-     proper German hyphen instead of reaching past the card's edge. */
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-}
 .risiko-chapter-info {
   margin: 0 0 var(--risiko-scale-pad);
   font-size: 12px;
@@ -355,8 +349,9 @@
 }
 @media (min-width: 1024px) { .risiko-chapter-info { font-size: 16px; } }
 /* The chapter's smiley is one of the five scale faces, kept at the size the
-   scale itself draws them, so the average reads in the scale's own language. */
-.risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin-left: 10px; }
+   scale itself draws them, so the average reads in the scale's own language. It
+   rides inside the intro sentence, so it keeps an even breath on both sides. */
+.risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin: 0 5px; }
 .risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 
 /* The scale's grey smileys: the box and the drawing inside it follow
@@ -728,6 +723,10 @@
 }
 @media print {
   .risiko-expression-point { animation: none !important; }
+  /* The printed card is a good deal narrower than the deck's own, so on paper the
+     statement reads at the deck's smallest allowed size — the closest the longest
+     statement comes to three lines there. */
+  .risiko-statement { font-size: 12px; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);

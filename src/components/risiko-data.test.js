@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_HEADING, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -463,8 +463,8 @@ describe("mood test chapter", () => {
     expect(moodFaceIndex(88)).toBe(4);
     expect(moodFaceIndex(100)).toBe(4);
   });
-  test("the chapter opens with the couple's own question and intro sentence", () => {
-    expect(RISIKO_CHAPTER_HEADING).toBe("Testet euer Beziehungsgefühl");
+  test("the chapter opens with the couple's own words inside the intro sentence", () => {
+    expect(RISIKO_CHAPTER_OPEN).toBe("Testet euer Beziehungsgefühl");
     expect(RISIKO_CHAPTER_INFO).toBe("Die Statements beschreiben, was eine glückliche Beziehung ausmacht. Vergleicht sie mit eurer eigenen Beziehung: Welches Gefühl dominiert am Ende?");
   });
   test("the chapter pill reads Mood Test on the statement cards and keeps Health Check on the first two", () => {
@@ -476,7 +476,7 @@ describe("mood test chapter", () => {
   });
   test("the chapter block and the mood smiley are rendered on the first statement card", () => {
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    expect(slide).toContain("RISIKO_CHAPTER_HEADING");
+    expect(slide).toContain("RISIKO_CHAPTER_OPEN");
     expect(slide).toContain("RISIKO_CHAPTER_INFO");
     expect(slide).toContain("averageMood(values)");
     expect(slide).toContain("moodFaceIndex(chapterMood)");
@@ -560,4 +560,32 @@ describe("the slider sits on the card's middle", () => {
     expect(slide, "a card that is not on screen is measured anyway").toMatch(/intersectionRatio >= 0\.9/);
   });
 });
+
+describe("the chapter card's own text", () => {
+  const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  test("no longer stands as a big question above the card", () => {
+    expect(slide, "the chapter still renders its own big question").not.toMatch(/risiko-chapter-heading/);
+    expect(css, "the chapter heading's own type rule is still there").not.toMatch(/\.risiko-chapter-heading/);
+  });
+  test("leads the info sentence with its own words and carries the mood smiley inside them", () => {
+    const chapter = slide.match(/risiko-chapter-info[\s\S]*?\n {10}<\/p>/)?.[0] ?? "";
+    expect(chapter, "the info sentence no longer opens with the chapter's words").toMatch(
+      /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
+    );
+  });
+});
+
+describe("the statement's one size", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  test("every statement reads at one size, kept small enough for the longest to close in three lines", () => {
+    const sizes = (css.match(/\.risiko-statement \{[^}]*?font-size:\s*(\d+(?:\.\d+)?)px/g) ?? [])
+      .map((m) => Number(m.match(/(\d+(?:\.\d+)?)px/)[1]));
+    expect(sizes.length, "the statement is sized in more than its three expected places").toBe(3);
+    expect(sizes[0], "the statement no longer reads at the size the longest one needs").toBe(16);
+    expect(sizes.slice(1), "a narrower layout reads the statement under the deck's smallest allowed size")
+      .toEqual([12, 12]);
+  });
+});
+
 
