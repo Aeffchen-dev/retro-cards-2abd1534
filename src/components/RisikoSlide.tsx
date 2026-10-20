@@ -8,7 +8,7 @@ import { scaleValue, scaleExpression, scaleFaceBlend, type RisikoPage } from "./
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its five column centres.
-const FACE_SIZE = 24;
+const FACE_SIZE = 16;
 const FACE_FILL = "var(--risiko-face-fill)";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
@@ -18,7 +18,7 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6 risiko-bleed" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-4 risiko-bleed" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
@@ -47,7 +47,7 @@ const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) 
       <span className="risiko-plain-dot" />
       <span className="risiko-drag-face">
         {FACES.map((Icon, i) => (
-          <Icon key={i} size={32} strokeWidth={1.5} className="absolute inset-0"
+          <Icon key={i} size={16} strokeWidth={1.5} className="absolute inset-0"
             style={{ opacity: i === index ? 1 - mix : i === index + 1 ? mix : 0 }} />
         ))}
       </span>
