@@ -32,3 +32,4 @@
 - [x] Add tiny grey end labels above the Health Check scale ("Stimme gar nicht zu" left, "Stimme voll zu" right); verify on desktop, mobile and in the PDF.
 - [x] Reword the Health Check helper to "Ziehe den Punkt auf der Skala" and set its text to the lighter grey; verify on desktop and mobile.
 - [x] Rename the allocation block to "Wer leistet wie viel der Beziehungsarbeit?", put all partner memojis on one draggable line with 0%/100% end labels; verify keyboard/pointer drag, persistence, mobile and the PDF.
+- [x] Widen the black scale rules so they fill the container width (edge to edge), keeping dot travel on the face centres and 0%/100% at the rule ends; verify on desktop, mobile and in the PDF.
