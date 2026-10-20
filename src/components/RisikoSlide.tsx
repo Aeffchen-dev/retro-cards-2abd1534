@@ -76,7 +76,9 @@ const MOUTH_W = 1;
 const EYE_W = 2.4;
 
 const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
-  <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
+  // No plate behind the face: it sits straight on its column's fill, which is
+  // only a shade off the card's white, so the smiley reads as being inside it.
+  <span className="flex items-center justify-center" style={{ width: FACE_W, height: FACE_W }}>
     <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
   </span>
 );
