@@ -386,7 +386,7 @@ describe("column labels on a narrow phone", () => {
 describe("the fixed sentence of Beziehungsarbeit examples on the work-split card", () => {
   test("reads the intro, the comma-joined examples and a full stop", () => {
     expect(allocationExamplesSentence()).toBe(
-      "Unter Beziehungsarbeit versteht man schwierige Gespräche initiieren, " +
+      "Unter Beziehungsarbeit fällt zum Beispiel schwierige Gespräche initiieren, " +
       "im Streit nachgeben um zu deeskalieren, sich Fehler eingestehen, " +
       "sich als unschuldiger entschuldigen, einen großen Kompromiss zusagen, " +
       "Verletzungen aufarbeiten, den anderen emotional auffangen, " +
@@ -399,10 +399,10 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
   });
   test("separates every example with a comma and ends with a full stop", () => {
     const sentence = allocationExamplesSentence();
-    expect(sentence.startsWith("Unter Beziehungsarbeit versteht man ")).toBe(true);
+    expect(sentence.startsWith("Unter Beziehungsarbeit fällt zum Beispiel ")).toBe(true);
     expect(sentence.endsWith(".")).toBe(true);
     expect(sentence.split(", ").length).toBe(15);
-    expect(new Set(sentence.replace("Unter Beziehungsarbeit versteht man ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
+    expect(new Set(sentence.replace("Unter Beziehungsarbeit fällt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
   });
 });
 
