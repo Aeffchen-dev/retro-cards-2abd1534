@@ -37,9 +37,10 @@
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
-    --risiko-column-fill: #FAFAFB;
-    /* every second column sits a whisker deeper — both stay almost on the card's white */
-    --risiko-column-fill-alt: #F5F6F8;
+    /* the columns wear the same grey as the info rows' label field */
+    --risiko-column-fill: #E4E6E8;
+    /* every second column sits a whisker deeper — the two stay close together */
+    --risiko-column-fill-alt: #DCDEE1;
     --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
