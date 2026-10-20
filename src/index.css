@@ -605,22 +605,21 @@
 /* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */
 .is-shown .risiko-drag-face { transform: scale(1); }
 .is-shown .risiko-plain-dot { transform: scale(0); }
-/* One brief hop of the whole untouched dot: the disc lifts off the line at each
-   end while the arrow adds a wider pull on top, so the circle itself visibly
-   walks left and right instead of only its hint. The disc never stretches or
-   moves its saved position. Play only after entering view. */
+/* One brief hop of the whole untouched dot along the line: disc and arrow slide
+   left and right together — never up or down, so the marker stays on its rule.
+   The disc never stretches or moves its saved position. Play only after entering view. */
 @keyframes risiko-navigation-hint {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-10px, -5px); }
-  45% { transform: translate(0, 0); }
-  68% { transform: translate(10px, -5px); }
-  86% { transform: translate(-3px, -1px); }
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); }
+  45% { transform: translateX(0); }
+  68% { transform: translateX(10px); }
+  86% { transform: translateX(-3px); }
 }
 @keyframes risiko-navigation-hint-arrow {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-4px, -2px); }
-  45% { transform: translate(0, 0); }
-  68% { transform: translate(4px, -2px); }
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  45% { transform: translateX(0); }
+  68% { transform: translateX(4px); }
 }
 .has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot {
   animation: risiko-navigation-hint 1100ms ease-in-out 150ms 1;
