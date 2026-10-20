@@ -250,9 +250,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* Every column names itself: one label per grey field, centred on that
-          field's own top edge, so the circle always sits under the word it points at. */}
-      <div className="risiko-scale-captions" lang="de">
+      <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
+        {/* Every column names itself: one label per grey field, centred on that
+            field's own top edge, so the circle always sits under the word it points at. */}
+        <div className="risiko-scale-captions" lang="de">
+
         {SCALE_CAPTIONS.map((caption, i) => (
           <span key={i} className="risiko-scale-caption pointer-events-none">{caption}</span>
         ))}
