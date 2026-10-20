@@ -144,3 +144,11 @@ describe("Risikofaktoren scale", () => {
     }
   });
 });
+
+describe("dashed guidelines", () => {
+  test("sits under every smiley and midway between neighbours", () => {
+    expect(guidePositions(5)).toEqual([0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100]);
+    expect(guidePositions(2)).toEqual([0, 50, 100]);
+    expect(guidePositions(1)).toEqual([0]);
+  });
+});
