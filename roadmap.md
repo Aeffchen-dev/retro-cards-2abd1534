@@ -66,3 +66,4 @@
 - [x] Make the five smileys on the first two Health Check slides a bit smaller (48px → 40px); verify on phone and in the PDF.
 - [x] Centre the white arrow hint inside the untouched dot and add a short vertical line between the two chevrons; verify on phone and in the PDF.
 - [x] Keep card content inside the card's own width (no sideways scrolling on desktop): clamp the dragged emoji to the live scale box and to `min()` in CSS, clip the card's x-axis; verify on phone, on desktop and in the PDF.
+- [x] Turn the middle line in the dot's arrow hint into a horizontal dash (←—→) and centre it; verify on phone close-up and in the PDF.
