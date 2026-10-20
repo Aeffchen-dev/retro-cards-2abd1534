@@ -38,7 +38,7 @@
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
     --risiko-question-bg: #D6F587;
-    --risiko-column: #C8CCD0;
+    --risiko-column: #9B9BA3;
     --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
     --retro-card-bg: #F0EFEE;
@@ -291,7 +291,11 @@
 /* The button block sits over the column lines, so it carries the card colour. */
 .risiko-footer { background: var(--risiko-label-bg); }
 .risiko-column { flex: 0 0 auto; }
-.risiko-column-line { width: 0; border-left: 1px dashed var(--risiko-column); }
+/* The dashed guidelines carry the same weight as the smileys' own strokes (2px). */
+.risiko-column-line {
+  width: 2px;
+  background-image: repeating-linear-gradient(to bottom, var(--risiko-column) 0 6px, transparent 6px 12px);
+}
 .risiko-expression-point {
   position: relative;
   display: block;
