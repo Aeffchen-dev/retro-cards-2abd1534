@@ -4,6 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES, FACE_GREY } from "@/components/RisikoSlide";
+import { risikoPages } from "@/components/risiko-data";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
@@ -32,6 +33,8 @@ const SLIDE_REFLECTION = 102;
 const SLIDE_LOGO = 103;
 const SLIDE_VORHABEN = 104;
 const SLIDE_RISIKO = 105;
+const RISIKO_CONTINUATION = 200;
+const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTINUATION;
 
 // Pill label displayed ABOVE the card for each slide (null = no pill)
 const SLIDE_PILLS: Record<number, string | null> = {
@@ -321,6 +324,15 @@ const RetroCards: React.FC = () => {
     ];
   }, [displayName1, displayName2, displayEmoji1, displayEmoji2, setupData.extraPartners]);
 
+  const [viewportWidth, setViewportWidth] = useState(() => window.innerWidth);
+  useEffect(() => {
+    const updateWidth = () => setViewportWidth(window.innerWidth);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  }, []);
+  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), viewportHeight, viewportWidth), [persons, viewportHeight, viewportWidth]);
+  const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
+
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
@@ -364,11 +376,11 @@ const RetroCards: React.FC = () => {
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
-    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, SLIDE_RISIKO, 3, SLIDE_REFLECTION, SLIDE_VORHABEN, 4];
+    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION, SLIDE_VORHABEN, 4];
     if (setupData.openRelationship) arr.push(5);
     arr.push(7, 8, 9, 10);
     return arr;
-  }, [setupData.openRelationship]);
+  }, [setupData.openRelationship, riskSlideIds]);
 
   const totalCards = slides.length;
 
@@ -379,7 +391,7 @@ const RetroCards: React.FC = () => {
       // Memory Time slide is always purple
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
-      if (slideId === 1 || slideId === 2 || slideId === SLIDE_RISIKO) return BRAND.neonGreen;
+      if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.neonGreen;
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
@@ -406,7 +418,7 @@ const RetroCards: React.FC = () => {
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
       if (slideId === 4) return "#FF7A3D";              // rosa pill → warm orange label
-      if (slideId === 1 || slideId === 2 || slideId === SLIDE_RISIKO) return BRAND.lime;   // olive pill → lime
+      if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.lime;   // olive pill → lime
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.babyBlue; // blue labels
@@ -1713,13 +1725,15 @@ const RetroCards: React.FC = () => {
 
 
 
-      case SLIDE_RISIKO:
+      case riskSlideIds.find(id => id === cardIndex):
         return (
           <RisikoSlide
-            slideId={SLIDE_RISIKO}
+            slideId={cardIndex}
+            page={riskPages[riskSlideIds.indexOf(cardIndex)]}
+            pageNumber={riskSlideIds.indexOf(cardIndex) + 1}
+            pageCount={riskPages.length}
             persons={persons}
             pill={BRAND.neonGreen}
-            label={BRAND.lime}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
@@ -2063,8 +2077,8 @@ const RetroCards: React.FC = () => {
                   pillDot: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon,
                 },
               };
-              const ov = overrides[slideId];
-              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || slideId === SLIDE_RISIKO ? { bg: BRAND.white } : {}) } : baseTheme;
+              const ov = isRisikoSlide(slideId) ? overrides[SLIDE_RISIKO] : overrides[slideId];
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || isRisikoSlide(slideId) ? { bg: BRAND.white } : {}) } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
@@ -2082,15 +2096,15 @@ const RetroCards: React.FC = () => {
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
 
-                  {SLIDE_PILLS[slideId] && (
+                  {(SLIDE_PILLS[slideId] || isRisikoSlide(slideId)) && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{SLIDE_PILLS[slideId]}</span>
+                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{isRisikoSlide(slideId) ? "Risikofaktoren" : SLIDE_PILLS[slideId]}</span>
                       </div>
                     </div>
                   )}
                   <div
-                    className="retro-card-container relative w-full max-w-[500px] h-[88%] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl overflow-y-auto"
+                    className={`retro-card-container relative w-full max-w-[500px] h-[88%] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
 
                     style={{
                       ...cardStyle,
