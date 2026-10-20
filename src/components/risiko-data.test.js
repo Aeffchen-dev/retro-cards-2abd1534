@@ -231,6 +231,12 @@ describe("grey columns", () => {
     expect(block).not.toContain(".risiko-scale-caption");
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
+    // Each name paints its own column's grey behind it, so a dashed guide running
+    // down behind a two- or three-line name stops at the name's top edge instead of
+    // drawing through its letters — and every second name takes the deeper band.
+    expect(/background:\s*var\(--risiko-column-fill\)/.test(caption), "the labels do not paint their column's grey").toBe(true);
+    const even = css.match(/\.risiko-scale-caption:nth-child\(even\) \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(/background:\s*var\(--risiko-column-fill-alt\)/.test(even), "every second label does not take the deeper band").toBe(true);
   });
 
   test("the slider rule is exactly as thick as the work-split bar", () => {
