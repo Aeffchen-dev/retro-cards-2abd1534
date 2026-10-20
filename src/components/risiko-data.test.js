@@ -527,3 +527,35 @@ describe("the statement's own type", () => {
     expect(risikoPages([]).every((p) => p.statements.length === 1)).toBe(true);
   });
 });
+
+describe("the slider sits on the card's middle", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+  const screen = (css.match(/@media screen \{[\s\S]*?\n\}/g) ?? [])
+    .find((block) => block.includes(".risiko-scale-field")) ?? "";
+  test("the scale keeps its own height and the room around it is split evenly", () => {
+    expect(screen, "the field no longer stands at its own height")
+      .toMatch(/\.risiko-scale-field \{ flex: 0 0 var\(--risiko-field-h\); \}/);
+    expect(screen, "the scale no longer centres itself between the text and the buttons")
+      .toMatch(/\.risiko-scale-core \{ flex: 0 1 auto; margin-block: auto; \}/);
+  });
+  test("the measured shift moves the scale and the work-split lane, on screen only", () => {
+    expect(screen, "the scale no longer takes the measured shift").toMatch(
+      /\.screen-only :is\(\.risiko-scale-core, \.risiko-allocation\)[^;]*transform: translateY\(var\(--risiko-centre-shift/,
+    );
+    expect(css, "the shift reaches the printed sheet").not.toMatch(/\.print-only[^;]*risiko-centre-shift/);
+  });
+  test("the shift closes the gap to the card's middle without ever covering the text or the buttons", () => {
+    const centre = slide.match(/const centre = \(\) => \{[\s\S]*?\n    \};/)?.[0] ?? "";
+    expect(centre, "the centring measurement is gone").toBeTruthy();
+    expect(centre, "the card's own middle is no longer the target")
+      .toMatch(/card\.y \+ card\.height \/ 2 - \(rule\.y \+ rule\.height \/ 2\)/);
+    expect(centre, "the shift is no longer clamped to the room that is free")
+      .toMatch(/Math\.min\(Math\.max\(need, -slackUp\), slackDown\)/);
+    expect(centre, "the buttons are no longer the floor it stops at").toMatch(/\.risiko-footer/);
+    expect(centre, "the text above is no longer the ceiling it stops at")
+      .toMatch(/\.risiko-allocation-examples/);
+    expect(slide, "a card that is not on screen is measured anyway").toMatch(/intersectionRatio >= 0\.9/);
+  });
+});
+
