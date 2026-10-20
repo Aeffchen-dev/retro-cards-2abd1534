@@ -254,7 +254,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD }}
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD, paddingBottom: FACE_PAD, minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
@@ -262,14 +262,22 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               so every smiley and the circle sit inside their own band. Every second
               band takes a slightly deeper grey, so the five fields still read as
               separate. Painted before the faces, so the fill never covers a smiley. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0, minHeight: COLUMN_MIN }} aria-hidden="true">
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H, bottom: "calc(var(--risiko-track-h) / 2)" }} />)}
           </div>
-          <FaceLayer />
-
-          <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-            onChange={(v) => onChange(key, String(v))} />
+          {/* The faces and the rule are one pair, and that pair floats in the middle
+              of the fields, so the grey lies even above and below it. The dashed
+              guides hang off the pair instead of off the fields: they start under a
+              smiley and end on the rule wherever the pair happens to sit. Painted
+              first, so the circle always covers the line running up to it. */}
+          <div className="risiko-scale-group relative flex flex-col gap-1">
+            <div className="risiko-scale-guides absolute inset-0 pointer-events-none" aria-hidden="true">
+              {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: "calc(var(--risiko-track-h) / 2)" }} />)}
+            </div>
+            <FaceLayer />
+            <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+              onChange={(v) => onChange(key, String(v))} />
+          </div>
         </div>
       </div>
     </div>
