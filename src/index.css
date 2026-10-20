@@ -644,11 +644,12 @@ textarea.bg-retro-post-it:focus,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    /* Fit the printable area, not the full sheet: @page has 10mm margins, so a
-       210x297mm box overflowed every sheet and pushed a blank page in front. */
+    /* Fit inside the printable area with headroom: @page has 10mm margins and the
+       document still starts 16px down, so a full-height sheet overflowed and
+       pushed the first card onto a blank page. */
     width: 190mm !important;
-    height: 277mm !important;
-    max-height: 277mm !important;
+    height: 272mm !important;
+    max-height: 272mm !important;
     page-break-after: always !important;
     page-break-inside: avoid !important;
     break-after: page !important;
