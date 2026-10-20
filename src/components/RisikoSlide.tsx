@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
@@ -181,6 +181,10 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
 
+  // Which partner a press on the work-split bar picked up: the bar keeps dragging
+  // that one until the pointer is lifted, wherever on the bar the press landed.
+  const workloadDrag = useRef<{ index: number } | null>(null);
+
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
@@ -211,32 +215,61 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     const keys = partners.map(p => p.key);
     const shares = workloadShares(keys, values);
   const segments = workloadSegments(keys, shares);
-  // Clicking the bar moves the circle whose own position is nearest to the
-  // pointer, so a tap works like a drag: the circle lands under the finger.
-  const jumpToClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest(".risiko-thumb")) return; // that was a drag
-    const lane = e.currentTarget.getBoundingClientRect();
-    if (!lane.width) return;
-    const x = e.clientX - lane.left;
-    let nearest: { index: number; value: number; gap: number } | null = null;
-    for (const root of e.currentTarget.querySelectorAll<HTMLElement>("[data-boundary]")) {
-      const thumb = root.querySelector<HTMLElement>(".risiko-thumb");
-      if (!thumb) continue;
-      const box = root.getBoundingClientRect();
-      const dot = thumb.getBoundingClientRect();
-      const travel = box.width - dot.width;
-      if (travel <= 0) continue;
-      const from = box.left - lane.left + dot.width / 2;
-      const centre = from + (travel * Number(root.dataset.value)) / 100;
-      const gap = Math.abs(centre - x);
-      if (!nearest || gap < nearest.gap) nearest = { index: Number(root.dataset.boundary), value: ((x - from) / travel) * 100, gap };
-    }
-    if (nearest) onWorkloadChange(adjustWorkloadBoundary(keys, shares, nearest.index, nearest.value));
+  // Where the pointer sits on one partner's scale, and how far that partner's
+  // circle is from it — the same maths picks who gets grabbed and how far the
+  // grab has travelled since.
+  const readingFor = (root: HTMLElement, lane: DOMRect, x: number) => {
+    const thumb = root.querySelector<HTMLElement>(".risiko-thumb");
+    if (!thumb) return null;
+    const box = root.getBoundingClientRect();
+    const dot = thumb.getBoundingClientRect();
+    const travel = box.width - dot.width;
+    if (travel <= 0) return null;
+    const from = box.left - lane.left + dot.width / 2;
+    const centre = from + (travel * Number(root.dataset.value)) / 100;
+    return {
+      index: Number(root.dataset.boundary), gap: Math.abs(centre - x),
+      value: Math.min(100, Math.max(0, ((x - from) / travel) * 100)),
+    };
   };
+  // The circle nearest the pointer, or one particular circle while it is held.
+  const readingAt = (laneEl: HTMLElement, clientX: number, held?: number) => {
+    const lane = laneEl.getBoundingClientRect();
+    if (!lane.width) return null;
+    const x = clientX - lane.left;
+    let best: { index: number; value: number; gap: number } | null = null;
+    for (const root of laneEl.querySelectorAll<HTMLElement>("[data-boundary]")) {
+      if (held !== undefined && Number(root.dataset.boundary) !== held) continue;
+      const r = readingFor(root, lane, x);
+      if (r && (held !== undefined || !best || r.gap < best.gap)) best = r;
+    }
+    return best;
+  };
+  // Pressing anywhere on the bar picks up the nearest circle and keeps dragging
+  // it, so the bar works as one handle and not only where a circle sits. A press
+  // on a circle itself is left to that circle.
+  const grabBar = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest(".risiko-thumb")) return;
+    const r = readingAt(e.currentTarget, e.clientX);
+    if (!r) return;
+    workloadDrag.current = { index: r.index };
+    e.currentTarget.setPointerCapture(e.pointerId);
+    onWorkloadChange(adjustWorkloadBoundary(keys, shares, r.index, r.value));
+  };
+  const dragBar = (e: React.PointerEvent<HTMLDivElement>) => {
+    const held = workloadDrag.current;
+    if (!held) return;
+    const r = readingAt(e.currentTarget, e.clientX, held.index);
+    if (r) onWorkloadChange(adjustWorkloadBoundary(keys, shares, held.index, r.value));
+  };
+  const releaseBar = () => { workloadDrag.current = null; };
   return (
     <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
-      <div className="workload-lane relative w-full h-[60px] shrink-0" style={{ background: "var(--risiko-label-bg)" }}
-        onClick={readOnly ? undefined : jumpToClick}>
+      <div className="workload-lane relative w-full h-[60px] shrink-0 touch-none select-none swiper-no-swiping"
+        style={{ background: "var(--risiko-label-bg)" }}
+        onPointerDown={readOnly ? undefined : grabBar}
+        onPointerMove={readOnly ? undefined : dragBar}
+        onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
           <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
