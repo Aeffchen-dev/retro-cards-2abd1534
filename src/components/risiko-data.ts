@@ -125,9 +125,20 @@ export const SCALE_CAPTIONS = [
  *  inside the word, so the label keeps whatever capitalisation it was written with. */
 /** On phones every column name breaks into the same three lines:
  *  first word / middle / last word ("Trifft" / "noch nicht" / "zu"). */
+/** The two lines a column name breaks into. The break falls at the word boundary
+ *  that keeps both lines as even as possible ("Trifft noch" / "nicht zu",
+ *  "Trifft" / "teilweise zu"), so no line is longer than it must be — that is what
+ *  lets every name sit on two lines at the size a column's width allows. */
 export const captionLines = (caption: string): string[] => {
   const words = caption.split(" ");
-  return [words[0], words.slice(1, -1).join(" "), words[words.length - 1]];
+  if (words.length < 2) return [caption];
+  let splitAt = 1;
+  let longest = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const max = Math.max(words.slice(0, i).join(" ").length, words.slice(i).join(" ").length);
+    if (max < longest) { longest = max; splitAt = i; }
+  }
+  return [words.slice(0, splitAt).join(" "), words.slice(splitAt).join(" ")];
 };
 
 export const softHyphenate = (caption: string) => caption.replace("eilweise", "eil\u00ADweise");

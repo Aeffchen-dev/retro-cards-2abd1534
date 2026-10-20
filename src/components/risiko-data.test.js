@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_HEADING, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_HEADING, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -253,10 +253,11 @@ describe("grey columns", () => {
     const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
-    // At the info rows' 12px floor no label fits a column (~62px) on one line, and
-    // the shortest ones would still squeeze onto a single line where a longer
-    // neighbour breaks — so every name breaks at its own words into three lines.
-    expect(/font-size:\s*12px/.test(caption), "the labels do not read at the info floor").toBe(true);
+    // One step under the info rows' floor, because two lines of a name have to fit
+    // a column's width (~61px): the longest half ("teilweise zu") measures 59px at
+    // 11px and would not fit at 12px. Every name still breaks at its own words into
+    // exactly two lines, so the row reads as one even block.
+    expect(/font-size:\s*11px/.test(caption), "the labels do not read at their own small size").toBe(true);
     // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));
@@ -325,10 +326,11 @@ describe("smallest text size", () => {
       if (!px && !rem) return true; // a computed size could drop under the floor
       return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
     });
-    // The one deliberate exception: the five column labels keep their own column-scaled
-    // size on phones; everywhere else they read at the 12px info floor.
-    expect(below).toEqual(["clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
-    expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 12px;[^}]*\}/);
+    // The two deliberate exceptions, both the five column labels: they read one step
+    // under the floor (11px) so a name's longer half fits its column on two lines, and
+    // on phones they scale to the column instead.
+    expect(below).toEqual(["11px", "clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
+    expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 11px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
     expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
@@ -380,6 +382,25 @@ describe("column labels on a narrow phone", () => {
   test("keeps the wording the couple reads, hyphen or no hyphen", () => {
     expect([...SCALE_CAPTIONS].map((c) => softHyphenate(c).replace(/\u00AD/g, "")))
       .toEqual([...SCALE_CAPTIONS]);
+  });
+});
+
+describe("column names break into two lines", () => {
+  test("every name splits at a word boundary into two lines of even length", () => {
+    expect(SCALE_CAPTIONS.map(captionLines)).toEqual([
+      ["Trifft noch", "nicht zu"],
+      ["Trifft", "selten zu"],
+      ["Trifft", "teilweise zu"],
+      ["Trifft", "oft zu"],
+      ["Trifft", "immer zu"],
+    ]);
+  });
+  test("the longest half sets the labels' size: twelve letters, nothing longer", () => {
+    // "teilweise zu" is the one line a column has to hold; at 11px it measures 59px
+    // of the ~61px column, so 11px is the largest size every name fits on.
+    const halves = SCALE_CAPTIONS.flatMap(captionLines);
+    expect(Math.max(...halves.map((l) => l.length))).toBe(12);
+    expect(halves.every((l) => l.length <= 12)).toBe(true);
   });
 });
 
