@@ -11,6 +11,9 @@ interface PostItFieldProps {
   className?: string;
   /** Background colour of the label bar (slide pill colour) */
   accent?: string;
+  /** Small grey sentence under the label bar, above the writing area */
+  helper?: string;
+
 }
 
 /** Label text is always black — lighten the accent until contrast is sufficient. */
@@ -47,6 +50,8 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   minHeight,
   className = "",
   accent,
+  helper,
+
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
@@ -59,6 +64,12 @@ export const PostItField: React.FC<PostItFieldProps> = ({
     >
       {label}
     </div>
+    {/* The sentence that explains the headline — the scale's own grey, one step
+        under the label bar and straight above the writing area. */}
+    {helper ? (
+      <div className="post-it-helper retro-body-copy py-1" lang="de">{helper}</div>
+    ) : null}
+
 
     {readOnly ? (
       <div
