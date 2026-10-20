@@ -270,23 +270,18 @@
   inset: 0;
   border-radius: 50%;
   background: var(--retro-black);
-  transition: opacity 120ms ease, transform 160ms ease;
+  transition: transform 160ms ease;
 }
 .risiko-drag-face {
   position: absolute;
-  width: 24px;
-  height: 24px;
-  left: 50%;
-  top: 50%;
-  margin: -12px 0 0 -12px;
+  inset: 0;
   border-radius: 50%;
-  background: var(--risiko-face-fill);
-  opacity: 0;
-  transform: scale(0.4);
-  transition: opacity 120ms ease, transform 180ms ease;
+  transform: scale(0.2);
+  transition: transform 180ms ease;
 }
-.is-dragging .risiko-drag-face { opacity: 1; transform: scale(1); }
-.is-dragging .risiko-plain-dot { opacity: 0; transform: scale(0.5); }
+/* Dot morphs into the face: one shrinks while the other grows, no fading. */
+.is-dragging .risiko-drag-face { transform: scale(1); }
+.is-dragging .risiko-plain-dot { transform: scale(0); }
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
 }
