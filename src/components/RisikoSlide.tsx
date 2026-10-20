@@ -246,8 +246,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
   };
   const grabField = (key: string, readOnly: boolean) => (e: React.PointerEvent<HTMLDivElement>) => {
-    // the rule's own row belongs to the slider, which already drags from there
-    if (readOnly || (e.target as HTMLElement).closest(".risiko-track")) return;
+    // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
+    // Everywhere else in the field — the rule's outer ends included, which the slider's own
+    // track does not reach — a press places the dot, so the whole line is a tap target.
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
