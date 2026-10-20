@@ -487,19 +487,20 @@
   padding-bottom: 4px;
 }
 /* They read in the scale's own grey — the tone of the dashed guides, while the
-   faces above sit a shade lighter — at the info rows' 12px floor. At that size the
-   longest label ("Trifft noch nicht zu" measures 108px) no longer fits a column's
-   width (86px on desktop, 60px on a tablet), so every title breaks into at least
-   two lines: the text is capped a bit under a column's width so even the short
-   labels ("Trifft oft zu") wrap instead of standing alone. On a phone column
-   (48-55px) the labels keep their own smaller, aligned sizing below. */
+   faces above sit a shade lighter — at the info rows' 12px floor. At that size no
+   label fits a column's width (~62px) on one line, and the shortest ones
+   ("Trifft oft zu") would still squeeze onto a single line where a longer
+   neighbour breaks — so every name breaks at its own words into three lines
+   (first word / middle / last word), the same split a phone column already
+   uses. The row reads as one even block instead of a mix of one-, two- and
+   three-line labels. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
   font-size: 12px;
-  line-height: 16px;
+  line-height: 1.15;
   color: var(--risiko-guide);
   /* Plain block text, not a flex item: an anonymous flex item is never allowed to
      shrink below its longest word, so on narrow cards "teilweise" would stick out of
@@ -516,6 +517,10 @@
      above this band, so nothing ever draws through a name's letters. */
   padding-top: 4px;
 }
+/* Each name stands in its own lines: the spans the component emits (first word /
+   middle words / last word) become real lines on every device, so the row never
+   mixes single-line and wrapped labels. */
+.risiko-caption-line { display: block; white-space: nowrap; }
 
 /* The sentence that explains a post-it's headline: the scale's own grey, no fill,
    sitting straight under the coloured bar and above the writing area. It takes the
