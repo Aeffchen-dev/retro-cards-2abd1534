@@ -36,6 +36,9 @@ const FACE_W = FACE_SIZE - 1; // rendered face box
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
 const CAPTION_H = 12; // tiny end labels above the smileys
+// Workload circles stay round at 32px, and every partner reserves a wider band
+// (circle + room for its centred name), so names never reach into a neighbour's.
+const SLOT = 32, BAND = 44;
 // The scale is five adjoining fields, one under each smiley, so an answer lands
 // in a field you can point at rather than somewhere on an abstract line.
 const FIELD_W = 100 / RISIKO_FIELDS;
