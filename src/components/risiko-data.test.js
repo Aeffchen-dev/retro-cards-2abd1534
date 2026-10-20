@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { readFileSync } from "node:fs";
 import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
@@ -145,5 +146,19 @@ describe("dashed guidelines", () => {
     expect(guidePositions(5)).toEqual([0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100]);
     expect(guidePositions(2)).toEqual([0, 50, 100]);
     expect(guidePositions(1)).toEqual([0]);
+  });
+});
+
+describe("work-split partner colours", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  const colors = Array.from({ length: 8 }, (_, i) =>
+    css.match(new RegExp(`--workload-partner-${i}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
+  );
+  test("the second partner carries the Health Check's own dark green", () => {
+    expect(colors[1]).toBe("#054C45");
+  });
+  test("no two partners share a colour", () => {
+    expect(colors).toHaveLength(8);
+    expect(new Set(colors).size).toBe(8);
   });
 });
