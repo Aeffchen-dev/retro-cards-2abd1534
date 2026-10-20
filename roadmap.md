@@ -21,3 +21,4 @@
 - [x] Enlarge the Health Check smileys and drag point to 32px; verify each line sits centred under its smiley and the row spans the container width.
 - [x] Morph the draggable face through all five scale expressions, from angry to laughing; verify anchors, drag and dot reset.
 - [x] Set the Health Check question plate's left/right padding to 0 so it hugs the text; verify no clipping on desktop, mobile and small screens.
+- [x] Set the Health Check helper text to "Bewege den Punkt auf der Skala" at the default size, wrapping to a second line on narrow cards; verify no cut-off and that rows still fit.

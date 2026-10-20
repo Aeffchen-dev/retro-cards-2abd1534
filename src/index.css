@@ -241,6 +241,27 @@
   /* mask the dashed column lines behind the question text (card is white) */
   background: var(--risiko-label-bg);
 }
+/* The helper keeps its full sentence at the default size: on narrow cards the
+   label wraps to a second line instead of being cut off with an ellipsis. */
+.risiko-helper {
+  height: auto;
+  max-width: 100%;
+  align-items: stretch;
+}
+.risiko-helper > span:first-child {
+  height: auto;
+  min-height: 32px;
+}
+.risiko-helper > span:last-child {
+  height: auto;
+  min-height: 32px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.25;
+}
 /* The thumb is as wide as a face so its travel ends land under the outer face centres. */
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
 .risiko-column { flex: 0 0 auto; }
