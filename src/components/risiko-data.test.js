@@ -561,3 +561,29 @@ describe("the slider sits on the card's middle", () => {
   });
 });
 
+describe("the chapter card's own text", () => {
+  const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  test("no longer stands as a big question above the card", () => {
+    expect(slide, "the chapter still renders its own big question").not.toMatch(/risiko-chapter-heading/);
+    expect(css, "the chapter heading's own type rule is still there").not.toMatch(/\.risiko-chapter-heading/);
+  });
+  test("leads the info sentence with its own words and carries the mood smiley inside them", () => {
+    const chapter = slide.match(/risiko-chapter-info[\s\S]*?\n {10}<\/p>/)?.[0] ?? "";
+    expect(chapter, "the info sentence no longer opens with the chapter's words").toMatch(
+      /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
+    );
+  });
+});
+
+describe("the statement's one size", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  test("every statement reads at one size, kept small enough for the longest to close in three lines", () => {
+    const sizes = (css.match(/\.risiko-statement \{[^}]*?font-size:\s*(\d+(?:\.\d+)?)px/g) ?? [])
+      .map((m) => Number(m.match(/(\d+(?:\.\d+)?)px/)[1]));
+    expect(sizes.length, "the statement is sized in more than its two expected places").toBe(2);
+    expect(sizes, "the statement no longer reads at the size the longest one needs").toEqual([16, 12]);
+  });
+});
+
+
