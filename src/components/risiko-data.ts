@@ -67,7 +67,7 @@ export const columnBands = (faces: number): [number, number][] => {
  *  faces the circle can rest under, named in the couple's own words. Screen and
  *  print read the same list, so the printed page never disagrees with the card. */
 export const SCALE_CAPTIONS = [
-  "Trifft noch nie zu",
+  "Trifft noch nicht zu",
   "Trifft selten zu",
   "Trifft teilweise zu",
   "Trifft oft zu",
