@@ -246,6 +246,11 @@
 .risiko-helper {
   height: auto;
   max-width: 100%;
+  align-items: stretch;
+}
+.risiko-helper > span:first-child {
+  height: auto;
+  min-height: 32px;
 }
 .risiko-helper > span:last-child {
   height: auto;
