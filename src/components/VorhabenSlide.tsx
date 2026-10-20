@@ -1,6 +1,5 @@
 import React from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import { ArrowDown } from "lucide-react";
 import PostItField from "@/components/PostItField";
 import RevealText from "@/components/RevealText";
 import { allocationValue, VORHABEN_QUESTIONS } from "./vorhaben-data";
@@ -28,7 +27,7 @@ const VorhabenSlide = ({ slideId, emoji1, emoji2, values, onChange }: VorhabenSl
           {readOnly ? (
             <>
               <div className="vorhaben-scale-line absolute inset-x-0 top-7 h-px" />
-              <ArrowDown className="absolute top-7 -translate-x-1/2 -translate-y-1/2" size={28} style={{ left: `${allocation}%` }} />
+              <span className="vorhaben-scale-dot absolute top-7 -translate-x-1/2 -translate-y-1/2" style={{ left: `${allocation}%` }} aria-hidden="true" />
             </>
           ) : (
             <SliderPrimitive.Root
@@ -40,8 +39,8 @@ const VorhabenSlide = ({ slideId, emoji1, emoji2, values, onChange }: VorhabenSl
               <SliderPrimitive.Track className="vorhaben-scale-line relative w-full h-px" />
               <SliderPrimitive.Thumb
                 aria-label="Verteilung der Beziehungsarbeit" aria-valuetext={`${100 - allocation}% links, ${allocation}% rechts`}
-                className="vorhaben-scale-arrow flex items-center justify-center w-8 h-11 cursor-ew-resize"
-              ><ArrowDown size={28} strokeWidth={1.5} /></SliderPrimitive.Thumb>
+                className="vorhaben-scale-dot vorhaben-scale-arrow cursor-ew-resize"
+              />
             </SliderPrimitive.Root>
           )}
         </div>

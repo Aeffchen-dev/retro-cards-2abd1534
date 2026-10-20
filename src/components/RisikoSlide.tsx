@@ -204,7 +204,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const value = segment?.end ?? 100;
             const min = segment?.start ?? 0;
             const max = segments[boundaryIndex + 1]?.end ?? 100;
-            const slot = `min(32px, ${100 / partners.length}%)`;
+            // One number for width and height, so the avatar circle can never be
+            // squeezed into an oval when the lane gets crowded.
+            const slot = `min(32px, calc(100cqw / ${partners.length}))`;
             const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
             const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
             const isLast = i === partners.length - 1;
@@ -221,7 +223,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             if (readOnly) {
               return (
                 <div key={p.key} className={`absolute z-10 top-[4px] workload-color-${i % 8}`}
-                  style={{ width: slot, height: 32, left: `calc(${left} + (100% - min(${partners.length * 32}px, 100%)) * ${value / 100})` }}>
+                  style={{ width: slot, height: slot, left: `calc(${left} + (100% - min(${partners.length * 32}px, 100%)) * ${value / 100})` }}>
                   {memojiEl}
                 </div>
               );
@@ -239,7 +241,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
                   className={`risiko-thumb cursor-ew-resize rounded-full pointer-events-auto workload-color-${i % 8}`}
-                  style={{ width: `min(32px, calc(100cqw / ${partners.length}))`, height: 32 }}>
+                  style={{ width: slot, height: slot }}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
