@@ -674,9 +674,10 @@
 /* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */
 .is-shown .risiko-drag-face { transform: scale(1); }
 .is-shown .risiko-plain-dot { transform: scale(0); }
-/* One brief hop of the whole untouched dot along the line: disc and arrow slide
-   left and right together — never up or down, so the marker stays on its rule.
-   The disc never stretches or moves its saved position. Play only after entering view. */
+/* One brief hop of the whole untouched marker — disc and arrow together —
+   along the line: never up or down, so the marker stays on its rule.
+   The disc never stretches or moves its saved position. Play only after
+   entering view. The arrow lives inside the disc, so it rides along. */
 @keyframes risiko-navigation-hint {
   0%, 100% { transform: translateX(0); }
   20% { transform: translateX(-10px); }
@@ -684,18 +685,8 @@
   68% { transform: translateX(10px); }
   86% { transform: translateX(-3px); }
 }
-@keyframes risiko-navigation-hint-arrow {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  45% { transform: translateX(0); }
-  68% { transform: translateX(4px); }
-  86% { transform: translateX(-1.2px); }
-}
-.has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot {
+.risiko-expression-point.has-navigation-hint:not(.is-shown):not(.is-dragging) {
   animation: risiko-navigation-hint 1100ms ease-in-out 150ms 1;
-}
-.has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot svg {
-  animation: risiko-navigation-hint-arrow 1100ms ease-in-out 150ms 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
