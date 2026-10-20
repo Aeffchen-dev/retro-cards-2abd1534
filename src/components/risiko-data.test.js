@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {

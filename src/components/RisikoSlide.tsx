@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one fat,
 // classic drop hanging from the left eye and rolling down the cheek, so its
@@ -271,7 +271,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         <div className="risiko-scale-captions" lang="de">
 
         {SCALE_CAPTIONS.map((caption, i) => (
-          <span key={i} className="risiko-scale-caption pointer-events-none">{caption}</span>
+          <span key={i} className="risiko-scale-caption pointer-events-none">{softHyphenate(caption)}</span>
         ))}
       </div>
 
