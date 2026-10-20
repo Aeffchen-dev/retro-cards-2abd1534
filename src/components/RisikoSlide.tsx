@@ -43,7 +43,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
 );
 
 const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: RisikoSlideProps) => {
-  const dot = <span className="block w-6 h-6 rounded-full border-2" style={{ background: pill, borderColor: INK }} />;
+  const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK }} />;
   const memoji = (emoji: string) => <span className="flex items-center justify-center w-9 h-9 rounded-full text-2xl leading-none" style={{ background: label }}>{emoji}</span>;
 
   const statement = (key: string, text: string, readOnly: boolean) => (
