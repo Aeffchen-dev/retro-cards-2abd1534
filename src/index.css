@@ -388,6 +388,11 @@
 }
 /* The thumb is as wide as a face so its travel ends land under the outer face centres. */
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
+/* The press has to land on the circle itself: the slider library only sees a
+   circle press when the pressed element *is* the circle, otherwise it treats it
+   as a click on the empty bar. The avatar and the name are decoration, so they
+   let the pointer pass through to the circle behind them. */
+.risiko-thumb > * { pointer-events: none; }
 /* The slider row's height is shared with the footer's margin maths below. */
 .risiko-track { height: var(--risiko-track-h); }
 /* The button block sits below the scale and carries the card colour, so nothing
