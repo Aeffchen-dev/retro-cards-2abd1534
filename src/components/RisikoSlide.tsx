@@ -12,6 +12,9 @@ const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its 
 const CAPTION_H = 12; // tiny end labels above the smileys
 const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
 const FACE_FILL = "var(--risiko-face-fill)";
+// The knocked-out features: a fine mouth line, round eyes with some weight.
+const MOUTH_W = 1;
+const EYE_W = 3;
 
 const Face = ({ Icon }: { Icon: typeof Frown }) => (
   <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
