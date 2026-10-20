@@ -166,14 +166,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
     {/* The rule spans the full card width; only the circle's travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: FACE_INSET, right: FACE_INSET, top: 0, bottom: 0 }}
+          style={{ left: TRAVEL_INSET, right: TRAVEL_INSET, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -190,9 +190,11 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
           {/* The whole row is the hit area, so a click above or below the rule
               puts the circle at that spot; the thumb stays invisible behind it. */}
           <SliderPrimitive.Track className="relative w-full h-full" />
-          <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: FACE_W, height: FACE_W }} />
+          {/* The thumb is sized like the circle itself, so Radix's travel maths
+              — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
+          <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
           {marker}
         </div>
       </>
