@@ -269,12 +269,14 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
           </div>
-          {/* Each smiley's column carries one dashed guide down its whole height,
-              from the field's top edge to its foot. They are painted before the
-              faces and the circle, so a smiley or the handle simply stands in front
-              of its line instead of having the line drawn through it. */}
+          {/* Each smiley's column carries its dashed guide down the field's whole
+              height — a stub above the face, then a long run from straight under it
+              to the field's foot — so the smiley reads as threaded onto its own line
+              instead of having the line drawn through it. Painted before the faces
+              and the circle, so both simply stand in front of the line. */}
           <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
+            {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
+            {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: 0 }} />)}
           </div>
           {/* The smileys sit at the top of the fields, a slight padding below their
               top edge, while the rule and the circle stay dead centre in them. */}
