@@ -136,7 +136,7 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
       <div className="w-full shrink-0">
-      <h2 className="retro-heading w-full"><RevealText text="Risikofaktoren" color={pill} slideIndex={slideId} /></h2>
+      <h2 className="retro-heading w-full"><RevealText text="Health Check" color={pill} slideIndex={slideId} /></h2>
       <span className="retro-small">{pageNumber} / {pageCount}</span>
       </div>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
