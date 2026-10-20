@@ -61,4 +61,5 @@
 - [x] Show the Health Check statements as quotes (German quotation marks, work-split question left unquoted); verify every card on phone and in the PDF.
 - [x] Give the Health Check scale the card's own padding as its margin above and below (28px on screen, the printed card's 40px in the PDF), with the guidelines ending on the rule; verify every card on phone and in the PDF.
 - [x] Centre the Vorhaben allocation arrow on its scale line (screen and print); verify by measurement and in the PDF.
+- [x] Remove the 0%/100% end labels above the work-split lane (screen and print).
 - [x] Shrink the Risikofaktoren scale faces to 24px with a 1.5px rule, keep the 32px handle and raise the slider row to 56px so the dot sits centred on its rule; verify on phone, on the work-split card and in the PDF.
