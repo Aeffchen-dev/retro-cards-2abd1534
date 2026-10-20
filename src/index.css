@@ -358,12 +358,20 @@
 }
 /* On a card too narrow to hold both labels beside the smileys, they take a line
    of their own above the scale — flush left and right — so the scale keeps its
-   full width instead of squeezing the five smileys together. */
+   full width instead of squeezing the five smileys together. Grid placement, not
+   flex wrapping: the two labels must land on the same line at opposite ends. */
 .risiko-block { container-type: inline-size; }
-@container (max-width: 340px) {
-  .risiko-scale-row { flex-wrap: wrap; }
-  .risiko-scale-core { flex: 1 1 100%; order: 3; }
-  .risiko-scale-row > .risiko-scale-caption:last-child { margin-left: auto; }
+@container (max-width: 300px) {
+  .risiko-scale-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 4px;
+  }
+  .risiko-scale-row > .risiko-scale-caption:first-child { grid-area: 1 / 1; justify-self: start; }
+  .risiko-scale-row > .risiko-scale-caption:last-child { grid-area: 1 / 2; justify-self: end; }
+  .risiko-scale-core { grid-area: 2 / 1 / 3 / 3; }
 }
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
