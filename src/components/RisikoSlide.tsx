@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The two tear streams, shared by the scale's crying face and the dragged dot:
 // a drop hanging from below each eye, tip first so it shrinks back into the eye.
 const TEAR_L = "M8.4 10.6C8.4 10.6 7.1 12.8 7.1 13.6a1.3 1.3 0 0 0 2.6 0C9.7 12.8 8.4 10.6 8.4 10.6z";
 const TEAR_R = "M15.6 10.6C15.6 10.6 14.3 12.8 14.3 13.6a1.3 1.3 0 0 0 2.6 0C16.9 12.8 15.6 10.6 15.6 10.6z";
 
-// The saddest face on the scale, and nothing like the sad face next to it: eyes
-// squeezed shut and slanting down to the nose, a tear below each eye, inner
-// brows raised and a downturn that goes deeper than any other mouth here.
+// The saddest face on the scale, drawn in the same language as the faces next to
+// it: the same round-dot eyes, no brows and the same arc family — only a deeper
+// downturn and a small tear hanging under each eye.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +26,10 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     aria-hidden="true"
   >
     <circle cx="12" cy="12" r="10" />
-    <path d="M7.2 8.4 L10.2 9.7 M16.8 8.4 L13.8 9.7" strokeWidth={1.2} />
-    <path d="M7.5 7.9 L10 6.5 M14 6.5 L16.5 7.9" strokeWidth={1.3} />
-    <path d="M16 18.2s-1.5-3-4-3S8 18.2 8 18.2" />
-    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" />
-    <path d={TEAR_R} fill={color ?? "currentColor"} stroke="none" />
+    <path d="M9 9h.01 M15 9h.01" />
+    <path d="M16 17.4s-1.5-2.8-4-2.8S8 17.4 8 17.4" />
+    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" transform={`translate(8.4 10.6) scale(${CRYING_TEAR}) translate(-8.4 -10.6)`} />
+    <path d={TEAR_R} fill={color ?? "currentColor"} stroke="none" transform={`translate(15.6 10.6) scale(${CRYING_TEAR}) translate(-15.6 -10.6)`} />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
@@ -59,7 +58,7 @@ const GUIDES = guidePositions(FACES.length);
 const SLOT = 32, BAND = 60;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
-// The eyes stay lighter than a full disc so the brows keep their own space.
+// The eyes stay heavier than the small scale faces, but keep the same shape.
 const MOUTH_W = 1;
 const EYE_W = 2.4;
 
@@ -99,8 +98,8 @@ const MorphFace = ({ value }: { value: number }) => {
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
-      {/* One eye is a single stroke: a dot at the happy end, a squeezed-shut
-          slash at the sad end — the same stroke, only shorter and flatter. */}
+      {/* One eye is a single stroke: a round dot at every anchor on this scale,
+          the same stroke the small smileys draw — only heavier inside the disc. */}
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
       <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={`translate(8.4 10.6) scale(${tear}) translate(-8.4 -10.6)`} />
       <path d={TEAR_R} fill={FACE_FILL} stroke="none" transform={`translate(15.6 10.6) scale(${tear}) translate(-15.6 -10.6)`} />

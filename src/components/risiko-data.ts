@@ -109,10 +109,15 @@ export const scaleFaceBlend = (value: number): { index: number; mix: number } =>
 // Shared cubic topology lets the outline morph, rather than fade between icons.
 // The anchors reproduce SadFace, Frown, Meh, Smile and Laugh in the header. An
 // eye is one stroke (x1,y1 → x2,y2); a dot is the same stroke with no length.
+/** How big the crying face's tear is — shared by the scale face and the dot so
+ *  both draw the same drop. */
+export const CRYING_TEAR = 0.7;
+
 const FACE_ANCHORS = [
-  // Crying: eyes squeezed shut and slanting down to the nose, a tear hanging
-  // below each eye, inner brows raised and a deeper downturn than the sad face.
-  { eye: [7.2, 8.4, 10.2, 9.7, 16.8, 8.4, 13.8, 9.7], eyeW: 1.2, brow: 1, tear: 1, mouth: [8,18.2, 8,18.2,9.5,15.2,12,15.2, 14.5,15.2,16,18.2,16,18.2, 16,18.2,14.5,15.2,12,15.2, 9.5,15.2,8,18.2,8,18.2] },
+  // Crying: the same round-dot eyes, the same brows-less face and the same arc
+  // family as the faces next to it — only a deeper downturn, and a small tear
+  // hanging under each eye.
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: CRYING_TEAR, mouth: [8,17.4, 8,17.4,9.5,14.6,12,14.6, 14.5,14.6,16,17.4,16,17.4, 16,17.4,14.5,14.6,12,14.6, 9.5,14.6,8,17.4,8,17.4] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
