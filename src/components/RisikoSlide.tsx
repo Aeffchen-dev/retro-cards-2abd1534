@@ -172,11 +172,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
         </div>
-        <div className="workload-lane relative w-full h-10 shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
-          <div className="absolute top-1/2 -translate-y-1/2 w-full h-1 flex" aria-hidden="true">
+        <div className="workload-lane relative w-full h-[60px] shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
+          <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
-                <span className="workload-percentage absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">{shares[segment.key]}%</span>
+                <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
             ))}
           </div>
@@ -189,12 +189,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const slot = `min(32px, ${100 / partners.length}%)`;
             const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
             const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
+            const isLast = i === partners.length - 1;
+            // Each name grows from its Memoji into that partner's own band, so two
+            // labels can never end up on top of each other.
+            const ownWidth = segments[i]?.width ?? 100;
+            const nameAlign = partners.length === 1 ? "workload-name--single" : isLast ? "workload-name--right" : "workload-name--left";
             const memojiEl = (
-              <span className={`risiko-memoji workload-avatar workload-color-${i % 8} flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none`} aria-hidden="true">{p.emoji}</span>
+              <>
+                <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
+                <span className={`workload-name ${nameAlign}`} style={{ "--workload-band": String(ownWidth), "--workload-x": String(value) } as React.CSSProperties} aria-hidden="true">{p.name}</span>
+              </>
             );
             if (readOnly) {
               return (
-                <div key={p.key} className="absolute top-1/2 z-10 -translate-y-1/2"
+                <div key={p.key} className={`absolute z-10 top-[4px] workload-color-${i % 8}`}
                   style={{ width: slot, height: 32, left: `calc(${left} + (100% - min(${partners.length * 32}px, 100%)) * ${value / 100})` }}>
                   {memojiEl}
                 </div>
@@ -203,7 +211,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             return (
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
-                style={{ left, right, top: 0, bottom: 0 }}
+                style={{ left, right, top: 0, bottom: 20 }}
                 value={[value]} min={0} max={100} step={1}
                 onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadBoundary(keys, shares, boundaryIndex, v)); }}
                 onKeyDown={(e) => {
@@ -212,7 +220,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
-                  className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
+                  className={`risiko-thumb cursor-ew-resize rounded-full pointer-events-auto workload-color-${i % 8}`}
                   style={{ width: `min(32px, calc(100cqw / ${partners.length}))`, height: 32 }}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>

@@ -51,3 +51,4 @@
 - [x] Make the dashed guidelines finer (1px line, 8px dashes, 4px gaps) and even across all columns; verify by pixel measurement and in the PDF.
 - [x] Remove the workload legend, centre avatars on matching coloured segments and put percentages in each segment; verify drag, persistence and print (16 tests passed).
 - [x] Reword the allocation question to "Wer leistet aktuell wie viel der Beziehungsarbeit?"; verify desktop, mobile and the PDF.
+- [x] Show each partner name below its Memoji in that partner's colour, match segment colours to the slide scheme and move percentages above the line; verify drag, zero split, persistence and print.
