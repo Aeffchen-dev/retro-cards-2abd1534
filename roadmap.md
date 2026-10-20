@@ -74,3 +74,4 @@
 - [x] Reword the scale helper to "Platziere den Kreis indem du ihn nach links oder rechts ziehst" (screen and print); verify it wraps without clipping on the statement cards and in the PDF.
 - [x] Constrain desktop Health Check content and helper rows to the actual card content width; verified all seven cards at 873px, 1440px and 393px widths, build OK and 19 passing tests.
 - [x] Draw the arrow hint inside the untouched dot smaller than the dot itself, keeping it centred; verified on a phone close-up, build OK.
+- [x] Turn the Health Check scale into five adjoining fields, one under each smiley: answers snap into a field, the circle sits centred in it and that field is faintly filled; verified click, keyboard, persistence, phone layout and the PDF (18 tests passed).
