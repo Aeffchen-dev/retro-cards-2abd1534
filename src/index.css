@@ -443,6 +443,11 @@
   display: block;
   width: 32px;
   height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  max-width: 32px;
+  max-height: 32px;
+  aspect-ratio: 1;
   border-radius: 50%;
   background: var(--retro-black);
   /* the thumb is as narrow as a scale face, so the marker must not be squeezed
@@ -477,8 +482,22 @@
 /* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */
 .is-shown .risiko-drag-face { transform: scale(1); }
 .is-shown .risiko-plain-dot { transform: scale(0); }
+/* One brief left/right motion inside the untouched circle, never stretching
+   the disc or changing its saved position. Play only after entering view. */
+@keyframes risiko-navigation-hint {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  65% { transform: translateX(3px); }
+}
+.has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot svg {
+  animation: risiko-navigation-hint 850ms ease-in-out 150ms 1;
+}
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
+  .risiko-plain-dot svg { animation: none !important; }
+}
+@media print {
+  .risiko-plain-dot svg { animation: none !important; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);

@@ -43,11 +43,9 @@ const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its ce
 const MARKER_SIZE = 32;
 const CAPTION_H = 12; // tiny end labels above the smileys
 const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
-// The rule follows the smileys' own stroke weight (lucide draws strokeWidth 1.5 in
-// a 24-unit box, so at FACE_SIZE the line lands at FACE_SIZE × 1.5 / 24 ≈ 1.3px),
-// but is floored to a whole pixel: a fractional line is rounded up when it's
-// painted, and then reads heavier than the small faces above it.
-const RULE_W = Math.max(1, Math.floor((FACE_SIZE * 1.5) / 24));
+// A slightly stronger horizontal rule distinguishes the draggable slider from
+// its fine dashed guides without changing the grey smileys' stroke weight.
+const RULE_W = 2;
 // The circle stops half a face inside each end — exactly under the outer smileys —
 // and moves freely between them, so it can rest on any value, not just a field.
 const END_INSET = FACE_W / 2;
@@ -115,8 +113,23 @@ const MorphFace = ({ value }: { value: number }) => {
 
 const ExpressionPoint = ({ value, active, shown }: { value: number; active: boolean; shown: boolean }) => {
   const expression = scaleExpression(value);
+  const pointRef = useRef<HTMLSpanElement>(null);
+  const [hintReady, setHintReady] = useState(false);
+  React.useEffect(() => {
+    const point = pointRef.current;
+    if (!point || shown) return;
+    // The deck keeps offscreen cards mounted: wait until this circle is visible
+    // before playing the one-shot hint. Never move the answer or its outer disc.
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting || entry.intersectionRatio < 0.9) return;
+      setHintReady(true);
+      observer.disconnect();
+    }, { threshold: 0.9 });
+    observer.observe(point);
+    return () => observer.disconnect();
+  }, [shown]);
   return (
-    <span className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
+    <span ref={pointRef} className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""} ${hintReady ? "has-navigation-hint" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot">
         <svg width={ARROW_SIZE} height={ARROW_SIZE} viewBox="0 0 24 24" fill="none"
           stroke={FACE_FILL} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
