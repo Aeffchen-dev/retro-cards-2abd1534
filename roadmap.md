@@ -22,3 +22,5 @@
 - [x] Morph the draggable face through all five scale expressions, from angry to laughing; verify anchors, drag and dot reset.
 - [x] Set the Health Check question plate's left/right padding to 0 so it hugs the text; verify no clipping on desktop, mobile and small screens.
 - [x] Set the Health Check helper text to "Bewege den Punkt auf der Skala" at the default size, wrapping to a second line on narrow cards; verify no cut-off and that rows still fit.
+- [x] Enlarge the smileys on the first two Health Check slides to 32px; verify they clear the heading and the info row on desktop and mobile.
+- [x] Fix the PDF export (blank first sheet, cards cut off); verify one card per sheet with nothing clipped.

@@ -600,8 +600,26 @@ textarea.bg-retro-post-it:focus,
   #root > div {
     position: static !important;
     height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
     background: white !important;
+  }
+
+  /* The slide stage centres and clips its content on screen; in print the pages
+     must flow from the top of the document instead of being centred in a
+     viewport-tall box (which pushes the first pages above the paper). */
+  .print-stage {
+    display: block !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
   }
 
   .bg-retro-black {
@@ -616,9 +634,14 @@ textarea.bg-retro-post-it:focus,
     display: none !important;
   }
 
-  /* Print slides container - show in print */
+  /* Print slides container - show in print.
+     Anchor it to the top of the sheet: the on-screen flow starts 16px down, and
+     that nudge pushed the first card off sheet 1, leaving a blank first page. */
   .print-slides-container {
     display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     width: 100% !important;
   }
 
@@ -626,9 +649,12 @@ textarea.bg-retro-post-it:focus,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    width: 210mm !important;
-    height: 297mm !important;
-    max-height: 297mm !important;
+    /* Fit inside the printable area with headroom: @page has 10mm margins and the
+       document still starts 16px down, so a full-height sheet overflowed and
+       pushed the first card onto a blank page. */
+    width: 190mm !important;
+    height: 272mm !important;
+    max-height: 272mm !important;
     page-break-after: always !important;
     page-break-inside: avoid !important;
     break-after: page !important;
@@ -718,9 +744,12 @@ textarea.bg-retro-post-it:focus,
   .print-slide-page .retro-card-container {
     max-width: 395px !important;
     width: 395px !important;
-    height: 85vh !important;
-    min-height: 85vh !important;
-    max-height: 85vh !important;
+    /* Fill the sheet, not the screen: 85vh is the browser viewport (up to 1800px
+       tall) and overflowed the 297mm page, pushing every card onto a fresh sheet. */
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    box-sizing: border-box !important;
     margin: 0 !important;
     padding: 40px !important;
     background: #F0EFEE !important;
