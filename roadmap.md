@@ -47,3 +47,4 @@
 - [x] Set the Health Check scale rule to the same line weight as the smiley icons (2px); verify measured thickness on desktop, mobile and in the PDF.
 - [x] Give the "Macht Notizen" CTA on the Health Check pages the same styling as on the first two slides (lime tile, light-grey label field, near-black text); verify on desktop, mobile and in the PDF.
 - [x] Make the dashed guidelines as visible as the smileys (2px in the smiley grey); verify measured thickness on screen and in the PDF.
+- [x] Add "mal" to the Me-Time question ("... und machen auch mal Dinge ohne den anderen"); verify desktop, mobile and print.
