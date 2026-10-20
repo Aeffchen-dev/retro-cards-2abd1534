@@ -127,3 +127,4 @@
 - [x] Give a card that is too short one statement instead of clipping the second one; verified 8 Health Check cards on 360x640 and 5 on larger screens, print follows the same split.
 - [x] Feedback slide's first question is now "Du in meinen Augen" with the remembering sentence in grey under the bar; verified on desktop, phone and small phone plus the printed page; 42 tests pass, build OK.
 - [x] Rename the five Health Check scale columns to "noch nicht" / "eher nicht" / "teils / teils" / "eher schon" / "absolut"; verified on desktop, phone, small phone and in the exported PDF; 42 tests pass, build OK.
+- [x] Rename the five Health Check scale columns again to "Trifft noch nicht zu" / "Trifft selten zu" / "Trifft Teilweise zu" / "Trifft meistens zu" / "Trifft voll zu".
