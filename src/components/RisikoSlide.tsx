@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_HEADING, RISIKO_CHAPTER_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -481,8 +481,27 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     </div>
   );
 
+  // The chapter opens on the first card: its big question, the intro sentence,
+  // and — once every slider of the chapter has been dragged — the smiley the
+  // average of all the statements points at.
+  const isChapterStart = page.statements[0]?.[0] === RISIKO_STATEMENTS[0][0];
+  const chapterMood = averageMood(values);
+
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+      {isChapterStart && (
+        <div className="risiko-chapter shrink-0 w-full" lang="de">
+          <h2 className="risiko-statement risiko-chapter-heading retro-body-copy">
+            {RISIKO_CHAPTER_HEADING}
+            {chapterMood !== null && (
+              <span className="risiko-chapter-mood" aria-label={`Durchschnittliche Stimmung ${Math.round(chapterMood)} von 100`}>
+                <Face Icon={FACES[moodFaceIndex(chapterMood)]} />
+              </span>
+            )}
+          </h2>
+          <p className="risiko-chapter-info">{RISIKO_CHAPTER_INFO}</p>
+        </div>
+      )}
       {page.statements.length === 0 && (
         <>
           <h2 className="risiko-statement risiko-allocation-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
