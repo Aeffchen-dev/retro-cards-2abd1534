@@ -620,6 +620,7 @@
   20% { transform: translateX(-4px); }
   45% { transform: translateX(0); }
   68% { transform: translateX(4px); }
+  86% { transform: translateX(-1.2px); }
 }
 .has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot {
   animation: risiko-navigation-hint 1100ms ease-in-out 150ms 1;
