@@ -12,6 +12,26 @@ export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy un
 /** The display-size question on the card that asks about the work split. */
 export const RISIKO_ALLOCATION_HEADING = "Wer leistet aktuell wie viel der Beziehungsarbeit?";
 
+/** What counts as Beziehungsarbeit — the card's fixed examples, read under the
+ *  question. Screen and print show the same list; nothing here is editable. */
+export const RISIKO_ALLOCATION_EXAMPLES = [
+  "Schwierige Gespräche initiieren",
+  "Im Streit nachgeben, um zu deeskalieren",
+  "Sich Fehler eingestehen",
+  "Sich als unschuldiger entschuldigen",
+  "Einen großen Kompromiss zusagen",
+  "Verletzungen aufarbeiten",
+  "Den anderen emotional auffangen",
+  "Immer zuerst Nähe initiieren",
+  "Vermeintlich übertriebene Bedürfnisse ernst nehmen",
+  "Unvergessliche Events planen",
+  "Eine Schwäche an anderen wertschätzen",
+  "Die eigene Meinung runterschlucken, um zuzuhören",
+  "Unsanftes Feedback leise in sich arbeiten lassen",
+  "Veränderungen, die einen Nachteil bringen, mittragen",
+  "Auch mal zurückstecken",
+] as const;
+
 export interface RisikoPage {
   statements: (readonly [string, string])[];
   personKeys: string[];
