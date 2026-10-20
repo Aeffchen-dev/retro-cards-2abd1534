@@ -46,18 +46,19 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The circle travels the whole scale, edge to edge — not just between the outer
-// smileys — so its travel is inset by its own radius alone: at 0 and 100 its
-// outer edge lands exactly on the container's edges, fully visible, never cut
-// off and never overflowing.
+// The grey columns keep the same breathing room top and bottom as the smileys
+// get from the scale's edge.
 const TRAVEL_INSET = MARKER_SIZE / 2;
 
-// One equal column per smiley across the full scale width; each smiley (and its
-// dashed guide) sits at its column's centre, while the circle keeps gliding
-// through the whole width under them.
-/** CSS left for a marker-travel percentage, so faces/columns line up with the slider ends. */
-const atTravel = (p: number) => `calc(${TRAVEL_INSET}px + ${p} * (100% - ${MARKER_SIZE}px) / 100)`;
-const facePos = (i: number) => atTravel((i * 100) / (FACES.length - 1));
+// Equal columns share the scale's full width; each smiley (and its dashed
+// guide) sits in the middle of its own column, and the circle's travel runs
+// from the first smiley's centre to the last one's, so the handle always rests
+// under a face at both ends and is never cut off.
+const COLUMN_W = 100 / FACES.length;
+const facePct = (i: number) => (i + 0.5) * COLUMN_W;
+const facePos = (i: number) => `${facePct(i)}%`;
+/** CSS left for the circle at a slider value: 0 under the first smiley, 100 under the last. */
+const markerLeft = (value: number) => `calc(${facePct(0)}% + ${value} * (100% - ${2 * facePct(0)}%) / 100)`;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -166,14 +167,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
     {/* The rule spans the full card width; only the circle's travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: TRAVEL_INSET, right: TRAVEL_INSET, top: 0, bottom: 0 }}
+          style={{ left: `${facePct(0)}%`, right: `${facePct(0)}%`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -194,7 +195,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
           {marker}
         </div>
       </>
@@ -232,7 +233,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               the smileys get from the scale's edge — it never touches the row above
               or the foot of the circle's row. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: i === 0 ? 0 : atTravel(from), right: i === FACES.length - 1 ? 0 : `calc(100% - (${atTravel(to).slice(5, -1)}))` }} />)}
+            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
             {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
           </div>
           <FaceLayer />

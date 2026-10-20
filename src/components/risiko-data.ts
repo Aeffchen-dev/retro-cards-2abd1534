@@ -53,11 +53,10 @@ export const markerInset = (value: number, endInset: number): number =>
  *  its container with nothing showing between them. */
 export const columnBands = (faces: number): [number, number][] => {
   if (faces < 1) return [];
-  if (faces === 1) return [[0, 100]];
-  // Positions are in marker-travel %: faces sit on 0..100, borders at midpoints.
-  // The outer bands additionally extend to the card edges (handled by the caller).
-  const step = 100 / (faces - 1);
-  return Array.from({ length: faces }, (_, i) => [Math.max(0, (i - 0.5) * step), Math.min(100, (i + 0.5) * step)] as [number, number]);
+  // One equal band per face, together filling the scale's full width; each
+  // face sits in the middle of its own band. Positions are container %.
+  const width = 100 / faces;
+  return Array.from({ length: faces }, (_, i) => [i * width, (i + 1) * width] as [number, number]);
 };
 
 
