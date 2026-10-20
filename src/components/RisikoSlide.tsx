@@ -28,12 +28,15 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
 export const FACES = [Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its four column centres.
-const FACE_SIZE = 32;
+const FACE_SIZE = 24;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
+// The draggable marker keeps its own, larger size: it has to read as the handle
+// among the smaller scale faces and stay a comfortable thing to grab.
+const MARKER_SIZE = 32;
 const CAPTION_H = 12; // tiny end labels above the smileys
 const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
 // The scale rule carries the same line weight as the smileys' own strokes:
-// lucide draws strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE that is 2px.
+// lucide draws strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE that is 1.5px.
 const RULE_W = (FACE_SIZE * 1.5) / 24;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
@@ -75,7 +78,7 @@ const MorphFace = ({ value }: { value: number }) => {
   const { eyeY, brow, mouth } = scaleFaceGeometry(value);
   const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
   return (
-    <svg width={FACE_SIZE} height={FACE_SIZE} viewBox="0 0 24 24" fill="none"
+    <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" fill={INK} />
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
@@ -161,7 +164,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span>Stimme voll zu</span>
         </div>
         <FaceLayer />
-        <div className="absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H, bottom: 20 }} aria-hidden="true">
+        <div className="absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H, bottom: `calc(var(--risiko-track-h) / 2)` }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
         <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}

@@ -240,7 +240,9 @@
 /* The scale keeps the same breathing room above and below as the card's own padding. */
 .risiko-page {
   --risiko-scale-pad: 28px; /* the card's own padding */
-  --risiko-track-h: 40px;   /* the slider row; its rule sits at the middle */
+  /* The slider row is a full head taller than its marker, so the handle floats
+     free of the smileys above and the buttons below, centred on its rule. */
+  --risiko-track-h: 56px;
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
