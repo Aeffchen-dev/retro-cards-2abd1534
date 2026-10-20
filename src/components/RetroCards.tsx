@@ -3,7 +3,7 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
-import RisikoSlide, { FACES, FACE_GREY } from "@/components/RisikoSlide";
+import RisikoSlide, { FACES, FACE_GREY, SadFace } from "@/components/RisikoSlide";
 import { risikoPages } from "@/components/risiko-data";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
