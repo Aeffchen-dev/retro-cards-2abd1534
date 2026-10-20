@@ -18,7 +18,7 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6 risiko-bleed" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
@@ -61,7 +61,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
   const [dragging, setDragging] = useState(false);
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} />;
   return (
-  <div className="risiko-track relative w-full h-10 shrink-0">
+  <div className="risiko-track relative w-full h-10 shrink-0 risiko-bleed">
     <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
     {readOnly ? (
       <div
@@ -140,7 +140,7 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
       </div>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
         <FaceLayer />
-        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: END_INSET, right: END_INSET, top: FACE_SIZE }} aria-hidden="true">
+        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full" />)}
         </div>
         <div className="screen-only w-full relative">{body(false)}</div>
