@@ -28,4 +28,4 @@
 - [x] Draw the drag point as a black disc with white features and keep the face once dragged (dot only in the initial state); verify on screen and after reload.
 - [x] Reword the appreciation question to "Unsere Kommunikation bleibt immer respektvoll"; verify plates grow and pages still fit.
 - [x] Give every gap on the Health Check pages the same size (smileys, questions, bottom buttons); verify equal gaps on desktop and mobile.
-- [ ] Remove the angry scale face, evenly align the remaining four faces and match the persistent drag-face morph; verify interaction and geometry.
+- [x] Remove the angry scale face, evenly align the remaining four faces and match the persistent drag-face morph; verify interaction and geometry.
