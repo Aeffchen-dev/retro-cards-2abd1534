@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -44,13 +44,14 @@ describe("workload split", () => {
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
     // Crying: the same round-dot eyes, no brows, and the laughing mouth flipped
-    // into an open downturn — the single tear below the left eye sets it apart.
+    // into an open downturn — its downturn alone carries the sadness.
     expect(scaleFaceGeometry(0).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(0).eyeW).toBe(1.5);
-    expect(scaleFaceGeometry(0).tear).toBe(CRYING_TEAR);
-    expect(scaleFaceGeometry(12.5).tear).toBeCloseTo(CRYING_TEAR / 2);
-    expect(scaleFaceGeometry(0).tear).toBeGreaterThan(0);
-    // The sad face right next to it has the same eyes, but no tear.
+    // No face on this scale sheds a tear — the geometry carries none at all.
+    for (const value of [0, 12.5, 25, 50]) {
+      expect(scaleFaceGeometry(value)).not.toHaveProperty("tear");
+    }
+    // The sad face right next to it has the same eyes.
     expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
     // Every sad face is its happy twin in negative: the very same mouth curve and
@@ -72,11 +73,10 @@ describe("Risikofaktoren scale", () => {
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
     expect(scaleFaceGeometry(100).mouth[19]).toBe(18);
     // No face on this scale raises a brow — the crying end reads through its
-    // downturn and its single tear alone.
+    // downturn alone.
     for (const value of [0, 12.5, 25, 50, 75, 87.5, 100]) {
       expect(scaleFaceGeometry(value).brow).toBe(0);
     }
-    expect(scaleFaceGeometry(25).tear).toBe(0);
     expect(scaleFaceGeometry(87.5).mouth[19]).toBeCloseTo(17);
   });
   test("drag face matches the five evenly spaced smileys at their scale positions", () => {

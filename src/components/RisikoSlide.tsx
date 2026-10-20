@@ -2,16 +2,12 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, type RisikoPage } from "./risiko-data";
 
-// The tear, shared by the scale's crying face and the dragged dot: one fat,
-// classic drop hanging from the left eye and rolling down the cheek, so its
-// round bulb stays clear of the mouth instead of crowding it.
-const TEAR_L = "M8.9 9.7C8.5 10.5 6.4 11.3 6.4 12.4A1.6 1.6 0 0 0 9.6 12.4C9.6 11.3 9.1 10.5 8.9 9.7z";
 
 // The saddest face on the scale, drawn in the same language as the faces next to
 // it: the same round-dot eyes, no brows and the laughing mouth flipped into an
-// open downturn — a single tear hanging from the left eye sets it apart.
+// open downturn — its downturn alone carries the sadness.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +24,6 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     <circle cx="12" cy="12" r="10" />
     <path d="M9 9h.01 M15 9h.01" />
     <path d={mouthPath(CRYING_MOUTH)} />
-    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" transform={tearTransform(CRYING_TEAR)} />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
@@ -115,7 +110,7 @@ const ARROW_W = 1.15;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
-  const { eye, eyeW, brow, mouth, tear } = scaleFaceGeometry(value);
+  const { eye, eyeW, brow, mouth } = scaleFaceGeometry(value);
   // Open stroke, no fill: the mouth is the very same curve the happy faces
   // draw, only flipped — one clean trace, exactly like the header smileys.
   const path = mouthPath(mouth);
@@ -125,7 +120,6 @@ const MorphFace = ({ value }: { value: number }) => {
       {/* One eye is a single stroke: a round dot at every anchor on this scale,
           the same stroke the small smileys draw — only heavier inside the disc. */}
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={tearTransform(tear, [0, 0.45])} />
       // The marker's eyes are drawn heavier than the small scale faces, so its
       // brows sit higher: they must keep a clear gap above the eye dots.
       <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />

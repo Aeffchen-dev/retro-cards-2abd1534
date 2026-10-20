@@ -150,31 +150,20 @@ export const scaleFaceBlend = (value: number): { index: number; mix: number } =>
 export const mouthPath = (mouth: number[]) =>
   `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")}`;
 
-/** The crying face's tear — shared by the scale face and the dot so both draw
- *  the same drop: full at the sad end, shrinking to nothing at 25. It hangs a
- *  little out from the eye so its bulb stays clear of the open downturn below. */
-export const CRYING_TEAR = 0.6;
-export const TEAR_SHIFT = [-1, 0.3];
-/** `hang` drops the tear a little lower: the dragged dot draws heavier eyes, so
- *  its drop has to start further down to hang from the eye instead of inside it. */
-export const tearTransform = (tear: number, hang: [number, number] = [0, 0]) =>
-  `translate(${TEAR_SHIFT[0] + hang[0]} ${TEAR_SHIFT[1] + hang[1]}) translate(8.9 9.7) scale(${tear}) translate(-8.9 -9.7)`;
-
 // The laughing mouth flipped about the face's midline (y → 30 − y): the same
 // wide, open curve turned into a downturn. The sad face next to it is the happy
 // smile flipped the same way — each sad face is its happy twin in negative.
 export const CRYING_MOUTH = [6,17, 6,17,9,17,12,17, 15,17,18,17,18,17, 17.51,14.1,14.94,12,12,12, 9.06,12,6.49,14.1,6,17];
 
 const FACE_ANCHORS = [
-  // Crying: the laughing mouth in negative, the same round-dot eyes, no brows,
-  // and the single tear under the left eye — what sets it apart from the sad
-  // face next to it.
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: CRYING_TEAR, mouth: CRYING_MOUTH },
+  // Crying: the laughing mouth in negative and the same round-dot eyes, no
+  // brows — its downturn alone carries the sadness.
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: CRYING_MOUTH },
 
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
 ];
 
 /** Every partner reserves one band on the work-split line: its own circle and
@@ -194,7 +183,6 @@ export function scaleFaceGeometry(value: number) {
     eye: from.eye.map((coordinate, i) => lerp(coordinate, to.eye[i])),
     eyeW: lerp(from.eyeW, to.eyeW),
     brow: lerp(from.brow, to.brow),
-    tear: lerp(from.tear, to.tear),
     mouth: from.mouth.map((coordinate, i) => lerp(coordinate, to.mouth[i])),
   };
 }
