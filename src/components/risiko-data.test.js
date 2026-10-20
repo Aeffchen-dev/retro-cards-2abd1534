@@ -43,27 +43,30 @@ describe("workload split", () => {
 
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
-    // Crying: the same round-dot eyes, no brows, and the happy smile's mouth
-    // mirrored into a downturn — the single tear below the left eye sets it apart.
+    // Crying: the same round-dot eyes, no brows, and the laughing mouth flipped
+    // into an open downturn — the single tear below the left eye sets it apart.
     expect(scaleFaceGeometry(0).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(0).eyeW).toBe(1.5);
-    expect(scaleFaceGeometry(0).mouth[1]).toBe(16);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(14);
     expect(scaleFaceGeometry(0).tear).toBe(CRYING_TEAR);
     expect(scaleFaceGeometry(12.5).tear).toBeCloseTo(CRYING_TEAR / 2);
-    // The crying mouth is exactly the sad face's — the happy smile's curve,
-    // flipped — so the tear alone carries the crying reading.
-    expect(scaleFaceGeometry(0).mouth).toEqual(scaleFaceGeometry(25).mouth);
     expect(scaleFaceGeometry(0).tear).toBeGreaterThan(0);
     // The sad face right next to it has the same eyes, but no tear.
     expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
-    // Both sad mouths are the happy smile's curve flipped: same shape, mirrored
-    // about the face's midline (y 14 ↔ 16 around 15), never a different mouth.
-    const sadMouth = scaleFaceGeometry(25).mouth;
-    const smileMouth = scaleFaceGeometry(75).mouth;
-    sadMouth.forEach((coordinate, i) =>
-      expect(coordinate).toBeCloseTo(i % 2 ? 30 - smileMouth[i] : smileMouth[i]));
+    // Every sad face is its happy twin in negative: the very same mouth curve and
+    // the very same eyes, mirrored about the face's midline (y → 30 − y). The
+    // crying end mirrors the laugh, the sad face next to it mirrors the smile.
+    for (const [sad, happy] of [[0, 100], [25, 75]]) {
+      const sadMouth = scaleFaceGeometry(sad).mouth;
+      const happyMouth = scaleFaceGeometry(happy).mouth;
+      sadMouth.forEach((coordinate, i) =>
+        expect(coordinate).toBeCloseTo(i % 2 ? 30 - happyMouth[i] : happyMouth[i]));
+      expect(scaleFaceGeometry(sad).eye).toEqual(scaleFaceGeometry(happy).eye);
+    }
+    // The downturn is as wide and as deep as the grin it mirrors.
+    expect(scaleFaceGeometry(0).mouth[0]).toBe(6);
+    expect(scaleFaceGeometry(0).mouth[1]).toBe(17);
+    expect(scaleFaceGeometry(0).mouth[19]).toBe(12);
     expect(scaleFaceGeometry(50).mouth[7]).toBe(15);
     expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
