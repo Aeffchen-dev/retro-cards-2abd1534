@@ -262,6 +262,17 @@
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
 }
+.health-check-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.health-check-guide {
+  position: absolute;
+  left: 0;
+  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) - 16px));
+  border-top: 1px dashed var(--risiko-caption);
+}
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
 .risiko-statement {
@@ -1046,6 +1057,10 @@ textarea.bg-retro-post-it:focus,
     justify-content: space-between !important;
     padding: 0 !important;
     margin: 0 !important;
+  }
+
+  .health-check-guide {
+    --health-guide-end: var(--health-guide-print-end);
   }
 
   .print-emoji-scale > * {

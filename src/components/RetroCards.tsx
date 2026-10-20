@@ -1325,7 +1325,17 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="relative w-full flex-1 my-10 print-memoji-container">
+            <div className="relative w-full flex-1 my-10 print-memoji-container" style={{
+              '--health-guide-end': `${defaultX}px`,
+              '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
+            } as React.CSSProperties}>
+              <div className="health-check-guides" aria-hidden="true">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <span key={i} className="health-check-guide" style={{
+                    top: i === 0 ? '0px' : i === 5 ? '100%' : `calc(17px + (100% - 34px) * ${(i - 0.5) / 4})`,
+                  }} />
+                ))}
+              </div>
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (
