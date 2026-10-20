@@ -41,6 +41,14 @@
     --risiko-column: #9B9BA3;
     --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
+    --workload-partner-0: #AF25FF;
+    --workload-partner-1: #FC3D82;
+    --workload-partner-2: #5074EF;
+    --workload-partner-3: #86AF25;
+    --workload-partner-4: #FF2B00;
+    --workload-partner-5: #E772FF;
+    --workload-partner-6: #FF47D1;
+    --workload-partner-7: #9D9CFF;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
@@ -230,11 +238,25 @@
 .risiko-card { overflow: hidden; }
 
 .workload-lane { container-type: inline-size; }
-.workload-segment { height: 100%; }
-.workload-segment-0 { background: var(--retro-black); }
-.workload-segment-1 { background: var(--risiko-caption); }
-.workload-segment-2 { background: var(--color-surface-lavender); }
-.workload-segment-3 { background: var(--color-surface-turquoise); }
+.workload-segment { height: 100%; background: var(--workload-color); }
+.workload-color-0 { --workload-color: var(--workload-partner-0); }
+.workload-color-1 { --workload-color: var(--workload-partner-1); }
+.workload-color-2 { --workload-color: var(--workload-partner-2); }
+.workload-color-3 { --workload-color: var(--workload-partner-3); }
+.workload-color-4 { --workload-color: var(--workload-partner-4); }
+.workload-color-5 { --workload-color: var(--workload-partner-5); }
+.workload-color-6 { --workload-color: var(--workload-partner-6); }
+.workload-color-7 { --workload-color: var(--workload-partner-7); }
+.workload-avatar { background: var(--workload-color) !important; }
+.workload-percentage {
+  background: var(--risiko-label-bg);
+  color: var(--retro-black);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+  padding: 0 3px;
+  white-space: nowrap;
+}
 
 /* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
 .risiko-scale-caption {
