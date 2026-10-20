@@ -5,7 +5,14 @@ import ActionRow from "@/components/ActionRow";
 import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
 
 const FACES = [Angry, Frown, Meh, Smile, Laugh];
+const FACE_GREY = "#9B9BA3";
 import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
+
+const FaceRow = () => (
+  <div className="flex justify-between pb-1" aria-hidden="true">
+    {FACES.map((Face, i) => <Face key={i} size={16} strokeWidth={1.5} color={FACE_GREY} />)}
+  </div>
+);
 
 interface Person { key: string; name: string; emoji: string }
 interface RisikoSlideProps {
@@ -49,6 +56,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="flex flex-col">
       <span className="retro-body-copy">{text}</span>
+      <FaceRow />
       <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text}
         onChange={(v) => onChange(key, String(v))} thumb={dot} />
     </div>
@@ -84,23 +92,9 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
 
   const body = (readOnly: boolean) => (
     <div className="flex flex-col gap-3 w-full mt-4">
-      {/* faces span the full card width: first flush left, last flush right */}
-      <div className="risiko-face-row flex justify-between" aria-hidden="true">
-        {FACES.map((Face, i) => <Face key={i} size={28} strokeWidth={1.5} color="#201C1D" />)}
-      </div>
-      <div className="relative flex flex-col gap-3">
-        {/* dashed guideline straight under each face */}
-        <div className="risiko-lines pointer-events-none absolute inset-0 flex justify-between" aria-hidden="true">
-          {FACES.map((_, i) => (
-            <div key={i} className="w-7 flex justify-center">
-              <div className="h-full border-l border-dashed" style={{ borderColor: INK, opacity: 0.25 }} />
-            </div>
-          ))}
-        </div>
-        {RISIKO_STATEMENTS.map(([k, t]) => statement(k, t, readOnly))}
-        {allocation(readOnly)}
-        {statement(RISIKO_HOT[0], RISIKO_HOT[1], readOnly)}
-      </div>
+      {RISIKO_STATEMENTS.map(([k, t]) => statement(k, t, readOnly))}
+      {allocation(readOnly)}
+      {statement(RISIKO_HOT[0], RISIKO_HOT[1], readOnly)}
     </div>
   );
 
