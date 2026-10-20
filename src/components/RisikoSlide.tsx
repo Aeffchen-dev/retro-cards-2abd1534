@@ -5,8 +5,8 @@ import ActionRow from "@/components/ActionRow";
 import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
 import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 
-const FACES = [Angry, Frown, Meh, Smile, Laugh];
-const FACE_GREY = "#9B9BA3";
+export const FACES = [Angry, Frown, Meh, Smile, Laugh];
+export const FACE_GREY = "#9B9BA3";
 // The faces sit directly on the track line (not above it) with a white
 // fill so the line is hidden behind each face. They are large enough that
 // the 14px dot — drawn above them (z-10) — leaves the smiley readable.
