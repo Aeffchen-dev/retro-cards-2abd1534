@@ -1309,3 +1309,11 @@ textarea.bg-retro-post-it:focus,
 }
 
 /* Questions slide: same headline size as all other slides */
+
+/* Phones: every column name in exactly three lines (see captionLines), sized to the
+   widest middle line ("noch nicht" ≈ 4.9em) so the text is as large as the column allows. */
+@media (max-width: 767px) {
+  .risiko-scale-captions { container-type: inline-size; --risiko-caption-font: clamp(9px, calc((100cqw - 16px) / 5 / 4.9), 13px); }
+  .risiko-scale-caption { font-size: var(--risiko-caption-font); line-height: 1.15; hyphens: manual; }
+  .risiko-caption-line { display: block; white-space: nowrap; }
+}

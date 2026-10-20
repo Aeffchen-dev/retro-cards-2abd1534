@@ -80,6 +80,13 @@ export const SCALE_CAPTIONS = [
  *  hyphen instead: it stays invisible wherever the word fits and prints as a real
  *  hyphen ("Teil-" / "weise") only when the column really is tight. The split sits
  *  inside the word, so the label keeps whatever capitalisation it was written with. */
+/** On phones every column name breaks into the same three lines:
+ *  first word / middle / last word ("Trifft" / "noch nicht" / "zu"). */
+export const captionLines = (caption: string): string[] => {
+  const words = caption.split(" ");
+  return [words[0], words.slice(1, -1).join(" "), words[words.length - 1]];
+};
+
 export const softHyphenate = (caption: string) => caption.replace("eilweise", "eil\u00ADweise");
 
 
