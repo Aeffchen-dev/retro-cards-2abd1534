@@ -228,9 +228,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               travels through it. Every second band takes a slightly deeper grey, so
               the five fields still read as separate. Painted before the faces, so
               the fill never covers a smiley. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
+          {/* The grey block keeps the same 16px breathing room top and bottom as
+              the smileys get from the scale's edge — it never touches the row above
+              or the foot of the circle's row. */}
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: i === 0 ? 0 : atTravel(from), right: i === FACES.length - 1 ? 0 : `calc(100% - (${atTravel(to).slice(5, -1)}))` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: facePos(i), top: HEADER_H }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
           </div>
           <FaceLayer />
 
