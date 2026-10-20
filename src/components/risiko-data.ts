@@ -17,7 +17,7 @@ export interface RisikoPage {
 /** Keep the two sections separate, and add pages rather than shrink or scroll. */
 export function risikoPages(personKeys: string[], height: number, width: number): RisikoPage[] {
   const contentWidth = Math.max(180, Math.min(500, width - 48) - 56);
-  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 132);
+  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 140);
   const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
   const pages: RisikoPage[] = [];
   for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {
