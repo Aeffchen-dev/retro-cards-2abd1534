@@ -46,23 +46,16 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The scale runs edge to edge across the container, so the circle's travel is
-// inset by its own radius: at 0 and 100 its outer edge lands exactly on the
-// container's edges — fully visible, never cut off, never overflowing.
-
-// The smileys are pulled in by the difference between that inset and their own
-// half-width, so every face centre sits exactly where the circle's centre does.
-
-// Evenly spread columns: one soft band between every pair of neighbouring
-// smileys. Their edges use the circle's own inset maths, so every edge sits
-// exactly under the face it belongs to and all bands come out the same width.
+// The circle travels the whole scale, edge to edge — not just between the outer
+// smileys — so its travel is inset by its own radius alone: at 0 and 100 its
+// outer edge lands exactly on the container's edges, fully visible, never cut
+// off and never overflowing.
+const TRAVEL_INSET = MARKER_SIZE / 2;
 
 // One equal column per smiley across the full scale width; each smiley (and its
-// dashed guide) sits at its column's centre, and the circle travels centre to centre.
+// dashed guide) sits at its column's centre, while the circle keeps gliding
+// through the whole width under them.
 const COL_W = 100 / FACES.length;
-const COL_EDGE = COL_W / 2;
-const COL_SPAN = 100 - COL_W;
-const FACE_INSET = `calc(${COL_EDGE}% - ${FACE_W / 2}px)`;
 // The card's white shows through this gap, so the bands read as separate columns.
 const COLUMN_GAP = 6;
 // Workload circles stay round at 32px, and every partner reserves exactly one
