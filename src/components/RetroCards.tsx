@@ -1735,8 +1735,6 @@ const RetroCards: React.FC = () => {
             persons={persons}
             pill={BRAND.neonGreen}
             slideIndex={slides.indexOf(cardIndex)}
-            viewportWidth={viewportWidth}
-            viewportHeight={viewportHeight}
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onWorkloadChange={(shares) => setEditModeNotes(prev => ({

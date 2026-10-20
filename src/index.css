@@ -238,8 +238,20 @@
 }
 
 .risiko-card { overflow: hidden; }
-/* The headline sits above the smiley scale with the same gap the card uses. */
-.risiko-heading { margin-bottom: 12px; }
+/* The statement reads like the question above a Post-it input: 16px body copy on a
+   lime plate that hugs the text and grows with every line it needs. */
+.risiko-statement {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+  background: var(--risiko-question-bg);
+  color: var(--retro-black);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 
 .workload-lane { container-type: inline-size; }
 .workload-segment { height: 100%; background: var(--workload-color); }

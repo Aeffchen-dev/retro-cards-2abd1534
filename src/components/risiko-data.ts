@@ -26,28 +26,6 @@ export function risikoPages(personKeys: string[]): RisikoPage[] {
   return pages;
 }
 
-/** The card's text column: the card is 500px wide with 28px padding. */
-export const risikoContentWidth = (width: number) => Math.max(180, Math.min(500, width - 48) - 56);
-
-// The headline is set in the display face: 38.4px on a 1.05 line, ~0.52em per glyph.
-const DISPLAY_SIZE = 38.4;
-const DISPLAY_MIN = 18;
-const DISPLAY_LINE = 1.05;
-const DISPLAY_GLYPH = 0.52;
-
-/** What sits under the headline: smiley row with its labels, the rule and the two bottom rows. */
-export const RISIKO_BELOW = 190;
-
-/** Biggest display size the statement still fits in, so the card never clips it. */
-export function risikoHeadingSize(text: string, width: number, height: number, below: number = RISIKO_BELOW): number {
-  const contentWidth = risikoContentWidth(width);
-  const budget = Math.max(48, ((height - 48) * 0.88 - 56 - below) * 0.94);
-  for (let size = DISPLAY_SIZE; size > DISPLAY_MIN; size -= 0.4) {
-    const perLine = Math.max(6, Math.floor(contentWidth / (size * DISPLAY_GLYPH)));
-    if (Math.ceil(text.length / perLine) * size * DISPLAY_LINE <= budget) return Math.round(size * 10) / 10;
-  }
-  return DISPLAY_MIN;
-}
 
 /** 0 = sad (left) … 100 = happy (right); default neutral middle. */
 export const scaleValue = (stored?: string): number => {
