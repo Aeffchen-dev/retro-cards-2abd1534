@@ -167,14 +167,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
     {/* The rule spans the full card width; only the circle's travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: TRAVEL_INSET, right: TRAVEL_INSET, top: 0, bottom: 0 }}
+          style={{ left: `${facePct(0)}%`, right: `${facePct(0)}%`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -195,7 +195,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${TRAVEL_INSET}px + ${value} * (100% - ${MARKER_SIZE}px) / 100)` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
           {marker}
         </div>
       </>
@@ -233,7 +233,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               the smileys get from the scale's edge — it never touches the row above
               or the foot of the circle's row. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: i === 0 ? 0 : atTravel(from), right: i === FACES.length - 1 ? 0 : `calc(100% - (${atTravel(to).slice(5, -1)}))` }} />)}
+            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
             {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
           </div>
           <FaceLayer />
