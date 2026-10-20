@@ -151,12 +151,22 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
 
-  // The scale fills the space under the statement; its rule lands just above the
-  // buttons, so the card's own padding is the margin above and below the scale.
+  // Each statement is its own compact block: quote, smileys, guidelines and scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
-    <div key={key} className="flex flex-1 min-h-0 flex-col justify-end">
-      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-        onChange={(v) => onChange(key, String(v))} />
+    <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
+      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
+      <div className="relative flex flex-col w-full gap-1">
+        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
+          <span>Stimme gar nicht zu</span>
+          <span>Stimme voll zu</span>
+        </div>
+        <FaceLayer />
+        <div className="absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H, bottom: 20 }} aria-hidden="true">
+          {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
+        </div>
+        <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+          onChange={(v) => onChange(key, String(v))} />
+      </div>
     </div>
   );
 
