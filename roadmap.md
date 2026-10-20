@@ -144,3 +144,4 @@
 
 - [x] Show each Risikofaktoren card's Aussage(n) in notes mode with one pair of post-its per Aussage (work-split card uses its own heading), matching print pages; legacy notes migrated; verified on screen, phone, reload and print; 47 tests pass.
 - [x] Bring the Health Check smileys right to the top of their grey columns: the padding above them cut from 8px to 3px; verified on desktop and phone (faces 3px under the column's top edge, marker still dead centre, guides and names untouched) and in the exported PDF (faces 7px inside the printed columns), 47 tests pass.
+- [x] Make the scale's navigation hint move the whole dot, not only its arrow: the disc now hops ±10px with a ~5px lift off the rule at each extreme (arrow adds ±4 on top), 1100ms one-shot; verified by freezing the hint at exact phases (0/20/45/68/86/100%) — disc 32×32 in every frame, ends on its home position; 47 tests pass.
