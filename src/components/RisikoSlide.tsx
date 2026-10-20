@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The two tear streams, shared by the scale's crying face and the dragged dot:
 // a drop hanging from below each eye, tip first so it shrinks back into the eye.
@@ -46,9 +46,13 @@ const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smiley
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The circle stops half a face inside each end — exactly under the outer smileys —
-// and moves freely between them, so it can rest on any value, not just a field.
-const END_INSET = FACE_W / 2;
+// The scale runs edge to edge across the container, so the circle's travel is
+// inset by its own radius: at 0 and 100 its outer edge lands exactly on the
+// container's edges — fully visible, never cut off, never overflowing.
+const END_INSET = scaleEndInset(MARKER_SIZE);
+// The smileys are pulled in by the difference between that inset and their own
+// half-width, so every face centre sits exactly where the circle's centre does.
+const FACE_PAD = END_INSET - FACE_W / 2;
 // Guidelines sit under every smiley and midway between neighbours, at the value
 // the circle itself would take there — the same inset maths keeps them aligned.
 const GUIDES = guidePositions(FACES.length);
@@ -69,7 +73,7 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0" style={{ height: FACE_SIZE }} aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 box-border" style={{ height: FACE_SIZE, paddingInline: FACE_PAD }} aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
@@ -202,10 +206,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* Side padding = the dot's overhang past the outer faces, so the 32px
-          circle stays fully visible at 0 and 100. */}
-      <div className="relative flex flex-col gap-1 box-border" style={{ marginInline: Math.ceil((32 - FACE_W) / 2) + 1 }}>
-        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
+      {/* The scale spans the container: the rule and the dashed guides run edge to
+          edge, while the smileys and the tiny end labels sit flush with the
+          circle's travel — inset by the circle's own radius at both ends. */}
+      <div className="relative flex flex-col gap-1 box-border">
+        <div className="risiko-scale-caption pointer-events-none flex justify-between box-border" style={{ height: CAPTION_H, paddingInline: FACE_PAD }}>
           <span>Stimme nicht zu</span>
           <span>Stimme voll zu</span>
         </div>
