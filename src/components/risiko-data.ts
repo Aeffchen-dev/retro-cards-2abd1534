@@ -43,7 +43,7 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 74, 0);
   // One shared line plus a wrapping row of individually selectable shares.
   const shareRows = Math.ceil(personKeys.length / Math.max(1, Math.floor(contentWidth / 110)));
-  const allocationCost = textHeight("Wer leistet aktuell wie viel der Beziehungsarbeit?") + 64 + shareRows * 32;
+  const allocationCost = textHeight("Wer leistet aktuell wie viel der Beziehungsarbeit?") + 84 + shareRows * 32;
   if (personKeys.length) {
     if (used && used + allocationCost > budget) {
       page = { statements: [], personKeys: [] };
