@@ -197,7 +197,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const memojiEl = (
               <>
                 <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-                <span className={`workload-name ${nameAlign}`} style={{ "--workload-band": String(ownWidth) } as React.CSSProperties} aria-hidden="true">{p.name}</span>
+                <span className={`workload-name ${nameAlign}`} style={{ "--workload-band": String(ownWidth), "--workload-x": String(value) } as React.CSSProperties} aria-hidden="true">{p.name}</span>
               </>
             );
             if (readOnly) {

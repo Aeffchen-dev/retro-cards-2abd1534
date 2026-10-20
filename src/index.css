@@ -269,8 +269,6 @@
 .workload-name {
   position: absolute;
   top: calc(100% + 4px);
-  /* a label never needs more room than its owner's share of the line */
-  max-width: max(56px, calc(var(--workload-band, 100) * 1cqw - 8px));
   background: var(--risiko-label-bg);
   color: color-mix(in srgb, var(--workload-color) 55%, #101010);
   font-size: 11px;
@@ -282,10 +280,22 @@
   text-overflow: ellipsis;
 }
 /* Each name grows from its Memoji outwards into its own band, so two labels
-   can never end up on top of each other. */
-.workload-name--left { right: calc(50% + 2px); text-align: right; }
-.workload-name--right { left: calc(50% + 2px); text-align: left; }
-.workload-name--single { left: 50%; transform: translateX(-50%); }
+   can never end up on top of each other — nor past the end of the line. */
+.workload-name--left {
+  right: calc(50% + 2px);
+  text-align: right;
+  max-width: max(24px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc(var(--workload-x, 100) * 1cqw - 2px)));
+}
+.workload-name--right {
+  left: calc(50% + 2px);
+  text-align: left;
+  max-width: max(24px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc((100 - var(--workload-x, 0)) * 1cqw - 2px)));
+}
+.workload-name--single {
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100cqw - 8px);
+}
 
 /* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
 .risiko-scale-caption {
