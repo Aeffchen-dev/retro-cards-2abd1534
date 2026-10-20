@@ -581,8 +581,10 @@ describe("the statement's one size", () => {
   test("every statement reads at one size, kept small enough for the longest to close in three lines", () => {
     const sizes = (css.match(/\.risiko-statement \{[^}]*?font-size:\s*(\d+(?:\.\d+)?)px/g) ?? [])
       .map((m) => Number(m.match(/(\d+(?:\.\d+)?)px/)[1]));
-    expect(sizes.length, "the statement is sized in more than its two expected places").toBe(2);
-    expect(sizes, "the statement no longer reads at the size the longest one needs").toEqual([16, 12]);
+    expect(sizes.length, "the statement is sized in more than its three expected places").toBe(3);
+    expect(sizes[0], "the statement no longer reads at the size the longest one needs").toBe(16);
+    expect(sizes.slice(1), "a narrower layout reads the statement under the deck's smallest allowed size")
+      .toEqual([12, 12]);
   });
 });
 
