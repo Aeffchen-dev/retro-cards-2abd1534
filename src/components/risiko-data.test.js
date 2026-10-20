@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -106,7 +106,7 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
     expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann mit dir ich selbst sein und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
-    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
+    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Wer leistet aktuell wie viel der Beziehungsarbeit?");
@@ -128,5 +128,19 @@ describe("Risikofaktoren scale", () => {
     const withPartners = risikoPages(keys).filter(p => p.personKeys.length);
     expect(withPartners.length).toBe(1);
     expect(withPartners[0].personKeys).toEqual(keys);
+  });
+  test("keeps a visible gap between neighbouring work-split circles", () => {
+    // adjacent circles always sit exactly one band apart
+    expect(workloadBand(32, 60, 2)).toBe("min(60px, calc((100cqw - 32px) / 2))");
+    // on a normal card that band leaves clear air around every circle
+    for (const count of [2, 3, 5]) {
+      const band = Math.min(60, (440 - 32) / count);
+      expect(band - 32).toBeGreaterThanOrEqual(24);
+    }
+    // and it never eats the room the circles need to move, even with many partners
+    for (const count of [2, 5, 8]) {
+      const band = Math.min(60, (300 - 32) / count);
+      expect(300 - band * (count - 1) - 32).toBeGreaterThan(0);
+    }
   });
 });

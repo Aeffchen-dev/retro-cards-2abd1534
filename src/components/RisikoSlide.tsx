@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The two tear streams, shared by the scale's crying face and the dragged dot:
 // a drop hanging from below each eye, tip first so it shrinks back into the eye.
@@ -51,8 +51,9 @@ const RULE_W = (FACE_SIZE * 1.5) / 24;
 // and moves freely between them, so it can rest on any value, not just a field.
 const END_INSET = FACE_W / 2;
 // Workload circles stay round at 32px, and every partner reserves a wider band
-// (circle + room for its centred name), so names never reach into a neighbour's.
-const SLOT = 32, BAND = 44;
+// (circle + room for its centred name + clear air to the neighbour's circle), so
+// dots never touch and names never reach into a neighbour's.
+const SLOT = 32, BAND = 60;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
 // The eyes stay lighter than a full disc so the brows keep their own space.
@@ -247,10 +248,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             // One number for width and height, so the avatar circle can never be
             // squeezed into an oval when the lane gets crowded.
             const slot = `min(${SLOT}px, calc(100cqw / ${partners.length}))`;
-            // Every partner reserves a band: its circle plus room for its name. Adjacent
-            // circles therefore never touch, and a name can sit centred under its own
-            // circle without ever reaching into the neighbour's band.
-            const band = `min(${BAND}px, calc(100cqw / ${partners.length} * 1.4))`;
+            // Every partner reserves a band: its circle, room for its name and a clear
+            // gap to the neighbour's circle — adjacent circles always sit exactly one
+            // band apart. The band may never grow past the share of the lane each
+            // partner can actually use, or the circles would run out of room to move.
+            const band = workloadBand(SLOT, BAND, partners.length);
             const li = `calc(${band} * ${i})`;
             const ri = `calc(${band} * ${partners.length - i - 1})`;
             const vars = {
