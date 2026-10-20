@@ -252,7 +252,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             // gap to the neighbour's circle — adjacent circles always sit exactly one
             // band apart. The band may never grow past the share of the lane each
             // partner can actually use, or the circles would run out of room to move.
-            const band = `min(${BAND}px, calc((100cqw - ${SLOT}px) / ${partners.length}))`;
+            const band = workloadBand(SLOT, BAND, partners.length);
             const li = `calc(${band} * ${i})`;
             const ri = `calc(${band} * ${partners.length - i - 1})`;
             const vars = {
