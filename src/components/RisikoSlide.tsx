@@ -8,9 +8,18 @@ const FACES = [Angry, Frown, Meh, Smile, Laugh];
 const FACE_GREY = "#9B9BA3";
 import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 
-const FaceRow = () => (
-  <div className="flex justify-between pb-1" aria-hidden="true">
-    {FACES.map((Face, i) => <Face key={i} size={16} strokeWidth={1.5} color={FACE_GREY} />)}
+// The five faces sit directly on the track line (not above it) with a white
+// fill so the line is hidden behind each face.
+const FACE_SIZE = 16;
+const FACE_FILL = "#FFFFFF";
+
+const FaceLayer = () => (
+  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between pointer-events-none" aria-hidden="true">
+    {FACES.map((Face, i) => (
+      <span key={i} className="flex items-center justify-center rounded-full" style={{ width: FACE_SIZE - 1, height: FACE_SIZE - 1, background: FACE_FILL }}>
+        <Face size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
+      </span>
+    ))}
   </div>
 );
 
@@ -26,11 +35,12 @@ interface RisikoSlideProps {
 
 const INK = "var(--retro-black)";
 
-const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
-  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode;
+const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces }: {
+  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode; faces?: boolean;
 }) => (
   <div className="relative w-full h-10">
     <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: INK }} />
+    {faces && <FaceLayer />}
     {readOnly ? (
       <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2" style={{ left: `${value}%` }}>{thumb}</div>
     ) : (
@@ -56,8 +66,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="flex flex-col">
       <span className="retro-body-copy">{text}</span>
-      <FaceRow />
-      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text}
+      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} faces
         onChange={(v) => onChange(key, String(v))} thumb={dot} />
     </div>
   );
