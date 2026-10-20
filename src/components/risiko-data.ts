@@ -15,7 +15,7 @@ export const RISIKO_ALLOCATION_HEADING = "Ist unsere Beziehungsarbeit gerecht ve
 /** What counts as Beziehungsarbeit — the card's fixed examples, read as one
  *  flowing sentence under the question. The items keep the couple's own wording
  *  and are joined with commas; screen and print show the same text. */
-export const RISIKO_ALLOCATION_INTRO = "Unter Beziehungsarbeit versteht man";
+export const RISIKO_ALLOCATION_INTRO = "Unter Beziehungsarbeit fällt zum Beispiel";
 
 export const RISIKO_ALLOCATION_EXAMPLES = [
   "schwierige Gespräche initiieren",
