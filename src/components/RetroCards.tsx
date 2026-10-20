@@ -1359,6 +1359,7 @@ const RetroCards: React.FC = () => {
             <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '28px' }}>
               <ActionRow
                 icon="IconInfo"
+                className="hc-helper"
                 label="Zieht euer Emoji neben den passenden Smilie"
                 accent="#F1F2F4"
                 fieldBg="#F1F2F4"

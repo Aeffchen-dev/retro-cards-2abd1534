@@ -386,6 +386,31 @@
   text-overflow: clip;
   line-height: 1.25;
 }
+/* The Health Check helper (first two cards) keeps its full sentence too: on
+   narrow cards the label wraps to a second line instead of being cut off with
+   an ellipsis, while the plate still hugs its text. */
+.hc-helper {
+  height: auto;
+  max-width: 100%;
+  align-items: stretch;
+}
+.hc-helper > span:first-child {
+  height: auto;
+  min-height: 32px;
+}
+.hc-helper > span:last-child {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  height: auto;
+  min-height: 32px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.25;
+}
 /* The thumb is as wide as a face so its travel ends land under the outer face centres. */
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
 /* The press has to land on the circle itself: the slider library only sees a
