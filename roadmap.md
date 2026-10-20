@@ -59,3 +59,4 @@
 - [x] Remove the statement animation and coloured background on the Health Check cards (plain body copy, no reveal, no plate); verify on every card and in the PDF.
 
 - [x] Show the Health Check statements as quotes (German quotation marks, work-split question left unquoted); verify every card on phone and in the PDF.
+- [x] Give the Health Check scale the card's own padding as its margin above and below (28px on screen, the printed card's 40px in the PDF), with the guidelines ending on the rule; verify every card on phone and in the PDF.
