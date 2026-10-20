@@ -25,9 +25,9 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     <path d="M8.4 10.45c0 0-0.9 0.95-0.9 1.2a0.9 0.9 0 0 0 1.8 0c0-.45-0.9-1.2-0.9-1.2z" fill={color ?? "currentColor"} stroke="none" />
   </svg>
 );
-export const FACES = [Frown, Meh, Smile, Laugh];
+export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
-// Shared smiley header; every slider aligns with its four column centres.
+// Shared smiley header; every slider aligns with its five column centres.
 const FACE_SIZE = 24;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
 // The draggable marker keeps its own, larger size: it has to read as the handle
@@ -43,7 +43,7 @@ const FACE_FILL = "var(--risiko-face-fill)";
 const MOUTH_W = 1;
 const EYE_W = 3;
 
-const Face = ({ Icon }: { Icon: typeof Frown }) => (
+const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
   <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
     <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
   </span>
@@ -73,15 +73,16 @@ const END_INSET = FACE_W / 2;
 // White drag hints inside the untouched dot: it can be pulled left or right.
 const ARROW_W = 1.6;
 
-// Morph the eyes and mouth through all four header expressions.
+// Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
-  const { eyeY, brow, mouth } = scaleFaceGeometry(value);
+  const { eyeY, brow, mouth, tear } = scaleFaceGeometry(value);
   const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" fill={INK} />
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
+      <path d="M8.4 10.45c0 0-0.9 0.95-0.9 1.2a0.9 0.9 0 0 0 1.8 0c0-.45-0.9-1.2-0.9-1.2z"
+        fill={FACE_FILL} stroke="none" transform={`translate(8.4 11.65) scale(${tear}) translate(-8.4 -11.65)`} />
       <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>

@@ -391,6 +391,8 @@
   display: block;
   width: 32px;
   height: 32px;
+  border-radius: 50%;
+  background: var(--retro-black);
   /* the thumb is as narrow as a scale face, so the marker must not be squeezed
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;
@@ -405,7 +407,6 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: var(--retro-black);
   transition: transform 160ms ease;
 }
 .risiko-drag-face {
@@ -415,7 +416,7 @@
   transform: scale(0);
   transition: transform 180ms ease;
 }
-/* Dot morphs into the face: one shrinks while the other grows, no fading. */
+/* Only the features morph; the shared 32px disc never changes size. */
 .is-dragging .risiko-drag-face { transform: scale(1); }
 .is-dragging .risiko-plain-dot { transform: scale(0); }
 /* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */

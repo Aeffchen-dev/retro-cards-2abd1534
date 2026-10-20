@@ -3,7 +3,7 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
-import RisikoSlide, { FACES, FACE_GREY, SadFace } from "@/components/RisikoSlide";
+import RisikoSlide, { FACES, FACE_GREY } from "@/components/RisikoSlide";
 import { risikoPages } from "@/components/risiko-data";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
@@ -1325,7 +1325,7 @@ const RetroCards: React.FC = () => {
             <div className="relative w-full flex-1 my-10 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
-                {[SadFace, ...FACES].reverse().map((Face, i) => (
+                {[...FACES].reverse().map((Face, i) => (
                   <Face key={i} size={40} strokeWidth={1.5} color={FACE_GREY} />
                 ))}
               </div>
