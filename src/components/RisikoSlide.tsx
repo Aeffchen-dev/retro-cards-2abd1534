@@ -242,41 +242,18 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     );
   };
 
-  // The scale takes every pixel of the area under the statement; the buttons sit
-  // outside it, so the area's lower edge is exactly where the rule is drawn.
+  // Blocks share the free space evenly; the buttons sit below, never underneath.
   const body = (readOnly: boolean) => (
-    <div className="flex flex-col w-full flex-1 min-h-0">
+    <div className="risiko-body flex flex-col w-full flex-1 min-h-0 justify-evenly gap-6">
       {page.statements.map(([k, t]) => scale(k, t, readOnly))}
       {page.personKeys.length > 0 && allocation(readOnly)}
     </div>
   );
 
-
-
-  // The statement is the card's headline and is shown as a quote; the work-split card
-  // asks its own question, which stays unquoted.
-  const statement = page.statements[0]?.[1];
-  const heading = statement ?? RISIKO_ALLOCATION_HEADING;
-
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
-      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{statement ? `\u201E${statement}\u201C` : heading}</h2>
-      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
-        {/* The agreement scale belongs to a statement; the work split has its own line. */}
-        {page.statements.length > 0 && (
-          <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
-            <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
-              <span>Stimme gar nicht zu</span>
-              <span>Stimme voll zu</span>
-            </div>
-            <FaceLayer />
-          </div>
-        )}
-        {page.statements.length > 0 && (
-          <div className="risiko-columns absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
-          </div>
-        )}
+      {page.statements.length === 0 && <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>}
+      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>
