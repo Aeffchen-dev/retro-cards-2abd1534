@@ -130,7 +130,7 @@ export const mouthPath = (mouth: number[]) =>
  *  the same drop: full at the sad end, shrinking to nothing at 25. It hangs a
  *  little out from the eye so its bulb stays clear of the open downturn below. */
 export const CRYING_TEAR = 0.6;
-export const TEAR_SHIFT = [-0.8, 0.2];
+export const TEAR_SHIFT = [-1, 0.3];
 export const tearTransform = (tear: number) =>
   `translate(${TEAR_SHIFT[0]} ${TEAR_SHIFT[1]}) translate(8.9 9.7) scale(${tear}) translate(-8.9 -9.7)`;
 
