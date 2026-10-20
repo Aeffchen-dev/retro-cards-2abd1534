@@ -57,3 +57,5 @@
 - [x] Style the Health Check statements like the question above a Post-it input (16px body copy on a lime plate instead of the display headline); verify fit on every card, on phone and in the PDF.
 
 - [x] Remove the statement animation and coloured background on the Health Check cards (plain body copy, no reveal, no plate); verify on every card and in the PDF.
+
+- [x] Show the Health Check statements as quotes (German quotation marks, work-split question left unquoted); verify every card on phone and in the PDF.
