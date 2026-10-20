@@ -467,10 +467,10 @@ describe("mood test chapter", () => {
   });
   test("the chapter pill reads Mood Test on the statement cards and keeps Health Check on the first two", () => {
     const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
-    expect(cards).toContain('105: "Relationship Mood Test"');
+    expect(cards).toContain('105: "Beziehungsgefühl Test"');
     expect(cards).toContain('1: "Health Check"');
     expect(cards).toContain('2: "Health Check"');
-    expect(cards).toContain('"Relationship Mood Test" : SLIDE_PILLS[slideId]');
+    expect(cards).toContain('"Beziehungsgefühl Test" : SLIDE_PILLS[slideId]');
   });
   test("the chapter block and the mood smiley are rendered on the first statement card", () => {
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
