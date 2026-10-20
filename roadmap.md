@@ -2,3 +2,4 @@
 - [x] Verify text entry, scale dragging, persistence, print and mobile layout.
 - [x] Split Risikofaktoren into two pages, adding pages when needed without scrolling.
 - [x] Verify scale persistence, print output and fit on short and large screens.
+- [x] Show shared smileys and column lines with coloured question backgrounds; verify fit and interaction.

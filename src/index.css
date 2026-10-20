@@ -37,6 +37,8 @@
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
+    --risiko-question-bg: #D6F587;
+    --risiko-column: #C8CCD0;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
@@ -244,7 +246,10 @@
   font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
+  background: var(--risiko-question-bg);
+  padding: 5px 12px;
 }
+.risiko-column { border-left: 1px dashed var(--risiko-column); }
 .risiko-memoji {
   background: var(--risiko-face-fill);
   box-shadow: 0 0 0 1.5px var(--retro-black);

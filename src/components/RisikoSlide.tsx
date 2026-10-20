@@ -7,9 +7,7 @@ import { scaleValue, type RisikoPage } from "./risiko-data";
 
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
-// The faces sit directly on the track line (not above it) with a white
-// fill so the line is hidden behind each face. They are large enough that
-// the 14px dot — drawn above them (z-10) — leaves the smiley readable.
+// Shared smiley header; every slider aligns with its five column centres.
 const FACE_SIZE = 40;
 const FACE_FILL = "var(--risiko-face-fill)";
 
@@ -20,17 +18,9 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between pointer-events-none" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-10" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
-);
-
-// Anchor faces for the allocation scale: sad at 0 (left), happy at 100 (right).
-const EndFaces = () => (
-  <>
-    <span className="absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true"><Face Icon={Angry} /></span>
-    <span className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true"><Face Icon={Laugh} /></span>
-  </>
 );
 
 interface Person { key: string; name: string; emoji: string }
@@ -49,24 +39,22 @@ const INK = "var(--retro-black)";
 const END_INSET = FACE_SIZE / 2; // px the track is shortened on each side so its
 // ends line up with the centres of the outer faces
 
-const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }: {
-  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode; faces?: boolean; endFaces?: boolean;
+const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
+  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode;
 }) => (
-  <div className="relative w-full h-12 shrink-0">
-    <div className="absolute top-1/2 h-px" style={{ background: INK, left: (faces || endFaces) ? END_INSET : 0, right: (faces || endFaces) ? END_INSET : 0 }} />
-    {faces && <FaceLayer />}
-    {endFaces && <EndFaces />}
+  <div className="risiko-track relative w-full h-10 shrink-0">
+    <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
     {readOnly ? (
       <div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-        style={{ left: (faces || endFaces) ? `calc(${value}% + ${END_INSET - value * (2 * END_INSET) / 100}px)` : `${value}%` }}
+        style={{ left: `calc(${value}% + ${END_INSET - value * (2 * END_INSET) / 100}px)` }}
       >
         {thumb}
       </div>
     ) : (
       <SliderPrimitive.Root
         className="swiper-no-swiping absolute flex items-center touch-none select-none z-10"
-        style={{ left: (faces || endFaces) ? END_INSET : 0, right: (faces || endFaces) ? END_INSET : 0, top: 0, bottom: 0 }}
+        style={{ left: END_INSET, right: END_INSET, top: 0, bottom: 0 }}
         value={[value]} min={0} max={100} step={1}
         onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
         onKeyDown={(e) => e.stopPropagation()}
@@ -81,8 +69,6 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }:
 );
 
 const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, onChange, pill }: RisikoSlideProps) => {
-  // No white halo: it would cover most of the 22px face. The dot is smaller
-  // than the face, so the smiley's rim and eyes stay visible around it.
   const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK }} />;
   const memoji = (emoji: string) => (
     <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{emoji}</span>
@@ -90,30 +76,29 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="flex flex-col">
-      <span className="retro-body-copy risiko-label">{text}</span>
-      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} faces
+      <span className="retro-body-copy risiko-label relative z-10 self-start">{text}</span>
+      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text}
         onChange={(v) => onChange(key, String(v))} thumb={dot} />
     </div>
   );
 
-  // Every partner gets their own draggable lane; the scale ends are marked
-  // with a sad face (0) on the left and a happy face (100) on the right.
+  // Every partner gets their own draggable lane on the shared columns.
   const allocation = (readOnly: boolean) => {
     const title = persons.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit";
     return (
       <div className="flex flex-col gap-1">
-        <span className="retro-body-copy risiko-label">{title}</span>
+        <span className="retro-body-copy risiko-label relative z-10 self-start">{title}</span>
         {persons.filter(p => page.personKeys.includes(p.key)).map((p) => (
           <Track key={p.key} value={scaleValue(values[`work_${p.key}`] ?? values.allocation)} readOnly={readOnly}
             ariaLabel={`Beziehungsarbeit ${p.name}`} onChange={(v) => onChange(`work_${p.key}`, String(v))}
-            thumb={memoji(p.emoji)} endFaces />
+            thumb={memoji(p.emoji)} />
         ))}
       </div>
     );
   };
 
   const body = (readOnly: boolean) => (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-3 w-full">
       {page.statements.map(([k, t]) => statement(k, t, readOnly))}
       {page.personKeys.length > 0 && allocation(readOnly)}
     </div>
@@ -125,8 +110,14 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
       <h2 className="retro-heading w-full"><RevealText text="Risikofaktoren" color={pill} slideIndex={slideId} /></h2>
       <span className="retro-small">{pageNumber} / {pageCount}</span>
       </div>
-      <div className="screen-only w-full">{body(false)}</div>
-      <div className="hidden print-only w-full">{body(true)}</div>
+      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
+        <FaceLayer />
+        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: END_INSET, right: END_INSET, top: FACE_SIZE }} aria-hidden="true">
+          {FACES.map((_, i) => <span key={i} className="risiko-column h-full" />)}
+        </div>
+        <div className="screen-only w-full relative">{body(false)}</div>
+        <div className="hidden print-only w-full relative">{body(true)}</div>
+      </div>
       <div className="screen-only w-full mt-auto shrink-0">
         <ActionRow className="risiko-helper" icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
