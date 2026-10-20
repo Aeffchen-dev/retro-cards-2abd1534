@@ -213,6 +213,34 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // that one until the pointer is lifted, wherever on the bar the press landed.
   const workloadDrag = useRef<{ index: number } | null>(null);
 
+  // A press inside the field — anywhere above the rule — picks the circle up and
+  // keeps dragging it, so the whole grey band is the handle and not only the
+  // rule's row. The value is read with the slider's own maths, so both ways of
+  // grabbing land the circle exactly under the pointer.
+  const fieldDrag = useRef<HTMLDivElement | null>(null);
+  const fieldValueAt = (el: HTMLElement, clientX: number) => {
+    const box = el.getBoundingClientRect();
+    const from = (box.width * facePct(0)) / 100;
+    const travel = (box.width * (100 - 2 * facePct(0))) / 100;
+    if (travel <= 0) return null;
+    return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
+  };
+  const grabField = (key: string, readOnly: boolean) => (e: React.PointerEvent<HTMLDivElement>) => {
+    // the rule's own row belongs to the slider, which already drags from there
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-track")) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v === null) return;
+    fieldDrag.current = e.currentTarget;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    onChange(key, String(Math.round(v)));
+  };
+  const dragField = (key: string) => (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!fieldDrag.current) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v !== null) onChange(key, String(Math.round(v)));
+  };
+  const releaseField = () => { fieldDrag.current = null; };
+
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
@@ -225,7 +253,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border" style={{ paddingTop: FACE_PAD }}>
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD }}
+          onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
+          onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
               with nothing between them and stretching over the scale's whole height,
               so every smiley and the circle sit inside their own band. Every second
