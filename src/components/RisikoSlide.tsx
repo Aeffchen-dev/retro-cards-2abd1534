@@ -95,7 +95,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
       <span className="risiko-plain-dot">
         <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
           stroke={FACE_FILL} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
-          <path d="M10 8 L6 12 L10 16 M14 8 L18 12 L14 16 M12 8 L12 16" />
+          <path d="M10 8 L6 12 L10 16 M14 8 L18 12 L14 16 M8 12 L16 12" />
         </svg>
       </span>
       <span className="risiko-drag-face">
