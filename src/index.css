@@ -237,10 +237,15 @@
 }
 
 .risiko-card { overflow: hidden; }
+/* The scale keeps the same breathing room above and below as the card's own padding. */
+.risiko-page {
+  --risiko-scale-pad: 28px; /* the card's own padding */
+  --risiko-track-h: 40px;   /* the slider row; its rule sits at the middle */
+}
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
 .risiko-statement {
-  margin-bottom: 12px;
+  margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
@@ -354,12 +359,18 @@
 }
 /* The thumb is as wide as a face so its travel ends land under the outer face centres. */
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
-/* Every gap — smileys to the first question, between the questions, the last
-   question to the buttons — takes an equal share of the leftover height. */
-.risiko-auto-gap { margin-top: auto; }
-/* The button block sits over the column lines, so it carries the card colour. */
-.risiko-footer { background: var(--risiko-label-bg); }
+/* The slider row's height is shared with the footer's margin maths below. */
+.risiko-track { height: var(--risiko-track-h); }
+/* The button block sits over the column lines, so it carries the card colour. The
+   rule sits at the track's middle, so the scale's lower margin is measured from the
+   rule itself rather than from the track's box. */
+.risiko-footer {
+  background: var(--risiko-label-bg);
+  margin-top: calc(var(--risiko-scale-pad) - var(--risiko-track-h) / 2);
+}
 .risiko-column { flex: 0 0 auto; }
+/* The guidelines stop at the rule instead of running past it into the buttons. */
+.risiko-columns { bottom: calc(var(--risiko-track-h) / 2); }
 /* The dashed guidelines read a touch finer than the smileys: a 1px line
    (fractional widths snap unevenly), longer dashes and smaller gaps. */
 .risiko-column-line {
@@ -860,6 +871,15 @@ textarea.bg-retro-post-it:focus,
     position: relative !important;
     flex-shrink: 0 !important;
   }
+
+  /* The printed card is padded by 40px, so the scale keeps the same rhythm there. */
+  .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
+  /* The buttons are not printed, so the print copy carries the scale's lower margin
+     itself; the guidelines stop on the rule. */
+  .print-slide-page .risiko-scale-area .print-only {
+    padding-bottom: calc(var(--risiko-scale-pad) - var(--risiko-track-h) / 2);
+  }
+  .print-slide-page .risiko-columns { bottom: var(--risiko-scale-pad); }
 
 
   /* Post-it text areas - maintain frontend layout */
