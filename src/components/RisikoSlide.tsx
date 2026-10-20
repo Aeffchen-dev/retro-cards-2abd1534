@@ -43,8 +43,9 @@ const FIELD_W = 100 / RISIKO_FIELDS;
 const fieldCentre = (value: number) => (value / RISIKO_FIELD_STEP + 0.5) * FIELD_W;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
+// The eyes stay lighter than a full disc so the brows keep their own space.
 const MOUTH_W = 1;
-const EYE_W = 3;
+const EYE_W = 2.4;
 
 const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
   <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
@@ -91,7 +92,7 @@ const MorphFace = ({ value }: { value: number }) => {
         fill={FACE_FILL} stroke="none" transform={`translate(9 11.2) scale(${tear}) translate(-9 -11.2)`} />
       // The marker's eyes are drawn heavier than the small scale faces, so its
       // brows sit higher: they must keep a clear gap above the eye dots.
-      <path d={`M 7.5 ${9 - brow * 1.9} L 10 ${9 - brow * 3.3} M 14 ${9 - brow * 3.3} L 16.5 ${9 - brow * 1.9}`} strokeWidth={MOUTH_W * brow} />
+      <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
   );
