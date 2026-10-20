@@ -49,6 +49,9 @@ const RULE_W = 2;
 // The grey columns keep the same breathing room top and bottom as the smileys
 // get from the scale's edge.
 const TRAVEL_INSET = MARKER_SIZE / 2;
+// The fields stretch to fill whatever height the card has left over, but they
+// never collapse below one comfortable band: that floor is their own minimum.
+const COLUMN_MIN = 56;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -212,17 +215,17 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
-    <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
+    <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       {/* The two labels take a line of their own above the columns — "Trifft nicht
           zu" flush left, "Trifft zu" flush right — so the columns below get the
           card's full width. */}
-      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border">
+      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border grow shrink-0">
         <div className="risiko-scale-captions flex items-center justify-between gap-2">
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col gap-1 box-border">
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border" style={{ minHeight: COLUMN_MIN + TRAVEL_INSET * 2 }}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
               with nothing between them, from its top down to the foot of the
               circle's row — so every smiley sits inside its own band and the circle
@@ -232,7 +235,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           {/* The grey block keeps the same 16px breathing room top and bottom as
               the smileys get from the scale's edge — it never touches the row above
               or the foot of the circle's row. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET }} aria-hidden="true">
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET, minHeight: COLUMN_MIN }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
             {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
           </div>
