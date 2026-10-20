@@ -89,7 +89,9 @@ const MorphFace = ({ value }: { value: number }) => {
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
       <path d="M9 11.2C9 11.2 7.8 12.8 7.8 13.2a1.2 1.2 0 0 0 2.4 0C10.2 12.8 9 11.2 9 11.2z"
         fill={FACE_FILL} stroke="none" transform={`translate(9 11.2) scale(${tear}) translate(-9 -11.2)`} />
-      <path d={`M 7.5 ${9 - brow * 1.1} L 10 ${9 - brow * 2.5} M 14 ${9 - brow * 2.5} L 16.5 ${9 - brow * 1.1}`} strokeWidth={MOUTH_W * brow} />
+      // The marker's eyes are drawn heavier than the small scale faces, so its
+      // brows sit higher: they must keep a clear gap above the eye dots.
+      <path d={`M 7.5 ${9 - brow * 1.9} L 10 ${9 - brow * 3.3} M 14 ${9 - brow * 3.3} L 16.5 ${9 - brow * 1.9}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
   );
