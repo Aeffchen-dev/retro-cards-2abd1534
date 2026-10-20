@@ -63,3 +63,4 @@
 - [x] Centre the Vorhaben allocation arrow on its scale line (screen and print); verify by measurement and in the PDF.
 - [x] Remove the 0%/100% end labels above the work-split lane (screen and print).
 - [x] Shrink the Risikofaktoren scale faces to 24px with a 1.5px rule, keep the 32px handle and raise the slider row to 56px so the dot sits centred on its rule; verify on phone, on the work-split card and in the PDF.
+- [x] Make the five smileys on the first two Health Check slides a bit smaller (48px → 40px); verify on phone and in the PDF.
