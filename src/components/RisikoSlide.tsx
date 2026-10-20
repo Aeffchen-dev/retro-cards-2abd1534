@@ -153,7 +153,11 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute inset-0 flex items-center touch-none select-none z-10 pointer-events-none"
                 value={[value]} min={0} max={100} step={1}
-                onValueChange={([v]) => { if (v !== undefined) onChange(`work_${p.key}`, String(v)); }}>
+                onValueChange={([v]) => { if (v !== undefined) onChange(`work_${p.key}`, String(v)); }}
+                onKeyDown={(e) => {
+                  // keep the arrow keys from paging the card deck
+                  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) e.stopPropagation();
+                }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`}
                   className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
