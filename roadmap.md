@@ -1,4 +1,4 @@
 - [x] Add Vorhaben after Feedback with four prompts and emoji allocation scale.
 - [x] Verify text entry, scale dragging, persistence, print and mobile layout.
-- [ ] Split Risikofaktoren into two pages, adding pages when needed without scrolling.
-- [ ] Verify scale persistence, print output and fit on short and large screens.
+- [x] Split Risikofaktoren into two pages, adding pages when needed without scrolling.
+- [x] Verify scale persistence, print output and fit on short and large screens.
