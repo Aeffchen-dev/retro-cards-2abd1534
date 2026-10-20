@@ -29,3 +29,4 @@
 - [x] Reword the appreciation question to "Unsere Kommunikation bleibt immer respektvoll"; verify plates grow and pages still fit.
 - [x] Give every gap on the Health Check pages the same size (smileys, questions, bottom buttons); verify equal gaps on desktop and mobile.
 - [x] Remove the angry scale face, evenly align the remaining four faces and match the persistent drag-face morph; verify interaction and geometry.
+- [x] Add tiny grey end labels above the Health Check scale ("Stimme gar nicht zu" left, "Stimme voll zu" right); verify on desktop, mobile and in the PDF.

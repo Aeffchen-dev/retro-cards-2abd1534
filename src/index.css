@@ -39,6 +39,7 @@
     --risiko-helper-bg: #F1F2F4;
     --risiko-question-bg: #D6F587;
     --risiko-column: #C8CCD0;
+    --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
@@ -227,6 +228,19 @@
 }
 
 .risiko-card { overflow: hidden; }
+
+/* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
+.risiko-scale-caption {
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
+  font-weight: 500;
+  font-feature-settings: "ss01", "ss02", "cv11";
+  letter-spacing: 0.005em;
+}
+.risiko-scale-caption span {
+  font-size: 10px;
+  line-height: 12px;
+  color: var(--risiko-caption);
+}
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
 .risiko-page .risiko-label {
