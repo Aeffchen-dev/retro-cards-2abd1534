@@ -1760,8 +1760,6 @@ const RetroCards: React.FC = () => {
         return (
           <VorhabenSlide
             slideId={SLIDE_VORHABEN}
-            emoji1={displayEmoji1}
-            emoji2={displayEmoji2}
             values={editModeNotes[SLIDE_VORHABEN] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
