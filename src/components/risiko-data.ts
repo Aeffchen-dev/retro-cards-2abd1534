@@ -19,7 +19,8 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   const contentWidth = Math.max(180, Math.min(500, width - 48) - 56);
   // The helper sentence needs its own second line once the card gets narrow.
   const footerCost = contentWidth < 292 ? 160 : 140;
-  const budget = Math.max(130, (height - 48) * 0.88 - 56 - footerCost);
+  // 72 = smiley header with its tiny end labels plus the card's top padding.
+  const budget = Math.max(130, (height - 48) * 0.88 - 72 - footerCost);
   const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
   const pages: RisikoPage[] = [];
   for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {

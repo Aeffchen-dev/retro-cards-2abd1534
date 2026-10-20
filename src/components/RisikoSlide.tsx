@@ -9,6 +9,8 @@ export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its four column centres.
 const FACE_SIZE = 32;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
+const CAPTION_H = 12; // tiny end labels above the smileys
+const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
 const FACE_FILL = "var(--risiko-face-fill)";
 
 const Face = ({ Icon }: { Icon: typeof Frown }) => (
@@ -159,8 +161,14 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
-        <FaceLayer />
-        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
+        <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
+          <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H, paddingLeft: END_INSET, paddingRight: END_INSET }}>
+            <span>Stimme gar nicht zu</span>
+            <span>Stimme voll zu</span>
+          </div>
+          <FaceLayer />
+        </div>
+        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
