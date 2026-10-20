@@ -19,10 +19,17 @@
 }
 .vorhaben-scale-line { background: var(--vorhaben-ink); }
 .vorhaben-scale-tick { background: var(--vorhaben-ink); }
+/* The marker is a round dot — the same shape as the answer circle on the
+   Risikofaktoren scales — both on the slider and in the printed copy. */
+.vorhaben-scale-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--retro-black);
+  flex-shrink: 0;
+}
 .vorhaben-scale-arrow {
   color: var(--vorhaben-ink);
-  background: var(--retro-post-it);
-  border-radius: 0;
 }
 /* Ink ring, never the browser's blue outline */
 .vorhaben-scale-arrow:focus-visible {
