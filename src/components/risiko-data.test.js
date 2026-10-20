@@ -265,6 +265,6 @@ describe("smallest text size", () => {
     expect(below).toEqual([]);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
-    expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row \{\s*font-size: 12px;/);
+    expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
   });
 });

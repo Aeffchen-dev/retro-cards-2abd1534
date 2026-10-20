@@ -42,7 +42,7 @@
     /* every second column sits a whisker deeper — the two stay close together */
     --risiko-column-fill-alt: #E4E6E8;
     --risiko-caption: #9B9BA3;
-    /* the scale smileys and their dashed guides: a darker grey than the labels */
+    /* the scale's own grey: the smileys, their dashed guides and the end labels share it */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
