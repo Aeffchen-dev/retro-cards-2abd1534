@@ -40,7 +40,7 @@ const VorhabenSlide = ({ slideId, emoji1, emoji2, values, onChange }: VorhabenSl
               <SliderPrimitive.Track className="vorhaben-scale-line relative w-full h-px" />
               <SliderPrimitive.Thumb
                 aria-label="Verteilung der Beziehungsarbeit" aria-valuetext={`${100 - allocation}% links, ${allocation}% rechts`}
-                className="vorhaben-scale-arrow flex items-center justify-center w-8 h-11 -translate-y-3 cursor-ew-resize focus-visible:outline-none"
+                className="vorhaben-scale-arrow flex items-center justify-center w-8 h-11 -translate-y-3 cursor-ew-resize"
               ><ArrowDown size={28} strokeWidth={1.5} /></SliderPrimitive.Thumb>
             </SliderPrimitive.Root>
           )}
