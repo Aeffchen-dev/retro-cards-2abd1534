@@ -119,7 +119,7 @@ const MorphFace = ({ value }: { value: number }) => {
       {/* One eye is a single stroke: a round dot at every anchor on this scale,
           the same stroke the small smileys draw — only heavier inside the disc. */}
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={tearTransform(tear)} />
+      <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={tearTransform(tear, [0, 0.45])} />
       // The marker's eyes are drawn heavier than the small scale faces, so its
       // brows sit higher: they must keep a clear gap above the eye dots.
       <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />

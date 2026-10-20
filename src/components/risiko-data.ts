@@ -131,8 +131,10 @@ export const mouthPath = (mouth: number[]) =>
  *  little out from the eye so its bulb stays clear of the open downturn below. */
 export const CRYING_TEAR = 0.6;
 export const TEAR_SHIFT = [-1, 0.3];
-export const tearTransform = (tear: number) =>
-  `translate(${TEAR_SHIFT[0]} ${TEAR_SHIFT[1]}) translate(8.9 9.7) scale(${tear}) translate(-8.9 -9.7)`;
+/** `hang` drops the tear a little lower: the dragged dot draws heavier eyes, so
+ *  its drop has to start further down to hang from the eye instead of inside it. */
+export const tearTransform = (tear: number, hang: [number, number] = [0, 0]) =>
+  `translate(${TEAR_SHIFT[0] + hang[0]} ${TEAR_SHIFT[1] + hang[1]}) translate(8.9 9.7) scale(${tear}) translate(-8.9 -9.7)`;
 
 // The laughing mouth flipped about the face's midline (y → 30 − y): the same
 // wide, open curve turned into a downturn. The sad face next to it is the happy
