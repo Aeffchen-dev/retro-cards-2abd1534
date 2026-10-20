@@ -131,7 +131,7 @@
 - [x] Fix the column labels so each word stays inside its own field: block text instead of a flex item, plus the correct German break point (Teil-/meis-) where a narrow column forces a split; taps on the rule's outer ends now place the dot too; 45 tests pass, build OK.
 - [x] Rename the five Health Check scale columns to "Trifft noch nie zu" / "Trifft selten zu" / "Trifft teilweise zu" / "Trifft oft zu" / "Trifft immer zu" (stored left-to-right so each sits under its own face); 45 tests pass, build OK.
 - [x] Leftmost Health Check scale column back to "Trifft noch nicht zu"; 45 tests pass, no clipping on desktop/phone/small phone.
-- [x] Size the five Health Check column labels to fit their column: 9px (one step under the 12px floor, the only exception in the app), one line on wide cards, two on phone columns; 46 tests pass.
+- [x] Column labels read at the 12px info floor and break at their own words into three uniform lines (first word / middle / last word) on tablet, desktop and print; phones keep their own column-scaled clamp size (9–13px) with the same split, so mobile is untouched.
 - [x] The last 4 weeks helper sentence now reads "Klicke auf die jeweilige Frage um Notizen zu machen"; verified on the card, 3 helper tests pass.
 - [x] Feedback question 1 now shows the remembering sentence as the writing area's grey placeholder on screen (print keeps it as a line); verified on desktop/phone/print, 46 tests pass.
 - [x] Column names moved to the foot of the grey fields, inside the colour; guides stop above them; verified on desktop/phone/print, 46 tests pass.
