@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, CRYING_MOUTH, mouthPath, tearTransform, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one fat,
 // classic drop hanging from the left eye and rolling down the cheek, so its
@@ -246,8 +246,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
   };
   const grabField = (key: string, readOnly: boolean) => (e: React.PointerEvent<HTMLDivElement>) => {
-    // the rule's own row belongs to the slider, which already drags from there
-    if (readOnly || (e.target as HTMLElement).closest(".risiko-track")) return;
+    // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
+    // Everywhere else in the field — the rule's outer ends included, which the slider's own
+    // track does not reach — a press places the dot, so the whole line is a tap target.
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
@@ -271,7 +273,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         <div className="risiko-scale-captions" lang="de">
 
         {SCALE_CAPTIONS.map((caption, i) => (
-          <span key={i} className="risiko-scale-caption pointer-events-none">{caption}</span>
+          <span key={i} className="risiko-scale-caption pointer-events-none">{softHyphenate(caption)}</span>
         ))}
       </div>
 

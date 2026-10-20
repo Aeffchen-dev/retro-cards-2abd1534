@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages, SCALE_CAPTIONS, softHyphenate } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -278,9 +278,13 @@ describe("smallest text size", () => {
 });
 
 describe("scale columns and page split", () => {
-  test("names every column, from not yet to absolutely", () => {
+  test("names every column, from does not apply to fully applies", () => {
     expect([...SCALE_CAPTIONS]).toEqual([
-      "noch nicht", "eher nicht", "teils / teils", "eher schon", "absolut",
+      "Trifft noch nicht zu",
+      "Trifft selten zu",
+      "Trifft Teilweise zu",
+      "Trifft meistens zu",
+      "Trifft voll zu",
     ]);
     expect(SCALE_CAPTIONS.length).toBe(5);
   });
@@ -297,3 +301,21 @@ describe("scale columns and page split", () => {
   });
 });
 
+
+describe("column labels on a narrow phone", () => {
+  test("offers the correct German break point inside the two long words", () => {
+    expect(softHyphenate("Trifft Teilweise zu")).toBe("Trifft Teil\u00ADweise zu");
+    expect(softHyphenate("Trifft meistens zu")).toBe("Trifft meis\u00ADtens zu");
+  });
+
+  test("leaves every other label untouched", () => {
+    expect(softHyphenate("Trifft noch nicht zu")).toBe("Trifft noch nicht zu");
+    expect(softHyphenate("Trifft selten zu")).toBe("Trifft selten zu");
+    expect(softHyphenate("Trifft voll zu")).toBe("Trifft voll zu");
+  });
+
+  test("keeps the wording the couple reads, hyphen or no hyphen", () => {
+    expect([...SCALE_CAPTIONS].map((c) => softHyphenate(c).replace(/\u00AD/g, "")))
+      .toEqual([...SCALE_CAPTIONS]);
+  });
+});

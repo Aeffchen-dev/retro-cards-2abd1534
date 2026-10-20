@@ -67,12 +67,20 @@ export const columnBands = (faces: number): [number, number][] => {
  *  faces the circle can rest under, named in the couple's own words. Screen and
  *  print read the same list, so the printed page never disagrees with the card. */
 export const SCALE_CAPTIONS = [
-  "noch nicht",
-  "eher nicht",
-  "teils / teils",
-  "eher schon",
-  "absolut",
+  "Trifft noch nicht zu",
+  "Trifft selten zu",
+  "Trifft Teilweise zu",
+  "Trifft meistens zu",
+  "Trifft voll zu",
 ] as const;
+
+/** On a narrow phone one column is only ~48px wide, so "Teilweise" and "meistens"
+ *  cannot fit on a line of their own. Without a break point the browser splits them
+ *  mid-word without a hyphen ("Teilweis" / "e"). The correct German break point is
+ *  offered as a soft hyphen instead: it stays invisible wherever the word fits and
+ *  prints as a real hyphen ("Teil-" / "weise") only when the column really is tight. */
+export const softHyphenate = (caption: string) =>
+  caption.replace("Teilweise", "Teil\u00ADweise").replace("meistens", "meis\u00ADtens");
 
 
 
