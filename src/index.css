@@ -487,18 +487,19 @@
   padding-bottom: 4px;
 }
 /* They read in the scale's own grey — the tone of the dashed guides, while the
-   faces above sit a shade lighter — at 9px, one step under the info rows' 12px floor: the longest
-   label ("Trifft noch nicht zu") measures 108px at 12px and a column is only 86px
-   wide, so anything above ~9.5px would split it over two lines. Below 9px the words
-   turn into mush, and on a phone column (48-55px) no size fits one line anyway —
-   there the labels wrap to two. */
+   faces above sit a shade lighter — at the info rows' 12px floor. At that size the
+   longest label ("Trifft noch nicht zu" measures 108px) no longer fits a column's
+   width (86px on desktop, 60px on a tablet), so every title breaks into at least
+   two lines: the text is capped a bit under a column's width so even the short
+   labels ("Trifft oft zu") wrap instead of standing alone. On a phone column
+   (48-55px) the labels keep their own smaller, aligned sizing below. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-  font-size: 9px;
-  line-height: 11px;
+  font-size: 12px;
+  line-height: 16px;
   color: var(--risiko-guide);
   /* Plain block text, not a flex item: an anonymous flex item is never allowed to
      shrink below its longest word, so on narrow cards "teilweise" would stick out of
