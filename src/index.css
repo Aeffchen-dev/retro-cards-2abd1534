@@ -284,12 +284,12 @@
 .workload-name--left {
   right: calc(50% + 2px);
   text-align: right;
-  max-width: max(24px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc(var(--workload-x, 100) * 1cqw - 2px)));
+  max-width: max(14px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc(var(--workload-x, 100) * 1cqw - 2px)));
 }
 .workload-name--right {
   left: calc(50% + 2px);
   text-align: left;
-  max-width: max(24px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc((100 - var(--workload-x, 0)) * 1cqw - 2px)));
+  max-width: max(14px, min(calc(var(--workload-band, 100) * 1cqw - 8px), calc((100 - var(--workload-x, 0)) * 1cqw - 2px)));
 }
 .workload-name--single {
   left: 50%;
