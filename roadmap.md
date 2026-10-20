@@ -31,3 +31,4 @@
 - [x] Remove the angry scale face, evenly align the remaining four faces and match the persistent drag-face morph; verify interaction and geometry.
 - [x] Add tiny grey end labels above the Health Check scale ("Stimme gar nicht zu" left, "Stimme voll zu" right); verify on desktop, mobile and in the PDF.
 - [x] Reword the Health Check helper to "Ziehe den Punkt auf der Skala" and set its text to the lighter grey; verify on desktop and mobile.
+- [x] Rename the allocation block to "Wer leistet wie viel der Beziehungsarbeit?", put all partner memojis on one draggable line with 0%/100% end labels; verify keyboard/pointer drag, persistence, mobile and the PDF.
