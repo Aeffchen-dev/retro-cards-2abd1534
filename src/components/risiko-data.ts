@@ -1,5 +1,5 @@
 export const RISIKO_STATEMENTS = [
-  ["love", "Wir zeigen unsere Liebe"],
+  ["love", "Wir zeigen uns, dass wir uns lieben"],
   ["appreciation", "Wir kommunizieren wertschätzend"],
   ["conflicts", "Wir lösen Konflikte"],
   ["self", "Wir vernachlässigen uns nicht selbst für den anderen"],
