@@ -138,5 +138,7 @@
 - [x] Health Check scale softened: columns barely-there grey (#F4F5F7 / #ECEEF0), smileys a shade lighter (#8A8C94), rule ends rounded, fields capped at 120px on screen; names paint their own column's grey so a guide never crosses their letters; verified desktop/phone/small phone/print, 47 tests pass.
 - [x] Give the Beziehungsarbeit scale the same chart grid as the statements: five faint columns with a dashed line down each column's middle behind the bar, stopping 26px above the lane's foot; verified columns exactly a fifth of the lane (88.8px of 444px, 57.2px of 286px), guides at 10/30/50/70/90%, drag to 19/81 and 16/84 kept after reload, grid in the printed copy and on PDF page 8, 47 tests pass, build OK.
 - [x] Takeaways card sits on white like Talk-about and the Logo (its pill stays turquoise); verified the live card reads rgb(255,255,255) with heading, both label tabs and both answer fields legible; printed pages keep bg-retro-card-bg #F0EFEE.
+- [x] Tear removed from the sad smilie: the drop, its shared path and its size/shift helpers are gone from the scale face and the dragged dot, and the face geometry no longer carries a tear at all; verified 0 tear paths in the live scale at rest and with the marker parked at the sad end, the downturn still reads sad, 47 tests pass, build OK.
+
 
 
