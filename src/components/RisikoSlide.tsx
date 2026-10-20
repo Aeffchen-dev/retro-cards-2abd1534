@@ -46,12 +46,12 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The grey columns keep the same breathing room top and bottom as the smileys
-// get from the scale's edge.
-const TRAVEL_INSET = MARKER_SIZE / 2;
 // The fields stretch to fill whatever height the card has left over, but they
 // never collapse below one comfortable band: that floor is their own minimum.
 const COLUMN_MIN = 56;
+// A little grey above the smileys, so the faces sit inside their columns instead
+// of being sliced by the columns' top edge.
+const FACE_PAD = 8;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -225,19 +225,15 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border" style={{ minHeight: COLUMN_MIN + TRAVEL_INSET * 2 }}>
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border" style={{ paddingTop: FACE_PAD }}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
-              with nothing between them, from its top down to the foot of the
-              circle's row — so every smiley sits inside its own band and the circle
-              travels through it. Every second band takes a slightly deeper grey, so
-              the five fields still read as separate. Painted before the faces, so
-              the fill never covers a smiley. */}
-          {/* The grey block keeps the same 16px breathing room top and bottom as
-              the smileys get from the scale's edge — it never touches the row above
-              or the foot of the circle's row. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET, minHeight: COLUMN_MIN }} aria-hidden="true">
+              with nothing between them and stretching over the scale's whole height,
+              so every smiley and the circle sit inside their own band. Every second
+              band takes a slightly deeper grey, so the five fields still read as
+              separate. Painted before the faces, so the fill never covers a smiley. */}
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0, minHeight: COLUMN_MIN }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H, bottom: "calc(var(--risiko-track-h) / 2)" }} />)}
           </div>
           <FaceLayer />
 
