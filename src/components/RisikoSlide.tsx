@@ -491,7 +491,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       {isChapterStart && (
         <div className="risiko-chapter shrink-0 w-full" lang="de">
-          <h2 className="risiko-statement risiko-chapter-heading retro-body-copy">
+          <h2 className="risiko-chapter-heading retro-heading">
             {RISIKO_CHAPTER_HEADING}
             {chapterMood !== null && (
               <span className="risiko-chapter-mood" aria-label={`Durchschnittliche Stimmung ${Math.round(chapterMood)} von 100`}>
