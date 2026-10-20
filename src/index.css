@@ -38,6 +38,8 @@
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
     --risiko-column-fill: #F1F2F4;
+    /* every second column sits a shade deeper, so the fields stay tellable apart */
+    --risiko-column-fill-alt: #E6E7EA;
     --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
@@ -354,9 +356,9 @@
   );
 }
 
-/* Tiny end labels flanking the smiley row: Stimme nicht zu … Stimme voll zu.
-   They sit on the very left and right of the card, level with the smileys, so
-   they never wrap and never squeeze the scale between them. */
+/* Tiny labels above the columns: Trifft nicht zu … Trifft zu. They take a line of
+   their own, flush with the card's left and right edges, so the columns below keep
+   the full width and the labels never wrap. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
@@ -370,23 +372,7 @@
   white-space: nowrap;
   flex: 0 0 auto;
 }
-/* On a card too narrow to hold both labels beside the smileys, they take a line
-   of their own above the scale — flush left and right — so the scale keeps its
-   full width instead of squeezing the five smileys together. Grid placement, not
-   flex wrapping: the two labels must land on the same line at opposite ends. */
 .risiko-block { container-type: inline-size; }
-@container (max-width: 300px) {
-  .risiko-scale-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
-    column-gap: 8px;
-    row-gap: 4px;
-  }
-  .risiko-scale-row > .risiko-scale-caption:first-child { grid-area: 1 / 1; justify-self: start; }
-  .risiko-scale-row > .risiko-scale-caption:last-child { grid-area: 1 / 2; justify-self: end; }
-  .risiko-scale-core { grid-area: 2 / 1 / 3 / 3; }
-}
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
 .risiko-page .risiko-label {
@@ -466,11 +452,11 @@
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: 12px; }
-/* Evenly spread columns between the smileys: the circle still moves freely along
+/* Evenly spread columns under the smileys: the circle still moves freely along
    the rule, but the range it travels over is broken into soft, identical columns
-   so the scale reads as a row of fields. Very light grey fills; the card's own
-   white shows through the gaps between them, and the rule and the circle sit on
-   top. */
+   so the scale reads as a row of fields. Very light grey fills that sit directly
+   against each other — every second one a shade deeper — and the rule and the
+   circle draw on top. */
 .risiko-column-guide {
   width: 0;
   border-left: 1px dashed var(--risiko-caption);
@@ -478,7 +464,9 @@
 }
 .risiko-column-band {
   background: var(--risiko-column-fill);
-  border-radius: 4px;
+}
+.risiko-column-band-alt {
+  background: var(--risiko-column-fill-alt);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
