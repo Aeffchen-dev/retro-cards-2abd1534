@@ -29,11 +29,15 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
     expect(RISIKO_STATEMENTS[0]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
   });
-  test("splits into two pages when space allows", () => {
-    const pages = risikoPages(["p0", "p1"], 844, 390);
-    expect(pages.length).toBe(2);
-    expect(pages[0].statements.length).toBe(3);
-    expect(pages[1].personKeys).toEqual(["p0", "p1"]);
+  test("keeps two pages on large screens and adds one on phones", () => {
+    const big = risikoPages(["p0", "p1"], 1800, 1280);
+    expect(big.length).toBe(2);
+    expect(big[0].statements.length).toBe(3);
+    const small = risikoPages(["p0", "p1"], 844, 390);
+    expect(small.length).toBe(3);
+    expect(small[small.length - 1].statements).toEqual([]);
+    expect(small[small.length - 1].personKeys).toEqual(["p0", "p1"]);
+    expect(small.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
   });
   test("adds pages on short screens without losing or repeating questions", () => {
     const pages = risikoPages(["p0", "p1"], 600, 320);
