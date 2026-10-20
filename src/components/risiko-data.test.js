@@ -278,13 +278,13 @@ describe("smallest text size", () => {
 });
 
 describe("scale columns and page split", () => {
-  test("names every column, from does not apply to fully applies", () => {
+  test("names every column, from never applies to always applies", () => {
     expect([...SCALE_CAPTIONS]).toEqual([
-      "Trifft noch nicht zu",
+      "Trifft noch nie zu",
       "Trifft selten zu",
-      "Trifft Teilweise zu",
-      "Trifft meistens zu",
-      "Trifft voll zu",
+      "Trifft teilweise zu",
+      "Trifft oft zu",
+      "Trifft immer zu",
     ]);
     expect(SCALE_CAPTIONS.length).toBe(5);
   });
@@ -303,15 +303,16 @@ describe("scale columns and page split", () => {
 
 
 describe("column labels on a narrow phone", () => {
-  test("offers the correct German break point inside the two long words", () => {
+  test("offers the correct German break point inside the long word", () => {
+    expect(softHyphenate("Trifft teilweise zu")).toBe("Trifft teil\u00ADweise zu");
     expect(softHyphenate("Trifft Teilweise zu")).toBe("Trifft Teil\u00ADweise zu");
-    expect(softHyphenate("Trifft meistens zu")).toBe("Trifft meis\u00ADtens zu");
   });
 
   test("leaves every other label untouched", () => {
-    expect(softHyphenate("Trifft noch nicht zu")).toBe("Trifft noch nicht zu");
+    expect(softHyphenate("Trifft noch nie zu")).toBe("Trifft noch nie zu");
     expect(softHyphenate("Trifft selten zu")).toBe("Trifft selten zu");
-    expect(softHyphenate("Trifft voll zu")).toBe("Trifft voll zu");
+    expect(softHyphenate("Trifft oft zu")).toBe("Trifft oft zu");
+    expect(softHyphenate("Trifft immer zu")).toBe("Trifft immer zu");
   });
 
   test("keeps the wording the couple reads, hyphen or no hyphen", () => {
