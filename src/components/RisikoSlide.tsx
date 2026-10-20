@@ -265,28 +265,44 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       const shift = Math.min(Math.max(need, -slackUp), slackDown);
       pageEl.style.setProperty("--risiko-centre-shift", `${Math.round(shift)}px`);
     };
+    // The deck's own transform settles a beat after a card arrives: until then the
+    // card's box is still tilted and its middle is not the one the reader sees. So
+    // the shift is read on every frame the card is still moving, and once more when
+    // it stops — the last reading is the one taken on a flat card.
+    const moving = () => {
+      const r = pageEl.getBoundingClientRect();
+      return `${r.x.toFixed(1)}|${r.width.toFixed(1)}|${r.height.toFixed(1)}`;
+    };
+    let frame = 0, seen = "", frames = 0;
+    const settle = () => {
+      const now = moving();
+      centre();
+      if (now !== seen && frames++ < 240) { seen = now; frame = requestAnimationFrame(settle); }
+    };
+    const remeasure = () => {
+      cancelAnimationFrame(frame);
+      seen = ""; frames = 0;
+      frame = requestAnimationFrame(settle);
+    };
     const io = new IntersectionObserver(([entry]) => {
       shown.current = !!entry && entry.isIntersecting && entry.intersectionRatio >= 0.9;
-      if (shown.current) centre();
+      if (shown.current) remeasure();
     }, { threshold: 0.9 });
     io.observe(pageEl);
-    // The deck's own transform settles a beat after a card arrives, so the shift
-    // is read again once that card's box is flat rather than mid-flight.
-    const slide = pageEl.closest(".swiper-slide");
-    slide?.addEventListener("transitionend", centre);
     // A taller statement, a wrapped helper or the keyboard opening all move the
     // card's middle, so the scale is re-centred whenever one of them changes.
-    const ro = new ResizeObserver(centre);
+    const ro = new ResizeObserver(remeasure);
     [".risiko-statement", ".risiko-allocation-examples", ".risiko-chapter", ".risiko-footer", ".risiko-scale-area"]
       .forEach((sel) => { const el = pageEl.querySelector(sel); if (el) ro.observe(el); });
-    window.addEventListener("resize", centre);
+    window.addEventListener("resize", remeasure);
     return () => {
+      cancelAnimationFrame(frame);
       io.disconnect();
-      slide?.removeEventListener("transitionend", centre);
       ro.disconnect();
-      window.removeEventListener("resize", centre);
+      window.removeEventListener("resize", remeasure);
     };
   }, [page, persons]);
+
 
 
 
