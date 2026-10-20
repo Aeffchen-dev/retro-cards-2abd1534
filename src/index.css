@@ -35,6 +35,8 @@
    */
   :root {
     --retro-black: #201C1D;
+    --risiko-face-fill: #FFFFFF;
+    --risiko-helper-bg: #F1F2F4;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
@@ -219,6 +221,33 @@
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
 .retro-card-container {
   --retro-white-rgb: 238 238 238;
+}
+
+.risiko-card { overflow: hidden; }
+.risiko-page .retro-heading { font-size: 30px; letter-spacing: 0; }
+.risiko-page .risiko-helper { height: auto; align-items: stretch; }
+.risiko-helper > span:last-child {
+  height: auto;
+  min-height: 32px;
+  min-width: 0;
+  white-space: normal;
+  overflow: visible;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 14px;
+  line-height: 18px;
+}
+@media (max-width: 359px) {
+  .risiko-page .retro-heading { font-size: 25px; }
+}
+.risiko-page .risiko-label {
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 0;
+}
+.risiko-memoji {
+  background: var(--risiko-face-fill);
+  box-shadow: 0 0 0 1.5px var(--retro-black);
 }
 
 
