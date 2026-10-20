@@ -68,3 +68,25 @@ export const scaleFaceBlend = (value: number): { index: number; mix: number } =>
   const index = Math.min(3, Math.floor(position));
   return { index, mix: position - index };
 };
+
+// Shared cubic topology lets the outline morph, rather than fade between icons.
+// The anchors reproduce Angry, Frown, Meh, Smile and Laugh in the header.
+const FACE_ANCHORS = [
+  { eyeY: 10, brow: 1, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
+  { eyeY: 9, brow: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
+  { eyeY: 9, brow: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
+  { eyeY: 9, brow: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
+  { eyeY: 9, brow: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
+];
+
+export function scaleFaceGeometry(value: number) {
+  const { index, mix } = scaleFaceBlend(value);
+  const from = FACE_ANCHORS[index];
+  const to = FACE_ANCHORS[index + 1];
+  const lerp = (a: number, b: number) => a + (b - a) * mix;
+  return {
+    eyeY: lerp(from.eyeY, to.eyeY),
+    brow: lerp(from.brow, to.brow),
+    mouth: from.mouth.map((coordinate, i) => lerp(coordinate, to.mouth[i])),
+  };
+}
