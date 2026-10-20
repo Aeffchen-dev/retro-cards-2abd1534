@@ -1332,7 +1332,7 @@ const RetroCards: React.FC = () => {
               <div className="health-check-guides" aria-hidden="true">
                 {Array.from({ length: 6 }, (_, i) => (
                   <span key={i} className="health-check-guide" style={{
-                    top: i === 0 ? '0px' : i === 5 ? '100%' : `calc(17px + (100% - 34px) * ${(i - 0.5) / 4})`,
+                    top: `calc(17px + (100% - 34px) * ${(i - 0.5) / 4})`,
                   }} />
                 ))}
               </div>
