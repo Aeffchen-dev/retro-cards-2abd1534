@@ -9,9 +9,9 @@ import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePosit
 const TEAR_L = "M8.4 10.6C8.4 10.6 7.1 12.8 7.1 13.6a1.3 1.3 0 0 0 2.6 0C9.7 12.8 8.4 10.6 8.4 10.6z";
 const TEAR_R = "M15.6 10.6C15.6 10.6 14.3 12.8 14.3 13.6a1.3 1.3 0 0 0 2.6 0C16.9 12.8 15.6 10.6 15.6 10.6z";
 
-// The saddest face on the scale, and nothing like the sad face next to it: eyes
-// squeezed shut and slanting down to the nose, a tear below each eye, inner
-// brows raised and a downturn that goes deeper than any other mouth here.
+// The saddest face on the scale, drawn in the same language as the faces next to
+// it: the same round-dot eyes, no brows and the same arc family — only a deeper
+// downturn and a small tear hanging under each eye.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +26,10 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     aria-hidden="true"
   >
     <circle cx="12" cy="12" r="10" />
-    <path d="M7.2 8.4 L10.2 9.7 M16.8 8.4 L13.8 9.7" strokeWidth={1.2} />
-    <path d="M7.5 7.9 L10 6.5 M14 6.5 L16.5 7.9" strokeWidth={1.3} />
-    <path d="M16 18.2s-1.5-3-4-3S8 18.2 8 18.2" />
-    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" />
-    <path d={TEAR_R} fill={color ?? "currentColor"} stroke="none" />
+    <path d="M9 9h.01 M15 9h.01" />
+    <path d="M16 17.4s-1.5-2.8-4-2.8S8 17.4 8 17.4" />
+    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" transform={`translate(8.4 10.6) scale(${CRYING_TEAR}) translate(-8.4 -10.6)`} />
+    <path d={TEAR_R} fill={color ?? "currentColor"} stroke="none" transform={`translate(15.6 10.6) scale(${CRYING_TEAR}) translate(-15.6 -10.6)`} />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
