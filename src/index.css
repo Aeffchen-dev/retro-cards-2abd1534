@@ -382,26 +382,32 @@
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
 /* The slider row's height is shared with the footer's margin maths below. */
 .risiko-track { height: var(--risiko-track-h); }
-/* The button block sits over the column lines, so it carries the card colour. The
-   rule sits at the track's middle, so the scale's lower margin is measured from the
-   rule itself rather than from the track's box. */
+/* The button block sits below the scale and carries the card colour, so nothing
+   shows through behind it. */
 .risiko-footer {
   background: var(--risiko-label-bg);
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: 12px; }
-.risiko-column { flex: 0 0 auto; }
-/* The column lines reach from the smileys down to the rule... */
-.risiko-columns { bottom: calc(var(--risiko-track-h) / 2); }
-/* ...and keep going the same distance below the slider, so each line is twice as
-   tall as the space between the smileys and the rule. */
-.risiko-column .risiko-column-line { height: 200%; }
-/* The dashed guidelines read a touch finer than the smileys: a 1px line
-   (fractional widths snap unevenly), longer dashes and smaller gaps. */
-.risiko-column-line {
-  width: 1px;
-  background-image: repeating-linear-gradient(to bottom, var(--risiko-column) 0 8px, transparent 8px 12px);
+/* The scale is five adjoining fields, one under each smiley: an answer reads as
+   "this field" rather than as a point somewhere on an abstract line. */
+.risiko-scale-fields {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
 }
+.risiko-field {
+  height: 100%;
+  border-top: 1px solid var(--risiko-column);
+  border-bottom: 1px solid var(--risiko-column);
+  border-right: 1px solid var(--risiko-column);
+}
+.risiko-field:first-child { border-left: 1px solid var(--risiko-column); }
+/* The chosen field carries a faint fill, so the circle's home reads at a glance. */
+.risiko-field[data-active="true"] { background: var(--risiko-helper-bg); }
+/* The circle sits in the middle of its own field; the slider stays underneath it. */
+.risiko-marker { pointer-events: none; }
 .risiko-expression-point {
   position: relative;
   display: block;
@@ -1003,11 +1009,6 @@ textarea.bg-retro-post-it:focus,
   /* Ensure flex containers maintain proper height */
   .print-slide-page .h-full {
     height: 100% !important;
-  }
-  /* The column lines keep their doubled height when printed: they run the same
-     distance below the slider as above it. */
-  .print-slide-page .risiko-column .risiko-column-line {
-    height: 200% !important;
   }
 
   .print-slide-page .flex-1 {

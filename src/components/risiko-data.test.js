@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, scaleField, RISIKO_FIELDS, RISIKO_FIELD_STEP, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -79,6 +79,19 @@ describe("Risikofaktoren scale", () => {
   test("stays within sad and happy", () => {
     expect(scaleValue("-5")).toBe(0);
     expect(scaleValue("120")).toBe(100);
+  });
+  test("every answer lands in one of the five fields", () => {
+    expect(RISIKO_FIELDS).toBe(5);
+    expect(RISIKO_FIELD_STEP).toBe(25);
+    expect(scaleField(0)).toBe(0);
+    expect(scaleField(12)).toBe(0);
+    expect(scaleField(13)).toBe(25);
+    expect(scaleField(50)).toBe(50);
+    expect(scaleField(73)).toBe(75);
+    expect(scaleField(90)).toBe(100);
+  });
+  test("workload shares keep the exact dragged value", () => {
+    expect(scaleValue("73")).toBe(73);
   });
   test("has the six statements, being yourself first", () => {
     expect(RISIKO_STATEMENTS.length).toBe(6);
