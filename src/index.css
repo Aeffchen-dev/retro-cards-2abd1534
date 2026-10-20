@@ -43,7 +43,8 @@
     /* Workload partners follow this slide's own scheme: its neon-green accent,
        then the spiral's neon purple and blue, then the brand's warm accents. */
     --workload-partner-0: #63E82B;
-    --workload-partner-1: #9B30FF;
+    /* as dark as the Health Check's own dark green (#054C45, L* 28.5) */
+    --workload-partner-1: #4B00CC;
     --workload-partner-2: #00A9FF;
     --workload-partner-3: #FF4D00;
     --workload-partner-4: #054C45;
