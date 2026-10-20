@@ -302,7 +302,7 @@
    readable and the ring still ties the circle to that partner's segment. */
 .risiko-memoji.workload-avatar {
   background: var(--risiko-face-fill);
-  box-shadow: 0 0 0 2px var(--workload-ink);
+  box-shadow: 0 0 0 2.5px var(--workload-ink);
 }
 /* One ink-pulled partner colour, shared by the name, the circle's ring and the share
    figure, so all three read as the same partner. */
