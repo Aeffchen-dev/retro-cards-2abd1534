@@ -466,18 +466,23 @@
 @media screen {
   .risiko-scale-field { max-height: var(--risiko-field-h); }
 }
-/* The smiley row stands midway between the statement above and the rule below:
-   the gap down to the line equals the gap up to the statement's last line. The
-   rule sits dead centre in the field, so the row's own middle has to sit a quarter
-   of the field's height above that line — and the statement's own margin eats into
-   the space above the faces, so the row is pulled up by half of it too. One formula
-   covers every field height: the capped field on screen, the shorter one on a small
+/* The smiley row sits flush with the field's top edge: no padding above the
+   faces, so their stubs vanish and the long dashed guide starts right under
+   them. The rule then centres on that line's own height: the field's top
+   padding equals the line's start, so the flex centring — the rule is the
+   field's only flow child — lands the rule and the circle exactly on the
+   midpoint between the line's top and the field's foot. One formula covers
+   every field height: the capped field on screen, the shorter one on a small
    phone, and the one the printed sheet stretches over the whole card. */
-.risiko-scale-field { --risiko-face-top: calc(25% - var(--risiko-face-size) / 2 - var(--risiko-statement-gap) / 2); }
+.risiko-scale-field {
+  --risiko-face-top: 0px;
+  padding-top: calc(var(--risiko-face-size) + 4px);
+}
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
 /* Each face's column keeps its two stretches of dashed guide: a stub from the
-   field's top down to the face, then the long run from just under the face to the
-   field's foot — both read the face row's own position, so they follow it anywhere. */
+   field's top down to the face, then the long run from just under the face to
+   the field's foot — both read the face row's own position, so they follow it
+   anywhere. */
 .risiko-column-guide--stub { top: 0; height: var(--risiko-face-top); }
 .risiko-column-guide--long { top: calc(var(--risiko-face-top) + var(--risiko-face-size) + 4px); bottom: 0; }
 .risiko-scale-captions {
