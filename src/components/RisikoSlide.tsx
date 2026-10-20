@@ -32,7 +32,7 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
-export const FACE_GREY = "#9B9BA3";
+export const FACE_GREY = "#6E7078";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 28;
@@ -264,19 +264,23 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               with nothing between them and stretching over the scale's whole height,
               so every smiley and the circle sit inside their own band. Every second
               band takes a slightly deeper grey, so the five fields still read as
-              separate. Painted before the faces, so the fill never covers a smiley. */}
+              separate. Painted before everything else, so the fill never covers a
+              smiley, a guide or the handle. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
           </div>
-          {/* The smileys sit at the top of the fields, a slight padding below their
-              top edge, while the rule and the circle stay dead centre in them. The
-              dashed guides bridge the two: they start straight under the smileys and
-              run down to the rule, and they are painted before the slider, so the
-              circle always covers the line running up to it. */}
-          <FaceLayer />
-          <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: FACE_PAD + HEADER_H + 4, bottom: "50%" }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />)}
+          {/* Each smiley's column carries its dashed guide down the field's whole
+              height — a stub above the face, then a long run from straight under it
+              to the field's foot — so the smiley reads as threaded onto its own line
+              instead of having the line drawn through it. Painted before the faces
+              and the circle, so both simply stand in front of the line. */}
+          <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
+            {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
+            {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: 0 }} />)}
           </div>
+          {/* The smileys sit at the top of the fields, a slight padding below their
+              top edge, while the rule and the circle stay dead centre in them. */}
+          <FaceLayer />
           <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
             onChange={(v) => onChange(key, String(v))} />
         </div>

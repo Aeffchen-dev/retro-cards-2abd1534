@@ -162,10 +162,10 @@ describe("grey columns", () => {
     expect(columnBands(1)).toEqual([[0, 100]]);
     expect(columnBands(0)).toEqual([]);
   });
-  test("every second column is a slightly deeper grey, both like the info fill", () => {
-    // The columns wear the info rows' label-field grey, and the two fills are
-    // the only thing separating neighbouring fields, so they must differ — and
-    // the deeper one must actually be the deeper one.
+  test("every second column is a slightly deeper grey, both a shade lighter than the info fill", () => {
+    // The columns sit just above the info rows' label-field grey, and the two
+    // fills are the only thing separating neighbouring fields, so they must
+    // differ — and the deeper one must actually be the deeper one.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const hex = (token) => {
       const found = css.match(new RegExp(`--${token}:\\s*#([0-9A-Fa-f]{6})`));
@@ -177,11 +177,28 @@ describe("grey columns", () => {
     expect(infoFill, "info row default field grey missing").toBeTruthy();
     const [fill, alt] = [hex("risiko-column-fill"), hex("risiko-column-fill-alt")];
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
-    expect(fill).toBe(infoFill);
+    expect(lightness(fill)).toBeGreaterThan(lightness(infoFill));
     expect(alt).not.toBe(fill);
     expect(lightness(alt)).toBeLessThan(lightness(fill));
     // both fills stay close together so the fields read as one soft block
     expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(24);
+  });
+  test("the scale smileys and their dashed guides share one darker grey", () => {
+    // The five faces on the Risikofaktoren scale and the dashed line down each
+    // column were darkened together, and they must stay a clear step darker than
+    // the tiny end labels so the scale reads as the interactive part.
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const token = (name) => css.match(new RegExp(`--${name}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
+    const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
+    const guide = token("risiko-guide");
+    const face = slide.match(/export const FACE_GREY = "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
+    expect(guide, "--risiko-guide missing from index.css").toBeTruthy();
+    expect(face, "FACE_GREY missing from RisikoSlide.tsx").toBeTruthy();
+    expect(face).toBe(guide);
+    expect(/border-left: 1px dashed var\(--risiko-guide\)/.test(css), "guides do not use --risiko-guide").toBe(true);
+    expect(/color=\{FACE_GREY\}/.test(slide), "the scale faces do not use FACE_GREY").toBe(true);
+    expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
   });
 });
 
