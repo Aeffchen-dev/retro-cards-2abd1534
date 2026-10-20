@@ -25,8 +25,9 @@ describe("Risikofaktoren scale", () => {
     expect(scaleValue("-5")).toBe(0);
     expect(scaleValue("120")).toBe(100);
   });
-  test("has the five statements", () => {
-    expect(RISIKO_STATEMENTS.length).toBe(5);
+  test("has the six statements, love first", () => {
+    expect(RISIKO_STATEMENTS.length).toBe(6);
+    expect(RISIKO_STATEMENTS[0]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
   });
   test("splits into two pages when space allows", () => {
     const pages = risikoPages(["p0", "p1"], 844, 390);
