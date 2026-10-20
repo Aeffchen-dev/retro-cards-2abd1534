@@ -75,7 +75,7 @@ const INK = "var(--retro-black)";
 // White drag hints inside the untouched dot: it can be pulled left or right.
 // Drawn smaller than the dot itself so the circle, not the hint, reads as the handle.
 const ARROW_SIZE = 20;
-const ARROW_W = 1.9;
+const ARROW_W = 1.4;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
