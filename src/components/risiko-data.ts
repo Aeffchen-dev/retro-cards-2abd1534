@@ -9,59 +9,45 @@ export const RISIKO_STATEMENTS = [
 
 export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
 
-/** The display-size question above the scale, same treatment as the first two Health Check slides. */
-export const RISIKO_HEADING = "Wie glücklich sind wir aktuell mit…?";
+/** The display-size question on the card that asks about the work split. */
+export const RISIKO_ALLOCATION_HEADING = "Wer leistet aktuell wie viel der Beziehungsarbeit?";
 
 export interface RisikoPage {
   statements: (readonly [string, string])[];
   personKeys: string[];
 }
 
-/** Keep the two sections separate, and add pages rather than shrink or scroll. */
-export function risikoPages(personKeys: string[], height: number, width: number): RisikoPage[] {
-  const contentWidth = Math.max(180, Math.min(500, width - 48) - 56);
-  // The helper sentence needs its own second line once the card gets narrow.
-  const footerCost = contentWidth < 292 ? 160 : 140;
-  // 72 = smiley header with its tiny end labels plus the card's top padding.
-  // The headline above the scale is set in the display face, so it costs a
-  // line of its own: ~20px per glyph at 38.4px, plus the gap below it.
-  const headingLines = Math.ceil(RISIKO_HEADING.length / Math.max(9, Math.floor(contentWidth / 20)));
-  const budget = Math.max(130, (height - 48) * 0.88 - 72 - (headingLines * 40 + 12) - footerCost);
-  const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
-  const pages: RisikoPage[] = [];
-  for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {
-    let page: RisikoPage = { statements: [], personKeys: [] };
-    let used = 0;
-    for (const statement of section) {
-      const cost = textHeight(statement[1]) + 74;
-      if (used && used + cost > budget) {
-        pages.push(page);
-        page = { statements: [], personKeys: [] };
-        used = 0;
-      }
-      page.statements.push(statement);
-      used += cost;
-    }
-    pages.push(page);
-  }
-  let page = pages[pages.length - 1];
-  if (!page) return pages;
-  let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 74, 0);
-  // One shared line plus a wrapping row of individually selectable shares.
-  const shareRows = Math.ceil(personKeys.length / Math.max(1, Math.floor(contentWidth / 110)));
-  const allocationCost = textHeight("Wer leistet aktuell wie viel der Beziehungsarbeit?") + 84 + shareRows * 32;
-  if (personKeys.length) {
-    if (used && used + allocationCost > budget) {
-      page = { statements: [], personKeys: [] };
-      pages.push(page);
-      used = 0;
-    }
-    page.personKeys = [...personKeys];
-    used += allocationCost;
-  }
+/** One statement per card — the statement itself is the card's headline. */
+export function risikoPages(personKeys: string[]): RisikoPage[] {
+  const pages: RisikoPage[] = [...RISIKO_STATEMENTS, RISIKO_HOT].map(
+    (statement): RisikoPage => ({ statements: [statement], personKeys: [] }),
+  );
+  if (personKeys.length) pages.push({ statements: [], personKeys: [...personKeys] });
   return pages;
 }
 
+/** The card's text column: the card is 500px wide with 28px padding. */
+export const risikoContentWidth = (width: number) => Math.max(180, Math.min(500, width - 48) - 56);
+
+// The headline is set in the display face: 38.4px on a 1.05 line, ~0.52em per glyph.
+const DISPLAY_SIZE = 38.4;
+const DISPLAY_MIN = 18;
+const DISPLAY_LINE = 1.05;
+const DISPLAY_GLYPH = 0.52;
+
+/** What sits under the headline: smiley row with its labels, the rule and the two bottom rows. */
+export const RISIKO_BELOW = 190;
+
+/** Biggest display size the statement still fits in, so the card never clips it. */
+export function risikoHeadingSize(text: string, width: number, height: number, below: number = RISIKO_BELOW): number {
+  const contentWidth = risikoContentWidth(width);
+  const budget = Math.max(48, ((height - 48) * 0.88 - 56 - below) * 0.94);
+  for (let size = DISPLAY_SIZE; size > DISPLAY_MIN; size -= 0.4) {
+    const perLine = Math.max(6, Math.floor(contentWidth / (size * DISPLAY_GLYPH)));
+    if (Math.ceil(text.length / perLine) * size * DISPLAY_LINE <= budget) return Math.round(size * 10) / 10;
+  }
+  return DISPLAY_MIN;
+}
 
 /** 0 = sad (left) … 100 = happy (right); default neutral middle. */
 export const scaleValue = (stored?: string): number => {
