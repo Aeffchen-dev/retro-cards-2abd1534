@@ -77,7 +77,8 @@ describe("Risikofaktoren scale", () => {
     expect(big[0].statements.length).toBe(3);
     const small = risikoPages(["p0", "p1"], 844, 390);
     expect(small.length).toBe(3);
-    expect(small[small.length - 1].statements).toEqual([]);
+    // The long "hot" sentence needs its own phone page and shares it with the allocation block.
+    expect(small[small.length - 1].statements.map(([key]) => key)).toEqual(["hot"]);
     expect(small[small.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(small.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
   });
