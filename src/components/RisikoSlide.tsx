@@ -52,9 +52,10 @@ const FACE_PAD = 8;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The fields stretch to fill whatever height the card has left over, but they
-// never collapse below one comfortable band: the smiley row and the rule as the
-// pair they are, with a little grey above and below that pair.
-const FIELD_MIN = FACE_PAD * 2 + TRACK_H + (HEADER_H + 4) * 2;
+// never collapse below one comfortable band: the smiley row and the rule's row,
+// with a little grey above and below them. Anything taller than this floor is
+// shared out, and the invisible balance below the rule gives back first.
+const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK_H;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -268,21 +269,26 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
           </div>
           {/* The faces and the rule are one pair, and that pair floats in the middle
-              of the fields, so the grey lies even above and below it. The dashed
-              guides hang off the pair instead of off the fields: they start under a
-              smiley and end on the rule wherever the pair happens to sit. Painted
-              first, so the circle always covers the line running up to it. */}
-          <div className="risiko-scale-group relative flex flex-col gap-1">
-            <div className="risiko-scale-guides absolute inset-0 pointer-events-none" aria-hidden="true">
-              {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: `calc(var(--risiko-track-h) / 2 + ${HEADER_H + 4}px)` }} />)}
-            </div>
+              of the fields, so the grey lies even above and below it. An invisible
+              copy of the smiley row sits below the rule to pull the pair's middle —
+              and with it the circle — onto the middle of the fields instead of
+              letting it hang under the smileys. When the card runs short of room,
+              that copy gives way first: neither the smiley row nor the rule's row
+              ever compress. */}
+          <div className="risiko-scale-group relative flex min-h-0 flex-col gap-1">
             <FaceLayer />
-            <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-              onChange={(v) => onChange(key, String(v))} />
-            {/* An invisible copy of the smiley row below the rule, so the pair's
-                middle — and with it the circle — lands exactly on the middle of the
-                fields instead of hanging under the smileys. */}
-            <div className="risiko-scale-balance" style={{ height: HEADER_H }} aria-hidden="true" />
+            <div className="relative min-h-0">
+              {/* The dashed guides hang off the rule's own row, not off the fields:
+                  they start under the smileys and end on the rule wherever the rule
+                  happens to sit. Painted before the slider, so the circle always
+                  covers the line running up to it. */}
+              <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "calc(var(--risiko-track-h) / 2)" }} aria-hidden="true">
+                {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i) }} />)}
+              </div>
+              <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+                onChange={(v) => onChange(key, String(v))} />
+            </div>
+            <div className="risiko-scale-balance" style={{ height: HEADER_H, minHeight: 0 }} aria-hidden="true" />
           </div>
         </div>
       </div>
