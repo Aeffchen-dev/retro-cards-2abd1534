@@ -55,3 +55,5 @@
 - [x] Add the display-size question "Wie glücklich sind wir aktuell mit…?" at the top of every Health Check page; verify the reveal, fit on desktop and mobile and the PDF.
 
 - [x] Style the Health Check statements like the question above a Post-it input (16px body copy on a lime plate instead of the display headline); verify fit on every card, on phone and in the PDF.
+
+- [x] Remove the statement animation and coloured background on the Health Check cards (plain body copy, no reveal, no plate); verify on every card and in the PDF.

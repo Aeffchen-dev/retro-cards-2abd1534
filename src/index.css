@@ -37,7 +37,6 @@
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
-    --risiko-question-bg: #D6F587;
     --risiko-column: #9B9BA3;
     --risiko-caption: #9B9BA3;
     --risiko-label-bg: #FFFFFF;
@@ -238,15 +237,10 @@
 }
 
 .risiko-card { overflow: hidden; }
-/* The statement reads like the question above a Post-it input: 16px body copy on a
-   lime plate that hugs the text and grows with every line it needs. */
+/* The statement is plain body copy: no coloured plate and no word reveal, at the user's
+   request. It still grows with its text and never gets squeezed or cut off. */
 .risiko-statement {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 4px 12px;
   margin-bottom: 12px;
-  background: var(--risiko-question-bg);
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
