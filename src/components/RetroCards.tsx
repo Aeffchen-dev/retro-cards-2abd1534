@@ -1663,7 +1663,10 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full"><RevealText text="Wer macht mit?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col w-full flex-1 mt-8 gap-6 justify-between">
+            {/* Every element (name rows, add partner, toggle, CTA) gets an
+                even share of the leftover vertical space between them */}
+            <div className="flex flex-col w-full flex-1 mt-8 justify-between gap-3">
+
 
               {/* Person 1 — post-it style field */}
               <div className="flex flex-col gap-2 w-full">
@@ -1753,8 +1756,7 @@ const RetroCards: React.FC = () => {
 
 
 
-              {/* Add partner + toggle group — fixed 8px spacing */}
-              <div className="flex flex-col w-full gap-2">
+              {/* Add partner — own evenly spaced slot */}
               <button
                 type="button"
                 onClick={(e) => {
@@ -1799,9 +1801,8 @@ const RetroCards: React.FC = () => {
                   Nicht monogam
                 </span>
               </button>
-              </div>
 
-              <div className="w-full mt-auto">
+              <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"
                   label="Los geht's"
