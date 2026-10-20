@@ -309,6 +309,13 @@
 @media (max-width: 767px) {
   .risiko-statement { font-size: 22px; }
 }
+/* The smallest phones have no room to spare: the work-split card carries its long
+   question, the fixed sentence of examples and the lane, so there the statement
+   steps down once more and the examples sit a touch closer together. */
+@media (max-width: 380px) {
+  .risiko-statement { font-size: 19px; }
+  .risiko-allocation-examples { line-height: 1.25; }
+}
 /* The work-split card reads the question together with the fixed sentence of
    what counts as Beziehungsarbeit, set straight under it as small body text in
    one column. The question keeps only a small gap to the sentence; the sentence
