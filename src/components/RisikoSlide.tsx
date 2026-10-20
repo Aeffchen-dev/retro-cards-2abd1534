@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -271,42 +271,48 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
 
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ minHeight: FIELD_MIN }}
+        {/* The field carries the drawn scale — columns, smileys, rule and circle —
+            and the names stand under it in their own row. The dashed lines then end
+            exactly where the names begin, on any width and on paper, with no band
+            height to guess per device. */}
+        <div className="risiko-scale-core relative flex flex-col w-full box-border flex-1 min-h-0 touch-pan-y swiper-no-swiping"
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
-          {/* Columns: one soft grey band per smiley, filling the scale edge to edge
-              with nothing between them and stretching over the scale's whole height,
-              so every smiley and the circle sit inside their own band. Every second
-              band takes a slightly deeper grey, so the five fields still read as
-              separate. Painted before everything else, so the fill never covers a
-              smiley, a guide or the handle. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
+          <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
+            {/* Columns: no fill at all — the five fields are drawn only as dashed
+                grey lines, one at the scale's left and right edge and one between
+                every pair of neighbouring columns. They stand a shade behind the
+                smileys' own guides, so every face keeps its own stronger line.
+                Painted before everything else, so a line never covers a smiley,
+                a guide or the handle. */}
+            <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
+              {columnEdges(FACES.length).map((at) => <span key={at} className="risiko-column-edge absolute top-0 bottom-0" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />)}
+            </div>
+            {/* Each smiley's column carries its dashed guide down the field's whole
+                height — a stub above the face, then a long run from straight under it
+                to the field's foot — so the smiley reads as threaded onto its own line
+                instead of having the line drawn through it. Painted before the faces
+                and the circle, so both simply stand in front of the line. */}
+            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
+              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
+              {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: 0 }} />)}
+            </div>
+            {/* The smileys sit at the top of the field, a slight padding below its
+                top edge, while the rule and the circle stay dead centre in it. */}
+            <FaceLayer />
+            <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+              onChange={(v) => onChange(key, String(v))} />
           </div>
-          {/* Each smiley's column carries its dashed guide down the field's whole
-              height — a stub above the face, then a long run from straight under it
-              to the field's foot — so the smiley reads as threaded onto its own line
-              instead of having the line drawn through it. Painted before the faces
-              and the circle, so both simply stand in front of the line. */}
-          <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-            {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
-            {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: "var(--risiko-caption-band)" }} />)}
-          </div>
-          {/* Every column names itself: one label per grey field, centred on that
-              field and resting at the foot of its colour, so the circle always sits
-              above the word it points at. */}
-          <div className="risiko-scale-captions absolute pointer-events-none" lang="de">
+          {/* Every column names itself: one label per field, centred on that field and
+              resting at its foot, so the circle always sits above the word it points
+              at. The row takes exactly the height the names need. */}
+          <div className="risiko-scale-captions pointer-events-none" lang="de">
             {SCALE_CAPTIONS.map((caption, i) => (
               <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
                 <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
               ))}</span>
             ))}
           </div>
-          {/* The smileys sit at the top of the fields, a slight padding below their
-              top edge, while the rule and the circle stay dead centre in them. */}
-          <FaceLayer />
-          <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-            onChange={(v) => onChange(key, String(v))} />
         </div>
       </div>
     </div>
@@ -373,15 +379,15 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
-          {/* The work split is read on the same grid as the statements: the five soft
-              grey fields with a dashed line down the middle of each. They stop above
-              the names' strip, and the bar, the circles and the share figures all
-              paint on top of them. */}
+          {/* The work split is read on the same grid as the statements: no fill,
+              only the dashed grey lines at the scale's edges and between every
+              pair of neighbouring columns. They stop above the names' strip, and
+              the bar, the circles and the share figures all paint on top. */}
           <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
             style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => (
-              <span key={`c${i}`} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`}
-                style={{ left: `${from}%`, right: `${100 - to}%` }} />
+            {columnEdges(FACES.length).map((at) => (
+              <span key={`c${at}`} className="risiko-column-edge absolute top-0 bottom-0"
+                style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />
             ))}
           </div>
           <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none"
