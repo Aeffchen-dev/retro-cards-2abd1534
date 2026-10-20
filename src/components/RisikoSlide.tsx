@@ -190,12 +190,14 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
             const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
             const isLast = i === partners.length - 1;
-            // Names lean into their own band so two labels never sit on each other.
-            const shift = partners.length > 1 ? (isLast ? 10 : -10) : 0;
+            // Each name grows from its Memoji into that partner's own band, so two
+            // labels can never end up on top of each other.
+            const ownWidth = segments[i]?.width ?? 100;
+            const nameAlign = partners.length === 1 ? "workload-name--single" : isLast ? "workload-name--right" : "workload-name--left";
             const memojiEl = (
               <>
                 <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-                <span className="workload-name" style={{ "--workload-name-shift": `${shift}px` } as React.CSSProperties} aria-hidden="true">{p.name}</span>
+                <span className={`workload-name ${nameAlign}`} style={{ "--workload-band": String(ownWidth) } as React.CSSProperties} aria-hidden="true">{p.name}</span>
               </>
             );
             if (readOnly) {

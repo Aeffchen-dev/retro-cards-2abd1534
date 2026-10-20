@@ -269,8 +269,8 @@
 .workload-name {
   position: absolute;
   top: calc(100% + 4px);
-  left: calc(50% + var(--workload-name-shift, 0px));
-  transform: translateX(-50%);
+  /* a label never needs more room than its owner's share of the line */
+  max-width: max(56px, calc(var(--workload-band, 100) * 1cqw - 8px));
   background: var(--risiko-label-bg);
   color: color-mix(in srgb, var(--workload-color) 55%, #101010);
   font-size: 11px;
@@ -278,10 +278,14 @@
   font-weight: 700;
   padding: 0 3px;
   white-space: nowrap;
-  max-width: 130px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* Each name grows from its Memoji outwards into its own band, so two labels
+   can never end up on top of each other. */
+.workload-name--left { right: calc(50% + 2px); text-align: right; }
+.workload-name--right { left: calc(50% + 2px); text-align: left; }
+.workload-name--single { left: 50%; transform: translateX(-50%); }
 
 /* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
 .risiko-scale-caption {
