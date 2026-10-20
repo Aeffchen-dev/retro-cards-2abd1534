@@ -234,6 +234,9 @@
 /* Cards are dark surfaces — keep text light (238 238 238) on them. */
 .retro-card-container {
   --retro-white-rgb: 238 238 238;
+  /* Nothing may ever be dragged or laid out past the card's own width: the card
+     scrolls sideways rather than growing, so clip the sideways direction. */
+  overflow-x: hidden;
 }
 
 .risiko-card { overflow: hidden; }
