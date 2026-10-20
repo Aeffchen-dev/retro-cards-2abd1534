@@ -136,3 +136,5 @@
 - [x] Feedback question 1 now shows the remembering sentence as the writing area's grey placeholder on screen (print keeps it as a line); verified on desktop/phone/print, 46 tests pass.
 - [x] Column names moved to the foot of the grey fields, inside the colour; guides stop above them; verified on desktop/phone/print, 46 tests pass.
 - [x] Health Check scale softened: columns barely-there grey (#F4F5F7 / #ECEEF0), smileys a shade lighter (#8A8C94), rule ends rounded, fields capped at 120px on screen; names paint their own column's grey so a guide never crosses their letters; verified desktop/phone/small phone/print, 47 tests pass.
+- [x] Give the Beziehungsarbeit scale the same chart grid as the statements: five faint columns with a dashed line down each column's middle behind the bar, stopping 26px above the lane's foot; verified columns exactly a fifth of the lane (88.8px of 444px, 57.2px of 286px), guides at 10/30/50/70/90%, drag to 19/81 and 16/84 kept after reload, grid in the printed copy and on PDF page 8, 47 tests pass, build OK.
+
