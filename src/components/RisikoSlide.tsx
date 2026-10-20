@@ -55,7 +55,6 @@ const TRAVEL_INSET = MARKER_SIZE / 2;
 // One equal column per smiley across the full scale width; each smiley (and its
 // dashed guide) sits at its column's centre, while the circle keeps gliding
 // through the whole width under them.
-const COL_W = 100 / FACES.length;
 /** CSS left for a marker-travel percentage, so faces/columns line up with the slider ends. */
 const atTravel = (p: number) => `calc(${TRAVEL_INSET}px + ${p} * (100% - ${MARKER_SIZE}px) / 100)`;
 const facePos = (i: number) => atTravel((i * 100) / (FACES.length - 1));
