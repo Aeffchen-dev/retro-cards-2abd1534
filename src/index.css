@@ -291,8 +291,10 @@
 }
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
-   just above it, so a guide never runs through a partner's name. */
-.workload-lane { container-type: inline-size; --risiko-name-strip: 20px; }
+   just above it — 26px clears the tallest name, so a name's white backing never bites
+   into the grey band and no guide runs through a partner's name. */
+.workload-lane { container-type: inline-size; --risiko-name-strip: 26px; }
+
 
 .workload-segment { height: 100%; background: var(--workload-color); }
 .workload-color-0 { --workload-color: var(--workload-partner-0); }
