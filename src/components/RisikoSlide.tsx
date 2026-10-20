@@ -131,7 +131,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     return (
       <div className="risiko-auto-gap flex flex-col gap-1">
         <span className="retro-body-copy risiko-label relative z-10 self-start">Wer leistet wie viel der Beziehungsarbeit?</span>
-        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H, paddingLeft: END_INSET, paddingRight: END_INSET }}>
+        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
           <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
         </div>
