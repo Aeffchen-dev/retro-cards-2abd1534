@@ -26,3 +26,4 @@
 - [x] Fix the PDF export (blank first sheet, cards cut off); verify one card per sheet with nothing clipped.
 - [x] Extend the conflicts question to "Wir lösen Konflikte fair und als Team"; verify plates grow and pages still fit.
 - [x] Draw the drag point as a black disc with white features and keep the face once dragged (dot only in the initial state); verify on screen and after reload.
+- [x] Reword the appreciation question to "Unsere Kommunikation bleibt immer respektvoll"; verify plates grow and pages still fit.
