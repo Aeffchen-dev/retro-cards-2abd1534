@@ -374,15 +374,18 @@
   gap: 0 4px;
 }
 /* They read in the smileys' own grey — the same tone as the five faces and their
-   dashed guides — and take the info rows' size: 16px on desktop, one step smaller
-   on phones and tablets (see the max-width: 1023px block below). */
+   dashed guides — at 9px, one step under the info rows' 12px floor: the longest
+   label ("Trifft noch nicht zu") measures 108px at 12px and a column is only 86px
+   wide, so anything above ~9.5px would split it over two lines. Below 9px the words
+   turn into mush, and on a phone column (48-55px) no size fits one line anyway —
+   there the labels wrap to two. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 9px;
+  line-height: 11px;
   color: var(--risiko-guide);
   /* Plain block text, not a flex item: an anonymous flex item is never allowed to
      shrink below its longest word, so on narrow cards "teilweise" would stick out of
@@ -631,7 +634,6 @@ button {
    12px is the app's floor — no text anywhere is set smaller than that. */
 @media (max-width: 1023px) {
   .retro-info-row,
-  .risiko-scale-caption,
   .post-it-helper {
     font-size: 12px;
     line-height: 16px;
