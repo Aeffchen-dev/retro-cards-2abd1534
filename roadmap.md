@@ -4,4 +4,5 @@
 - [x] Verify scale persistence, print output and fit on short and large screens.
 - [x] Show shared smileys and column lines with coloured question backgrounds; verify fit and interaction.
 - [x] Animate statement points as position-dependent smileys while dragging; verify dot reset and persistence.
-- [x] Make shared smileys smaller, remove question backgrounds, use normal body text and match drag expressions to the scale; verify interaction and fit.- [x] Set smileys and the draggable dot to the app's standard 16px icon size; verify on screen.
+- [x] Make shared smileys smaller, remove question backgrounds, use normal body text and match drag expressions to the scale; verify interaction and fit.
+- [x] Set smileys and the draggable dot to the app's standard 16px icon size; verify on screen.
