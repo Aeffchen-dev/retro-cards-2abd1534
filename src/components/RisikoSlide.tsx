@@ -174,7 +174,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       <div className="relative flex flex-col w-full gap-1">
         <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
-          <span>Stimme gar nicht zu</span>
+          <span>Stimme nicht zu</span>
           <span>Stimme voll zu</span>
         </div>
         <FaceLayer />
