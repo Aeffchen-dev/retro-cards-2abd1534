@@ -83,17 +83,24 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
   };
 
   const body = (readOnly: boolean) => (
-    <div className="relative flex flex-col gap-3 w-full mt-4">
-      {/* 5 columns across the whole page */}
-      <div className="pointer-events-none absolute inset-0 grid grid-cols-5" aria-hidden="true">
-        {FACES.map((_, i) => <div key={i} className={i ? "border-l border-dashed" : ""} style={{ borderColor: INK, opacity: 0.25 }} />)}
-      </div>
-      <div className="grid grid-cols-5 justify-items-center" aria-hidden="true">
+    <div className="flex flex-col gap-3 w-full mt-4">
+      {/* faces span the full width: first flush left, last flush right */}
+      <div className="flex justify-between" aria-hidden="true">
         {FACES.map((Face, i) => <Face key={i} size={28} strokeWidth={1.5} color="#201C1D" />)}
       </div>
-      {RISIKO_STATEMENTS.map(([k, t]) => statement(k, t, readOnly))}
-      {allocation(readOnly)}
-      {statement(RISIKO_HOT[0], RISIKO_HOT[1], readOnly)}
+      <div className="relative flex flex-col gap-3">
+        {/* dashed guideline straight under each face */}
+        <div className="pointer-events-none absolute inset-0 flex justify-between" aria-hidden="true">
+          {FACES.map((_, i) => (
+            <div key={i} className="w-7 flex justify-center">
+              <div className="h-full border-l border-dashed" style={{ borderColor: INK, opacity: 0.25 }} />
+            </div>
+          ))}
+        </div>
+        {RISIKO_STATEMENTS.map(([k, t]) => statement(k, t, readOnly))}
+        {allocation(readOnly)}
+        {statement(RISIKO_HOT[0], RISIKO_HOT[1], readOnly)}
+      </div>
     </div>
   );
 
