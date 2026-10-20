@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import RevealText from "@/components/RevealText";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, risikoHeadingSize, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
@@ -64,9 +64,6 @@ interface RisikoSlideProps {
   onEdit: () => void;
   /** Swiper position of this page — drives the headline's word reveal. */
   slideIndex?: number;
-  /** Card space the headline has to fit in, so a long statement is never clipped. */
-  viewportWidth: number;
-  viewportHeight: number;
 }
 
 const INK = "var(--retro-black)";
@@ -155,7 +152,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex, viewportWidth, viewportHeight }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex }: RisikoSlideProps) => {
 
   // The statement is the card's headline, so under it sits only the scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
@@ -254,13 +251,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
 
 
-  // The statement itself is the headline; the work-split card asks its own question.
+  // The statement is the card's headline; the work-split card asks its own question.
   const heading = page.statements[0]?.[1] ?? RISIKO_ALLOCATION_HEADING;
-  const headingSize = risikoHeadingSize(heading, viewportWidth, viewportHeight);
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
-      <h2 className="risiko-heading retro-heading w-full shrink-0" style={{ fontSize: headingSize }}><RevealText text={heading} color={pill} slideIndex={slideIndex} /></h2>
+      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de"><RevealText text={heading} color={pill} slideIndex={slideIndex} /></h2>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         {/* The agreement scale belongs to a statement; the work split has its own line. */}
         {page.statements.length > 0 && (

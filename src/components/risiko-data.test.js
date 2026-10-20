@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_HOT, RISIKO_ALLOCATION_HEADING, risikoPages, risikoHeadingSize } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -103,23 +103,5 @@ describe("Risikofaktoren scale", () => {
     const withPartners = risikoPages(keys).filter(p => p.personKeys.length);
     expect(withPartners.length).toBe(1);
     expect(withPartners[0].personKeys).toEqual(keys);
-  });
-  test("keeps the display size for short statements and shrinks only what will not fit", () => {
-    expect(risikoHeadingSize("Wir zeigen uns aktiv, dass wir uns lieben", 1280, 1800)).toBe(38.4);
-    expect(risikoHeadingSize("Wir zeigen uns aktiv, dass wir uns lieben", 390, 844)).toBe(38.4);
-    const long = RISIKO_STATEMENTS[5][1];
-    expect(risikoHeadingSize(long, 1280, 1800)).toBe(38.4);
-    const phone = risikoHeadingSize(long, 390, 844);
-    expect(phone).toBeLessThan(38.4);
-    expect(phone).toBeGreaterThanOrEqual(18);
-  });
-  test("never asks for a headline outside the display range, on any screen", () => {
-    for (const [height, width] of [[1800, 1280], [844, 390], [600, 320], [400, 300]]) {
-      for (const statement of [...RISIKO_STATEMENTS, RISIKO_HOT]) {
-        const size = risikoHeadingSize(statement[1], width, height);
-        expect(size).toBeGreaterThanOrEqual(18);
-        expect(size).toBeLessThanOrEqual(38.4);
-      }
-    }
   });
 });
