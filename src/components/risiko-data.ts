@@ -39,6 +39,14 @@ export const scaleValue = (stored?: string): number => {
 export const markerInset = (value: number, endInset: number): number =>
   endInset - (scaleValue(String(value)) * (2 * endInset)) / 100;
 
+/** Dashed guideline positions for a scale with `faces` smileys: one under each
+ *  face and one midway between neighbours, as scale values. */
+export const guidePositions = (faces: number): number[] => {
+  if (faces < 2) return [0];
+  const step = 100 / (faces - 1);
+  return Array.from({ length: faces * 2 - 1 }, (_, i) => (i * step) / 2);
+};
+
 
 /** Largest-remainder rounding keeps integer percentages at exactly the target. */
 function distributeShares(keys: string[], weights: number[], target: number): Record<string, number> {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The two tear streams, shared by the scale's crying face and the dragged dot:
 // a drop hanging from below each eye, tip first so it shrinks back into the eye.
@@ -50,6 +50,9 @@ const RULE_W = (FACE_SIZE * 1.5) / 24;
 // The circle stops half a face inside each end — exactly under the outer smileys —
 // and moves freely between them, so it can rest on any value, not just a field.
 const END_INSET = FACE_W / 2;
+// Guidelines sit under every smiley and midway between neighbours, at the value
+// the circle itself would take there — the same inset maths keeps them aligned.
+const GUIDES = guidePositions(FACES.length);
 // Workload circles stay round at 32px, and every partner reserves a wider band
 // (circle + room for its centred name + clear air to the neighbour's circle), so
 // dots never touch and names never reach into a neighbour's.
@@ -189,10 +192,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span>Stimme voll zu</span>
         </div>
         <FaceLayer />
-        {/* One dashed guideline under each smiley, running the height of the
-            circle's row, so a free position still reads against a face. */}
-        <div className="risiko-columns absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
-          {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
+        {/* Dashed guidelines: one under each smiley and one midway between
+            neighbours, running the height of the circle's row, so a free
+            position still reads against a face. */}
+        <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
+          {GUIDES.map((p) => <span key={p} className="risiko-column-line absolute top-0 bottom-0 -translate-x-1/2" style={{ left: `calc(${p}% + ${markerInset(p, END_INSET)}px)` }} />)}
         </div>
         <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
           onChange={(v) => onChange(key, String(v))} />

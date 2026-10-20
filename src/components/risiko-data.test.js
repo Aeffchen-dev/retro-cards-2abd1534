@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -142,5 +142,13 @@ describe("Risikofaktoren scale", () => {
       const band = Math.min(60, (300 - 32) / count);
       expect(300 - band * (count - 1) - 32).toBeGreaterThan(0);
     }
+  });
+});
+
+describe("dashed guidelines", () => {
+  test("sits under every smiley and midway between neighbours", () => {
+    expect(guidePositions(5)).toEqual([0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100]);
+    expect(guidePositions(2)).toEqual([0, 50, 100]);
+    expect(guidePositions(1)).toEqual([0]);
   });
 });
