@@ -34,3 +34,4 @@
 - [x] Rename the allocation block to "Wer leistet wie viel der Beziehungsarbeit?", put all partner memojis on one draggable line with 0%/100% end labels; verify keyboard/pointer drag, persistence, mobile and the PDF.
 - [x] Widen the black scale rules so they fill the container width (edge to edge), keeping dot travel on the face centres and 0%/100% at the rule ends; verify on desktop, mobile and in the PDF.
 - [x] Make the drag face's mouth line finer and its eyes clearly bigger; verify by pixel measurement on desktop and mobile and in the PDF.
+- [x] Enlarge the smileys on the first two Health Check slides to 48px; verify they clear the heading and the info row on desktop and mobile and still print intact.
