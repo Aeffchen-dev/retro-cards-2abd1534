@@ -441,15 +441,15 @@ describe("mood test chapter", () => {
     expect(moodFaceIndex(100)).toBe(4);
   });
   test("the chapter opens with the couple's own question and intro sentence", () => {
-    expect(RISIKO_CHAPTER_HEADING).toBe("Euer Beziehungsgefühl");
-    expect(RISIKO_CHAPTER_INFO).toBe("Lest euch die folgenden Statements die eine glückliche Beziehungen ausmachen und überlegt was davon für eure Beziehung bereits zutrifft und was noch wachsen darf.");
+    expect(RISIKO_CHAPTER_HEADING).toBe("Testet euer Beziehungsgefühl");
+    expect(RISIKO_CHAPTER_INFO).toBe("Die Statements beschreiben, was eine glückliche Beziehung ausmacht. Vergleicht sie mit eurer eigenen Beziehung: Welches Gefühl dominiert am Ende?");
   });
   test("the chapter pill reads Mood Test on the statement cards and keeps Health Check on the first two", () => {
     const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
-    expect(cards).toContain('105: "Mood Test"');
+    expect(cards).toContain('105: "Relationship Mood Test"');
     expect(cards).toContain('1: "Health Check"');
     expect(cards).toContain('2: "Health Check"');
-    expect(cards).toContain('"Mood Test" : SLIDE_PILLS[slideId]');
+    expect(cards).toContain('"Relationship Mood Test" : SLIDE_PILLS[slideId]');
   });
   test("the chapter block and the mood smiley are rendered on the first statement card", () => {
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
