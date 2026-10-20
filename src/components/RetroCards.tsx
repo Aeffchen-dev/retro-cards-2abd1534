@@ -1321,8 +1321,8 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="relative w-full flex-1 my-10 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
-                {/* Same line-icon faces as the Risikofaktoren scale, best at the top */}
-                {[...FACES].reverse().map((Face, i) => (
+                {/* Five faces so the neutral one sits exactly in the middle of the scale */}
+                {[SadFace, ...FACES].reverse().map((Face, i) => (
                   <Face key={i} size={48} strokeWidth={1.5} color={FACE_GREY} />
                 ))}
               </div>

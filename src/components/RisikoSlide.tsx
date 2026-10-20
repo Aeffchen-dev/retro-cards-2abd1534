@@ -4,6 +4,27 @@ import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, type RisikoPage } from "./risiko-data";
 
+// Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
+export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color ?? "currentColor"}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <line x1="9" y1="9" x2="9.01" y2="9" />
+    <line x1="15" y1="9" x2="15.01" y2="9" />
+    <path d="M16 17s-1.5-2.3-4-2.3S8 17 8 17" />
+    <path d="M8.6 12.6c0 .9.7 1.6 1.6 1.6s1.6-.7 1.6-1.6c0-.75-1.6-2.4-1.6-2.4s-1.6 1.65-1.6 2.4z" />
+  </svg>
+);
 export const FACES = [Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its four column centres.
