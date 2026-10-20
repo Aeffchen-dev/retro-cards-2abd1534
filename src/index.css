@@ -573,6 +573,17 @@ button {
   line-height: 18px;
 }
 
+/* Info rows (the ℹ helper sentences) read one size smaller on phones and
+   tablets: the same sentence then fits in fewer lines without squeezing the
+   scale or the notes row. Desktop keeps the regular 16px body copy.
+   Placed after .retro-body-copy so it wins over the default size. */
+@media (max-width: 1023px) {
+  .retro-info-row {
+    font-size: 13px;
+    line-height: 17px;
+  }
+}
+
 
 /* Hide in-card pills — pill is now rendered above the card */
 .retro-card-container .retro-pill { display: none !important; }

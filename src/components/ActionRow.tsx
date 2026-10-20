@@ -73,6 +73,8 @@ const ActionRow: React.FC<ActionRowProps> = ({
     ? (labelColor ?? "#201C1D")
     : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
   const border = outlined ? "1px solid #201C1D" : undefined;
+  // Info rows (ℹ) get their own hook so phones and tablets can shrink the sentence.
+  const classes = `${BASE_CLASS}${icon === "IconInfo" ? " retro-info-row" : ""} ${className}`;
   const content = (
     <>
       <span
@@ -109,7 +111,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         target={target}
         rel={target === "_blank" ? "noopener noreferrer" : undefined}
         onClick={handleClick}
-        className={`${BASE_CLASS} ${className}`}
+        className={classes}
         style={style}
       >
         {content}
@@ -118,7 +120,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   }
 
   return (
-    <button type="button" onClick={handleClick} className={`${BASE_CLASS} ${className}`} style={style}>
+    <button type="button" onClick={handleClick} className={classes} style={style}>
       {content}
     </button>
   );
