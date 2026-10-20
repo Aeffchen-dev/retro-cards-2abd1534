@@ -4,7 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
-import { risikoPages, RISIKO_PER_PAGE } from "@/components/risiko-data";
+import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
@@ -358,6 +358,23 @@ const RetroCards: React.FC = () => {
         migrated[k as any] = v;
       }
     }
+    // Risiko cards store notes per Aussage and person ("self-p0"); legacy
+    // person-only notes move to the card's first Aussage group so nothing is lost.
+    for (const k of Object.keys(migrated)) {
+      const id = Number(k);
+      if (!isRisikoSlide(id)) continue;
+      const page = riskPages[riskSlideIds.indexOf(id)];
+      if (!page) continue;
+      const groupKey = page.statements[0]?.[0] ?? "work";
+      const v = migrated[id];
+      for (const pKey of persons.map(p => p.key)) {
+        const legacy = (v[pKey] || "").trim();
+        if (legacy && !(v[`${groupKey}-${pKey}`] || "").trim()) {
+          v[`${groupKey}-${pKey}`] = legacy;
+          delete v[pKey];
+        }
+      }
+    }
     return migrated;
   });
 
@@ -605,6 +622,17 @@ const RetroCards: React.FC = () => {
     if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
   }, [isMobile]);
+
+  // The Aussage groups a risiko card shows in notes mode: one header per Aussage
+  // (the work-split card falls back to its own heading), fields once per group.
+  const risikoNoteGroups = useCallback((slideId: number): { key: string; title: string }[] | null => {
+    if (!isRisikoSlide(slideId)) return null;
+    const page = riskPages[riskSlideIds.indexOf(slideId)];
+    if (!page) return null;
+    return page.statements.length
+      ? page.statements.map(([k, t]) => ({ key: k, title: t }))
+      : [{ key: "work", title: RISIKO_ALLOCATION_HEADING }];
+  }, [riskPages, riskSlideIds]);
 
   // Fetch questions from Google Sheets - truly non-blocking with cache
   useEffect(() => {
@@ -2196,40 +2224,83 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit Mode View */}
                     {editModeSlides[slideId] && hasEditButton(slideId) ? (
-                      <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none" style={{ ...cardStyle, paddingBottom: '76px' }}>
-                        {/* Question text - animated to top left, smaller, with right padding for close icon */}
-
-                        <h2 
-                          className="retro-body mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
-                          style={{ fontSize: '16px', lineHeight: 1.4, color: '#201C1D' }}
-                        >
-                          {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
-                        </h2>
-                        
-                        {/* Post-it notes — one per person */}
-                        <div className="flex flex-col flex-1 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
-                          {persons.map((person, idx) => {
-                            const aq = activeQuestion[slideId];
-                            const noteKey = aq ? `q${aq.idx}-${person.key}` : person.key;
-                            return (
-                              <PostItField
-                                key={noteKey}
-                                accent={labelColorOf(slideId)}
-                                label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                placeholder="Deine Antwort"
-                                value={editModeNotes[slideId]?.[noteKey] || ""}
-                                onChange={(v) =>
-                                  setEditModeNotes(prev => ({
-                                    ...prev,
-                                    [slideId]: { ...(prev[slideId] || {}), [noteKey]: v }
-                                  }))
-                                }
-                              />
-
-                            );
-                          })}
+                      (() => {
+                        // Risiko cards carry the card's own Aussage(n) into notes
+                        // mode: one Aussage header per group, the fields once per
+                        // group — two Aussagen, two sets of post-its.
+                        const groups = risikoNoteGroups(slideId);
+                        return (
+                        <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none overflow-hidden" style={{ ...cardStyle, paddingBottom: '76px' }}>
+                          {groups ? (
+                            <div className="flex flex-col flex-1 min-h-0 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
+                              {groups.map((g, gi) => (
+                                <div key={g.key} className="flex flex-col flex-1 min-h-0 gap-2">
+                                  <h2
+                                    className="retro-body-copy shrink-0 pr-12"
+                                    lang="de"
+                                    style={{ fontSize: '16px', lineHeight: 1.4, color: '#201C1D' }}
+                                  >
+                                    {`\u201E${g.title}\u201C`}
+                                  </h2>
+                                  <div className="flex flex-col flex-1 min-h-0 gap-4">
+                                    {persons.map((person, idx) => {
+                                      const noteKey = `${g.key}-${person.key}`;
+                                      return (
+                                        <PostItField
+                                          key={noteKey}
+                                          accent={labelColorOf(slideId)}
+                                          label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                                          placeholder="Deine Antwort"
+                                          value={editModeNotes[slideId]?.[noteKey] || ""}
+                                          onChange={(v) =>
+                                            setEditModeNotes(prev => ({
+                                              ...prev,
+                                              [slideId]: { ...(prev[slideId] || {}), [noteKey]: v }
+                                            }))
+                                          }
+                                        />
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <>
+                              {/* Question text - animated to top left, smaller, with right padding for close icon */}
+                              <h2
+                                className="retro-body mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
+                                style={{ fontSize: '16px', lineHeight: 1.4, color: '#201C1D' }}
+                              >
+                                {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
+                              </h2>
+                              {/* Post-it notes — one per person */}
+                              <div className="flex flex-col flex-1 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
+                                {persons.map((person, idx) => {
+                                  const aq = activeQuestion[slideId];
+                                  const noteKey = aq ? `q${aq.idx}-${person.key}` : person.key;
+                                  return (
+                                    <PostItField
+                                      key={noteKey}
+                                      accent={labelColorOf(slideId)}
+                                      label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
+                                      placeholder="Deine Antwort"
+                                      value={editModeNotes[slideId]?.[noteKey] || ""}
+                                      onChange={(v) =>
+                                        setEditModeNotes(prev => ({
+                                          ...prev,
+                                          [slideId]: { ...(prev[slideId] || {}), [noteKey]: v }
+                                        }))
+                                      }
+                                    />
+                                  );
+                                })}
+                              </div>
+                            </>
+                          )}
                         </div>
-                      </div>
+                        );
+                      })()
                     ) : renderCard(slideId)}
 
                     {/* Edit/Close action row - bottom left */}
@@ -2286,33 +2357,61 @@ const RetroCards: React.FC = () => {
                 </div>
               )}
               
-              {/* Notes page right after its slide - on its own page */}
-              {hasEditButton(slideId) && persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim()) && (
+              {/* Notes page right after its slide - on its own page. Risiko cards
+                  repeat their Aussage as the header and the fields once per Aussage. */}
+              {hasEditButton(slideId) && (() => {
+                const groups = risikoNoteGroups(slideId);
+                const hasNotes = groups
+                  ? groups.some(g => persons.some(p => (editModeNotes[slideId]?.[`${g.key}-${p.key}`] || "").trim()))
+                  : persons.some(p => (editModeNotes[slideId]?.[p.key] || "").trim());
+                if (!hasNotes) return null;
+                return (
                 <div className="print-slide-page print-notes-page" style={{ order: index * 2 + 1 }}>
                   <div className="retro-card-container relative flex flex-col items-start bg-retro-card-bg rounded-none">
-                    {/* Question text */}
-                    <h2 
-                      className="retro-body mb-6"
-                      style={{ fontSize: '16px', lineHeight: 1.4 }}
-                    >
-                      {getSlideQuestion(slideId)} — Notizen
-                    </h2>
-                    
-                    {/* Post-it notes — one per person with content */}
-                    <div className="flex flex-col flex-1 gap-4 w-full">
-                      {persons.map((person) => {
-                        const text = editModeNotes[slideId]?.[person.key];
-                        if (!text) return null;
-                        return (
-                          <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
-                            {text}
-                          </div>
-                        );
-                      })}
-                    </div>
+                    {/* Question text / Aussage header */}
+                    {groups ? groups.map(g => (
+                      <div key={g.key} className="w-full flex flex-col flex-1 min-h-0 items-start mb-6">
+                        <h2 className="retro-body-copy mb-6" style={{ fontSize: '16px', lineHeight: 1.4 }} lang="de">
+                          {`\u201E${g.title}\u201C`}
+                        </h2>
+                        <div className="flex flex-col flex-1 min-h-0 gap-4 w-full">
+                          {persons.map((person) => {
+                            const text = editModeNotes[slideId]?.[`${g.key}-${person.key}`];
+                            if (!text) return null;
+                            return (
+                              <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
+                                {text}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )) : (
+                      <>
+                        <h2
+                          className="retro-body mb-6"
+                          style={{ fontSize: '16px', lineHeight: 1.4 }}
+                        >
+                          {getSlideQuestion(slideId)} — Notizen
+                        </h2>
+                        {/* Post-it notes — one per person with content */}
+                        <div className="flex flex-col flex-1 gap-4 w-full">
+                          {persons.map((person) => {
+                            const text = editModeNotes[slideId]?.[person.key];
+                            if (!text) return null;
+                            return (
+                              <div key={person.key} className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap min-h-[120px]">
+                                {text}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
-              )}
+                );
+              })()}
             </div>
           ))}
         </div>

@@ -142,3 +142,4 @@
 
 
 
+- [x] Show each Risikofaktoren card's Aussage(n) in notes mode with one pair of post-its per Aussage (work-split card uses its own heading), matching print pages; legacy notes migrated; verified on screen, phone, reload and print; 47 tests pass.
