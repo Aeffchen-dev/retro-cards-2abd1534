@@ -7,7 +7,7 @@ import { scaleValue, scaleExpression, scaleFaceBlend, type RisikoPage } from "./
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its five column centres.
-const FACE_SIZE = 16;
+const FACE_SIZE = 24;
 const FACE_FILL = "var(--risiko-face-fill)";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
@@ -17,7 +17,7 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-4 risiko-bleed" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
@@ -44,7 +44,7 @@ const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) 
       <span className="risiko-plain-dot" />
       <span className="risiko-drag-face">
         {FACES.map((Icon, i) => (
-          <Icon key={i} size={16} strokeWidth={1.5} className="absolute inset-0"
+          <Icon key={i} size={FACE_SIZE} strokeWidth={1.5} className="absolute inset-0"
             style={{ opacity: i === index ? 1 - mix : i === index + 1 ? mix : 0 }} />
         ))}
       </span>
@@ -58,7 +58,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
   const [dragging, setDragging] = useState(false);
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} />;
   return (
-  <div className="risiko-track relative w-full h-10 shrink-0 risiko-bleed">
+  <div className="risiko-track relative w-full h-10 shrink-0">
     <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
     {readOnly ? (
       <div
@@ -133,7 +133,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
         <FaceLayer />
-        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
+        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: FACE_SIZE / 2, right: FACE_SIZE / 2, top: FACE_SIZE }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full" />)}
         </div>
         <div className="screen-only w-full relative">{body(false)}</div>

@@ -227,9 +227,6 @@
 }
 
 .risiko-card { overflow: hidden; }
-/* Scale bleeds half a face beyond the content edges so the line spans the full
-   container width while the outer smileys sit slightly outside it. */
-.risiko-bleed { margin-left: -12px; margin-right: -12px; width: calc(100% + 24px); }
 .risiko-page .risiko-helper { height: auto; align-items: stretch; }
 .risiko-helper > span:last-child {
   height: auto;
