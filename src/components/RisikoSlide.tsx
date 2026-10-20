@@ -68,7 +68,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }:
         onKeyDown={(e) => e.stopPropagation()}
       >
         <SliderPrimitive.Track className="relative w-full h-px" />
-        <SliderPrimitive.Thumb aria-label={ariaLabel} className="block cursor-ew-resize focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 rounded-full">
+        <SliderPrimitive.Thumb aria-label={ariaLabel} className="block cursor-ew-resize rounded-full">
           {thumb}
         </SliderPrimitive.Thumb>
       </SliderPrimitive.Root>

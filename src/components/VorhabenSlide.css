@@ -24,8 +24,9 @@
   background: var(--retro-post-it);
   border-radius: 0;
 }
+/* Ink ring, never the browser's blue outline */
 .vorhaben-scale-arrow:focus-visible {
-  outline: 2px solid var(--vorhaben-pill);
+  outline: 2px solid var(--vorhaben-ink);
   outline-offset: 2px;
 }
 .vorhaben-scale-surface { background: var(--retro-post-it); }
