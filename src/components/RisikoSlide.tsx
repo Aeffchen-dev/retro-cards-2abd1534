@@ -84,13 +84,13 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
 
   const body = (readOnly: boolean) => (
     <div className="flex flex-col gap-3 w-full mt-4">
-      {/* faces span the full width: first flush left, last flush right */}
-      <div className="flex justify-between" aria-hidden="true">
+      {/* faces span the full card width: first flush left, last flush right */}
+      <div className="risiko-face-row flex justify-between" aria-hidden="true">
         {FACES.map((Face, i) => <Face key={i} size={28} strokeWidth={1.5} color="#201C1D" />)}
       </div>
       <div className="relative flex flex-col gap-3">
         {/* dashed guideline straight under each face */}
-        <div className="pointer-events-none absolute inset-0 flex justify-between" aria-hidden="true">
+        <div className="risiko-lines pointer-events-none absolute inset-y-0 flex justify-between" aria-hidden="true">
           {FACES.map((_, i) => (
             <div key={i} className="w-7 flex justify-center">
               <div className="h-full border-l border-dashed" style={{ borderColor: INK, opacity: 0.25 }} />
