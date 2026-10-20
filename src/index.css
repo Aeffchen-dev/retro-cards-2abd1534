@@ -323,9 +323,10 @@
   bottom: calc(100% + 3px);
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
-  color: var(--workload-ink);
-  font-size: 12px;
-  line-height: 13px;
+  color: var(--workload-color);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 17px;
   font-weight: 600;
   padding: 0 3px;
   white-space: nowrap;
@@ -1316,4 +1317,12 @@ textarea.bg-retro-post-it:focus,
   .risiko-scale-captions { container-type: inline-size; }
   .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { display: block; white-space: nowrap; }
+}
+
+/* A 2px white gap between neighbouring shares of the work-split bar. */
+.workload-segment-gap { border-left: 2px solid #FFFFFF; background-clip: padding-box; }
+.workload-split {
+  top: 0; transform: translateX(-50%);
+  font-size: 12px; line-height: 14px; white-space: nowrap;
+  color: var(--risiko-guide);
 }

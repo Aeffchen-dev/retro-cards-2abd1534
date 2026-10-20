@@ -388,7 +388,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
 
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: `${segment.width}%` }}>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
             ))}
@@ -452,6 +452,13 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
             );
+          })}
+        </div>
+        {/* The split each dashed guide stands for, read left partner / the rest. */}
+        <div className="workload-splits relative w-full h-[14px] shrink-0 pointer-events-none" aria-hidden="true">
+          {FACES.map((_, i) => {
+            const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
+            return <span key={`sp${i}`} className="workload-split absolute" style={{ left: facePos(i) }}>{at}/{100 - at}</span>;
           })}
         </div>
       </div>
