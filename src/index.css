@@ -234,7 +234,8 @@
   display: inline-flex;
   align-items: center;
   min-height: 32px;
-  padding: 4px 12px;
+  /* the plate hugs the question text — no side padding */
+  padding: 4px 0;
   /* never squeeze the plate shorter than its text when a row is tight */
   flex-shrink: 0;
   /* mask the dashed column lines behind the question text (card is white) */
