@@ -199,7 +199,7 @@ describe("smiley scale spans its container", () => {
 
 describe("smallest text size", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-  const sizes = [...css.matchAll(/font-size:\s*([^;]+);/g)].map((m) => m[1].trim());
+  const sizes = [...css.matchAll(/font-size:\s*([^;]+);/g)].map((m) => m[1].replace("!important", "").trim());
   test("every text size in the stylesheet is at least 12px", () => {
     expect(sizes.length).toBeGreaterThan(10);
     const below = sizes.filter((size) => {
