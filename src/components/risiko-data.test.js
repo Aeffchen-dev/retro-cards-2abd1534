@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_HOT, RISIKO_ALLOCATION_HEADING, risikoPages, risikoHeadingSize } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -83,39 +83,43 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
-  test("opens with the display-size question above the scale", () => {
-    expect(RISIKO_HEADING).toBe("Wie glücklich sind wir aktuell mit…?");
+  test("asks the work-split question on its own card", () => {
+    expect(RISIKO_ALLOCATION_HEADING).toBe("Wer leistet aktuell wie viel der Beziehungsarbeit?");
   });
-  test("keeps two pages on large screens and adds pages on phones", () => {
-    const big = risikoPages(["p0", "p1"], 1800, 1280);
-    expect(big.length).toBe(2);
-    expect(big[0].statements.length).toBe(3);
-    const small = risikoPages(["p0", "p1"], 844, 390);
-    // The display-size headline costs three lines on a phone, so the long
-    // sentences spread out and the allocation block lands on its own page.
-    expect(small.length).toBe(5);
-    expect(small[small.length - 1].statements.map(([key]) => key)).toEqual([]);
-    expect(small[small.length - 1].personKeys).toEqual(["p0", "p1"]);
-    expect(small.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
+  test("gives every statement its own card and closes with the work split", () => {
+    const pages = risikoPages(["p0", "p1"]);
+    expect(pages.map(p => p.statements.map(([key]) => key))).toEqual([
+      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["hot"], [],
+    ]);
+    expect(pages[pages.length - 1].personKeys).toEqual(["p0", "p1"]);
+    expect(pages.slice(0, -1).every(p => p.personKeys.length === 0)).toBe(true);
   });
-  test("adds pages on short screens without losing or repeating questions", () => {
-    const pages = risikoPages(["p0", "p1"], 600, 320);
-    expect(pages.length).toBeGreaterThan(2);
-    expect(pages.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
-    expect(pages.flatMap(p => p.personKeys)).toEqual(["p0", "p1"]);
+  test("skips the work-split card when nobody is named", () => {
+    expect(risikoPages([]).length).toBe(7);
+    expect(risikoPages([]).every(p => p.personKeys.length === 0)).toBe(true);
   });
-  test("keeps every partner's memoji on one shared allocation line", () => {
-    for (const [height, width] of [[1800, 1280], [844, 390], [600, 320]]) {
-      const pages = risikoPages(["p0", "p1"], height, width);
-      const withPartners = pages.filter(p => p.personKeys.length);
-      expect(withPartners.length).toBe(1);
-      expect(withPartners[0].personKeys).toEqual(["p0", "p1"]);
+  test("keeps every partner on one shared allocation line", () => {
+    const keys = Array.from({ length: 12 }, (_, i) => `p${i}`);
+    const withPartners = risikoPages(keys).filter(p => p.personKeys.length);
+    expect(withPartners.length).toBe(1);
+    expect(withPartners[0].personKeys).toEqual(keys);
+  });
+  test("keeps the display size for short statements and shrinks only what will not fit", () => {
+    expect(risikoHeadingSize("Wir zeigen uns aktiv, dass wir uns lieben", 1280, 1800)).toBe(38.4);
+    expect(risikoHeadingSize("Wir zeigen uns aktiv, dass wir uns lieben", 390, 844)).toBe(38.4);
+    const long = RISIKO_STATEMENTS[5][1];
+    expect(risikoHeadingSize(long, 1280, 1800)).toBe(38.4);
+    const phone = risikoHeadingSize(long, 390, 844);
+    expect(phone).toBeLessThan(38.4);
+    expect(phone).toBeGreaterThanOrEqual(18);
+  });
+  test("never asks for a headline outside the display range, on any screen", () => {
+    for (const [height, width] of [[1800, 1280], [844, 390], [600, 320], [400, 300]]) {
+      for (const statement of [...RISIKO_STATEMENTS, RISIKO_HOT]) {
+        const size = risikoHeadingSize(statement[1], width, height);
+        expect(size).toBeGreaterThanOrEqual(18);
+        expect(size).toBeLessThanOrEqual(38.4);
+      }
     }
-  });
-  test("adds pages for additional partners", () => {
-    const keys = Array.from({length: 12}, (_, i) => `p${i}`);
-    const pages = risikoPages(keys, 844, 390);
-    expect(pages.length).toBeGreaterThan(2);
-    expect(pages.flatMap(p => p.personKeys)).toEqual(keys);
   });
 });
