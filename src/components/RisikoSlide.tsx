@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import RevealText from "@/components/RevealText";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, risikoHeadingSize, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
@@ -64,6 +64,9 @@ interface RisikoSlideProps {
   onEdit: () => void;
   /** Swiper position of this page — drives the headline's word reveal. */
   slideIndex?: number;
+  /** Card space the headline has to fit in, so a long statement is never clipped. */
+  viewportWidth: number;
+  viewportHeight: number;
 }
 
 const INK = "var(--retro-black)";
@@ -152,11 +155,11 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex, viewportWidth, viewportHeight }: RisikoSlideProps) => {
 
-  const statement = (key: string, text: string, readOnly: boolean) => (
+  // The statement is the card's headline, so under it sits only the scale.
+  const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
-      <span className="retro-body-copy risiko-label relative z-10 self-start">{text}</span>
       <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
         onChange={(v) => onChange(key, String(v))} />
     </div>
@@ -170,7 +173,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     const segments = workloadSegments(keys, shares);
     return (
       <div className="risiko-auto-gap flex flex-col gap-1">
-        <span className="retro-body-copy risiko-label relative z-10 self-start">Wer leistet aktuell wie viel der Beziehungsarbeit?</span>
         <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
           <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
@@ -239,7 +241,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // question, between the questions, and the last question to the buttons.
   const body = (readOnly: boolean) => (
     <div className="flex flex-col gap-3 w-full flex-1 min-h-0">
-      {page.statements.map(([k, t]) => statement(k, t, readOnly))}
+      {page.statements.map(([k, t]) => scale(k, t, readOnly))}
       {page.personKeys.length > 0 && allocation(readOnly)}
       {!readOnly && (
         <div className="risiko-auto-gap risiko-footer w-full shrink-0 flex flex-col items-start gap-2">
@@ -252,21 +254,29 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
 
 
+  // The statement itself is the headline; the work-split card asks its own question.
+  const heading = page.statements[0]?.[1] ?? RISIKO_ALLOCATION_HEADING;
+  const headingSize = risikoHeadingSize(heading, viewportWidth, viewportHeight);
+
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
-      {/* The headline reads like the one on the first two Health Check cards. */}
-      <h2 className="risiko-heading retro-heading w-full shrink-0"><RevealText text={RISIKO_HEADING} color={pill} slideIndex={slideIndex} /></h2>
+      <h2 className="risiko-heading retro-heading w-full shrink-0" style={{ fontSize: headingSize }}><RevealText text={heading} color={pill} slideIndex={slideIndex} /></h2>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
-        <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
-          <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
-            <span>Stimme gar nicht zu</span>
-            <span>Stimme voll zu</span>
+        {/* The agreement scale belongs to a statement; the work split has its own line. */}
+        {page.statements.length > 0 && (
+          <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
+            <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
+              <span>Stimme gar nicht zu</span>
+              <span>Stimme voll zu</span>
+            </div>
+            <FaceLayer />
           </div>
-          <FaceLayer />
-        </div>
-        <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
-          {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
-        </div>
+        )}
+        {page.statements.length > 0 && (
+          <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
+            {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
+          </div>
+        )}
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>
