@@ -820,6 +820,19 @@ const RetroCards: React.FC = () => {
     swiperRefRef.current = swiperRef;
   }, [swiperRef]);
 
+  // Measure the emoji scale's live box instead of assuming a width: the card is
+  // capped at 500px, so on desktop its content area is narrower than the old
+  // hard-coded 480 and a dragged emoji would otherwise leave the card.
+  const memojiBounds = () => {
+    const el = document.querySelector<HTMLElement>(".swiper-slide-active .print-memoji-container");
+    const mobile = isMobileRef.current;
+    return {
+      w: el?.clientWidth || (mobile ? 320 : 480),
+      h: el?.clientHeight || (mobile ? 300 : 520),
+    };
+  };
+
+
   // Add global event listeners for memoji dragging
   useEffect(() => {
     if (!draggingMemoji) return;
@@ -828,10 +841,8 @@ const RetroCards: React.FC = () => {
       const deltaX = e.clientX - draggingMemoji.startX;
       const deltaY = e.clientY - draggingMemoji.startY;
 
-      // Use ref for current isMobile value
-      const mobile = isMobileRef.current;
-      const containerWidth = mobile ? 320 : 480;
-      const containerHeight = mobile ? 300 : 520;
+      // Keep the emoji inside the card's own content box.
+      const { w: containerWidth, h: containerHeight } = memojiBounds();
       
       const newX = Math.max(0, Math.min(containerWidth - 56, draggingMemoji.initialX + deltaX));
       const newY = Math.max(-40, Math.min(containerHeight - 56, draggingMemoji.initialY + deltaY));
@@ -858,10 +869,8 @@ const RetroCards: React.FC = () => {
       const deltaX = touch.clientX - draggingMemoji.startX;
       const deltaY = touch.clientY - draggingMemoji.startY;
 
-      // Use ref for current isMobile value
-      const mobile = isMobileRef.current;
-      const containerWidth = mobile ? 320 : 480;
-      const containerHeight = mobile ? 300 : 520;
+      // Keep the emoji inside the card's own content box.
+      const { w: containerWidth, h: containerHeight } = memojiBounds();
       
       const newX = Math.max(0, Math.min(containerWidth - 56, draggingMemoji.initialX + deltaX));
       const newY = Math.max(-40, Math.min(containerHeight - 56, draggingMemoji.initialY + deltaY));
