@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, type RisikoPage } from "./risiko-data";
 
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
@@ -38,20 +38,17 @@ const INK = "var(--retro-black)";
 // wide as a face puts the track ends exactly under the outer face centres.
 const END_INSET = FACE_W / 2;
 
-// One SVG face whose mouth morphs continuously with the value: the curve bows
-// up (sad) below 50 and down (happy) above 50, and the mouth opens while dragging.
-const MorphFace = ({ value, open }: { value: number; open: boolean }) => {
-  const t = scaleExpression(value); // -1 sad … +1 happy
-  const mouth = open
-    ? `M 8.5 15 Q 12 ${13.5 - t * 1.5} 15.5 15 Q 12 ${20 + t * 1.5} 8.5 15 Z`
-    : `M 7.5 16 Q 12 ${16 - t * 4.5} 16.5 16`;
+// Morph the eyes, brows and mouth through all five header expressions.
+const MorphFace = ({ value }: { value: number }) => {
+  const { eyeY, brow, mouth } = scaleFaceGeometry(value);
+  const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
   return (
     <svg width={FACE_SIZE} height={FACE_SIZE} viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" fill={FACE_FILL} />
-      <circle cx="8.5" cy="9.5" r="1.2" fill="currentColor" stroke="none" />
-      <circle cx="15.5" cy="9.5" r="1.2" fill="currentColor" stroke="none" />
-      <path d={mouth} fill={open ? "currentColor" : "none"} />
+      <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} />
+      <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={1.5 * brow} />
+      <path d={path} />
     </svg>
   );
 };
@@ -62,7 +59,7 @@ const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) 
     <span className={`risiko-expression-point ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot" />
       <span className="risiko-drag-face">
-        <MorphFace value={value} open={active} />
+        <MorphFace value={value} />
       </span>
     </span>
   );

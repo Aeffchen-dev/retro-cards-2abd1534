@@ -1,7 +1,19 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
 
 describe("Risikofaktoren scale", () => {
+  test("morphs through angry, sad, neutral, smiling and open-mouth happy", () => {
+    expect(scaleFaceGeometry(0).brow).toBe(1);
+    expect(scaleFaceGeometry(0).eyeY).toBe(10);
+    expect(scaleFaceGeometry(25).brow).toBe(0);
+    expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
+    expect(scaleFaceGeometry(50).mouth[7]).toBe(15);
+    expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
+    expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
+    expect(scaleFaceGeometry(100).mouth[19]).toBe(18);
+    expect(scaleFaceGeometry(12.5).brow).toBe(0.5);
+    expect(scaleFaceGeometry(87.5).mouth[19]).toBe(17);
+  });
   test("drag face matches the five smileys at their scale positions", () => {
     expect(scaleFaceBlend(0)).toEqual({ index: 0, mix: 0 });
     expect(scaleFaceBlend(25)).toEqual({ index: 1, mix: 0 });
