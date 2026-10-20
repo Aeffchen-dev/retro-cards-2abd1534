@@ -367,16 +367,25 @@ describe("column labels on a narrow phone", () => {
   });
 });
 
-describe("the fixed list of Beziehungsarbeit examples on the work-split card", () => {
-  test("lists exactly the examples the card reads under the question", () => {
-    expect(RISIKO_ALLOCATION_EXAMPLES.length).toBe(15);
-    expect(RISIKO_ALLOCATION_EXAMPLES[0]).toBe("Schwierige Gespräche initiieren");
-    expect(RISIKO_ALLOCATION_EXAMPLES[8]).toBe("Vermeintlich übertriebene Bedürfnisse ernst nehmen");
-    expect(RISIKO_ALLOCATION_EXAMPLES[11]).toBe("Die eigene Meinung runterschlucken, um zuzuhören");
-    expect(RISIKO_ALLOCATION_EXAMPLES[14]).toBe("Auch mal zurückstecken");
+describe("the fixed sentence of Beziehungsarbeit examples on the work-split card", () => {
+  test("reads the intro, the comma-joined examples and a full stop", () => {
+    expect(allocationExamplesSentence()).toBe(
+      "Unter Beziehungsarbeit versteht man schwierige Gespräche initiieren, " +
+      "im Streit nachgeben um zu deeskalieren, sich Fehler eingestehen, " +
+      "sich als unschuldiger entschuldigen, einen großen Kompromiss zusagen, " +
+      "Verletzungen aufarbeiten, den anderen emotional auffangen, " +
+      "immer zuerst Nähe initiieren, vermeintlich übertriebene Bedürfnisse ernst nehmen, " +
+      "unvergessliche Events planen, eine Schwäche an anderen wertschätzen, " +
+      "die eigene Meinung runterschlucken um zuzuhören, " +
+      "unsanftes Feedback leise in sich arbeiten lassen, " +
+      "Veränderungen die einen Nachteil bringen mittragen, auch mal zurückstecken."
+    );
   });
-  test("every example names one effort and is unique", () => {
-    expect(new Set(RISIKO_ALLOCATION_EXAMPLES).size).toBe(RISIKO_ALLOCATION_EXAMPLES.length);
-    for (const example of RISIKO_ALLOCATION_EXAMPLES) expect(example.length).toBeGreaterThan(0);
+  test("separates every example with a comma and ends with a full stop", () => {
+    const sentence = allocationExamplesSentence();
+    expect(sentence.startsWith("Unter Beziehungsarbeit versteht man ")).toBe(true);
+    expect(sentence.endsWith(".")).toBe(true);
+    expect(sentence.split(", ").length).toBe(15);
+    expect(new Set(sentence.replace("Unter Beziehungsarbeit versteht man ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
   });
 });
