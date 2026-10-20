@@ -46,9 +46,12 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The grey columns keep the same breathing room top and bottom as the smileys
-// get from the scale's edge.
-const TRAVEL_INSET = MARKER_SIZE / 2;
+// The fields stretch to fill whatever height the card has left over, but they
+// never collapse below one comfortable band: that floor is their own minimum.
+const COLUMN_MIN = 56;
+// A little grey above the smileys, so the faces sit inside their columns instead
+// of being sliced by the columns' top edge.
+const FACE_PAD = 8;
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -210,31 +213,57 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // that one until the pointer is lifted, wherever on the bar the press landed.
   const workloadDrag = useRef<{ index: number } | null>(null);
 
+  // A press inside the field — anywhere above the rule — picks the circle up and
+  // keeps dragging it, so the whole grey band is the handle and not only the
+  // rule's row. The value is read with the slider's own maths, so both ways of
+  // grabbing land the circle exactly under the pointer.
+  const fieldDrag = useRef<HTMLDivElement | null>(null);
+  const fieldValueAt = (el: HTMLElement, clientX: number) => {
+    const box = el.getBoundingClientRect();
+    const from = (box.width * facePct(0)) / 100;
+    const travel = (box.width * (100 - 2 * facePct(0))) / 100;
+    if (travel <= 0) return null;
+    return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
+  };
+  const grabField = (key: string, readOnly: boolean) => (e: React.PointerEvent<HTMLDivElement>) => {
+    // the rule's own row belongs to the slider, which already drags from there
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-track")) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v === null) return;
+    fieldDrag.current = e.currentTarget;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    onChange(key, String(Math.round(v)));
+  };
+  const dragField = (key: string) => (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!fieldDrag.current) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v !== null) onChange(key, String(Math.round(v)));
+  };
+  const releaseField = () => { fieldDrag.current = null; };
+
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
-    <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
+    <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       {/* The two labels take a line of their own above the columns — "Trifft nicht
           zu" flush left, "Trifft zu" flush right — so the columns below get the
           card's full width. */}
-      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border">
+      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border grow shrink-0">
         <div className="risiko-scale-captions flex items-center justify-between gap-2">
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
         </div>
-        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col gap-1 box-border">
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-between gap-1 box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD }}
+          onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
+          onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           {/* Columns: one soft grey band per smiley, filling the scale edge to edge
-              with nothing between them, from its top down to the foot of the
-              circle's row — so every smiley sits inside its own band and the circle
-              travels through it. Every second band takes a slightly deeper grey, so
-              the five fields still read as separate. Painted before the faces, so
-              the fill never covers a smiley. */}
-          {/* The grey block keeps the same 16px breathing room top and bottom as
-              the smileys get from the scale's edge — it never touches the row above
-              or the foot of the circle's row. */}
-          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: TRAVEL_INSET, bottom: TRAVEL_INSET }} aria-hidden="true">
+              with nothing between them and stretching over the scale's whole height,
+              so every smiley and the circle sit inside their own band. Every second
+              band takes a slightly deeper grey, so the five fields still read as
+              separate. Painted before the faces, so the fill never covers a smiley. */}
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0, minHeight: COLUMN_MIN }} aria-hidden="true">
             {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: HEADER_H, bottom: TRAVEL_INSET }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H, bottom: "calc(var(--risiko-track-h) / 2)" }} />)}
           </div>
           <FaceLayer />
 
