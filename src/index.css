@@ -39,6 +39,7 @@
     --risiko-helper-bg: #F1F2F4;
     --risiko-question-bg: #D6F587;
     --risiko-column: #C8CCD0;
+    --risiko-label-bg: #FFFFFF;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
@@ -247,6 +248,8 @@
 }
 .risiko-page .risiko-label {
   letter-spacing: 0;
+  /* mask the dashed column lines behind the question text (card is white) */
+  background: var(--risiko-label-bg);
 }
 .risiko-column { border-left: 1px dashed var(--risiko-column); }
 .risiko-expression-point {
