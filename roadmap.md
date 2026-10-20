@@ -24,3 +24,4 @@
 - [x] Set the Health Check helper text to "Bewege den Punkt auf der Skala" at the default size, wrapping to a second line on narrow cards; verify no cut-off and that rows still fit.
 - [x] Enlarge the smileys on the first two Health Check slides to 32px; verify they clear the heading and the info row on desktop and mobile.
 - [x] Fix the PDF export (blank first sheet, cards cut off); verify one card per sheet with nothing clipped.
+- [x] Extend the conflicts question to "Wir lösen Konflikte fair und als Team"; verify plates grow and pages still fit.
