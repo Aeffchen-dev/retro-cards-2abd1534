@@ -331,7 +331,10 @@ const RetroCards: React.FC = () => {
   // A card that is too short for two statements gets one per card instead of a
   // clipped second one; the same split drives screen and print.
   const [risikoPerPage, setRisikoPerPage] = useState(RISIKO_PER_PAGE);
-  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage), [persons, risikoPerPage]);
+  // The chapter card may hold fewer statements than the rest: it carries the big
+  // question and the intro sentence on top of its scales.
+  const [risikoFirstPage, setRisikoFirstPage] = useState(RISIKO_PER_PAGE);
+  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage, risikoFirstPage), [persons, risikoPerPage, risikoFirstPage]);
   const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
 
 
@@ -1832,7 +1835,16 @@ const RetroCards: React.FC = () => {
             page={riskPages[riskSlideIds.indexOf(cardIndex)]}
             persons={persons}
             pill={BRAND.neonGreen}
-            onOverflow={risikoPerPage > 1 && riskPages[riskSlideIds.indexOf(cardIndex)].statements.length ? () => setRisikoPerPage(1) : undefined}
+            onOverflow={(() => {
+              // The chapter card carries the big question and the intro sentence,
+              // so on a short card it drops to one statement first while every
+              // other card keeps two; only when even one statement does not fit
+              // does the whole chapter fall back to one statement per card.
+              const pageIndex = riskSlideIds.indexOf(cardIndex);
+              if (!riskPages[pageIndex]?.statements.length) return undefined;
+              if (pageIndex === 0 && risikoFirstPage > 1) return () => setRisikoFirstPage(1);
+              return risikoPerPage > 1 ? () => setRisikoPerPage(1) : undefined;
+            })()}
 
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}

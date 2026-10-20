@@ -456,3 +456,21 @@ describe("mood test chapter", () => {
     expect(slide).toContain("moodFaceIndex(chapterMood)");
   });
 });
+
+describe("chapter card pagination", () => {
+  test("gives the chapter card its own smaller size without touching the rest", () => {
+    expect(risikoPages([], 2, 1).map((p) => p.statements.map(([k]) => k))).toEqual([
+      ["self"], ["love", "appreciation"], ["conflicts", "metime"], ["quality", "hot"],
+    ]);
+  });
+  test("keeps the work-split card last and loses no statement", () => {
+    const pages = risikoPages(["a", "b"], 2, 1);
+    expect(pages.flatMap((p) => p.statements.map(([k]) => k)).sort()).toEqual(
+      ["appreciation", "conflicts", "hot", "love", "metime", "quality", "self"]);
+    expect(pages[pages.length - 1]).toEqual({ statements: [], personKeys: ["a", "b"] });
+  });
+  test("without a chapter size every card keeps the asked size", () => {
+    expect(risikoPages([], 2, 2)).toEqual(risikoPages([], 2));
+    expect(risikoPages([], 2)).toEqual(risikoPages([]));
+  });
+});

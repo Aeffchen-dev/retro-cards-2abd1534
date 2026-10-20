@@ -48,11 +48,16 @@ export interface RisikoPage {
 export const RISIKO_PER_PAGE = 2;
 /** Split the statements over cards of `perPage` statements each. A card that is
  *  too short for two asks for one, so the second statement is never clipped away. */
-export function risikoPages(personKeys: string[], perPage: number = RISIKO_PER_PAGE): RisikoPage[] {
+export function risikoPages(personKeys: string[], perPage: number = RISIKO_PER_PAGE, firstPageSize?: number): RisikoPage[] {
   const all = [...RISIKO_STATEMENTS, RISIKO_HOT];
   const size = Math.max(1, Math.min(Math.floor(perPage) || RISIKO_PER_PAGE, all.length));
+  // The chapter card also carries the big question and the intro sentence, so on
+  // a short card it may keep fewer statements than the rest — never more.
+  const first = Math.max(1, Math.min(Math.floor(firstPageSize ?? size) || size, size));
   const pages: RisikoPage[] = [];
-  for (let i = 0; i < all.length; i += size) pages.push({ statements: all.slice(i, i + size), personKeys: [] });
+  let i = 0;
+  if (all.length) { pages.push({ statements: all.slice(0, first), personKeys: [] }); i = first; }
+  for (; i < all.length; i += size) pages.push({ statements: all.slice(i, i + size), personKeys: [] });
   if (personKeys.length) pages.push({ statements: [], personKeys: [...personKeys] });
   return pages;
 }
