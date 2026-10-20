@@ -38,3 +38,4 @@
 - [x] Add a sadder (crying) face to the bottom of the first two Health Check scales so the neutral face sits in the middle; verify centring, fit and the PDF.
 - [x] Align the small grey end labels above the scale flush with the outer smileys (no indent); verify on desktop, mobile and in the PDF.
 - [x] Show white left/right chevrons inside the untouched centre dot on the Health Check scales; verify centring, clarity and the PDF.
+- [x] Drop the grey plates behind the "Macht Notizen" CTA and the helper text on the Health Check pages, set the helper to the same near-black as the first two slides, and paint the button block in the card white; verify no grey band, no dashed lines through the buttons, and the PDF.
