@@ -498,3 +498,27 @@ describe("chapter card pagination", () => {
     expect(risikoPages([], 1)).toEqual(risikoPages([]));
   });
 });
+
+describe("the statement's own type", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+  test("reads in the big question's display face, one step under the question", () => {
+    const statement = css.match(/\.risiko-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(statement, ".risiko-statement missing from index.css").toBeTruthy();
+    expect(statement, "the statement does not use the question's display face")
+      .toMatch(/font-family:\s*"Stack Sans Notch"/);
+    const size = Number(statement.match(/font-size:\s*(\d+(?:\.\d+)?)px/)?.[1]);
+    const heading = Number((css.match(/\.retro-title,\s*\.retro-heading \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [])[1]);
+    expect(size, "the statement has no size of its own").toBeGreaterThan(0);
+    expect(heading, "the big question's size is gone").toBeGreaterThan(0);
+    expect(size, "the statement does not read smaller than the big question").toBeLessThan(heading);
+  });
+  test("is no longer dressed in the body-copy class", () => {
+    expect(slide, "a statement still carries the body-copy class")
+      .not.toMatch(/className="risiko-statement[^"]*retro-body-copy/);
+  });
+  test("puts one statement on a card by default", () => {
+    expect(RISIKO_PER_PAGE).toBe(1);
+    expect(risikoPages([]).every((p) => p.statements.length === 1)).toBe(true);
+  });
+});
