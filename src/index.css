@@ -36,6 +36,9 @@
   :root {
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
+    /* the scale's grey smileys: a size smaller on tablet and desktop, full size
+       on phones and on the printed sheet (see .risiko-face) */
+    --risiko-face-size: 25px;
     --risiko-helper-bg: #F1F2F4;
     /* the columns sit a shade lighter than the info rows' label field — barely
        there, so the fields read as a hint rather than a block */
@@ -288,6 +291,18 @@
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
+}
+
+/* The scale's grey smileys: the box and the drawing inside it follow
+   --risiko-face-size, so the face can step down without the guides, the names or
+   the circle's travel moving. Phones (max-width: 767px) and the printed sheet —
+   a fixed A4 layout, not a device — keep the full 28px the print pages were
+   tuned with; tablet and desktop use the smaller token above. */
+.risiko-face,
+.risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
+
+@media print {
+  :root { --risiko-face-size: 28px; }
 }
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
@@ -1314,6 +1329,8 @@ textarea.bg-retro-post-it:focus,
 /* Phones: every column name in exactly three lines (see captionLines), sized to the
    widest middle line ("noch nicht" ≈ 4.9em) so the text is as large as the column allows. */
 @media (max-width: 767px) {
+  /* phones keep the smileys at their full size */
+  :root { --risiko-face-size: 28px; }
   .risiko-scale-captions { container-type: inline-size; }
   .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { display: block; white-space: nowrap; }

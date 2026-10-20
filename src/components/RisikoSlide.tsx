@@ -33,7 +33,10 @@ export const FACE_GREY = "#8A8C94";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 28;
-const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its centre
+// The face's own box is the --risiko-face-size token in index.css: phones and the
+// printed sheet keep the full 28px, tablet and desktop draw it a size smaller.
+// FACE_SIZE itself stays as the icon's intrinsic size and as the height of the row
+// the faces are centred in, so the guides and the circle's travel never move.
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
@@ -77,7 +80,9 @@ const EYE_W = 2.4;
 const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
   // only a shade off the card's white, so the smiley reads as being inside it.
-  <span className="flex items-center justify-center" style={{ width: FACE_W, height: FACE_W }}>
+  // The box comes from --risiko-face-size (index.css) so the face can be a size
+  // smaller on tablet and desktop without moving anything else on the scale.
+  <span className="risiko-face flex items-center justify-center">
     <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
   </span>
 );
