@@ -43,7 +43,8 @@ describe("workload split", () => {
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
     expect(scaleFaceGeometry(0).eyeY).toBe(9);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(15.2);
+    expect(scaleFaceGeometry(0).mouth[7]).toBe(14.7); // deeper downturn than the sad face
+    expect(scaleFaceGeometry(0).mouth[1]).toBe(17.9);
     expect(scaleFaceGeometry(0).tear).toBe(1);
     expect(scaleFaceGeometry(12.5).tear).toBe(0.5);
     expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
@@ -51,7 +52,10 @@ describe("Risikofaktoren scale", () => {
     expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
     expect(scaleFaceGeometry(100).mouth[19]).toBe(18);
-    for (const value of [0, 12.5, 25, 50, 75, 87.5, 100]) {
+    // The crying face raises its inner brows; the sadness fades out by 25.
+    expect(scaleFaceGeometry(0).brow).toBe(1);
+    expect(scaleFaceGeometry(12.5).brow).toBe(0.5);
+    for (const value of [25, 50, 75, 87.5, 100]) {
       expect(scaleFaceGeometry(value).brow).toBe(0);
     }
     expect(scaleFaceGeometry(25).tear).toBe(0);
