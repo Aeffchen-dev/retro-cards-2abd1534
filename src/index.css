@@ -593,21 +593,23 @@
    two layers read as a visible nudge. The disc never stretches or moves its
    saved position. Play only after entering view. */
 @keyframes risiko-navigation-hint {
-  0%, 100% { transform: translateX(0); }
-  22% { transform: translateX(-7px); }
-  60% { transform: translateX(7px); }
-  82% { transform: translateX(-2px); }
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-10px, -5px); }
+  45% { transform: translate(0, 0); }
+  68% { transform: translate(10px, -5px); }
+  86% { transform: translate(-3px, -1px); }
 }
 @keyframes risiko-navigation-hint-arrow {
-  0%, 100% { transform: translateX(0); }
-  22% { transform: translateX(-4px); }
-  60% { transform: translateX(4px); }
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-5px, -2px); }
+  45% { transform: translate(0, 0); }
+  68% { transform: translate(5px, -2px); }
 }
 .has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot {
-  animation: risiko-navigation-hint 900ms ease-in-out 150ms 1;
+  animation: risiko-navigation-hint 1100ms ease-in-out 150ms 1;
 }
 .has-navigation-hint:not(.is-shown):not(.is-dragging) .risiko-plain-dot svg {
-  animation: risiko-navigation-hint-arrow 900ms ease-in-out 150ms 1;
+  animation: risiko-navigation-hint-arrow 1100ms ease-in-out 150ms 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
