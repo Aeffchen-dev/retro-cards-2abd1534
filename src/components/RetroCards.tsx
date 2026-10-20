@@ -1736,6 +1736,13 @@ const RetroCards: React.FC = () => {
             pill={BRAND.neonGreen}
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
+            onWorkloadChange={(shares) => setEditModeNotes(prev => ({
+              ...prev,
+              [SLIDE_RISIKO]: {
+                ...prev[SLIDE_RISIKO],
+                ...Object.fromEntries(Object.entries(shares).map(([key, value]) => [`work_${key}`, String(value)])),
+              },
+            }))}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
               [SLIDE_RISIKO]: { ...prev[SLIDE_RISIKO], [key]: value },

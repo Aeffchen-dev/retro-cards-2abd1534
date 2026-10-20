@@ -41,9 +41,9 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   let page = pages[pages.length - 1];
   if (!page) return pages;
   let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 74, 0);
-  // All partners share one allocation line, so the block costs the same no
-  // matter how many partners there are.
-  const allocationCost = textHeight("Wer leistet wie viel der Beziehungsarbeit?") + 64;
+  // One shared line plus a wrapping row of individually selectable shares.
+  const shareRows = Math.ceil(personKeys.length / Math.max(1, Math.floor(contentWidth / 110)));
+  const allocationCost = textHeight("Wer leistet wie viel der Beziehungsarbeit?") + 64 + shareRows * 32;
   if (personKeys.length) {
     if (used && used + allocationCost > budget) {
       page = { statements: [], personKeys: [] };
@@ -62,6 +62,33 @@ export const scaleValue = (stored?: string): number => {
   const value = stored?.trim() ? Number(stored) : 50;
   return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 50;
 };
+
+/** Largest-remainder rounding keeps integer percentages at exactly the target. */
+function distributeShares(keys: string[], weights: number[], target: number): Record<string, number> {
+  if (!keys.length) return {};
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  const exact = weights.map(weight => target * (total > 0 ? weight / total : 1 / keys.length));
+  const rounded = exact.map(Math.floor);
+  const order = exact.map((value, index) => ({ index, fraction: value - rounded[index] }))
+    .sort((a, b) => b.fraction - a.fraction || a.index - b.index);
+  const remainder = target - rounded.reduce((sum, value) => sum + value, 0);
+  for (const { index } of order.slice(0, remainder)) rounded[index] += 1;
+  return Object.fromEntries(keys.map((key, index) => [key, rounded[index]]));
+}
+
+/** Normalize old independent values; new partners start with equal weights. */
+export function workloadShares(keys: string[], stored: Record<string, string>): Record<string, number> {
+  return distributeShares(keys, keys.map(key => scaleValue(stored[`work_${key}`] ?? stored.allocation)), 100);
+}
+
+/** Keep the dragged share exact and distribute the remainder among the others. */
+export function adjustWorkloadShares(keys: string[], current: Record<string, number>, key: string, value: number): Record<string, number> {
+  if (!keys.includes(key)) return current;
+  if (keys.length === 1) return { [key]: 100 };
+  const share = Math.round(scaleValue(String(value)));
+  const others = keys.filter(other => other !== key);
+  return { ...distributeShares(others, others.map(other => current[other] ?? 0), 100 - share), [key]: share };
+}
 
 /** Continuous expression: -1 is sad, 0 neutral, +1 happy. */
 export const scaleExpression = (value: number): number => (scaleValue(String(value)) - 50) / 50;

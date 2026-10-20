@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
+import { Button } from "@/components/ui/button";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, adjustWorkloadShares, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
@@ -55,6 +56,7 @@ interface RisikoSlideProps {
   persons: Person[];
   values: Record<string, string>;
   onChange: (key: string, value: string) => void;
+  onWorkloadChange: (shares: Record<string, number>) => void;
   pill: string;
   onEdit: () => void;
 }
@@ -145,7 +147,8 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
+  const workloadThumbs = React.useRef<Record<string, HTMLSpanElement | null>>({});
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
@@ -159,6 +162,8 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
   // line reads 0% at the left end and 100% at the right end.
   const allocation = (readOnly: boolean) => {
     const partners = persons.filter(p => page.personKeys.includes(p.key));
+    const keys = partners.map(p => p.key);
+    const shares = workloadShares(keys, values);
     return (
       <div className="risiko-auto-gap flex flex-col gap-1">
         <span className="retro-body-copy risiko-label relative z-10 self-start">Wer leistet wie viel der Beziehungsarbeit?</span>
@@ -169,7 +174,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
         <div className="relative w-full h-10 shrink-0">
           <div className="absolute top-1/2 h-px" style={{ background: INK, left: 0, right: 0 }} />
           {partners.map((p) => {
-            const value = scaleValue(values[`work_${p.key}`] ?? values.allocation);
+            const value = shares[p.key];
             const memojiEl = (
               <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{p.emoji}</span>
             );
@@ -185,13 +190,14 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute inset-0 flex items-center touch-none select-none z-10 pointer-events-none"
                 value={[value]} min={0} max={100} step={1}
-                onValueChange={([v]) => { if (v !== undefined) onChange(`work_${p.key}`, String(v)); }}
+                onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadShares(keys, shares, p.key, v)); }}
                 onKeyDown={(e) => {
                   // keep the arrow keys from paging the card deck
                   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) e.stopPropagation();
                 }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
-                <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`}
+                <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${value} Prozent`}
+                  ref={el => { workloadThumbs.current[p.key] = el; }}
                   className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
                   style={{ width: FACE_W, height: FACE_W }}>
                   {memojiEl}
@@ -199,6 +205,19 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
               </SliderPrimitive.Root>
             );
           })}
+        </div>
+        <div className="relative z-10 flex flex-wrap w-full" style={{ background: "var(--risiko-label-bg)" }}>
+          {partners.map(p => readOnly ? (
+            <span key={p.key} className="retro-body-copy inline-flex items-center gap-1 min-h-8 px-1">
+              {p.emoji} {p.name} {shares[p.key]}%
+            </span>
+          ) : (
+            <Button key={p.key} variant="ghost" size="sm" className="h-8 px-1 gap-1 max-w-full whitespace-normal"
+              aria-label={`Anteil von ${p.name} anpassen: ${shares[p.key]} Prozent`}
+              onClick={() => workloadThumbs.current[p.key]?.focus()}>
+              <span aria-hidden="true">{p.emoji}</span><span className="break-words">{p.name}</span><span>{shares[p.key]}%</span>
+            </Button>
+          ))}
         </div>
       </div>
     );
