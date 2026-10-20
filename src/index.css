@@ -954,8 +954,9 @@ textarea.bg-retro-post-it:focus,
     print-color-adjust: exact !important;
     aspect-ratio: 1 / 1 !important;
     /* Use CSS custom properties for percentage-based positioning */
-    left: var(--print-left-percent, 70%) !important;
-    top: var(--print-top-percent, 20%) !important;
+    /* min() keeps the emoji inside the printed card's own box. */
+    left: min(var(--print-left-percent, 70%), calc(100% - 56px)) !important;
+    top: min(var(--print-top-percent, 20%), calc(100% - 56px)) !important;
   }
 
   .print-memoji img {
