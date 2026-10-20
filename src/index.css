@@ -359,17 +359,24 @@
   );
 }
 
-/* Tiny labels above the columns: Trifft nicht zu … Trifft voll zu. They take a line of
-   their own, flush with the card's left and right edges, so the columns below keep
-   the full width and the labels never wrap. */
+/* The two end labels — Trifft nicht zu … Trifft voll zu — rest straight on the top
+   edge of the columns' container: the row below them carries no gap, so each label
+   sits right on the grey field it names. They stay flush with the card's left and
+   right edges, never wrap, and never squeeze when the card gets short. */
+.risiko-scale-captions {
+  flex: 0 0 auto;
+}
+/* They read in the smileys' own grey — the same tone as the five faces and their
+   dashed guides — and take the info rows' size: 16px on desktop, one step smaller
+   on phones and tablets (see the max-width: 1023px block below). */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-  font-size: 12px;
-  line-height: 14px;
-  color: var(--risiko-caption);
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--risiko-guide);
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -584,7 +591,8 @@ button {
    Placed after .retro-body-copy so it wins over the default size.
    12px is the app's floor — no text anywhere is set smaller than that. */
 @media (max-width: 1023px) {
-  .retro-info-row {
+  .retro-info-row,
+  .risiko-scale-caption {
     font-size: 12px;
     line-height: 16px;
   }

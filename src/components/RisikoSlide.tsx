@@ -249,10 +249,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* The two labels take a line of their own above the columns — "Trifft nicht
-          zu" flush left, "Trifft voll zu" flush right — so the columns below get the
-          card's full width. */}
-      <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border grow shrink-0">
+      {/* The two labels sit on the columns' own top edge — "Trifft nicht zu" flush
+          left, "Trifft voll zu" flush right, with no gap between them and the grey
+          fields — so each one reads as the heading of the field below it. */}
+      <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
         <div className="risiko-scale-captions flex items-center justify-between gap-2">
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
           <span className="risiko-scale-caption pointer-events-none">Trifft voll zu</span>
