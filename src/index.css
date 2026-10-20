@@ -1314,6 +1314,6 @@ textarea.bg-retro-post-it:focus,
    widest middle line ("noch nicht" ≈ 4.9em) so the text is as large as the column allows. */
 @media (max-width: 767px) {
   .risiko-scale-captions { container-type: inline-size; }
-  .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 4.9), 13px); line-height: 1.15; hyphens: manual; }
+  .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { display: block; white-space: nowrap; }
 }

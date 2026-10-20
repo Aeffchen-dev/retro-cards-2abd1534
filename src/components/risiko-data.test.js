@@ -294,7 +294,7 @@ describe("smallest text size", () => {
     });
     // The one deliberate exception: the five column labels, sized to fit their column.
     // On phones the labels scale with the column, never under that same 9px.
-    expect(below).toEqual(["9px", "clamp(9px, calc((100cqw - 16px) / 5 / 4.9), 13px)"]);
+    expect(below).toEqual(["9px", "clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
     expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 9px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
