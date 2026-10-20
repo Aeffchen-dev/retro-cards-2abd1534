@@ -366,8 +366,9 @@
    rule itself rather than from the track's box. */
 .risiko-footer {
   background: var(--risiko-label-bg);
-  margin-top: calc(var(--risiko-scale-pad) - var(--risiko-track-h) / 2);
+  margin-top: 16px;
 }
+.risiko-block .risiko-statement { margin-bottom: 12px; }
 .risiko-column { flex: 0 0 auto; }
 /* The guidelines stop at the rule instead of running past it into the buttons. */
 .risiko-columns { bottom: calc(var(--risiko-track-h) / 2); }
@@ -876,10 +877,7 @@ textarea.bg-retro-post-it:focus,
   .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
-  .print-slide-page .risiko-scale-area .print-only {
-    padding-bottom: calc(var(--risiko-scale-pad) - var(--risiko-track-h) / 2);
-  }
-  .print-slide-page .risiko-columns { bottom: var(--risiko-scale-pad); }
+  .print-slide-page .risiko-scale-area { overflow: visible; }
 
 
   /* Post-it text areas - maintain frontend layout */
