@@ -2003,7 +2003,7 @@ const RetroCards: React.FC = () => {
 
 
       {/* Card Content - Swiper.js slide animation like friends app */}
-      <div className="relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden py-2">
+      <div className="print-stage relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden py-2">
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"

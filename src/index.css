@@ -600,8 +600,24 @@ textarea.bg-retro-post-it:focus,
   #root > div {
     position: static !important;
     height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
     overflow: visible !important;
     background: white !important;
+  }
+
+  /* The slide stage centres and clips its content on screen; in print the pages
+     must flow from the top of the document instead of being centred in a
+     viewport-tall box (which pushes the first pages above the paper). */
+  .print-stage {
+    display: block !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
   }
 
   .bg-retro-black {
