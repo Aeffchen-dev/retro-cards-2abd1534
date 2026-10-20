@@ -16,3 +16,4 @@
 
 - [x] Shorten the Health Check helper text to "Punkt verschieben" so it renders at the default font size; verify on all widths.
 - [x] Reword the Me-Time question to "Wir räumen uns ausreichend Me-Time ein und machen auch Dinge ohne den anderen"; verify plates grow and pages still fit.
+- [x] Replace the self-question with "Ich kann ich selbst sein und fühle mich gesehen und respektiert"; verify fit and pagination.
