@@ -33,6 +33,9 @@ const FACE_SIZE = 32;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
 const CAPTION_H = 12; // tiny end labels above the smileys
 const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
+// The scale rule carries the same line weight as the smileys' own strokes:
+// lucide draws strokeWidth 1.5 inside a 24-unit box, so at FACE_SIZE that is 2px.
+const RULE_W = (FACE_SIZE * 1.5) / 24;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
 const MOUTH_W = 1;
@@ -112,7 +115,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   return (
   <div className="risiko-track relative w-full h-10 shrink-0">
     {/* The rule spans the full card width; only the dot travel is inset. */}
-    <div className="absolute top-1/2 h-px" style={{ background: INK, left: 0, right: 0 }} />
+    <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
       <div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
