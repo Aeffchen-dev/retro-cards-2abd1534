@@ -249,15 +249,6 @@ const RetroCards: React.FC = () => {
     };
   });
 
-  // Each emoji scale reports its own laid-out width, so a default or saved
-  // position can never stick past the card's content box.
-  const [memojiBoxW, setMemojiBoxW] = useState<Record<number, number>>({});
-  const memojiScaleRef = (cardId: number) => (el: HTMLDivElement | null) => {
-    if (!el) return;
-    const w = el.clientWidth;
-    setMemojiBoxW((prev) => (prev[cardId] === w ? prev : { ...prev, [cardId]: w }));
-  };
-
   // State for memoji dragging
   const [draggingMemoji, setDraggingMemoji] = useState<{
     cardIndex: number;
@@ -1331,7 +1322,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div ref={memojiScaleRef(cardId)} className="relative w-full flex-1 my-10 print-memoji-container">
+            <div className="relative w-full flex-1 my-10 print-memoji-container">
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[SadFace, ...FACES].reverse().map((Face, i) => (
@@ -1340,10 +1331,7 @@ const RetroCards: React.FC = () => {
               </div>
               {/* Draggable Memojis — one per person */}
               {persons.map((person, i) => {
-                const rawX = memojisPositions[cardId]?.[person.key]?.x ?? defaultX;
-                // Stay inside the scale's own box: a wider position would push the
-                // emoji over the card's padding and make the card sideways scrollable.
-                const posX = Math.min(rawX, Math.max(0, (memojiBoxW[cardId] ?? Infinity) - 56));
+                const posX = memojisPositions[cardId]?.[person.key]?.x ?? defaultX;
                 const posY = memojisPositions[cardId]?.[person.key]?.y ?? defaultY(i);
                 return (
                   <div
