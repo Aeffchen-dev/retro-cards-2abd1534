@@ -49,7 +49,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   3: "The last 4 weeks",
   102: "Feedback",
   104: "Vorhaben",
-  105: "Health Check",
+  105: "Mood Test",
   4: "To talk about",
   5: "Nicht monogam",
   7: "Intimacy",
@@ -331,7 +331,10 @@ const RetroCards: React.FC = () => {
   // A card that is too short for two statements gets one per card instead of a
   // clipped second one; the same split drives screen and print.
   const [risikoPerPage, setRisikoPerPage] = useState(RISIKO_PER_PAGE);
-  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage), [persons, risikoPerPage]);
+  // The chapter card may hold fewer statements than the rest: it carries the big
+  // question and the intro sentence on top of its scales.
+  const [risikoFirstPage, setRisikoFirstPage] = useState(RISIKO_PER_PAGE);
+  const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage, risikoFirstPage), [persons, risikoPerPage, risikoFirstPage]);
   const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
 
 
@@ -619,7 +622,7 @@ const RetroCards: React.FC = () => {
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
-    if (isRisikoSlide(slideId)) return "Health Check";
+    if (isRisikoSlide(slideId)) return "Mood Test";
     return questions[slideId] || "";
   }, [isMobile]);
 
@@ -1832,7 +1835,16 @@ const RetroCards: React.FC = () => {
             page={riskPages[riskSlideIds.indexOf(cardIndex)]}
             persons={persons}
             pill={BRAND.neonGreen}
-            onOverflow={risikoPerPage > 1 && riskPages[riskSlideIds.indexOf(cardIndex)].statements.length ? () => setRisikoPerPage(1) : undefined}
+            onOverflow={(() => {
+              // The chapter card carries the big question and the intro sentence,
+              // so on a short card it drops to one statement first while every
+              // other card keeps two; only when even one statement does not fit
+              // does the whole chapter fall back to one statement per card.
+              const pageIndex = riskSlideIds.indexOf(cardIndex);
+              if (!riskPages[pageIndex]?.statements.length) return undefined;
+              if (pageIndex === 0 && risikoFirstPage > 1) return () => setRisikoFirstPage(1);
+              return risikoPerPage > 1 ? () => setRisikoPerPage(1) : undefined;
+            })()}
 
             onEdit={() => toggleEditMode(cardIndex)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
@@ -2208,7 +2220,7 @@ const RetroCards: React.FC = () => {
                   {(SLIDE_PILLS[slideId] || isRisikoSlide(slideId)) && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{isRisikoSlide(slideId) ? "Health Check" : SLIDE_PILLS[slideId]}</span>
+                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{isRisikoSlide(slideId) ? "Mood Test" : SLIDE_PILLS[slideId]}</span>
                       </div>
                     </div>
                   )}

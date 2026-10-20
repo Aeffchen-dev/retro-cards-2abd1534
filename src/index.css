@@ -313,6 +313,33 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+/* The chapter the Mood Test opens with: its big question reads in the
+   statement's own voice but without the quotes — a title, not a statement. The
+   question keeps only a small gap to the intro sentence; the sentence carries
+   the card's usual gap down to the first statement, so the fields still start
+   where the other cards' do. */
+.risiko-chapter-heading {
+  margin-bottom: 10px;
+  /* "Beziehungsgefühl" is one long word: on a narrow card it breaks with a
+     proper German hyphen instead of reaching past the card's edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.risiko-chapter-info {
+  margin: 0 0 var(--risiko-scale-pad);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--risiko-guide);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+@media (min-width: 1024px) { .risiko-chapter-info { font-size: 16px; } }
+/* The chapter's smiley is one of the five scale faces, kept at the size the
+   scale itself draws them, so the average reads in the scale's own language. */
+.risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin-left: 10px; }
+.risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 
 /* The scale's grey smileys: the box and the drawing inside it follow
    --risiko-face-size, so the face can step down without the guides, the names or
