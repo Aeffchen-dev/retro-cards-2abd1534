@@ -723,6 +723,10 @@
 }
 @media print {
   .risiko-expression-point { animation: none !important; }
+  /* The printed card is a good deal narrower than the deck's own, so on paper the
+     statement reads at the deck's smallest allowed size — the closest the longest
+     statement comes to three lines there. */
+  .risiko-statement { font-size: 12px; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);
