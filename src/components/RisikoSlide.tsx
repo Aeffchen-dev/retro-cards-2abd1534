@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -274,14 +274,14 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
-          {/* Columns: one soft grey band per smiley, filling the scale edge to edge
-              with nothing between them and stretching over the scale's whole height,
-              so every smiley and the circle sit inside their own band. Every second
-              band takes a slightly deeper grey, so the five fields still read as
-              separate. Painted before everything else, so the fill never covers a
-              smiley, a guide or the handle. */}
+          {/* Columns: no fill at all — the five fields are drawn only as dashed
+              grey lines, one at the scale's left and right edge and one between
+              every pair of neighbouring columns. They stand a shade behind the
+              smileys' own guides, so every face keeps its own stronger line.
+              Painted before everything else, so a line never covers a smiley,
+              a guide or the handle. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, right: `${100 - to}%` }} />)}
+            {columnEdges(FACES.length).map((at) => <span key={at} className="risiko-column-edge absolute top-0 bottom-0" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />)}
           </div>
           {/* Each smiley's column carries its dashed guide down the field's whole
               height — a stub above the face, then a long run from straight under it

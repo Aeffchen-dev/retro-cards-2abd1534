@@ -90,6 +90,16 @@ export const columnBands = (faces: number): [number, number][] => {
   return Array.from({ length: faces }, (_, i) => [i * width, (i + 1) * width] as [number, number]);
 };
 
+/** Dashed divider positions for a scale with `faces` smileys: the line between
+ *  every pair of neighbouring columns, plus the scale's own left and right edge.
+ *  Positions are container %, so with five columns the dividers sit at 0, 20, 40,
+ *  60, 80 and 100 — the columns are left unfilled and read only through them. */
+export const columnEdges = (faces: number): number[] => {
+  if (faces < 1) return [];
+  const width = 100 / faces;
+  return Array.from({ length: faces + 1 }, (_, i) => i * width);
+};
+
 /** One label per scale column, from the leftmost field to the rightmost: the five
  *  faces the circle can rest under, named in the couple's own words. Screen and
  *  print read the same list, so the printed page never disagrees with the card. */
