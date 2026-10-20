@@ -178,8 +178,9 @@ describe("grey columns", () => {
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
     expect(alt).not.toBe(fill);
     expect(lightness(alt)).toBeLessThan(lightness(fill));
-    // the deeper grey is only a shade deeper, never a visible stripe
-    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(45);
+    // both fills sit almost on the card's white, and only a whisker apart
+    expect(lightness(fill)).toBeGreaterThanOrEqual(745);
+    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(16);
   });
 });
 
