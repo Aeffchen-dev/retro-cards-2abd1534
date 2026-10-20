@@ -251,9 +251,10 @@ describe("grey columns", () => {
     const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
-    // One step under the info rows' floor: the longest label is 108px wide at 12px and
-    // a column is only 86px, so anything bigger than 9px would split it over two lines.
-    expect(/font-size:\s*9px/.test(caption), "the labels are not sized to fit their column").toBe(true);
+    // At the info rows' 12px floor no label fits a column (~62px) on one line, and
+    // the shortest ones would still squeeze onto a single line where a longer
+    // neighbour breaks — so every name breaks at its own words into three lines.
+    expect(/font-size:\s*12px/.test(caption), "the labels do not read at the info floor").toBe(true);
     // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));
@@ -322,10 +323,10 @@ describe("smallest text size", () => {
       if (!px && !rem) return true; // a computed size could drop under the floor
       return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
     });
-    // The one deliberate exception: the five column labels, sized to fit their column.
-    // On phones the labels scale with the column, never under that same 9px.
-    expect(below).toEqual(["9px", "clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
-    expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 9px;[^}]*\}/);
+    // The one deliberate exception: the five column labels keep their own column-scaled
+    // size on phones; everywhere else they read at the 12px info floor.
+    expect(below).toEqual(["clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
+    expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 12px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
     expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
