@@ -90,6 +90,27 @@ export function adjustWorkloadShares(keys: string[], current: Record<string, num
   return { ...distributeShares(others, others.map(other => current[other] ?? 0), 100 - share), [key]: share };
 }
 
+/** Contiguous widths, shared by screen and print. */
+export function workloadSegments(keys: string[], shares: Record<string, number>) {
+  let start = 0;
+  return keys.map(key => {
+    const width = shares[key] ?? 0;
+    const segment = { key, start, end: start + width, width };
+    start += width;
+    return segment;
+  });
+}
+
+/** Move a divider: only the two adjoining widths change, never their total. */
+export function adjustWorkloadBoundary(keys: string[], shares: Record<string, number>, index: number, value: number) {
+  const segments = workloadSegments(keys, shares);
+  const left = segments[index];
+  const right = segments[index + 1];
+  if (!left || !right) return shares;
+  const boundary = Math.max(left.start, Math.min(right.end, Math.round(value)));
+  return { ...shares, [left.key]: boundary - left.start, [right.key]: right.end - boundary };
+}
+
 /** Continuous expression: -1 is sad, 0 neutral, +1 happy. */
 export const scaleExpression = (value: number): number => (scaleValue(String(value)) - 50) / 50;
 

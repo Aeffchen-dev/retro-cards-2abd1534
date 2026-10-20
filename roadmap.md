@@ -41,3 +41,4 @@
 - [x] Drop the grey plates behind the "Macht Notizen" CTA and the helper text on the Health Check pages, set the helper to the same near-black as the first two slides, and paint the button block in the card white; verify no grey band, no dashed lines through the buttons, and the PDF.
 - [x] Couple partner workload shares to a total of 100%, show percentages, and verify dragging, saved values and print.
 - [x] Reword the Health Check "hot" question to "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"; verify plates grow, pagination and print still fit.
+- [x] Show workload as adjoining width-based shares with non-overlapping draggable emojis, equal defaults, and matching Health Check helper styling; verify dragging, persistence and print.

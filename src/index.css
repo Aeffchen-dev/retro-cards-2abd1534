@@ -229,6 +229,13 @@
 
 .risiko-card { overflow: hidden; }
 
+.workload-lane { container-type: inline-size; }
+.workload-segment { height: 100%; }
+.workload-segment-0 { background: var(--retro-black); }
+.workload-segment-1 { background: var(--risiko-caption); }
+.workload-segment-2 { background: var(--color-surface-lavender); }
+.workload-segment-3 { background: var(--color-surface-turquoise); }
+
 /* Tiny end labels above the smiley scale: gar nicht zu … voll zu. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
