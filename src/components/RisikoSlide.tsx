@@ -227,6 +227,69 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     return () => window.removeEventListener("resize", check);
   }, [onOverflow, page]);
 
+  // The slider is centred on the card: the row around the scale splits its free
+  // space evenly, but the statement above and the buttons below are not equally
+  // tall, so that space's mid-point sits a little off the card's own middle. The
+  // shift below closes exactly that gap — and never further than the room between
+  // the text above and the buttons below, so a crowded card (the chapter's heading
+  // and intro) stops short instead of covering anything.
+  const pageRef = useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const pageEl = pageRef.current;
+    if (!pageEl) return;
+    const visible = (sel: string) => Array.from(pageEl.querySelectorAll<HTMLElement>(sel))
+      .find((el) => el.offsetParent !== null);
+    // The deck keeps every card mounted and pushes the neighbours aside, scaled
+    // and tilted: their boxes on screen are not their real ones, so only the card
+    // the reader is actually looking at is ever measured.
+    const shown = { current: false };
+    const centre = () => {
+      pageEl.style.setProperty("--risiko-centre-shift", "0px");
+      if (!shown.current) return;
+      // A statement card moves its scale, the work-split card its lane.
+      const core = visible(".risiko-scale-core");
+      const lane = visible(".workload-lane");
+      const mover = core ?? visible(".risiko-allocation");
+      const pivot = core ? core.querySelector<HTMLElement>(".risiko-track") : visible(".workload-bar");
+      const box = core ?? lane;
+      if (!mover || !pivot || !box) return;
+      const card = pageEl.getBoundingClientRect();
+      const rule = pivot.getBoundingClientRect();
+      const need = card.y + card.height / 2 - (rule.y + rule.height / 2);
+      const above = Math.max(...[".risiko-statement", ".risiko-allocation-examples", ".risiko-chapter"]
+        .map((sel) => pageEl.querySelector<HTMLElement>(sel)?.getBoundingClientRect().bottom ?? 0));
+      const footTop = pageEl.querySelector<HTMLElement>(".risiko-footer")?.getBoundingClientRect().top;
+      const b = box.getBoundingClientRect();
+      const slackUp = b.top - above - 8;
+      const slackDown = footTop === undefined ? 0 : footTop - b.bottom - 8;
+      const shift = Math.min(Math.max(need, -slackUp), slackDown);
+      pageEl.style.setProperty("--risiko-centre-shift", `${Math.round(shift)}px`);
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      shown.current = !!entry && entry.isIntersecting && entry.intersectionRatio >= 0.9;
+      if (shown.current) centre();
+    }, { threshold: 0.9 });
+    io.observe(pageEl);
+    // The deck's own transform settles a beat after a card arrives, so the shift
+    // is read again once that card's box is flat rather than mid-flight.
+    const slide = pageEl.closest(".swiper-slide");
+    slide?.addEventListener("transitionend", centre);
+    // A taller statement, a wrapped helper or the keyboard opening all move the
+    // card's middle, so the scale is re-centred whenever one of them changes.
+    const ro = new ResizeObserver(centre);
+    [".risiko-statement", ".risiko-allocation-examples", ".risiko-chapter", ".risiko-footer", ".risiko-scale-area"]
+      .forEach((sel) => { const el = pageEl.querySelector(sel); if (el) ro.observe(el); });
+    window.addEventListener("resize", centre);
+    return () => {
+      io.disconnect();
+      slide?.removeEventListener("transitionend", centre);
+      ro.disconnect();
+      window.removeEventListener("resize", centre);
+    };
+  }, [page, persons]);
+
+
+
 
   // Which partner a press on the work-split bar picked up: the bar keeps dragging
   // that one until the pointer is lifted, wherever on the bar the press landed.
@@ -374,7 +437,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   };
   const releaseBar = () => { workloadDrag.current = null; };
   return (
-    <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
+    <div className="risiko-allocation flex flex-1 min-h-0 flex-col justify-center gap-1">
       <div className="workload-lane relative w-full shrink-0 touch-none select-none swiper-no-swiping"
         style={{ background: "var(--risiko-label-bg)" }}
         onPointerDown={readOnly ? undefined : grabBar}
@@ -492,7 +555,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const chapterMood = averageMood(values);
 
   return (
-    <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+    <div ref={pageRef} className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       {isChapterStart && (
         <div className="risiko-chapter shrink-0 w-full" lang="de">
           <h2 className="risiko-chapter-heading retro-heading">
