@@ -121,7 +121,7 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
-    expect(RISIKO_ALLOCATION_HEADING).toBe("Wer leistet aktuell wie viel der Beziehungsarbeit?");
+    expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt oder leistet einer von uns einen deutlich größeren Anteil?");
   });
   test("shows two statements per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);
