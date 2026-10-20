@@ -384,9 +384,12 @@
   font-size: 16px;
   line-height: 22px;
   color: var(--risiko-guide);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  /* Plain block text, not a flex item: an anonymous flex item is never allowed to
+     shrink below its longest word, so on narrow cards "Teilweise" would stick out of
+     its column and run into the neighbour's word. As a block the words wrap inside the
+     column (German hyphenation first, a hard break only if nothing else fits) and stay
+     centred on the field they name. */
+  display: block;
   text-align: center;
   white-space: normal;
   overflow-wrap: break-word;
