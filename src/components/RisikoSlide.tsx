@@ -38,17 +38,31 @@ const INK = "var(--retro-black)";
 // wide as a face puts the track ends exactly under the outer face centres.
 const END_INSET = FACE_W / 2;
 
+// One SVG face whose mouth morphs continuously with the value: the curve bows
+// up (sad) below 50 and down (happy) above 50, and the mouth opens while dragging.
+const MorphFace = ({ value, open }: { value: number; open: boolean }) => {
+  const t = scaleExpression(value); // -1 sad … +1 happy
+  const mouth = open
+    ? `M 8.5 15 Q 12 ${13.5 - t * 1.5} 15.5 15 Q 12 ${20 + t * 1.5} 8.5 15 Z`
+    : `M 7.5 16 Q 12 ${16 - t * 4.5} 16.5 16`;
+  return (
+    <svg width={FACE_SIZE} height={FACE_SIZE} viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" fill={FACE_FILL} />
+      <circle cx="8.5" cy="9.5" r="1.2" fill="currentColor" stroke="none" />
+      <circle cx="15.5" cy="9.5" r="1.2" fill="currentColor" stroke="none" />
+      <path d={mouth} fill={open ? "currentColor" : "none"} />
+    </svg>
+  );
+};
+
 const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) => {
   const expression = scaleExpression(value);
-  const { index, mix } = scaleFaceBlend(value);
   return (
     <span className={`risiko-expression-point ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot" />
       <span className="risiko-drag-face">
-        {FACES.map((Icon, i) => (
-          <Icon key={i} size={FACE_SIZE} strokeWidth={1.5} className="absolute inset-0"
-            style={{ opacity: i === index ? 1 - mix : i === index + 1 ? mix : 0 }} />
-        ))}
+        <MorphFace value={value} open={active} />
       </span>
     </span>
   );
