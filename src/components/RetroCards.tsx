@@ -1844,8 +1844,7 @@ const RetroCards: React.FC = () => {
                   key={key}
                   accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
-                  helper={helper}
-                  placeholder={placeholder}
+                  placeholder={helper || placeholder}
                   value={reflectionTexts[key] || ""}
                   onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />

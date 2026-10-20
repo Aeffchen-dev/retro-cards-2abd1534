@@ -18,8 +18,15 @@ describe("Feedback headline question", () => {
     expect(fields).toContain('"Das wünsche ich mir"');
   });
 
-  test("shows the sentence on screen and on the printed page", () => {
-    expect(slide.match(/helper=\{helper\}/g)?.length).toBe(2);
+  test("shows the sentence as grey placeholder on screen and as a line on the printed page", () => {
+    const cut = slide.indexOf("{/* Print-only */}");
+    const screen = slide.slice(0, cut);
+    const print = slide.slice(cut);
+    // On screen the sentence is the writing area's own placeholder, not a line under the bar.
+    expect(screen).toContain("placeholder={helper || placeholder}");
+    expect(screen.match(/helper=\{helper\}/g)).toBe(null);
+    // On the printed page it stays a grey sentence above the writing area.
+    expect(print.match(/helper=\{helper\}/g)?.length).toBe(1);
     expect(slide.match(/REFLECTION_FIELDS\.map\(\(\[key, label, placeholder, helper\]\)/g)?.length).toBe(2);
   });
 });
