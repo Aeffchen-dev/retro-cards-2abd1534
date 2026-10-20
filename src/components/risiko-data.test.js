@@ -301,3 +301,21 @@ describe("scale columns and page split", () => {
   });
 });
 
+
+describe("column labels on a narrow phone", () => {
+  test("offers the correct German break point inside the two long words", () => {
+    expect(softHyphenate("Trifft Teilweise zu")).toBe("Trifft Teil\u00ADweise zu");
+    expect(softHyphenate("Trifft meistens zu")).toBe("Trifft meis\u00ADtens zu");
+  });
+
+  test("leaves every other label untouched", () => {
+    expect(softHyphenate("Trifft noch nicht zu")).toBe("Trifft noch nicht zu");
+    expect(softHyphenate("Trifft selten zu")).toBe("Trifft selten zu");
+    expect(softHyphenate("Trifft voll zu")).toBe("Trifft voll zu");
+  });
+
+  test("keeps the wording the couple reads, hyphen or no hyphen", () => {
+    expect([...SCALE_CAPTIONS].map((c) => softHyphenate(c).replace(/\u00AD/g, "")))
+      .toEqual([...SCALE_CAPTIONS]);
+  });
+});
