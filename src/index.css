@@ -295,6 +295,9 @@
 /* Dot morphs into the face: one shrinks while the other grows, no fading. */
 .is-dragging .risiko-drag-face { transform: scale(1); }
 .is-dragging .risiko-plain-dot { transform: scale(0); }
+/* Once dragged, the face stays on the scale: the plain dot marks the untouched initial state. */
+.is-shown .risiko-drag-face { transform: scale(1); }
+.is-shown .risiko-plain-dot { transform: scale(0); }
 @media (prefers-reduced-motion: reduce) {
   .risiko-drag-face, .risiko-plain-dot { transition: none; }
 }
