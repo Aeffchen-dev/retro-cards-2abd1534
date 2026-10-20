@@ -71,7 +71,9 @@ const INK = "var(--retro-black)";
 // wide as a face puts the track ends exactly under the outer face centres.
 const END_INSET = FACE_W / 2;
 // White drag hints inside the untouched dot: it can be pulled left or right.
-const ARROW_W = 1.6;
+// Drawn smaller than the dot itself so the circle, not the hint, reads as the handle.
+const ARROW_SIZE = 20;
+const ARROW_W = 1.9;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
@@ -94,7 +96,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
   return (
     <span className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot">
-        <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
+        <svg width={ARROW_SIZE} height={ARROW_SIZE} viewBox="0 0 24 24" fill="none"
           stroke={FACE_FILL} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 8 L6 12 L10 16 M14 8 L18 12 L14 16 M8 12 L16 12" />
         </svg>

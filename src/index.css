@@ -423,6 +423,9 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 160ms ease;
 }
 .risiko-drag-face {
