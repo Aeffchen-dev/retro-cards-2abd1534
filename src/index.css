@@ -221,15 +221,6 @@
   --retro-white-rgb: 238 238 238;
 }
 
-/* Risikofaktoren: faces and their guidelines span the full card width */
-.risiko-face-row {
-  margin-left: -28px;
-  margin-right: -28px;
-}
-.risiko-lines {
-  left: -28px;
-  right: -28px;
-}
 
 .retro-label,
 .retro-body,
@@ -637,15 +628,6 @@ textarea.bg-retro-post-it:focus,
     flex-shrink: 0 !important;
   }
 
-  /* Risikofaktoren faces + guidelines span the full card width in print */
-  .print-slide-page .risiko-face-row {
-    margin-left: -40px;
-    margin-right: -40px;
-  }
-  .print-slide-page .risiko-lines {
-    left: -40px;
-    right: -40px;
-  }
 
   /* Post-it text areas - maintain frontend layout */
   textarea {
