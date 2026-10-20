@@ -128,7 +128,7 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
       <div className="screen-only w-full">{body(false)}</div>
       <div className="hidden print-only w-full">{body(true)}</div>
       <div className="screen-only w-full mt-auto shrink-0">
-        <ActionRow icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        <ActionRow className="risiko-helper" icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
   );
