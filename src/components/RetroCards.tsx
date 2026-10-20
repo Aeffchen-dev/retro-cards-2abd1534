@@ -1338,8 +1338,10 @@ const RetroCards: React.FC = () => {
                     key={person.key}
                     className={`absolute w-14 h-14 cursor-move select-none touch-none print-memoji print-memoji-${person.key}`}
                     style={{
-                      left: posX,
-                      top: posY,
+                      // min() keeps the emoji inside the scale's own box even when a
+                      // default or saved position is wider than the card.
+                      left: `min(${posX}px, calc(100% - 56px))`,
+                      top: `min(${posY}px, calc(100% - 56px))`,
                       zIndex: 1000,
                       '--print-top-percent': `${(posY / (isMobile ? 400 : 520)) * 100}%`,
                       '--print-left-percent': `${(posX / (isMobile ? 320 : 480)) * 100}%`,
