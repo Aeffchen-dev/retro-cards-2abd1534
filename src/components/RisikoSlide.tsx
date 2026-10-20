@@ -138,13 +138,18 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     );
   };
 
-  // Rows fill the whole card: the free height is shared out between them.
-  const body = (readOnly: boolean) => (
-    <div className="flex flex-col gap-3 w-full flex-1 min-h-0 justify-between">
-      {page.statements.map(([k, t]) => statement(k, t, readOnly))}
-      {page.personKeys.length > 0 && allocation(readOnly)}
-    </div>
-  );
+  // Rows fill the whole card: the free height is shared out between them, and a
+  // lone row sits in the middle instead of floating at the top.
+  const body = (readOnly: boolean) => {
+    const rowCount = page.statements.length + (page.personKeys.length ? 1 : 0);
+    return (
+      <div className={`flex flex-col gap-3 w-full flex-1 min-h-0 ${rowCount > 1 ? "justify-between" : "justify-center"}`}>
+        {page.statements.map(([k, t]) => statement(k, t, readOnly))}
+        {page.personKeys.length > 0 && allocation(readOnly)}
+      </div>
+    );
+  };
+
 
 
   return (
