@@ -250,6 +250,37 @@
   padding: 5px 12px;
 }
 .risiko-column { border-left: 1px dashed var(--risiko-column); }
+.risiko-expression-point {
+  position: relative;
+  display: block;
+  width: 14px;
+  height: 14px;
+  color: var(--retro-black);
+}
+.risiko-plain-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--retro-black);
+  transition: opacity 120ms ease, transform 160ms ease;
+}
+.risiko-drag-face {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: -9px;
+  top: -9px;
+  border-radius: 50%;
+  background: var(--risiko-face-fill);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 120ms ease, transform 180ms ease;
+}
+.is-dragging .risiko-drag-face { opacity: 1; transform: scale(1); }
+.is-dragging .risiko-plain-dot { opacity: 0; transform: scale(0.5); }
+@media (prefers-reduced-motion: reduce) {
+  .risiko-drag-face, .risiko-plain-dot { transition: none; }
+}
 .risiko-memoji {
   background: var(--risiko-face-fill);
   box-shadow: 0 0 0 1.5px var(--retro-black);

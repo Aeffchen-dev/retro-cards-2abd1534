@@ -1,7 +1,14 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
 
 describe("Risikofaktoren scale", () => {
+  test("expression follows drag position from sad to neutral to happy", () => {
+    expect(scaleExpression(0)).toBe(-1);
+    expect(scaleExpression(25)).toBe(-0.5);
+    expect(scaleExpression(50)).toBe(0);
+    expect(scaleExpression(75)).toBe(0.5);
+    expect(scaleExpression(100)).toBe(1);
+  });
   test("defaults to neutral", () => {
     expect(scaleValue()).toBe(50);
     expect(scaleValue("")).toBe(50);

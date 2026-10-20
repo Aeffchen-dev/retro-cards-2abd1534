@@ -3,3 +3,4 @@
 - [x] Split Risikofaktoren into two pages, adding pages when needed without scrolling.
 - [x] Verify scale persistence, print output and fit on short and large screens.
 - [x] Show shared smileys and column lines with coloured question backgrounds; verify fit and interaction.
+- [x] Animate statement points as position-dependent smileys while dragging; verify dot reset and persistence.
