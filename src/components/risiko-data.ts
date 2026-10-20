@@ -17,14 +17,14 @@ export interface RisikoPage {
 /** Keep the two sections separate, and add pages rather than shrink or scroll. */
 export function risikoPages(personKeys: string[], height: number, width: number): RisikoPage[] {
   const contentWidth = Math.max(180, Math.min(500, width - 48) - 56);
-  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 196);
+  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 124);
   const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
   const pages: RisikoPage[] = [];
   for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {
     let page: RisikoPage = { statements: [], personKeys: [] };
     let used = 0;
     for (const statement of section) {
-      const cost = textHeight(statement[1]) + 64;
+      const cost = textHeight(statement[1]) + 74;
       if (used && used + cost > budget) {
         pages.push(page);
         page = { statements: [], personKeys: [] };
@@ -37,8 +37,8 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   }
   let page = pages[pages.length - 1];
   if (!page) return pages;
-  let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 64, 0);
-  const titleCost = textHeight(personKeys.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit") + 16;
+  let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 74, 0);
+  const titleCost = textHeight(personKeys.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit") + 26;
   for (const key of personKeys) {
     const cost = 52 + (page.personKeys.length ? 0 : titleCost);
     if (used && used + cost > budget) {

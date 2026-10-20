@@ -1731,10 +1731,7 @@ const RetroCards: React.FC = () => {
       case riskSlideIds.find(id => id === cardIndex):
         return (
           <RisikoSlide
-            slideId={cardIndex}
             page={riskPages[riskSlideIds.indexOf(cardIndex)]}
-            pageNumber={riskSlideIds.indexOf(cardIndex) + 1}
-            pageCount={riskPages.length}
             persons={persons}
             pill={BRAND.neonGreen}
             onEdit={() => toggleEditMode(cardIndex)}
