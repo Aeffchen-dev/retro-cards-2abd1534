@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, SCALE_CAPTIONS, softHyphenate, captionLines, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -292,7 +292,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               above the word it points at. */}
           <div className="risiko-scale-captions absolute pointer-events-none" lang="de">
             {SCALE_CAPTIONS.map((caption, i) => (
-              <span key={i} className="risiko-scale-caption">{softHyphenate(caption)}</span>
+              <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
+                <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
+              ))}</span>
             ))}
           </div>
           {/* The smileys sit at the top of the fields, a slight padding below their
