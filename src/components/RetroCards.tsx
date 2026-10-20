@@ -358,6 +358,23 @@ const RetroCards: React.FC = () => {
         migrated[k as any] = v;
       }
     }
+    // Risiko cards store notes per Aussage and person ("self-p0"); legacy
+    // person-only notes move to the card's first Aussage group so nothing is lost.
+    for (const k of Object.keys(migrated)) {
+      const id = Number(k);
+      if (!isRisikoSlide(id)) continue;
+      const page = riskPages[riskSlideIds.indexOf(id)];
+      if (!page) continue;
+      const groupKey = page.statements[0]?.[0] ?? "work";
+      const v = migrated[id];
+      for (const pKey of persons.map(p => p.key)) {
+        const legacy = (v[pKey] || "").trim();
+        if (legacy && !(v[`${groupKey}-${pKey}`] || "").trim()) {
+          v[`${groupKey}-${pKey}`] = legacy;
+          delete v[pKey];
+        }
+      }
+    }
     return migrated;
   });
 
@@ -605,6 +622,17 @@ const RetroCards: React.FC = () => {
     if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
   }, [isMobile]);
+
+  // The Aussage groups a risiko card shows in notes mode: one header per Aussage
+  // (the work-split card falls back to its own heading), fields once per group.
+  const risikoNoteGroups = useCallback((slideId: number): { key: string; title: string }[] | null => {
+    if (!isRisikoSlide(slideId)) return null;
+    const page = riskPages[riskSlideIds.indexOf(slideId)];
+    if (!page) return null;
+    return page.statements.length
+      ? page.statements.map(([k, t]) => ({ key: k, title: t }))
+      : [{ key: "work", title: RISIKO_ALLOCATION_HEADING }];
+  }, [riskPages, riskSlideIds]);
 
   // Fetch questions from Google Sheets - truly non-blocking with cache
   useEffect(() => {
