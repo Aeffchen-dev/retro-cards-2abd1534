@@ -54,14 +54,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }:
     {endFaces && <EndFaces />}
     {readOnly ? (
       <div
-        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
         style={{ left: endFaces ? `calc(${value}% + ${END_INSET - value * (2 * END_INSET) / 100}px)` : `${value}%` }}
       >
         {thumb}
       </div>
     ) : (
       <SliderPrimitive.Root
-        className="swiper-no-swiping absolute flex items-center touch-none select-none"
+        className="swiper-no-swiping absolute flex items-center touch-none select-none z-10"
         style={{ left: endFaces ? END_INSET : 0, right: endFaces ? END_INSET : 0, top: 0, bottom: 0 }}
         value={[value]} min={0} max={100} step={1}
         onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
