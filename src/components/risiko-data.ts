@@ -7,7 +7,7 @@ export const RISIKO_STATEMENTS = [
   ["quality", "Wir verbringen genug Quality Time"],
 ] as const;
 
-export const RISIKO_HOT = ["hot", "Ich fühle mich hot & begehrt"] as const;
+export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
 
 export interface RisikoPage {
   statements: (readonly [string, string])[];
