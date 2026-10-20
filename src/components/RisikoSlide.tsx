@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
-import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
+import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, type RisikoPage } from "./risiko-data";
 
-export const FACES = [Angry, Frown, Meh, Smile, Laugh];
+export const FACES = [Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
-// Shared smiley header; every slider aligns with its five column centres.
+// Shared smiley header; every slider aligns with its four column centres.
 const FACE_SIZE = 32;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
 const FACE_FILL = "var(--risiko-face-fill)";
 
-const Face = ({ Icon }: { Icon: typeof Angry }) => (
+const Face = ({ Icon }: { Icon: typeof Frown }) => (
   <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
     <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
   </span>
@@ -38,7 +38,7 @@ const INK = "var(--retro-black)";
 // wide as a face puts the track ends exactly under the outer face centres.
 const END_INSET = FACE_W / 2;
 
-// Morph the eyes, brows and mouth through all five header expressions.
+// Morph the eyes and mouth through all four header expressions.
 const MorphFace = ({ value }: { value: number }) => {
   const { eyeY, brow, mouth } = scaleFaceGeometry(value);
   const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;

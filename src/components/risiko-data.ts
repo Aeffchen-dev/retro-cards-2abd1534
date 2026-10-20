@@ -64,17 +64,16 @@ export const scaleValue = (stored?: string): number => {
 /** Continuous expression: -1 is sad, 0 neutral, +1 happy. */
 export const scaleExpression = (value: number): number => (scaleValue(String(value)) - 50) / 50;
 
-/** Blend the exact scale faces, positioned at 0, 25, 50, 75 and 100. */
+/** Blend the four scale faces, evenly positioned from 0 to 100. */
 export const scaleFaceBlend = (value: number): { index: number; mix: number } => {
-  const position = scaleValue(String(value)) / 25;
-  const index = Math.min(3, Math.floor(position));
+  const position = scaleValue(String(value)) * 3 / 100;
+  const index = Math.min(2, Math.floor(position));
   return { index, mix: position - index };
 };
 
 // Shared cubic topology lets the outline morph, rather than fade between icons.
-// The anchors reproduce Angry, Frown, Meh, Smile and Laugh in the header.
+// The anchors reproduce Frown, Meh, Smile and Laugh in the header.
 const FACE_ANCHORS = [
-  { eyeY: 10, brow: 1, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
   { eyeY: 9, brow: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
   { eyeY: 9, brow: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
   { eyeY: 9, brow: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
