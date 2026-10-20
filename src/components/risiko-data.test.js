@@ -159,22 +159,26 @@ describe("grey columns", () => {
     expect(columnBands(1)).toEqual([[0, 100]]);
     expect(columnBands(0)).toEqual([]);
   });
-  test("every second column is a slightly deeper grey", () => {
-    // The two fills are the only thing separating neighbouring fields, so they
-    // must differ — and the deeper one must actually be the deeper one.
+  test("every second column is a slightly deeper grey, both like the info fill", () => {
+    // The columns wear the info rows' label-field grey, and the two fills are
+    // the only thing separating neighbouring fields, so they must differ — and
+    // the deeper one must actually be the deeper one.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const hex = (token) => {
       const found = css.match(new RegExp(`--${token}:\\s*#([0-9A-Fa-f]{6})`));
       expect(found, `--${token} missing from index.css`).not.toBeNull();
       return found[1].toLowerCase();
     };
+    const actionRow = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
+    const infoFill = actionRow.match(/fieldBg \?\? "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
+    expect(infoFill, "info row default field grey missing").toBeTruthy();
     const [fill, alt] = [hex("risiko-column-fill"), hex("risiko-column-fill-alt")];
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
+    expect(fill).toBe(infoFill);
     expect(alt).not.toBe(fill);
     expect(lightness(alt)).toBeLessThan(lightness(fill));
-    // both fills sit almost on the card's white, and only a whisker apart
-    expect(lightness(fill)).toBeGreaterThanOrEqual(745);
-    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(16);
+    // both fills stay close together so the fields read as one soft block
+    expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(24);
   });
 });
 
