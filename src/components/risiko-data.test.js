@@ -251,9 +251,10 @@ describe("grey columns", () => {
     const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
-    // One step under the info rows' floor: the longest label is 108px wide at 12px and
-    // a column is only 86px, so anything bigger than 9px would split it over two lines.
-    expect(/font-size:\s*9px/.test(caption), "the labels are not sized to fit their column").toBe(true);
+    // At the info rows' 12px floor no label fits a column (~62px) on one line, and
+    // the shortest ones would still squeeze onto a single line where a longer
+    // neighbour breaks — so every name breaks at its own words into three lines.
+    expect(/font-size:\s*12px/.test(caption), "the labels do not read at the info floor").toBe(true);
     // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));
