@@ -43,9 +43,10 @@ const MARKER_SIZE = 32;
 // The tiny end labels share the smileys' line, so the columns start straight
 // under that one row.
 const HEADER_H = FACE_SIZE;
-// A slightly stronger horizontal rule distinguishes the draggable slider from
-// its fine dashed guides without changing the grey smileys' stroke weight.
-const RULE_W = 2;
+// The rule is exactly as thick as the work-split bar (h-1), so both scales read
+// as the same line — clearly stronger than the fine dashed guides, and it never
+// touches the grey smileys' own stroke weight.
+const RULE_W = 4;
 // A slight padding above the smileys, which now sit at the top of their columns
 // instead of floating in the middle of them.
 const FACE_PAD = 8;
