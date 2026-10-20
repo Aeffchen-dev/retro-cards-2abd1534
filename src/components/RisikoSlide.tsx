@@ -44,8 +44,8 @@ const MorphFace = ({ value }: { value: number }) => {
   const path = `M ${mouth.slice(0, 2).join(" ")} ${[2, 8, 14, 20].map(i => `C ${mouth.slice(i, i + 6).join(" ")}`).join(" ")} Z`;
   return (
     <svg width={FACE_SIZE} height={FACE_SIZE} viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="10" fill={FACE_FILL} />
+      stroke={FACE_FILL} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" fill={INK} />
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} />
       <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={1.5 * brow} />
       <path d={path} />
@@ -53,10 +53,10 @@ const MorphFace = ({ value }: { value: number }) => {
   );
 };
 
-const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) => {
+const ExpressionPoint = ({ value, active, shown }: { value: number; active: boolean; shown: boolean }) => {
   const expression = scaleExpression(value);
   return (
-    <span className={`risiko-expression-point ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
+    <span className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot" />
       <span className="risiko-drag-face">
         <MorphFace value={value} />
@@ -65,11 +65,15 @@ const ExpressionPoint = ({ value, active }: { value: number; active: boolean }) 
   );
 };
 
-const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
-  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb?: React.ReactNode;
+const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
+  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
 }) => {
   const [dragging, setDragging] = useState(false);
-  const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} />;
+  // The face appears on the first drag and stays there; a cleared answer drops back to the dot.
+  const [touched, setTouched] = useState(!!hasValue);
+  React.useEffect(() => { if (!hasValue) setTouched(false); }, [hasValue]);
+  const shown = touched || !!hasValue;
+  const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
   <div className="risiko-track relative w-full h-10 shrink-0">
     <div className="absolute top-1/2 h-px" style={{ background: INK, left: END_INSET, right: END_INSET }} />
@@ -85,7 +89,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
         className="swiper-no-swiping absolute flex items-center touch-none select-none z-10"
         style={{ left: 0, right: 0, top: 0, bottom: 0 }}
         value={[value]} min={0} max={100} step={1}
-        onPointerDown={() => setDragging(true)}
+        onPointerDown={() => { setDragging(true); setTouched(true); }}
         onPointerUp={() => setDragging(false)}
         onPointerCancel={() => setDragging(false)}
         onLostPointerCapture={() => setDragging(false)}
@@ -94,7 +98,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
         onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
         onKeyDown={(e) => {
           e.stopPropagation();
-          if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) setDragging(true);
+          if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) { setDragging(true); setTouched(true); }
         }}
       >
         <SliderPrimitive.Track className="relative w-full h-px" />
@@ -115,7 +119,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="flex flex-col">
       <span className="retro-body-copy risiko-label relative z-10 self-start">{text}</span>
-      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text}
+      <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
         onChange={(v) => onChange(key, String(v))} />
     </div>
   );
@@ -129,7 +133,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
         {persons.filter(p => page.personKeys.includes(p.key)).map((p) => (
           <Track key={p.key} value={scaleValue(values[`work_${p.key}`] ?? values.allocation)} readOnly={readOnly}
             ariaLabel={`Beziehungsarbeit ${p.name}`} onChange={(v) => onChange(`work_${p.key}`, String(v))}
-            thumb={memoji(p.emoji)} />
+            hasValue={(values[`work_${p.key}`] ?? values.allocation) !== undefined} thumb={memoji(p.emoji)} />
         ))}
       </div>
     );
