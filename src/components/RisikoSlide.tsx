@@ -110,7 +110,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
       <div className="screen-only w-full">{body(false)}</div>
       <div className="hidden print-only w-full">{body(true)}</div>
       <div className="screen-only w-full mt-6">
-        <ActionRow icon="IconInfo" label="Zieht die Punkte zur Skala" accent="#F1F2F4" fieldBg="#F1F2F4" iconColor="#201C1D" labelColor="#201C1D" />
+        <ActionRow icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="#F1F2F4" fieldBg="#F1F2F4" iconColor="#201C1D" labelColor="#201C1D" />
       </div>
     </div>
   );
