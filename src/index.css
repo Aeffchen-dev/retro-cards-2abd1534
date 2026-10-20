@@ -247,8 +247,8 @@
 .risiko-expression-point {
   position: relative;
   display: block;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   color: var(--retro-black);
 }
 /* The draggable dot never shows a focus outline. */

@@ -7,7 +7,7 @@ import { scaleValue, scaleExpression, type RisikoPage } from "./risiko-data";
 export const FACES = [Angry, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header; every slider aligns with its five column centres.
-const FACE_SIZE = 24;
+const FACE_SIZE = 32;
 const FACE_W = FACE_SIZE - 1; // rendered face box; scale ends line up with its centre
 const FACE_FILL = "var(--risiko-face-fill)";
 
@@ -18,7 +18,7 @@ const Face = ({ Icon }: { Icon: typeof Angry }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-6" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-8" aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );

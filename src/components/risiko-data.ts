@@ -1,8 +1,8 @@
 export const RISIKO_STATEMENTS = [
+  ["self", "Ich kann ich selbst sein und fühle mich gesehen und respektiert"],
   ["love", "Wir zeigen uns aktiv, dass wir uns lieben"],
   ["appreciation", "Wir kommunizieren wertschätzend"],
   ["conflicts", "Wir lösen Konflikte fair"],
-  ["self", "Ich kann ich selbst sein und fühle mich gesehen und respektiert"],
   ["metime", "Wir räumen uns ausreichend Me-Time ein und machen auch Dinge ohne den anderen"],
   ["quality", "Wir verbringen genug Quality Time"],
 ] as const;
@@ -17,7 +17,7 @@ export interface RisikoPage {
 /** Keep the two sections separate, and add pages rather than shrink or scroll. */
 export function risikoPages(personKeys: string[], height: number, width: number): RisikoPage[] {
   const contentWidth = Math.max(180, Math.min(500, width - 48) - 56);
-  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 132);
+  const budget = Math.max(130, (height - 48) * 0.88 - 56 - 140);
   const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
   const pages: RisikoPage[] = [];
   for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {
