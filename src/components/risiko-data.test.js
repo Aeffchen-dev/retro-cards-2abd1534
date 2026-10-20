@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, scaleField, RISIKO_FIELDS, RISIKO_FIELD_STEP, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -84,15 +84,14 @@ describe("Risikofaktoren scale", () => {
     expect(scaleValue("-5")).toBe(0);
     expect(scaleValue("120")).toBe(100);
   });
-  test("every answer lands in one of the five fields", () => {
-    expect(RISIKO_FIELDS).toBe(5);
-    expect(RISIKO_FIELD_STEP).toBe(25);
-    expect(scaleField(0)).toBe(0);
-    expect(scaleField(12)).toBe(0);
-    expect(scaleField(13)).toBe(25);
-    expect(scaleField(50)).toBe(50);
-    expect(scaleField(73)).toBe(75);
-    expect(scaleField(90)).toBe(100);
+  test("the circle travels freely between the outer smileys", () => {
+    // ends: half a face inside each side, exactly under the outer smileys
+    expect(markerInset(0, 11.5)).toBe(11.5);
+    expect(markerInset(100, 11.5)).toBe(-11.5);
+    expect(markerInset(50, 11.5)).toBe(0);
+    // in between it stops anywhere: nothing snaps to a field
+    expect(markerInset(37, 11.5)).toBeCloseTo(2.99, 5);
+    expect(markerInset(62.5, 11.5)).toBeCloseTo(-2.875, 5);
   });
   test("workload shares keep the exact dragged value", () => {
     expect(scaleValue("73")).toBe(73);
