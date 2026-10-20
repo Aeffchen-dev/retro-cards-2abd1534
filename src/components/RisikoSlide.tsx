@@ -278,12 +278,16 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
             {/* Columns: no fill at all — the five fields are drawn only as dashed
                 grey lines, one at the scale's left and right edge and one between
-                every pair of neighbouring columns. They stand a shade behind the
-                smileys' own guides, so every face keeps its own stronger line.
-                Painted before everything else, so a line never covers a smiley,
-                a guide or the handle. */}
+                every pair of neighbouring columns. They break around the smiley row
+                exactly like the smileys' own stronger guides, so every dashed line
+                on the field starts and ends at the same heights. Painted before
+                everything else, so a line never covers a smiley, a guide or the
+                handle. */}
             <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-              {columnEdges(FACES.length).map((at) => <span key={at} className="risiko-column-edge absolute top-0 bottom-0" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />)}
+              {columnEdges(FACES.length).flatMap((at) => ([
+                <span key={`es${at}`} className="risiko-column-edge risiko-column-guide--stub absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
+                <span key={`el${at}`} className="risiko-column-edge risiko-column-guide--long absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
+              ]))}
             </div>
             {/* Each smiley's column carries its dashed guide down the field's whole
                 height — a stub above the face, then a long run from straight under it
