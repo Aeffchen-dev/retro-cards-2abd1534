@@ -1,4 +1,4 @@
-- [ ] Thicken the smiley slider rule slightly, preserve round dots and add a brief navigation hint; verify dragging, persistence and reduced motion.
+- [x] Thicken the smiley slider rule to 2px, lock the dots to 32×32px and add a one-shot left/right hint inside untouched dots when visible; verified live dragging to 75%, persistence after reload, reduced-motion suppression, no runtime errors and 20 passing tests.
 - [x] Add Vorhaben after Feedback with four prompts and emoji allocation scale.
 - [x] Verify text entry, scale dragging, persistence, print and mobile layout.
 - [x] Split Risikofaktoren into two pages, adding pages when needed without scrolling.
