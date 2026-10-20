@@ -368,7 +368,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const releaseBar = () => { workloadDrag.current = null; };
   return (
     <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
-      <div className="workload-lane relative w-full h-[68px] shrink-0 touch-none select-none swiper-no-swiping"
+      <div className="workload-lane relative w-full shrink-0 touch-none select-none swiper-no-swiping"
         style={{ background: "var(--risiko-label-bg)" }}
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
@@ -390,7 +390,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />
             ))}
           </div>
-          <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
+          <div className="workload-bar" aria-hidden="true">
 
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: `${segment.width}%` }}>
@@ -432,8 +432,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             );
             if (readOnly) {
               return (
-                <div key={p.key} className={`absolute z-10 top-[4px] workload-color-${i % 8}`}
-                  style={{ ...vars, width: slot, height: slot, left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
+                <div key={p.key} className={`absolute z-10 workload-color-${i % 8}`}
+                  style={{ ...vars, width: slot, height: slot, top: "calc((var(--risiko-field-h) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
                   {memojiEl}
                 </div>
               );
@@ -441,7 +441,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             return (
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
-                style={{ ...vars, left: li, right: ri, top: 0, bottom: 20 }}
+                style={{ ...vars, left: li, right: ri, top: 0, bottom: "var(--risiko-name-strip)" }}
                 data-boundary={boundaryIndex} data-value={value}
                 value={[value]} min={0} max={100} step={1}
                 onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadBoundary(keys, shares, boundaryIndex, v)); }}

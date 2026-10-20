@@ -212,9 +212,23 @@ describe("grey columns", () => {
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.split("@media screen")[1] ?? "";
-    expect(/\.risiko-scale-core \{ max-height: 120px; \}/.test(screen), "the fields are not capped on screen").toBe(true);
+    expect(/\.risiko-scale-core \{ max-height: var\(--risiko-field-h\); \}/.test(screen), "the fields are not capped on screen").toBe(true);
     const print = css.split("@media print")[1] ?? "";
-    expect(print, "the printed fields are capped too").not.toContain("max-height: 120px");
+    expect(print, "the printed fields are capped too").not.toContain("max-height: var(--risiko-field-h)");
+  });
+  test("the work-split lane stands exactly as tall as the statement fields", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const field = css.match(/--risiko-field-h:\s*(\d+)px/)?.[1];
+    expect(field, "the shared field height is missing").toBeTruthy();
+    const lane = css.match(/\.workload-lane \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(/height:\s*calc\(var\(--risiko-field-h\) \+ var\(--risiko-name-strip\)\)/.test(lane),
+      "the lane does not tie its height to the fields").toBe(true);
+    // Nothing may pin the lane to its own fixed pixel height any more.
+    expect(slide, "the lane still carries a fixed height").not.toMatch(/workload-lane[^"]*h-\[\d+px\]/);
+    // The bar rides the fields' middle, so both scales read the same way.
+    const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(/top:\s*calc\(var\(--risiko-field-h\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
