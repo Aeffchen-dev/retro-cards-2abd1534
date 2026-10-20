@@ -52,3 +52,4 @@
 - [x] Remove the workload legend, centre avatars on matching coloured segments and put percentages in each segment; verify drag, persistence and print (16 tests passed).
 - [x] Reword the allocation question to "Wer leistet aktuell wie viel der Beziehungsarbeit?"; verify desktop, mobile and the PDF.
 - [x] Show each partner name below its Memoji in that partner's colour, match segment colours to the slide scheme and move percentages above the line; verify drag, zero split, persistence and print.
+- [x] Add the display-size question "Wie glücklich sind wir aktuell mit…?" at the top of every Health Check page; verify the reveal, fit on desktop and mobile and the PDF.

@@ -238,6 +238,8 @@
 }
 
 .risiko-card { overflow: hidden; }
+/* The headline sits above the smiley scale with the same gap the card uses. */
+.risiko-heading { margin-bottom: 12px; }
 
 .workload-lane { container-type: inline-size; }
 .workload-segment { height: 100%; background: var(--workload-color); }

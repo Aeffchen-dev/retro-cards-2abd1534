@@ -9,6 +9,9 @@ export const RISIKO_STATEMENTS = [
 
 export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
 
+/** The display-size question above the scale, same treatment as the first two Health Check slides. */
+export const RISIKO_HEADING = "Wie glücklich sind wir aktuell mit…?";
+
 export interface RisikoPage {
   statements: (readonly [string, string])[];
   personKeys: string[];
@@ -20,7 +23,10 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   // The helper sentence needs its own second line once the card gets narrow.
   const footerCost = contentWidth < 292 ? 160 : 140;
   // 72 = smiley header with its tiny end labels plus the card's top padding.
-  const budget = Math.max(130, (height - 48) * 0.88 - 72 - footerCost);
+  // The headline above the scale is set in the display face, so it costs a
+  // line of its own: ~20px per glyph at 38.4px, plus the gap below it.
+  const headingLines = Math.ceil(RISIKO_HEADING.length / Math.max(9, Math.floor(contentWidth / 20)));
+  const budget = Math.max(130, (height - 48) * 0.88 - 72 - (headingLines * 40 + 12) - footerCost);
   const textHeight = (text: string) => Math.ceil(text.length / Math.max(18, Math.floor(contentWidth / 8))) * 22;
   const pages: RisikoPage[] = [];
   for (const section of [RISIKO_STATEMENTS.slice(0, 3), [...RISIKO_STATEMENTS.slice(3), RISIKO_HOT]]) {

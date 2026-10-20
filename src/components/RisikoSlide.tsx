@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, type RisikoPage } from "./risiko-data";
+import RevealText from "@/components/RevealText";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_HEADING, type RisikoPage } from "./risiko-data";
 
 // Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
@@ -61,6 +62,8 @@ interface RisikoSlideProps {
   onWorkloadChange: (shares: Record<string, number>) => void;
   pill: string;
   onEdit: () => void;
+  /** Swiper position of this page — drives the headline's word reveal. */
+  slideIndex?: number;
 }
 
 const INK = "var(--retro-black)";
@@ -149,7 +152,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
-const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, slideIndex }: RisikoSlideProps) => {
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
@@ -251,6 +254,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+      {/* The headline reads like the one on the first two Health Check cards. */}
+      <h2 className="risiko-heading retro-heading w-full shrink-0"><RevealText text={RISIKO_HEADING} color={pill} slideIndex={slideIndex} /></h2>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
           <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>

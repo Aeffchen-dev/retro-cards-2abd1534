@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_STATEMENTS, RISIKO_HEADING, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -83,14 +83,18 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
-  test("keeps two pages on large screens and adds one on phones", () => {
+  test("opens with the display-size question above the scale", () => {
+    expect(RISIKO_HEADING).toBe("Wie glücklich sind wir aktuell mit…?");
+  });
+  test("keeps two pages on large screens and adds pages on phones", () => {
     const big = risikoPages(["p0", "p1"], 1800, 1280);
     expect(big.length).toBe(2);
     expect(big[0].statements.length).toBe(3);
     const small = risikoPages(["p0", "p1"], 844, 390);
-    expect(small.length).toBe(3);
-    // The long "hot" sentence needs its own phone page and shares it with the allocation block.
-    expect(small[small.length - 1].statements.map(([key]) => key)).toEqual(["hot"]);
+    // The display-size headline costs three lines on a phone, so the long
+    // sentences spread out and the allocation block lands on its own page.
+    expect(small.length).toBe(5);
+    expect(small[small.length - 1].statements.map(([key]) => key)).toEqual([]);
     expect(small[small.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(small.flatMap(p => p.statements.map(([key]) => key))).toEqual([...RISIKO_STATEMENTS.map(([key]) => key), "hot"]);
   });
