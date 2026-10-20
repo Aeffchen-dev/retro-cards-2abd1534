@@ -196,3 +196,22 @@ describe("smiley scale spans its container", () => {
     }
   });
 });
+
+describe("smallest text size", () => {
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  const sizes = [...css.matchAll(/font-size:\s*([^;]+);/g)].map((m) => m[1].trim());
+  test("every text size in the stylesheet is at least 12px", () => {
+    expect(sizes.length).toBeGreaterThan(10);
+    const below = sizes.filter((size) => {
+      if (size === "inherit") return false;
+      const px = size.match(/^([\d.]+)px$/);
+      const rem = size.match(/^([\d.]+)rem$/);
+      if (!px && !rem) return true; // a computed size could drop under the floor
+      return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
+    });
+    expect(below).toEqual([]);
+  });
+  test("the helper sentences read exactly the floor size on phones and tablets", () => {
+    expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row \{\s*font-size: 12px;/);
+  });
+});
