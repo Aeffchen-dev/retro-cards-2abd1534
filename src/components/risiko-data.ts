@@ -99,13 +99,16 @@ export const scaleFaceBlend = (value: number): { index: number; mix: number } =>
 };
 
 // Shared cubic topology lets the outline morph, rather than fade between icons.
-// The anchors reproduce SadFace, Frown, Meh, Smile and Laugh in the header.
+// The anchors reproduce SadFace, Frown, Meh, Smile and Laugh in the header. An
+// eye is one stroke (x1,y1 → x2,y2); a dot is the same stroke with no length.
 const FACE_ANCHORS = [
-  { eyeY: 9, brow: 1, tear: 1, mouth: [8,17.9, 8,17.9,9.5,14.7,12,14.7, 14.5,14.7,16,17.9,16,17.9, 16,17.9,14.5,14.7,12,14.7, 9.5,14.7,8,17.9,8,17.9] },
-  { eyeY: 9, brow: 0, tear: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
-  { eyeY: 9, brow: 0, tear: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
-  { eyeY: 9, brow: 0, tear: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
-  { eyeY: 9, brow: 0, tear: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
+  // Crying: eyes squeezed shut and slanting down to the nose, a tear hanging
+  // below each eye, inner brows raised and a deeper downturn than the sad face.
+  { eye: [7.2, 8.4, 10.2, 9.7, 16.8, 8.4, 13.8, 9.7], eyeW: 1.2, brow: 1, tear: 1, mouth: [8,18.2, 8,18.2,9.5,15.2,12,15.2, 14.5,15.2,16,18.2,16,18.2, 16,18.2,14.5,15.2,12,15.2, 9.5,15.2,8,18.2,8,18.2] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
 ];
 
 export function scaleFaceGeometry(value: number) {
@@ -114,7 +117,8 @@ export function scaleFaceGeometry(value: number) {
   const to = FACE_ANCHORS[index + 1];
   const lerp = (a: number, b: number) => a + (b - a) * mix;
   return {
-    eyeY: lerp(from.eyeY, to.eyeY),
+    eye: from.eye.map((coordinate, i) => lerp(coordinate, to.eye[i])),
+    eyeW: lerp(from.eyeW, to.eyeW),
     brow: lerp(from.brow, to.brow),
     tear: lerp(from.tear, to.tear),
     mouth: from.mouth.map((coordinate, i) => lerp(coordinate, to.mouth[i])),
