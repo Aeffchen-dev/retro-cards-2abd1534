@@ -123,9 +123,9 @@ export const CRYING_TEAR = 0.7;
 
 const FACE_ANCHORS = [
   // Crying: the same round-dot eyes, the same brows-less face and the same arc
-  // family as the faces next to it — only a deeper downturn, and a small tear
-  // hanging under each eye.
-  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: CRYING_TEAR, mouth: [8,17.4, 8,17.4,9.5,14.6,12,14.6, 14.5,14.6,16,17.4,16,17.4, 16,17.4,14.5,14.6,12,14.6, 9.5,14.6,8,17.4,8,17.4] },
+  // family as the faces next to it — only a much deeper downturn (its mouth
+  // sags well past the sad face's), and a single tear under the left eye.
+  { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: CRYING_TEAR, mouth: [8,18.4, 8,18.4,9.5,13.8,12,13.8, 14.5,13.8,16,18.4,16,18.4, 16,18.4,14.5,13.8,12,13.8, 9.5,13.8,8,18.4,8,18.4] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,16, 8,16,9.5,14,12,14, 14.5,14,16,16,16,16, 16,16,14.5,14,12,14, 9.5,14,8,16,8,16] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,15, 8,15,10,15,12,15, 14,15,16,15,16,15, 16,15,14,15,12,15, 10,15,8,15,8,15] },
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [8,14, 8,14,9.5,16,12,16, 14.5,16,16,14,16,14, 16,14,14.5,16,12,16, 9.5,16,8,14,8,14] },
