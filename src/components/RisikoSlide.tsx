@@ -46,18 +46,19 @@ const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
-// The circle travels the whole scale, edge to edge — not just between the outer
-// smileys — so its travel is inset by its own radius alone: at 0 and 100 its
-// outer edge lands exactly on the container's edges, fully visible, never cut
-// off and never overflowing.
+// The grey columns keep the same breathing room top and bottom as the smileys
+// get from the scale's edge.
 const TRAVEL_INSET = MARKER_SIZE / 2;
 
-// One equal column per smiley across the full scale width; each smiley (and its
-// dashed guide) sits at its column's centre, while the circle keeps gliding
-// through the whole width under them.
-/** CSS left for a marker-travel percentage, so faces/columns line up with the slider ends. */
-const atTravel = (p: number) => `calc(${TRAVEL_INSET}px + ${p} * (100% - ${MARKER_SIZE}px) / 100)`;
-const facePos = (i: number) => atTravel((i * 100) / (FACES.length - 1));
+// Equal columns share the scale's full width; each smiley (and its dashed
+// guide) sits in the middle of its own column, and the circle's travel runs
+// from the first smiley's centre to the last one's, so the handle always rests
+// under a face at both ends and is never cut off.
+const COLUMN_W = 100 / FACES.length;
+const facePct = (i: number) => (i + 0.5) * COLUMN_W;
+const facePos = (i: number) => `${facePct(i)}%`;
+/** CSS left for the circle at a slider value: 0 under the first smiley, 100 under the last. */
+const markerLeft = (value: number) => `calc(${facePct(0)}% + ${value} * (100% - ${2 * facePct(0)}%) / 100)`;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
