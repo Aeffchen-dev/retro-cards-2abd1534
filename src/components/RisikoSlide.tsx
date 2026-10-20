@@ -244,7 +244,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {page.personKeys.length > 0 && allocation(readOnly)}
       {!readOnly && (
         <div className="risiko-auto-gap risiko-footer w-full shrink-0 flex flex-col items-start gap-2">
-          <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} fieldBg="transparent" labelColor={INK} onClick={onEdit} />
+          <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
           <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
         </div>
       )}
