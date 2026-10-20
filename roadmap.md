@@ -49,4 +49,4 @@
 - [x] Make the dashed guidelines as visible as the smileys (2px in the smiley grey); verify measured thickness on screen and in the PDF.
 - [x] Add "mal" to the Me-Time question ("... und machen auch mal Dinge ohne den anderen"); verify desktop, mobile and print.
 - [x] Make the dashed guidelines finer (1px line, 8px dashes, 4px gaps) and even across all columns; verify by pixel measurement and in the PDF.
-- [ ] Remove the workload legend, centre avatars on matching coloured segments and put percentages in each segment; verify drag and print.
+- [x] Remove the workload legend, centre avatars on matching coloured segments and put percentages in each segment; verify drag, persistence and print (16 tests passed).
