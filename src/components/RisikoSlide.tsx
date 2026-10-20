@@ -117,7 +117,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
   );
 
   const statement = (key: string, text: string, readOnly: boolean) => (
-    <div key={key} className="flex flex-col">
+    <div key={key} className="risiko-auto-gap flex flex-col">
       <span className="retro-body-copy risiko-label relative z-10 self-start">{text}</span>
       <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
         onChange={(v) => onChange(key, String(v))} />
@@ -128,7 +128,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
   const allocation = (readOnly: boolean) => {
     const title = persons.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit";
     return (
-      <div className="flex flex-col gap-1">
+      <div className="risiko-auto-gap flex flex-col gap-1">
         <span className="retro-body-copy risiko-label relative z-10 self-start">{title}</span>
         {persons.filter(p => page.personKeys.includes(p.key)).map((p) => (
           <Track key={p.key} value={scaleValue(values[`work_${p.key}`] ?? values.allocation)} readOnly={readOnly}
@@ -139,34 +139,32 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     );
   };
 
-  // Rows fill the whole card: the free height is shared out between them, and a
-  // lone row sits in the middle instead of floating at the top.
-  const body = (readOnly: boolean) => {
-    const rowCount = page.statements.length + (page.personKeys.length ? 1 : 0);
-    return (
-      <div className={`flex flex-col gap-3 w-full flex-1 min-h-0 ${rowCount > 1 ? "justify-between" : "justify-center"}`}>
-        {page.statements.map(([k, t]) => statement(k, t, readOnly))}
-        {page.personKeys.length > 0 && allocation(readOnly)}
-      </div>
-    );
-  };
+  // Every gap takes an equal share of the leftover height: smileys to the first
+  // question, between the questions, and the last question to the buttons.
+  const body = (readOnly: boolean) => (
+    <div className="flex flex-col gap-3 w-full flex-1 min-h-0">
+      {page.statements.map(([k, t]) => statement(k, t, readOnly))}
+      {page.personKeys.length > 0 && allocation(readOnly)}
+      {!readOnly && (
+        <div className="risiko-auto-gap risiko-footer w-full shrink-0 flex flex-col items-start gap-2">
+          <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
+          <ActionRow className="risiko-helper" icon="IconInfo" label="Bewege den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        </div>
+      )}
+    </div>
+  );
 
 
 
   return (
-    <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
-      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
+    <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+      <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         <FaceLayer />
         <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
           {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
         </div>
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
-
-      </div>
-      <div className="screen-only w-full mt-auto shrink-0 flex flex-col items-start gap-2">
-        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
-        <ActionRow className="risiko-helper" icon="IconInfo" label="Bewege den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
   );
