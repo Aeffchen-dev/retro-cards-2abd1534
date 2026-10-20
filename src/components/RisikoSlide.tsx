@@ -4,13 +4,13 @@ import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
-// The tear, shared by the scale's crying face and the dragged dot: one drop
-// hanging from below the left eye, tip first so it shrinks back into the eye.
-const TEAR_L = "M8.4 10.6C8.4 10.6 7.1 12.8 7.1 13.6a1.3 1.3 0 0 0 2.6 0C9.7 12.8 8.4 10.6 8.4 10.6z";
+// The tear, shared by the scale's crying face and the dragged dot: one clear
+// drop hanging from the left eye, tip first so it shrinks back into the eye.
+const TEAR_L = "M8.9 9.7C8.9 9.7 7.05 12 7.05 12.2a1.45 1.45 0 0 0 2.9 0C9.95 12 8.9 9.7 8.9 9.7z";
 
 // The saddest face on the scale, drawn in the same language as the faces next to
-// it: the same round-dot eyes, no brows and the same arc family — only a much
-// deeper downturn and a single tear hanging under the left eye.
+// it: the same round-dot eyes, no brows and the happy smile's mouth mirrored into
+// a downturn — a single tear hanging from the left eye sets it apart.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -26,8 +26,8 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   >
     <circle cx="12" cy="12" r="10" />
     <path d="M9 9h.01 M15 9h.01" />
-    <path d="M16 18.4s-1.5-4.6-4-4.6S8 18.4 8 18.4" />
-    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" transform={`translate(8.4 10.6) scale(${CRYING_TEAR}) translate(-8.4 -10.6)`} />
+    <path d="M16 16s-1.5-2-4-2-4 2-4 2" />
+    <path d={TEAR_L} fill={color ?? "currentColor"} stroke="none" transform={`translate(8.9 9.7) scale(${CRYING_TEAR}) translate(-8.9 -9.7)`} />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
@@ -106,7 +106,7 @@ const MorphFace = ({ value }: { value: number }) => {
       {/* One eye is a single stroke: a round dot at every anchor on this scale,
           the same stroke the small smileys draw — only heavier inside the disc. */}
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={`translate(8.4 10.6) scale(${tear}) translate(-8.4 -10.6)`} />
+      <path d={TEAR_L} fill={FACE_FILL} stroke="none" transform={`translate(8.9 9.7) scale(${tear}) translate(-8.9 -9.7)`} />
       // The marker's eyes are drawn heavier than the small scale faces, so its
       // brows sit higher: they must keep a clear gap above the eye dots.
       <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />

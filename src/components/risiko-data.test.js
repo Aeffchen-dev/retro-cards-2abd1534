@@ -43,18 +43,18 @@ describe("workload split", () => {
 
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
-    // Crying: the same round-dot eyes and the same brows-less face as the faces
-    // next to it — only a much deeper downturn and a single tear below the left eye.
+    // Crying: the same round-dot eyes, no brows, and the happy smile's mouth
+    // mirrored into a downturn — the single tear below the left eye sets it apart.
     expect(scaleFaceGeometry(0).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(0).eyeW).toBe(1.5);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(13.8); // deeper downturn than the sad face
-    expect(scaleFaceGeometry(0).mouth[1]).toBe(18.4);
+    expect(scaleFaceGeometry(0).mouth[1]).toBe(16);
+    expect(scaleFaceGeometry(0).mouth[7]).toBe(14);
     expect(scaleFaceGeometry(0).tear).toBe(CRYING_TEAR);
     expect(scaleFaceGeometry(12.5).tear).toBeCloseTo(CRYING_TEAR / 2);
-    // The crying mouth must read clearly sadder than the sad face next to it:
-    // how far its ends hang below its middle is more than double the sad face's.
-    const sag = (v) => scaleFaceGeometry(v).mouth[1] - scaleFaceGeometry(v).mouth[7];
-    expect(sag(0)).toBeGreaterThan(sag(25) * 2);
+    // The crying mouth is exactly the sad face's — the happy smile's curve,
+    // flipped — so the tear alone carries the crying reading.
+    expect(scaleFaceGeometry(0).mouth).toEqual(scaleFaceGeometry(25).mouth);
+    expect(scaleFaceGeometry(0).tear).toBeGreaterThan(0);
     // The sad face right next to it has the same eyes, but no tear.
     expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
