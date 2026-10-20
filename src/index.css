@@ -297,31 +297,20 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
-/* The work-split card reads the question together with the fixed list of what
-   counts as Beziehungsarbeit, set straight under it. The question keeps only a
-   small gap to its list; the list carries the card's usual gap down to the
-   work-split lane, so the fields still start where the statement cards' do. */
+/* The work-split card reads the question together with the fixed sentence of
+   what counts as Beziehungsarbeit, set straight under it as small body text in
+   one column. The question keeps only a small gap to the sentence; the sentence
+   carries the card's usual gap down to the work-split lane, so the fields still
+   start where the statement cards' do. */
 .risiko-allocation-statement { margin-bottom: 10px; }
 .risiko-allocation-examples {
   margin: 0 0 var(--risiko-scale-pad);
-  padding: 0;
-  list-style: none;
   font-size: 12px;
   line-height: 1.4;
   color: var(--risiko-guide);
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
-}
-.risiko-allocation-examples li { padding-left: 14px; text-indent: -14px; break-inside: avoid; }
-.risiko-allocation-examples li::before { content: "–"; margin-right: 6px; }
-/* Two columns wherever the card is at its full width, so the list keeps the
-   lane — as tall as every statement field — in view without scrolling. */
-@media (min-width: 768px) {
-  .risiko-allocation-examples { columns: 2; column-gap: 24px; }
-}
-@media (min-width: 1024px) {
-  .risiko-allocation-examples { font-size: 16px; }
 }
 
 /* The scale's grey smileys: the box and the drawing inside it follow
