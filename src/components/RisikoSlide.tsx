@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one clear
 // drop hanging from the left eye, tip first so it shrinks back into the eye.
@@ -47,14 +47,20 @@ const RULE_W = 2;
 // The scale runs edge to edge across the container, so the circle's travel is
 // inset by its own radius: at 0 and 100 its outer edge lands exactly on the
 // container's edges — fully visible, never cut off, never overflowing.
-const END_INSET = scaleEndInset(MARKER_SIZE);
+
 // The smileys are pulled in by the difference between that inset and their own
 // half-width, so every face centre sits exactly where the circle's centre does.
-const FACE_PAD = END_INSET - FACE_W / 2;
+
 // Evenly spread columns: one soft band between every pair of neighbouring
 // smileys. Their edges use the circle's own inset maths, so every edge sits
 // exactly under the face it belongs to and all bands come out the same width.
-const BANDS = columnBands(FACES.length);
+
+// One equal column per smiley across the full scale width; each smiley (and its
+// dashed guide) sits at its column's centre, and the circle travels centre to centre.
+const COL_W = 100 / FACES.length;
+const COL_EDGE = COL_W / 2;
+const COL_SPAN = 100 - COL_W;
+const FACE_INSET = `calc(${COL_EDGE}% - ${FACE_W / 2}px)`;
 // The card's white shows through this gap, so the bands read as separate columns.
 const COLUMN_GAP = 6;
 // Workload circles stay round at 32px, and every partner reserves exactly one
@@ -74,8 +80,8 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 box-border" style={{ height: FACE_SIZE, paddingInline: FACE_PAD }} aria-hidden="true">
-    {FACES.map((F, i) => <Face key={i} Icon={F} />)}
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 box-border" style={{ height: FACE_SIZE }} aria-hidden="true">
+    {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: `${(i + 0.5) * COL_W}%` }}><Face Icon={F} /></span>)}
   </div>
 );
 
@@ -161,14 +167,14 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
     {/* The rule spans the full card width; only the circle's travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
-      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${value}% + ${markerInset(value, END_INSET)}px)` }}>
+      <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: 0, right: 0, top: 0, bottom: 0 }}
+          style={{ left: FACE_INSET, right: FACE_INSET, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -187,7 +193,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
           <SliderPrimitive.Track className="relative w-full h-full" />
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: FACE_W, height: FACE_W }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${value}% + ${markerInset(value, END_INSET)}px)` }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: `calc(${COL_EDGE}% + ${value * COL_SPAN / 100}%)` }}>
           {marker}
         </div>
       </>
@@ -210,7 +216,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           edge, while the smileys and the tiny end labels sit flush with the
           circle's travel — inset by the circle's own radius at both ends. */}
       <div className="relative flex flex-col gap-1 box-border">
-        <div className="risiko-scale-caption pointer-events-none flex justify-between box-border" style={{ height: CAPTION_H, paddingInline: FACE_PAD }}>
+        <div className="risiko-scale-caption pointer-events-none flex justify-between box-border" style={{ height: CAPTION_H, paddingInline: FACE_INSET }}>
           <span>Stimme nicht zu</span>
           <span>Stimme voll zu</span>
         </div>
@@ -219,7 +225,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             smileys, running the height of the circle's row, so a free position
             still reads against a face. */}
         <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
-          {BANDS.map(([from, to]) => <span key={from} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${from}% + ${markerInset(from, END_INSET) + COLUMN_GAP / 2}px)`, width: `calc((100% - ${2 * END_INSET}px) * ${(to - from) / 100} - ${COLUMN_GAP}px)` }} />)}
+          {FACES.map((_, i) => <span key={i} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${i * COL_W}% + ${COLUMN_GAP / 2}px)`, width: `calc(${COL_W}% - ${COLUMN_GAP}px)` }} />)}
+          {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute top-0 bottom-0" style={{ left: `${(i + 0.5) * COL_W}%` }} />)}
         </div>
         <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
           onChange={(v) => onChange(key, String(v))} />

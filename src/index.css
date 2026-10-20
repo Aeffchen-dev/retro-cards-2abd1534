@@ -436,6 +436,11 @@
    so the scale reads as a row of fields. Very light grey fills; the card's own
    white shows through the gaps between them, and the rule and the circle sit on
    top. */
+.risiko-column-guide {
+  width: 0;
+  border-left: 1px dashed var(--risiko-caption);
+  transform: translateX(-0.5px);
+}
 .risiko-column-band {
   background: var(--risiko-column-fill);
   border-radius: 4px;
