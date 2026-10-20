@@ -47,8 +47,9 @@ const HEADER_H = FACE_SIZE;
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
 // The fields stretch to fill whatever height the card has left over, but they
-// never collapse below one comfortable band: that floor is their own minimum.
-const COLUMN_MIN = 56;
+// never collapse below one comfortable band: the smileys and the rule as the
+// pair they are, with a little grey above and below that pair.
+const FIELD_MIN = FACE_PAD * 2 + HEADER_H + 4 + TRACK;
 // A little grey above the smileys, so the faces sit inside their columns instead
 // of being sliced by the columns' top edge.
 const FACE_PAD = 8;
