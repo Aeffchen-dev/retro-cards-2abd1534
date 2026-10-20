@@ -83,6 +83,9 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
+  test("opens with the display-size question above the scale", () => {
+    expect(RISIKO_HEADING).toBe("Wie glücklich sind wir aktuell mit…?");
+  });
   test("keeps two pages on large screens and adds pages on phones", () => {
     const big = risikoPages(["p0", "p1"], 1800, 1280);
     expect(big.length).toBe(2);
