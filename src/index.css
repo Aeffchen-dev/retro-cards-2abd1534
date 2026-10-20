@@ -290,7 +290,10 @@
   -webkit-hyphens: auto;
 }
 
-.workload-lane { container-type: inline-size; }
+/* The names take the strip at the lane's foot; the grey fields and dashed guides stop
+   just above it, so a guide never runs through a partner's name. */
+.workload-lane { container-type: inline-size; --risiko-name-strip: 20px; }
+
 .workload-segment { height: 100%; background: var(--workload-color); }
 .workload-color-0 { --workload-color: var(--workload-partner-0); }
 .workload-color-1 { --workload-color: var(--workload-partner-1); }
