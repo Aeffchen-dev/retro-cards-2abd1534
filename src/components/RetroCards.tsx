@@ -1801,9 +1801,8 @@ const RetroCards: React.FC = () => {
                   Nicht monogam
                 </span>
               </button>
-              </div>
 
-              <div className="w-full mt-auto">
+              <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"
                   label="Los geht's"
