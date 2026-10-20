@@ -184,9 +184,9 @@ describe("grey columns", () => {
     expect(lightness(fill) - lightness(alt)).toBeLessThanOrEqual(24);
   });
   test("the scale smileys and their dashed guides share one darker grey", () => {
-    // The five faces on the Risikofaktoren scale and the dashed line down each
-    // column were darkened together, and they must stay a clear step darker than
-    // the tiny end labels so the scale reads as the interactive part.
+    // The five faces, the dashed line down each column and the two end labels are
+    // one and the same grey now; the lighter --risiko-caption tone only serves the
+    // Health Check cards' dashed lines, so the scale's grey stays the darker one.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const token = (name) => css.match(new RegExp(`--${name}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
@@ -199,6 +199,22 @@ describe("grey columns", () => {
     expect(/border-left: 1px dashed var\(--risiko-guide\)/.test(css), "guides do not use --risiko-guide").toBe(true);
     expect(/color=\{FACE_GREY\}/.test(slide), "the scale faces do not use FACE_GREY").toBe(true);
     expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
+  });
+  test("the end labels rest on the columns' top edge in the scale's grey at info size", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
+    expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
+    // the info rows' size: 16px on desktop …
+    expect(/font-size:\s*16px/.test(caption), "the labels are not at the info rows' desktop size").toBe(true);
+    // … and the same one step smaller on phones and tablets
+    const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
+    const block = mq.slice(0, mq.indexOf("\n}"));
+    expect(block).toContain(".risiko-scale-caption");
+    expect(block).toContain("font-size: 12px");
+    // nothing separates the labels from the fields they name
+    expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
   });
 });
 
@@ -249,6 +265,6 @@ describe("smallest text size", () => {
     expect(below).toEqual([]);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
-    expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row \{\s*font-size: 12px;/);
+    expect(css).toMatch(/@media \(max-width: 1023px\) \{\s*\.retro-info-row[,\s][^{]*\{\s*font-size: 12px;/);
   });
 });
