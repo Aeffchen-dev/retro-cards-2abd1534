@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import RevealText from "@/components/RevealText";
 import ActionRow from "@/components/ActionRow";
 import { Angry, Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceBlend, type RisikoPage } from "./risiko-data";
@@ -25,10 +24,7 @@ const FaceLayer = () => (
 
 interface Person { key: string; name: string; emoji: string }
 interface RisikoSlideProps {
-  slideId: number;
   page: RisikoPage;
-  pageNumber: number;
-  pageCount: number;
   persons: Person[];
   values: Record<string, string>;
   onChange: (key: string, value: string) => void;
@@ -98,7 +94,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb }: {
   );
 };
 
-const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
+const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
   const memoji = (emoji: string) => (
     <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{emoji}</span>
   );
@@ -135,10 +131,6 @@ const RisikoSlide = ({ slideId, page, pageNumber, pageCount, persons, values, on
 
   return (
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0 gap-5" style={{ color: INK }}>
-      <div className="w-full shrink-0">
-      <h2 className="retro-heading w-full"><RevealText text="Health Check" color={pill} slideIndex={slideId} /></h2>
-      <span className="retro-small">{pageNumber} / {pageCount}</span>
-      </div>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-4">
         <FaceLayer />
         <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: FACE_SIZE }} aria-hidden="true">
