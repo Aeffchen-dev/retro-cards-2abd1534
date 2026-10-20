@@ -59,6 +59,18 @@ export const columnBands = (faces: number): [number, number][] => {
   return Array.from({ length: faces }, (_, i) => [i * width, (i + 1) * width] as [number, number]);
 };
 
+/** One label per scale column, from the leftmost field to the rightmost: the five
+ *  faces the circle can rest under, named in the couple's own words. Screen and
+ *  print read the same list, so the printed page never disagrees with the card. */
+export const SCALE_CAPTIONS = [
+  "Trifft nicht zu",
+  "Trifft eher nicht zu",
+  "Teils / teils",
+  "Trifft eher zu",
+  "Trifft voll zu",
+] as const;
+
+
 
 /** Largest-remainder rounding keeps integer percentages at exactly the target. */
 function distributeShares(keys: string[], weights: number[], target: number): Record<string, number> {
