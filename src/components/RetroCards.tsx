@@ -2412,7 +2412,6 @@ const RetroCards: React.FC = () => {
                 </div>
                 );
               })()}
-              )}
             </div>
           ))}
         </div>
