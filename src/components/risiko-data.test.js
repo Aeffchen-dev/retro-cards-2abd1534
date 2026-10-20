@@ -58,7 +58,12 @@ describe("Risikofaktoren scale", () => {
     // The sad face right next to it has the same eyes, but no tear.
     expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
     expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
-    expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
+    // Both sad mouths are the happy smile's curve flipped: same shape, mirrored
+    // about the face's midline (y 14 ↔ 16 around 15), never a different mouth.
+    const sadMouth = scaleFaceGeometry(25).mouth;
+    const smileMouth = scaleFaceGeometry(75).mouth;
+    sadMouth.forEach((coordinate, i) =>
+      expect(coordinate).toBeCloseTo(i % 2 ? 30 - smileMouth[i] : smileMouth[i]));
     expect(scaleFaceGeometry(50).mouth[7]).toBe(15);
     expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
