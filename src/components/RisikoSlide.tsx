@@ -35,7 +35,7 @@ export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#9B9BA3";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
-const FACE_SIZE = 21;
+const FACE_SIZE = 28;
 const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its centre
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
