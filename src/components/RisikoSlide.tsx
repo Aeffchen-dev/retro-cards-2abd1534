@@ -40,8 +40,9 @@ const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its ce
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
-const CAPTION_H = 12; // tiny end labels above the smileys
-const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
+// The tiny end labels share the smileys' line, so the columns start straight
+// under that one row.
+const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
