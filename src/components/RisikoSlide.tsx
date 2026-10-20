@@ -178,10 +178,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     const segments = workloadSegments(keys, shares);
     return (
       <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
-        <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
-          <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
-          <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
-        </div>
         <div className="workload-lane relative w-full h-[60px] shrink-0" style={{ background: "var(--risiko-label-bg)" }}>
           <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
             {segments.map((segment, i) => (
