@@ -90,7 +90,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
       </div>
       <div className="relative flex flex-col gap-3">
         {/* dashed guideline straight under each face */}
-        <div className="risiko-lines pointer-events-none absolute inset-y-0 flex justify-between" aria-hidden="true">
+        <div className="risiko-lines pointer-events-none absolute inset-0 flex justify-between" aria-hidden="true">
           {FACES.map((_, i) => (
             <div key={i} className="w-7 flex justify-center">
               <div className="h-full border-l border-dashed" style={{ borderColor: INK, opacity: 0.25 }} />
