@@ -357,7 +357,7 @@
   );
 }
 
-/* Tiny labels above the columns: Trifft nicht zu … Trifft zu. They take a line of
+/* Tiny labels above the columns: Trifft nicht zu … Trifft voll zu. They take a line of
    their own, flush with the card's left and right edges, so the columns below keep
    the full width and the labels never wrap. */
 .risiko-scale-caption {

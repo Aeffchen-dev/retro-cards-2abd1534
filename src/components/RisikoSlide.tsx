@@ -250,12 +250,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       {/* The two labels take a line of their own above the columns — "Trifft nicht
-          zu" flush left, "Trifft zu" flush right — so the columns below get the
+          zu" flush left, "Trifft voll zu" flush right — so the columns below get the
           card's full width. */}
       <div className="risiko-scale-row relative flex flex-col w-full gap-1 box-border grow shrink-0">
         <div className="risiko-scale-captions flex items-center justify-between gap-2">
           <span className="risiko-scale-caption pointer-events-none">Trifft nicht zu</span>
-          <span className="risiko-scale-caption pointer-events-none">Trifft zu</span>
+          <span className="risiko-scale-caption pointer-events-none">Trifft voll zu</span>
         </div>
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ paddingTop: FACE_PAD, paddingBottom: FACE_PAD, minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
