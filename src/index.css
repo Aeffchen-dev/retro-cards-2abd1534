@@ -227,18 +227,7 @@
 }
 
 .risiko-card { overflow: hidden; }
-.risiko-page .risiko-helper { height: auto; align-items: stretch; }
-.risiko-helper > span:last-child {
-  height: auto;
-  min-height: 32px;
-  min-width: 0;
-  white-space: normal;
-  overflow: visible;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: 14px;
-  line-height: 18px;
-}
+
 /* Question text sits on a white plate shaped like the Post-it input label. */
 .risiko-page .risiko-label {
   letter-spacing: 0;

@@ -165,7 +165,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
       </div>
       <div className="screen-only w-full mt-auto shrink-0 flex flex-col items-start gap-2">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
-        <ActionRow className="risiko-helper" icon="IconInfo" label="Verschiebe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        <ActionRow className="risiko-helper" icon="IconInfo" label="Punkt verschieben" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
   );
