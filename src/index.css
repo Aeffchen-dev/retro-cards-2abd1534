@@ -385,6 +385,9 @@
   display: block;
   width: 32px;
   height: 32px;
+  /* the thumb is as narrow as a scale face, so the marker must not be squeezed
+     into an oval — it keeps its circle and spills evenly over the thumb's edges */
+  flex-shrink: 0;
   color: var(--retro-black);
 }
 /* The draggable dot never shows a focus outline. */

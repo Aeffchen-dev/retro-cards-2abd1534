@@ -50,7 +50,7 @@ const Face = ({ Icon }: { Icon: typeof Frown }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 h-8" aria-hidden="true">
+  <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0" style={{ height: FACE_SIZE }} aria-hidden="true">
     {FACES.map((F, i) => <Face key={i} Icon={F} />)}
   </div>
 );
