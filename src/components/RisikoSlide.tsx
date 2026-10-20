@@ -22,7 +22,7 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     <line x1="9" y1="9" x2="9.01" y2="9" />
     <line x1="15" y1="9" x2="15.01" y2="9" />
     <path d="M16 17s-1.5-2.3-4-2.3S8 17 8 17" />
-    <path d="M8.6 12.6c0 .9.7 1.6 1.6 1.6s1.6-.7 1.6-1.6c0-.75-1.6-2.4-1.6-2.4s-1.6 1.65-1.6 2.4z" />
+    <path d="M9.4 10.4c0 0-1.05 1-1.05 1.6a1.05 1.05 0 0 0 2.1 0c0-.6-1.05-1.6-1.05-1.6z" />
   </svg>
 );
 export const FACES = [Frown, Meh, Smile, Laugh];
