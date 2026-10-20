@@ -477,12 +477,24 @@
    the dashed lines above end exactly where the names begin. One label per field,
    centred on it, and each one takes its own column's width so long labels wrap
    instead of crowding their neighbours. */
-/* On screen the field stops growing here: it fills the card up to this height and
-   no further, so the circle keeps a comfortable margin from the names at its foot.
-   The printed sheet is sized to the page instead, so print is left to stretch the
-   field over the whole card. */
+/* On screen the field stands at its own height: the scale keeps a comfortable
+   margin from the names at its foot, and the whole scale can be centred on the
+   card (below). The printed sheet is sized to the page instead, so print is left
+   to stretch the field over the whole card. */
 @media screen {
-  .risiko-scale-field { max-height: var(--risiko-field-h); }
+  /* The field stands at exactly its own height: as a flex item with that basis it
+     is neither squeezed by the row around it nor allowed to eat the space the
+     scale is centred in. The printed sheet is sized to the page instead, so print
+     is left to stretch the field over the whole card. */
+  .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
+  /* The interactive slider sits on the card's mid-line: the scale stops growing
+     to fill the card and the free space around it is split evenly, so it lands in
+     the middle of the room between the statement above and the buttons below.
+     That room is not itself centred on the card — the buttons are taller than the
+     statement — so the component measures the last few pixels and hands them to
+     the shift below, which it never lets run past the text or the buttons. */
+  .risiko-scale-core { flex: 0 1 auto; margin-block: auto; }
+  .screen-only :is(.risiko-scale-core, .risiko-allocation) { transform: translateY(var(--risiko-centre-shift, 0px)); }
 }
 /* The smiley row sits flush with the field's top edge: no padding above the
    faces, so their stubs vanish and the long dashed guide starts right under
