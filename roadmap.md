@@ -84,3 +84,4 @@
 - [x] Reword the scale helper to "Platziere den Kreis auf der Skala indem du ihn nach links oder rechts ziehst"; verified the new wording renders on the statement cards, unwrapped and unclipped, at 873px and 393px, build OK.
 - [x] Reword the first two Health Check cards' helper to "Zieht euer Emoji neben den passenden Smilie" and let it wrap instead of truncating on narrow cards; verified the full sentence is visible with no cut-off at 873px and 393px, build OK.
 - [x] Remove "Verteilung der Beziehungsarbeit" and its draggable emoji scale from the Vorhaben card, leaving the three prompts; verified on screen and in the printed copy that Vorhaben has no scale while the Health Check work-split card keeps its two sliders, build OK and 18 passing tests.
+- [x] Shorten the scale's left end label from "Stimme gar nicht zu" to "Stimme nicht zu"; verified the wording and that both labels stay legible and unclipped at 873px and 393px, build OK.
