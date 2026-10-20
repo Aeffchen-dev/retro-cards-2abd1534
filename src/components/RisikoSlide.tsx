@@ -8,8 +8,9 @@ import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 const FACES = [Angry, Frown, Meh, Smile, Laugh];
 const FACE_GREY = "#9B9BA3";
 // The faces sit directly on the track line (not above it) with a white
-// fill so the line is hidden behind each face.
-const FACE_SIZE = 16;
+// fill so the line is hidden behind each face. The dot is smaller than a
+// face and drawn above it (z-10), so the face's rim stays visible around it.
+const FACE_SIZE = 22;
 const FACE_FILL = "#FFFFFF";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
@@ -43,26 +44,27 @@ interface RisikoSlideProps {
 }
 
 const INK = "var(--retro-black)";
-const END_INSET = 20; // px the track is shortened on each side when end faces are shown
+const END_INSET = FACE_SIZE / 2; // px the track is shortened on each side so its
+// ends line up with the centres of the outer faces
 
 const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }: {
   value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode; faces?: boolean; endFaces?: boolean;
 }) => (
   <div className="relative w-full h-10">
-    <div className="absolute top-1/2 h-px" style={{ background: INK, left: endFaces ? END_INSET : 0, right: endFaces ? END_INSET : 0 }} />
+    <div className="absolute top-1/2 h-px" style={{ background: INK, left: (faces || endFaces) ? END_INSET : 0, right: (faces || endFaces) ? END_INSET : 0 }} />
     {faces && <FaceLayer />}
     {endFaces && <EndFaces />}
     {readOnly ? (
       <div
         className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
-        style={{ left: endFaces ? `calc(${value}% + ${END_INSET - value * (2 * END_INSET) / 100}px)` : `${value}%` }}
+        style={{ left: (faces || endFaces) ? `calc(${value}% + ${END_INSET - value * (2 * END_INSET) / 100}px)` : `${value}%` }}
       >
         {thumb}
       </div>
     ) : (
       <SliderPrimitive.Root
         className="swiper-no-swiping absolute flex items-center touch-none select-none z-10"
-        style={{ left: endFaces ? END_INSET : 0, right: endFaces ? END_INSET : 0, top: 0, bottom: 0 }}
+        style={{ left: (faces || endFaces) ? END_INSET : 0, right: (faces || endFaces) ? END_INSET : 0, top: 0, bottom: 0 }}
         value={[value]} min={0} max={100} step={1}
         onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
         onKeyDown={(e) => e.stopPropagation()}
@@ -77,8 +79,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }:
 );
 
 const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: RisikoSlideProps) => {
-  // White ring keeps the marker cleanly separated from the smiley it sits on.
-  const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK, boxShadow: "0 0 0 2px #FFFFFF" }} />;
+  // No white halo: it would cover most of the 22px face. The dot is smaller
+  // than the face, so the smiley's rim and eyes stay visible around it.
+  const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK }} />;
   const memoji = (emoji: string) => (
     <span className="flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none" style={{ background: FACE_FILL, boxShadow: "0 0 0 1.5px #201C1D" }}>{emoji}</span>
   );
