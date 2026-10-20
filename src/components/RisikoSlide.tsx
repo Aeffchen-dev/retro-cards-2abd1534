@@ -79,8 +79,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }:
 );
 
 const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: RisikoSlideProps) => {
-  // White ring keeps the marker cleanly separated from the smiley it sits on.
-  const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK, boxShadow: "0 0 0 2px #FFFFFF" }} />;
+  // No white halo: it would cover most of the 22px face. The dot is smaller
+  // than the face, so the smiley's rim and eyes stay visible around it.
+  const dot = <span className="block w-3.5 h-3.5 rounded-full" style={{ background: INK }} />;
   const memoji = (emoji: string) => (
     <span className="flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none" style={{ background: FACE_FILL, boxShadow: "0 0 0 1.5px #201C1D" }}>{emoji}</span>
   );
