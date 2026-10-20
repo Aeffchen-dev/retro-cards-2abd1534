@@ -227,7 +227,7 @@ describe("grey columns", () => {
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.split("@media screen")[1] ?? "";
-    expect(/\.risiko-scale-core \{ max-height: var\(--risiko-field-h\); \}/.test(screen), "the fields are not capped on screen").toBe(true);
+    expect(/\.risiko-scale-field \{ max-height: var\(--risiko-field-h\); \}/.test(screen), "the fields are not capped on screen").toBe(true);
     const print = css.split("@media print")[1] ?? "";
     expect(print, "the printed fields are capped too").not.toContain("max-height: var(--risiko-field-h)");
   });

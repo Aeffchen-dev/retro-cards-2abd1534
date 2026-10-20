@@ -424,29 +424,19 @@
   );
 }
 
-/* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — rest at the
-   foot of the grey fields, inside the colour: the band is pinned to the bottom of the
-   columns' container, so each label sits in the field it names. One label per field,
+/* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — stand in
+   their own row under the field, so every label sits under the column it names and
+   the dashed lines above end exactly where the names begin. One label per field,
    centred on it, and each one takes its own column's width so long labels wrap
    instead of crowding their neighbours. */
-.risiko-scale-core {
-  /* How much of the field's foot the column names claim: one line plus a small
-     foot, and two lines on phones and tablets. The dashed guides stop above this
-     band, so the var lives on the field itself, not on the names' own row. */
-  --risiko-caption-band: 15px;
-}
-/* On screen the fields stop growing here: they fill the card up to this height
-   and no further, so the circle keeps a comfortable margin from the names at
-   their foot. The printed sheet is sized to the page instead, so print is left
-   to stretch them over the whole card. */
+/* On screen the field stops growing here: it fills the card up to this height and
+   no further, so the circle keeps a comfortable margin from the names at its foot.
+   The printed sheet is sized to the page instead, so print is left to stretch the
+   field over the whole card. */
 @media screen {
-  .risiko-scale-core { max-height: var(--risiko-field-h); }
+  .risiko-scale-field { max-height: var(--risiko-field-h); }
 }
 .risiko-scale-captions {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0 4px;
@@ -718,11 +708,6 @@ button {
   .post-it-helper {
     font-size: 12px;
     line-height: 16px;
-  }
-  /* The column names wrap to two lines in a phone column, so they claim twice
-     as much of the field's foot there. */
-  .risiko-scale-core {
-    --risiko-caption-band: 26px;
   }
 }
 
