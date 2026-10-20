@@ -291,11 +291,21 @@
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
+/* A statement reads in the same voice as the deck's big question — the display face,
+   unweighted and tight — but a step under its 38.4px, because under a statement sit
+   the smileys, the scale and the notes. */
 .risiko-statement {
+  font-family: "Stack Sans Notch", "Stack Sans Notch Local", "Stack Sans Text", "Figtree", Arial, sans-serif;
+  font-weight: 400;
+  font-feature-settings: "ss02";
+  font-size: 26px;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
+  -webkit-hyphenate: auto;
   -webkit-hyphens: auto;
 }
 /* The work-split card reads the question together with the fixed sentence of

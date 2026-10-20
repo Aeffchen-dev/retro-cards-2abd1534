@@ -265,7 +265,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
-      <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
+      <h2 className="risiko-statement shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
 
         {/* The field carries the drawn scale — columns, smileys, rule and circle —
@@ -508,7 +508,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       )}
       {page.statements.length === 0 && (
         <>
-          <h2 className="risiko-statement risiko-allocation-statement retro-body-copy shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
+          <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
           <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
         </>
       )}
