@@ -590,7 +590,7 @@ const RetroCards: React.FC = () => {
   // Get question text for a slide (for edit mode display)
   const getSlideQuestion = useCallback((slideId: number): string => {
     const questions: Record<number, string> = {
-      1: isMobile ? "Wie geht's mir persönlich?" : "Wie geht's mir persönlich in letzter Zeit?",
+      1: "Wie geht's mir persönlich?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
       [SLIDE_REFLECTION]: "Feedback",
@@ -1312,7 +1312,7 @@ const RetroCards: React.FC = () => {
       case 2: {
         const cardId = cardIndex;
         const heading = cardId === 1
-          ? (isMobile ? "Wie geht's mir persönlich?" : "Wie geht's mir persönlich in letzter Zeit?")
+          ? "Wie geht's mir persönlich?"
           : "Wie geht's mir in der Beziehung?";
         const defaultX = isMobile ? 248 : 380;
         // Stagger default y positions per person so they don't overlap
