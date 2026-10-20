@@ -200,19 +200,19 @@ describe("grey columns", () => {
     expect(/color=\{FACE_GREY\}/.test(slide), "the scale faces do not use FACE_GREY").toBe(true);
     expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
   });
-  test("the end labels rest on the columns' top edge in the scale's grey at info size", () => {
+  test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
-    // the info rows' size: 16px on desktop …
-    expect(/font-size:\s*16px/.test(caption), "the labels are not at the info rows' desktop size").toBe(true);
-    // … and the same one step smaller on phones and tablets
+    // One step under the info rows' floor: the longest label is 108px wide at 12px and
+    // a column is only 86px, so anything bigger than 9px would split it over two lines.
+    expect(/font-size:\s*9px/.test(caption), "the labels are not sized to fit their column").toBe(true);
+    // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));
-    expect(block).toContain(".risiko-scale-caption");
-    expect(block).toContain("font-size: 12px");
+    expect(block).not.toContain(".risiko-scale-caption");
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
   });
