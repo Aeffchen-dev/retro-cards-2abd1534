@@ -402,3 +402,57 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(new Set(sentence.replace("Unter Beziehungsarbeit versteht man ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
   });
 });
+
+describe("mood test chapter", () => {
+  const full = Object.fromEntries(["self", "love", "appreciation", "conflicts", "metime", "quality", "hot"].map((key) => [key, "50"]));
+  test("covers exactly the seven statement sliders, in card order", () => {
+    expect([...RISIKO_MOOD_KEYS]).toEqual(["self", "love", "appreciation", "conflicts", "metime", "quality", "hot"]);
+  });
+  test("shows no mood until every statement slider has been dragged", () => {
+    expect(averageMood({})).toBeNull();
+    expect(averageMood({ self: "30" })).toBeNull();
+    // one missing answer is enough to keep the smiley hidden
+    const almost = { ...full };
+    delete almost.hot;
+    expect(averageMood(almost)).toBeNull();
+    // an answer left blank counts as not dragged
+    expect(averageMood({ ...full, quality: "  " })).toBeNull();
+  });
+  test("is the mean of all seven statement values once all are dragged", () => {
+    expect(averageMood(full)).toBe(50);
+    expect(averageMood({ self: "0", love: "100", appreciation: "0", conflicts: "100", metime: "0", quality: "100", hot: "20" })).toBeCloseTo(320 / 7);
+    // every slider of the chapter counts, including the hot one
+    expect(averageMood({ ...full, hot: "100" })).toBeCloseTo((50 * 6 + 100) / 7);
+  });
+  test("rounds the average to the nearest of the five scale faces", () => {
+    expect(moodFaceIndex(0)).toBe(0);
+    expect(moodFaceIndex(12)).toBe(0);
+    expect(moodFaceIndex(13)).toBe(1);
+    expect(moodFaceIndex(37)).toBe(1);
+    expect(moodFaceIndex(38)).toBe(2);
+    expect(moodFaceIndex(50)).toBe(2);
+    expect(moodFaceIndex(62)).toBe(2);
+    expect(moodFaceIndex(63)).toBe(3);
+    expect(moodFaceIndex(87)).toBe(3);
+    expect(moodFaceIndex(88)).toBe(4);
+    expect(moodFaceIndex(100)).toBe(4);
+  });
+  test("the chapter opens with the couple's own question and intro sentence", () => {
+    expect(RISIKO_CHAPTER_HEADING).toBe("Euer Beziehungsgefühl");
+    expect(RISIKO_CHAPTER_INFO).toBe("Lest euch die folgenden Statements die eine glückliche Beziehungen ausmachen und überlegt was davon für eure Beziehung bereits zutrifft und was noch wachsen darf.");
+  });
+  test("the chapter pill reads Mood Test on the statement cards and keeps Health Check on the first two", () => {
+    const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
+    expect(cards).toContain('105: "Mood Test"');
+    expect(cards).toContain('1: "Health Check"');
+    expect(cards).toContain('2: "Health Check"');
+    expect(cards).toContain('"Mood Test" : SLIDE_PILLS[slideId]');
+  });
+  test("the chapter block and the mood smiley are rendered on the first statement card", () => {
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    expect(slide).toContain("RISIKO_CHAPTER_HEADING");
+    expect(slide).toContain("RISIKO_CHAPTER_INFO");
+    expect(slide).toContain("averageMood(values)");
+    expect(slide).toContain("moodFaceIndex(chapterMood)");
+  });
+});
