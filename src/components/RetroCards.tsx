@@ -1484,7 +1484,7 @@ const RetroCards: React.FC = () => {
             <div className="w-full shrink-0" style={{ marginTop: '28px' }}>
               <ActionRow
                 icon="IconInfo"
-                label="Klicke auf die jeweilige Frage um Notizen zu machen"
+                label="Klicke auf eine Frage um deine Notizen einzublenden"
                 accent="#F1F2F4"
                 fieldBg="#F1F2F4"
                 iconColor="#201C1D"

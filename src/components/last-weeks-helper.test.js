@@ -7,8 +7,8 @@ const cardClass = src.slice(src.indexOf("retro-card-container relative w-full"),
 
 describe("last 4 weeks helper sentence", () => {
   test("sits under the question rows with the exact wording", () => {
-    expect(card).toContain("Klicke auf die jeweilige Frage um Notizen zu machen");
-    expect(card).toMatch(/icon="IconInfo"[\s\S]*?Notizen zu machen/);
+    expect(card).toContain("Klicke auf eine Frage um deine Notizen einzublenden");
+    expect(card).toMatch(/icon="IconInfo"[\s\S]*?einzublenden/);
   });
 
   test("keeps one card padding of gap towards the question CTAs", () => {
@@ -20,6 +20,6 @@ describe("last 4 weeks helper sentence", () => {
 
   test("wraps instead of truncating and stays off the printed page", () => {
     expect(card).toMatch(/className="hc-helper retro-body-copy"/);
-    expect(card).not.toMatch(/Notizen zu machen[\s\S]*?onClick/);
+    expect(card).not.toMatch(/einzublenden[\s\S]*?onClick/);
   });
 });
