@@ -392,8 +392,8 @@
   gap: 0 4px;
   padding-bottom: 4px;
 }
-/* They read in the smileys' own grey — the same tone as the five faces and their
-   dashed guides — at 9px, one step under the info rows' 12px floor: the longest
+/* They read in the scale's own grey — the tone of the dashed guides, while the
+   faces above sit a shade lighter — at 9px, one step under the info rows' 12px floor: the longest
    label ("Trifft noch nicht zu") measures 108px at 12px and a column is only 86px
    wide, so anything above ~9.5px would split it over two lines. Below 9px the words
    turn into mush, and on a phone column (48-55px) no size fits one line anyway —
@@ -417,6 +417,15 @@
   overflow-wrap: break-word;
   hyphens: auto;
   min-width: 0;
+  /* Each name paints its own column's grey behind it, with a small foot above
+     the first line: a dashed guide running down behind a two- or three-line name
+     then stops at the name's top edge instead of drawing through its letters. */
+  background: var(--risiko-column-fill);
+  padding-top: 4px;
+}
+/* Every second name stands on the deeper band, exactly like the field behind it. */
+.risiko-scale-caption:nth-child(even) {
+  background: var(--risiko-column-fill-alt);
 }
 
 /* The sentence that explains a post-it's headline: the scale's own grey, no fill,
