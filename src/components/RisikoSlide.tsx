@@ -40,8 +40,9 @@ const FACE_W = FACE_SIZE - 1; // rendered face box; the scale ends sit at its ce
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
-const CAPTION_H = 12; // tiny end labels above the smileys
-const HEADER_H = CAPTION_H + 4 + FACE_SIZE; // caption, its gap, then the smileys
+// The tiny end labels share the smileys' line, so the columns start straight
+// under that one row.
+const HEADER_H = FACE_SIZE;
 // A slightly stronger horizontal rule distinguishes the draggable slider from
 // its fine dashed guides without changing the grey smileys' stroke weight.
 const RULE_W = 2;
@@ -215,24 +216,24 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* The scale spans the container: the rule and the grey columns run edge to
-          edge, while the smileys and the tiny end labels sit flush with the
-          circle's travel — inset by the circle's own radius at both ends. */}
-      <div className="relative flex flex-col gap-1 box-border">
-        <div className="risiko-scale-caption pointer-events-none flex justify-between box-border" style={{ height: CAPTION_H, paddingInline: FACE_INSET }}>
-          <span>Stimme nicht zu</span>
-          <span>Stimme voll zu</span>
+      {/* The two tiny labels sit at the very left and right of the card, on the
+          same line as the smileys; between them the scale runs edge to edge —
+          rule, columns and the circle's travel, inset by the circle's radius. */}
+      <div className="risiko-scale-row relative flex items-start gap-2 box-border">
+        <span className="risiko-scale-caption pointer-events-none" style={{ height: FACE_SIZE }}>Stimme nicht zu</span>
+        <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col gap-1 box-border">
+          <FaceLayer />
+          {/* Columns: one soft grey band between every pair of neighbouring
+              smileys, running the height of the circle's row, so a free position
+              still reads against a face. */}
+          <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
+            {FACES.map((_, i) => <span key={i} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${i * COL_W}% + ${COLUMN_GAP / 2}px)`, width: `calc(${COL_W}% - ${COLUMN_GAP}px)` }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute top-0 bottom-0" style={{ left: `${(i + 0.5) * COL_W}%` }} />)}
+          </div>
+          <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+            onChange={(v) => onChange(key, String(v))} />
         </div>
-        <FaceLayer />
-        {/* Columns: one soft grey band between every pair of neighbouring
-            smileys, running the height of the circle's row, so a free position
-            still reads against a face. */}
-        <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
-          {FACES.map((_, i) => <span key={i} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${i * COL_W}% + ${COLUMN_GAP / 2}px)`, width: `calc(${COL_W}% - ${COLUMN_GAP}px)` }} />)}
-          {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute top-0 bottom-0" style={{ left: `${(i + 0.5) * COL_W}%` }} />)}
-        </div>
-        <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-          onChange={(v) => onChange(key, String(v))} />
+        <span className="risiko-scale-caption pointer-events-none" style={{ height: FACE_SIZE }}>Stimme voll zu</span>
       </div>
     </div>
   );
