@@ -218,7 +218,7 @@ const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSl
     <div className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
       <div className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 gap-3">
         <div className="risiko-scale-header relative flex flex-col w-full shrink-0 gap-1">
-          <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H, paddingLeft: END_INSET, paddingRight: END_INSET }}>
+          <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
             <span>Stimme gar nicht zu</span>
             <span>Stimme voll zu</span>
           </div>
