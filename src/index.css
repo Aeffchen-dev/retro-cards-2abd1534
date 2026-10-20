@@ -303,6 +303,12 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+/* On a phone the card is a good deal narrower than the printed sheet, so a long
+   statement would run to eight lines and push the scale past the card's foot.
+   There the statement steps down a size; tablet, desktop and paper keep 26px. */
+@media (max-width: 767px) {
+  .risiko-statement { font-size: 22px; }
+}
 /* The work-split card reads the question together with the fixed sentence of
    what counts as Beziehungsarbeit, set straight under it as small body text in
    one column. The question keeps only a small gap to the sentence; the sentence
