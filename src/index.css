@@ -264,6 +264,11 @@
 }
 /* The thumb is as wide as a face so its travel ends land under the outer face centres. */
 .risiko-thumb { display: flex; align-items: center; justify-content: center; }
+/* Every gap — smileys to the first question, between the questions, the last
+   question to the buttons — takes an equal share of the leftover height. */
+.risiko-auto-gap { margin-top: auto; }
+/* The button block sits over the column lines, so it carries the card colour. */
+.risiko-footer { background: var(--retro-card-bg); }
 .risiko-column { flex: 0 0 auto; }
 .risiko-column-line { width: 0; border-left: 1px dashed var(--risiko-column); }
 .risiko-expression-point {
