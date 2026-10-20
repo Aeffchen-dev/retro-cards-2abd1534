@@ -130,3 +130,4 @@
 - [x] Rename the five Health Check scale columns again to "Trifft noch nicht zu" / "Trifft selten zu" / "Trifft Teilweise zu" / "Trifft meistens zu" / "Trifft voll zu".
 - [x] Fix the column labels so each word stays inside its own field: block text instead of a flex item, plus the correct German break point (Teil-/meis-) where a narrow column forces a split; taps on the rule's outer ends now place the dot too; 45 tests pass, build OK.
 - [x] Rename the five Health Check scale columns to "Trifft noch nie zu" / "Trifft selten zu" / "Trifft teilweise zu" / "Trifft oft zu" / "Trifft immer zu" (stored left-to-right so each sits under its own face); 45 tests pass, build OK.
+- [x] Leftmost Health Check scale column back to "Trifft noch nicht zu"; 45 tests pass, no clipping on desktop/phone/small phone.
