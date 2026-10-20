@@ -326,9 +326,10 @@ describe("smallest text size", () => {
       if (!px && !rem) return true; // a computed size could drop under the floor
       return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
     });
-    // The one deliberate exception: the five column labels keep their own column-scaled
-    // size on phones; everywhere else they read at the 12px info floor.
-    expect(below).toEqual(["clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
+    // The two deliberate exceptions, both the five column labels: they read one step
+    // under the floor (11px) so a name's longer half fits its column on two lines, and
+    // on phones they scale to the column instead.
+    expect(below).toEqual(["11px", "clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
     expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 11px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
