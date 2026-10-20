@@ -356,6 +356,15 @@
   white-space: nowrap;
   flex: 0 0 auto;
 }
+/* On a card too narrow to hold both labels beside the smileys, they take a line
+   of their own above the scale — flush left and right — so the scale keeps its
+   full width instead of squeezing the five smileys together. */
+.risiko-block { container-type: inline-size; }
+@container (max-width: 340px) {
+  .risiko-scale-row { flex-wrap: wrap; }
+  .risiko-scale-core { flex: 1 1 100%; order: 3; }
+  .risiko-scale-row > .risiko-scale-caption:last-child { margin-left: auto; }
+}
 
 /* Question text sits on a white plate shaped like the Post-it input label. */
 .risiko-page .risiko-label {
