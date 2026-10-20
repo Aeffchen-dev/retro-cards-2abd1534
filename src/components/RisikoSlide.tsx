@@ -372,7 +372,25 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
+          {/* The work split is read on the same grid as the statements: the five soft
+              grey fields with a dashed line down the middle of each. They stop above
+              the names' strip, and the bar, the circles and the share figures all
+              paint on top of them. */}
+          <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
+            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {columnBands(FACES.length).map(([from, to], i) => (
+              <span key={`c${i}`} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`}
+                style={{ left: `${from}%`, right: `${100 - to}%` }} />
+            ))}
+          </div>
+          <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none"
+            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {FACES.map((_, i) => (
+              <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />
+            ))}
+          </div>
           <div className="absolute top-[18px] w-full h-1 flex" aria-hidden="true">
+
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative`} style={{ width: `${segment.width}%` }}>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
