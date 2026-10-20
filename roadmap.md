@@ -68,3 +68,4 @@
 - [x] Keep card content inside the card's own width (no sideways scrolling on desktop): clamp the dragged emoji to the live scale box and to `min()` in CSS, clip the card's x-axis; verify on phone, on desktop and in the PDF.
 - [x] Turn the middle line in the dot's arrow hint into a horizontal dash (←—→) and centre it; verify on phone close-up and in the PDF.
 - [x] Double the height of the dashed column lines so they continue below the slider by the same distance they run above it; verify on phone (all statement cards) and in the PDF.
+- [x] Keep the dot equally sized before and after dragging; add a sadder fifth grey face and align the scale and continuous morph to all five anchors; verified pointer/keyboard interaction, persistence, print geometry and 16 passing tests.

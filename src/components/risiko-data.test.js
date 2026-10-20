@@ -41,26 +41,29 @@ describe("workload split", () => {
 });
 
 describe("Risikofaktoren scale", () => {
-  test("morphs through sad, neutral, smiling and open-mouth happy without angry eyebrows", () => {
+  test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
     expect(scaleFaceGeometry(0).eyeY).toBe(9);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(14);
-    expect(scaleFaceGeometry(100 / 3).mouth[7]).toBe(15);
-    expect(scaleFaceGeometry(200 / 3).mouth[7]).toBe(16);
+    expect(scaleFaceGeometry(0).mouth[7]).toBe(15.2);
+    expect(scaleFaceGeometry(0).tear).toBe(1);
+    expect(scaleFaceGeometry(12.5).tear).toBe(0.5);
+    expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
+    expect(scaleFaceGeometry(50).mouth[7]).toBe(15);
+    expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
     expect(scaleFaceGeometry(100).mouth[1]).toBe(13);
     expect(scaleFaceGeometry(100).mouth[19]).toBe(18);
-    for (const value of [0, 100 / 6, 100 / 3, 50, 200 / 3, 250 / 3, 100]) {
+    for (const value of [0, 12.5, 25, 50, 75, 87.5, 100]) {
       expect(scaleFaceGeometry(value).brow).toBe(0);
     }
-    expect(scaleFaceGeometry(50).mouth[7]).toBe(15.5);
-    expect(scaleFaceGeometry(250 / 3).mouth[19]).toBeCloseTo(17);
+    expect(scaleFaceGeometry(25).tear).toBe(0);
+    expect(scaleFaceGeometry(87.5).mouth[19]).toBeCloseTo(17);
   });
-  test("drag face matches the four evenly spaced smileys at their scale positions", () => {
+  test("drag face matches the five evenly spaced smileys at their scale positions", () => {
     expect(scaleFaceBlend(0)).toEqual({ index: 0, mix: 0 });
-    expect(scaleFaceBlend(100 / 3)).toEqual({ index: 1, mix: 0 });
-    expect(scaleFaceBlend(200 / 3)).toEqual({ index: 2, mix: 0 });
-    expect(scaleFaceBlend(100)).toEqual({ index: 2, mix: 1 });
-    expect(scaleFaceBlend(50)).toEqual({ index: 1, mix: 0.5 });
-    expect(scaleFaceBlend(100 / 6)).toEqual({ index: 0, mix: 0.5 });
+    expect(scaleFaceBlend(25)).toEqual({ index: 1, mix: 0 });
+    expect(scaleFaceBlend(50)).toEqual({ index: 2, mix: 0 });
+    expect(scaleFaceBlend(75)).toEqual({ index: 3, mix: 0 });
+    expect(scaleFaceBlend(100)).toEqual({ index: 3, mix: 1 });
+    expect(scaleFaceBlend(12.5)).toEqual({ index: 0, mix: 0.5 });
   });
   test("expression follows drag position from sad to neutral to happy", () => {
     expect(scaleExpression(0)).toBe(-1);
