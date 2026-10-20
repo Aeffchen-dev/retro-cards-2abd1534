@@ -1315,7 +1315,7 @@ const RetroCards: React.FC = () => {
         // Stagger default y positions per person so they don't overlap
         const defaultY = (i: number) => (isMobile ? 35 + i * 49 : 87 + i * 65);
         return (
-          <div className="flex flex-col items-start w-full h-full">
+          <div className="health-check-page flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Health Check</span>
@@ -1356,7 +1356,7 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute screen-only" style={{ left: '28px', bottom: '28px' }}>
+            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '28px' }}>
               <ActionRow
                 icon="IconInfo"
                 label="Zieht euer Emoji zur Skala"
