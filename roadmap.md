@@ -134,3 +134,4 @@
 - [x] Size the five Health Check column labels to fit their column: 9px (one step under the 12px floor, the only exception in the app), one line on wide cards, two on phone columns; 46 tests pass.
 - [x] The last 4 weeks helper sentence now reads "Klicke auf die jeweilige Frage um Notizen zu machen"; verified on the card, 3 helper tests pass.
 - [x] Feedback question 1 now shows the remembering sentence as the writing area's grey placeholder on screen (print keeps it as a line); verified on desktop/phone/print, 46 tests pass.
+- [x] Column names moved to the foot of the grey fields, inside the colour; guides stop above them; verified on desktop/phone/print, 46 tests pass.

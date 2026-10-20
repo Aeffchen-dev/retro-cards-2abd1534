@@ -362,16 +362,26 @@
   );
 }
 
-/* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — rest straight on the
-   top edge of the columns' container: the row below them carries no gap, so each
-   label sits right on the grey field it names. One label per field, centred on it,
-   and each one takes its own column's width so long labels wrap instead of
-   crowding their neighbours. */
+/* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — rest at the
+   foot of the grey fields, inside the colour: the band is pinned to the bottom of the
+   columns' container, so each label sits in the field it names. One label per field,
+   centred on it, and each one takes its own column's width so long labels wrap
+   instead of crowding their neighbours. */
+.risiko-scale-core {
+  /* How much of the field's foot the column names claim: one line plus a small
+     foot, and two lines on phones and tablets. The dashed guides stop above this
+     band, so the var lives on the field itself, not on the names' own row. */
+  --risiko-caption-band: 15px;
+}
 .risiko-scale-captions {
-  flex: 0 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0 4px;
+  padding-bottom: 4px;
 }
 /* They read in the smileys' own grey — the same tone as the five faces and their
    dashed guides — at 9px, one step under the info rows' 12px floor: the longest
@@ -637,6 +647,11 @@ button {
   .post-it-helper {
     font-size: 12px;
     line-height: 16px;
+  }
+  /* The column names wrap to two lines in a phone column, so they claim twice
+     as much of the field's foot there. */
+  .risiko-scale-core {
+    --risiko-caption-band: 26px;
   }
 }
 

@@ -268,14 +268,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
-        {/* Every column names itself: one label per grey field, centred on that
-            field's own top edge, so the circle always sits under the word it points at. */}
-        <div className="risiko-scale-captions" lang="de">
-
-        {SCALE_CAPTIONS.map((caption, i) => (
-          <span key={i} className="risiko-scale-caption pointer-events-none">{softHyphenate(caption)}</span>
-        ))}
-      </div>
 
         <div className="risiko-scale-core relative flex-1 min-w-0 flex flex-col justify-center box-border touch-pan-y swiper-no-swiping" style={{ minHeight: FIELD_MIN }}
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
@@ -296,7 +288,15 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               and the circle, so both simply stand in front of the line. */}
           <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
             {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
-            {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: 0 }} />)}
+            {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: "var(--risiko-caption-band)" }} />)}
+          </div>
+          {/* Every column names itself: one label per grey field, centred on that
+              field and resting at the foot of its colour, so the circle always sits
+              above the word it points at. */}
+          <div className="risiko-scale-captions absolute pointer-events-none" lang="de">
+            {SCALE_CAPTIONS.map((caption, i) => (
+              <span key={i} className="risiko-scale-caption">{softHyphenate(caption)}</span>
+            ))}
           </div>
           {/* The smileys sit at the top of the fields, a slight padding below their
               top edge, while the rule and the circle stay dead centre in them. */}
