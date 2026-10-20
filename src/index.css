@@ -984,6 +984,11 @@ textarea.bg-retro-post-it:focus,
   .print-slide-page .h-full {
     height: 100% !important;
   }
+  /* The column lines keep their doubled height when printed: they run the same
+     distance below the slider as above it. */
+  .print-slide-page .risiko-column .risiko-column-line {
+    height: 200% !important;
+  }
 
   .print-slide-page .flex-1 {
     flex: 1 !important;
