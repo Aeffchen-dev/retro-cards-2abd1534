@@ -112,7 +112,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   const shown = touched || !!hasValue;
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
-  <div className="risiko-track relative w-full h-10 shrink-0">
+  <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the dot travel is inset. */}
     <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
     {readOnly ? (
@@ -151,9 +151,10 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit }: RisikoSlideProps) => {
 
-  // The statement is the card's headline, so under it sits only the scale.
+  // The scale fills the space under the statement; its rule lands just above the
+  // buttons, so the card's own padding is the margin above and below the scale.
   const scale = (key: string, text: string, readOnly: boolean) => (
-    <div key={key} className="risiko-auto-gap flex flex-col">
+    <div key={key} className="flex flex-1 min-h-0 flex-col justify-end">
       <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
         onChange={(v) => onChange(key, String(v))} />
     </div>
@@ -166,7 +167,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     const shares = workloadShares(keys, values);
     const segments = workloadSegments(keys, shares);
     return (
-      <div className="risiko-auto-gap flex flex-col gap-1">
+      <div className="flex flex-1 min-h-0 flex-col justify-center gap-1">
         <div className="risiko-scale-caption pointer-events-none flex justify-between" style={{ height: CAPTION_H }}>
           <span style={{ background: "var(--risiko-label-bg)" }}>0%</span>
           <span style={{ background: "var(--risiko-label-bg)" }}>100%</span>
@@ -231,18 +232,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     );
   };
 
-  // Every gap takes an equal share of the leftover height: smileys to the first
-  // question, between the questions, and the last question to the buttons.
+  // The scale takes every pixel of the area under the statement; the buttons sit
+  // outside it, so the area's lower edge is exactly where the rule is drawn.
   const body = (readOnly: boolean) => (
-    <div className="flex flex-col gap-3 w-full flex-1 min-h-0">
+    <div className="flex flex-col w-full flex-1 min-h-0">
       {page.statements.map(([k, t]) => scale(k, t, readOnly))}
       {page.personKeys.length > 0 && allocation(readOnly)}
-      {!readOnly && (
-        <div className="risiko-auto-gap risiko-footer w-full shrink-0 flex flex-col items-start gap-2">
-          <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
-          <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
-        </div>
-      )}
     </div>
   );
 
@@ -268,12 +263,18 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           </div>
         )}
         {page.statements.length > 0 && (
-          <div className="risiko-columns absolute bottom-0 pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
+          <div className="risiko-columns absolute pointer-events-none flex justify-between" style={{ left: 0, right: 0, top: HEADER_H }} aria-hidden="true">
             {FACES.map((_, i) => <span key={i} className="risiko-column h-full flex justify-center" style={{ width: FACE_W }}><span className="risiko-column-line h-full" /></span>)}
           </div>
         )}
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
+      </div>
+      {/* The buttons keep the card's own padding below the rule; being outside the
+          area, they leave its lower edge exactly on the rule for the guidelines. */}
+      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
+        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
+        <ActionRow className="risiko-helper" icon="IconInfo" label="Ziehe den Punkt auf der Skala" accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
       </div>
     </div>
   );
