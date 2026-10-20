@@ -10,7 +10,7 @@ const FACE_GREY = "#9B9BA3";
 // The faces sit directly on the track line (not above it) with a white
 // fill so the line is hidden behind each face. They are larger than the
 // 14px dot so the dot reads as sitting on top of a still-visible face.
-const FACE_SIZE = 22;
+const FACE_SIZE = 32;
 const FACE_FILL = "#FFFFFF";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
