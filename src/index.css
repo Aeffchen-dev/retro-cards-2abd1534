@@ -40,11 +40,9 @@
        on phones and on the printed sheet (see .risiko-face) */
     --risiko-face-size: 25px;
     --risiko-helper-bg: #F1F2F4;
-    /* the columns sit a shade lighter than the info rows' label field — barely
-       there, so the fields read as a hint rather than a block */
-    --risiko-column-fill: #F4F5F7;
-    /* every second column sits a whisker deeper — the two stay close together */
-    --risiko-column-fill-alt: #ECEEF0;
+    /* the columns carry no fill: they are drawn only as dashed grey lines, and
+       those lines sit a shade behind the smileys' own guides (--risiko-guide) */
+    --risiko-column-line: #C9CBD1;
     --risiko-caption: #9B9BA3;
     /* the scale's own grey: the dashed guides and the column names share it; the
        smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
@@ -479,15 +477,9 @@
   overflow-wrap: break-word;
   hyphens: auto;
   min-width: 0;
-  /* Each name paints its own column's grey behind it, with a small foot above
-     the first line: a dashed guide running down behind a two- or three-line name
-     then stops at the name's top edge instead of drawing through its letters. */
-  background: var(--risiko-column-fill);
+  /* No fill: the names stand on the card's own ground, and the dashed lines stop
+     above this band, so nothing ever draws through a name's letters. */
   padding-top: 4px;
-}
-/* Every second name stands on the deeper band, exactly like the field behind it. */
-.risiko-scale-caption:nth-child(even) {
-  background: var(--risiko-column-fill-alt);
 }
 
 /* The sentence that explains a post-it's headline: the scale's own grey, no fill,
@@ -583,21 +575,18 @@
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: 12px; }
-/* Evenly spread columns under the smileys: the circle still moves freely along
-   the rule, but the range it travels over is broken into soft, identical columns
-   so the scale reads as a row of fields. Very light grey fills that sit directly
-   against each other — every second one a shade deeper — and the rule and the
-   circle draw on top. */
+/* The scale's columns are drawn, not filled: dashed grey lines stand at the
+   scale's own edges and between every pair of neighbouring columns, so the
+   range the circle travels over still reads as five identical fields. They sit
+   a shade behind the smileys' guides, and the rule and circle draw on top. */
 .risiko-column-guide {
   width: 0;
   border-left: 1px dashed var(--risiko-guide);
   transform: translateX(-0.5px);
 }
-.risiko-column-band {
-  background: var(--risiko-column-fill);
-}
-.risiko-column-band-alt {
-  background: var(--risiko-column-fill-alt);
+.risiko-column-edge {
+  width: 0;
+  border-left: 1px dashed var(--risiko-column-line);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
