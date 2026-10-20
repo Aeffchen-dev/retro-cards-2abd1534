@@ -277,8 +277,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
           <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
             {/* Columns: no fill at all — the five fields are drawn only as dashed
-                grey lines, one at the scale's left and right edge and one between
-                every pair of neighbouring columns. They break around the smiley row
+                grey lines, one between every pair of neighbouring columns, with
+                the scale's own left and right edge left bare. They break around the smiley row
                 exactly like the smileys' own stronger guides, so every dashed line
                 on the field starts and ends at the same heights. Painted before
                 everything else, so a line never covers a smiley, a guide or the
@@ -381,9 +381,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerMove={readOnly ? undefined : dragBar}
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
           {/* The work split is read on the same grid as the statements: no fill,
-              only the dashed grey lines at the scale's edges and between every
-              pair of neighbouring columns. They stop above the names' strip, and
-              the bar, the circles and the share figures all paint on top. */}
+              only the dashed grey lines between every pair of neighbouring
+              columns, the scale's own edges left bare. They stop above the names'
+              strip, and the bar, the circles and the share figures all paint on top. */}
           <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
             style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {columnEdges(FACES.length).map((at) => (
