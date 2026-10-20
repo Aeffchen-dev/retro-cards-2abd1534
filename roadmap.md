@@ -53,3 +53,5 @@
 - [x] Reword the allocation question to "Wer leistet aktuell wie viel der Beziehungsarbeit?"; verify desktop, mobile and the PDF.
 - [x] Show each partner name below its Memoji in that partner's colour, match segment colours to the slide scheme and move percentages above the line; verify drag, zero split, persistence and print.
 - [x] Add the display-size question "Wie glücklich sind wir aktuell mit…?" at the top of every Health Check page; verify the reveal, fit on desktop and mobile and the PDF.
+
+- [x] Style the Health Check statements like the question above a Post-it input (16px body copy on a lime plate instead of the display headline); verify fit on every card, on phone and in the PDF.
