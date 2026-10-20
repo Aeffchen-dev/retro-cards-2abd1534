@@ -211,24 +211,27 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const max = segments[boundaryIndex + 1]?.end ?? 100;
             // One number for width and height, so the avatar circle can never be
             // squeezed into an oval when the lane gets crowded.
-            const slot = `min(32px, calc(100cqw / ${partners.length}))`;
-            const left = `min(${i * 32}px, ${i * 100 / partners.length}%)`;
-            const right = `min(${(partners.length - i - 1) * 32}px, ${(partners.length - i - 1) * 100 / partners.length}%)`;
-            const isLast = i === partners.length - 1;
-            // Each name grows from its Memoji into that partner's own band, so two
-            // labels can never end up on top of each other.
-            const ownWidth = segments[i]?.width ?? 100;
-            const nameAlign = partners.length === 1 ? "workload-name--single" : isLast ? "workload-name--right" : "workload-name--left";
+            const slot = `min(${SLOT}px, calc(100cqw / ${partners.length}))`;
+            // Every partner reserves a band: its circle plus room for its name. Adjacent
+            // circles therefore never touch, and a name can sit centred under its own
+            // circle without ever reaching into the neighbour's band.
+            const band = `min(${BAND}px, calc(100cqw / ${partners.length} * 1.4))`;
+            const li = `calc(${band} * ${i})`;
+            const ri = `calc(${band} * ${partners.length - i - 1})`;
+            const vars = {
+              "--workload-li": li, "--workload-ri": ri, "--workload-slot": slot,
+              "--workload-v": String(value), "--workload-band": band,
+            } as React.CSSProperties;
             const memojiEl = (
               <>
                 <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-                <span className={`workload-name ${nameAlign}`} style={{ "--workload-band": String(ownWidth), "--workload-x": String(value) } as React.CSSProperties} aria-hidden="true">{p.name}</span>
+                <span className="workload-name" aria-hidden="true">{p.name}</span>
               </>
             );
             if (readOnly) {
               return (
                 <div key={p.key} className={`absolute z-10 top-[4px] workload-color-${i % 8}`}
-                  style={{ width: slot, height: slot, left: `calc(${left} + (100% - min(${partners.length * 32}px, 100%)) * ${value / 100})` }}>
+                  style={{ ...vars, width: slot, height: slot, left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
                   {memojiEl}
                 </div>
               );
@@ -236,7 +239,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             return (
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
-                style={{ left, right, top: 0, bottom: 20 }}
+                style={{ ...vars, left: li, right: ri, top: 0, bottom: 20 }}
                 value={[value]} min={0} max={100} step={1}
                 onValueChange={([v]) => { if (v !== undefined) onWorkloadChange(adjustWorkloadBoundary(keys, shares, boundaryIndex, v)); }}
                 onKeyDown={(e) => {
