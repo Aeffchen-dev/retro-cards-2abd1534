@@ -6,3 +6,4 @@
 - [x] Animate statement points as position-dependent smileys while dragging; verify dot reset and persistence.
 - [x] Make shared smileys smaller, remove question backgrounds, use normal body text and match drag expressions to the scale; verify interaction and fit.
 - [x] Set smileys and the draggable dot to the app's standard 16px icon size; verify on screen.
+- [x] Swap the order of the "Macht Notizen" button and the helper text on every Risikofaktoren page; verify on screen.
