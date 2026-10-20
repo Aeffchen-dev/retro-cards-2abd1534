@@ -4,7 +4,8 @@ import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
 import { scaleValue, scaleExpression, scaleFaceGeometry, scaleField, RISIKO_FIELDS, RISIKO_FIELD_STEP, workloadShares, workloadSegments, adjustWorkloadBoundary, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
-// Sadder than Frown: same circle-and-dot line style, a deeper downturn and one tear.
+// Sadder than Frown: same circle-and-dot line style, a deeper downturn, inner
+// brows pulled up and one tear — big enough and low enough to read at 24px.
 export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -21,8 +22,9 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
     <circle cx="12" cy="12" r="10" />
     <line x1="9" y1="9" x2="9.01" y2="9" />
     <line x1="15" y1="9" x2="15.01" y2="9" />
-    <path d="M16 17.6s-1.5-2.4-4-2.4S8 17.6 8 17.6" />
-    <path d="M9 10.6C9 10.6 8 12 8 13.1a1 1 0 0 0 2 0C10 12 9 10.6 9 10.6z" fill={color ?? "currentColor"} stroke="none" />
+    <path d="M7.5 7.9 L10 6.5 M14 6.5 L16.5 7.9" strokeWidth={1.3} />
+    <path d="M16 17.9s-1.5-3.2-4-3.2S8 17.9 8 17.9" />
+    <path d="M9 11.2C9 11.2 7.8 12.8 7.8 13.2a1.2 1.2 0 0 0 2.4 0C10.2 12.8 9 11.2 9 11.2z" fill={color ?? "currentColor"} stroke="none" />
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
@@ -41,8 +43,9 @@ const FIELD_W = 100 / RISIKO_FIELDS;
 const fieldCentre = (value: number) => (value / RISIKO_FIELD_STEP + 0.5) * FIELD_W;
 const FACE_FILL = "var(--risiko-face-fill)";
 // The knocked-out features: a fine mouth line, round eyes with some weight.
+// The eyes stay lighter than a full disc so the brows keep their own space.
 const MOUTH_W = 1;
-const EYE_W = 3;
+const EYE_W = 2.4;
 
 const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
   <span className="flex items-center justify-center rounded-full" style={{ width: FACE_W, height: FACE_W, background: FACE_FILL }}>
@@ -85,9 +88,11 @@ const MorphFace = ({ value }: { value: number }) => {
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
       stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       <path d={`M 9 ${eyeY} h .01 M 15 ${eyeY} h .01`} strokeWidth={EYE_W} />
-      <path d="M9 10.6C9 10.6 8 12 8 13.1a1 1 0 0 0 2 0C10 12 9 10.6 9 10.6z"
-        fill={FACE_FILL} stroke="none" transform={`translate(9 10.6) scale(${tear}) translate(-9 -10.6)`} />
-      <path d={`M 7.5 ${9 - brow} L 10 9 M 14 9 L 16.5 ${9 - brow}`} strokeWidth={MOUTH_W * brow} />
+      <path d="M9 11.2C9 11.2 7.8 12.8 7.8 13.2a1.2 1.2 0 0 0 2.4 0C10.2 12.8 9 11.2 9 11.2z"
+        fill={FACE_FILL} stroke="none" transform={`translate(9 11.2) scale(${tear}) translate(-9 -11.2)`} />
+      // The marker's eyes are drawn heavier than the small scale faces, so its
+      // brows sit higher: they must keep a clear gap above the eye dots.
+      <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
   );
