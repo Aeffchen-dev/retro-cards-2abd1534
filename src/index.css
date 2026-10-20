@@ -579,11 +579,12 @@ button {
 /* Info rows (the ℹ helper sentences) read one size smaller on phones and
    tablets: the same sentence then fits in fewer lines without squeezing the
    scale or the notes row. Desktop keeps the regular 16px body copy.
-   Placed after .retro-body-copy so it wins over the default size. */
+   Placed after .retro-body-copy so it wins over the default size.
+   12px is the app's floor — no text anywhere is set smaller than that. */
 @media (max-width: 1023px) {
   .retro-info-row {
-    font-size: 13px;
-    line-height: 17px;
+    font-size: 12px;
+    line-height: 16px;
   }
 }
 
