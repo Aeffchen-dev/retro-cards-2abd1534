@@ -40,6 +40,10 @@ const FACE_SIZE = 28;
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
+// The rule is exactly as thick as the work-split bar (h-1), so both scales read
+// as the same line — clearly stronger than the fine dashed guides, and it never
+// touches the grey smileys' own stroke weight.
+const RULE_W = 4;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
