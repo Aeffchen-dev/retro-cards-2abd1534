@@ -305,7 +305,6 @@
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
-  -webkit-hyphenate: auto;
   -webkit-hyphens: auto;
 }
 /* The work-split card reads the question together with the fixed sentence of
