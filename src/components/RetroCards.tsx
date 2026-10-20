@@ -5,6 +5,8 @@ import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import { risikoPages } from "@/components/risiko-data";
+import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
+import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import StarRating from "@/components/StarRating";
@@ -122,7 +124,7 @@ interface ReflectionTexts {
 }
 
 interface MemojisPosition {
-  [personKey: string]: { x: number; y: number };
+  [personKey: string]: { x: number; y: number; faceIndex?: number };
 }
 
 // Tonal card families — bg + text stay in the same hue family (like the
@@ -250,6 +252,7 @@ const RetroCards: React.FC = () => {
   });
 
   // State for memoji dragging
+  const selectedMemoji = useRef<Record<number, string>>({});
   const [draggingMemoji, setDraggingMemoji] = useState<{
     cardIndex: number;
     person: string;
@@ -1133,20 +1136,20 @@ const RetroCards: React.FC = () => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
+    selectedMemoji.current[cardIndex] = person;
     
     // Disable swiper while dragging memoji
     if (swiperRef) {
       swiperRef.allowTouchMove = false;
     }
     
-    const currentPos = memojisPositions[cardIndex]?.[person];
     setDraggingMemoji({
       cardIndex,
       person,
       startX: e.clientX,
       startY: e.clientY,
-      initialX: currentPos?.x || 380,
-      initialY: currentPos?.y || 250,
+      initialX: e.currentTarget instanceof HTMLElement ? e.currentTarget.offsetLeft : 0,
+      initialY: e.currentTarget instanceof HTMLElement ? e.currentTarget.offsetTop : 0,
     });
   };
 
@@ -1157,6 +1160,7 @@ const RetroCards: React.FC = () => {
   ) => {
     e.stopPropagation();
     e.preventDefault();
+    selectedMemoji.current[cardIndex] = person;
     
     // Disable swiper while dragging memoji
     if (swiperRef) {
@@ -1164,14 +1168,13 @@ const RetroCards: React.FC = () => {
     }
     
     const touch = e.touches[0];
-    const currentPos = memojisPositions[cardIndex]?.[person];
     setDraggingMemoji({
       cardIndex,
       person,
       startX: touch.clientX,
       startY: touch.clientY,
-      initialX: currentPos?.x || 380,
-      initialY: currentPos?.y || 250,
+      initialX: e.currentTarget instanceof HTMLElement ? e.currentTarget.offsetLeft : 0,
+      initialY: e.currentTarget instanceof HTMLElement ? e.currentTarget.offsetTop : 0,
     });
   };
 
@@ -1326,13 +1329,40 @@ const RetroCards: React.FC = () => {
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (
-                  <Face key={i} size={34} strokeWidth={1.5} color="var(--retro-black)" />
+                  <Button
+                    key={i}
+                    variant="ghost"
+                    aria-label={["Lachend", "Glücklich", "Neutral", "Traurig", "Weinend"][i]}
+                    className="swiper-no-swiping h-[34px] w-[34px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[34px]"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      const container = event.currentTarget.closest<HTMLElement>(".print-memoji-container");
+                      if (!container) return;
+                      const box = container.getBoundingClientRect();
+                      const position = besideSmiley(event.currentTarget.getBoundingClientRect(), box);
+                      const renderedPositions = Object.fromEntries(persons.map(person => {
+                        const marker = container.querySelector<HTMLElement>(`.print-memoji-${person.key}`);
+                        return [person.key, { x: marker?.offsetLeft ?? 0, y: marker?.offsetTop ?? 0 }];
+                      }));
+                      const key = selectedMemoji.current[cardId] ?? nearestMemoji(renderedPositions, position);
+                      if (!key || !persons.some(person => person.key === key)) return;
+                      selectedMemoji.current[cardId] = key;
+                      setMemojisPositions(prev => ({
+                        ...prev,
+                        [cardId]: { ...prev[cardId], [key]: { ...position, faceIndex: i } },
+                      }));
+                    }}
+                  >
+                    <Face size={34} strokeWidth={1.5} color="var(--retro-black)" />
+                  </Button>
                 ))}
               </div>
               {/* Draggable Memojis — one per person */}
               {persons.map((person, i) => {
                 const posX = memojisPositions[cardId]?.[person.key]?.x ?? defaultX;
                 const posY = memojisPositions[cardId]?.[person.key]?.y ?? defaultY(i);
+                const faceIndex = memojisPositions[cardId]?.[person.key]?.faceIndex;
+                const anchoredTop = faceIndex === undefined ? undefined : `calc((100% - 34px) * ${faceIndex / 4} - 11px)`;
                 return (
                   <div
                     key={person.key}
@@ -1341,10 +1371,10 @@ const RetroCards: React.FC = () => {
                       // min() keeps the emoji inside the scale's own box even when a
                       // default or saved position is wider than the card.
                       left: `min(${posX}px, calc(100% - 56px))`,
-                      top: `min(${posY}px, calc(100% - 56px))`,
+                      top: anchoredTop ?? `min(${posY}px, calc(100% - 56px))`,
                       zIndex: 1000,
-                      '--print-top-percent': `${(posY / (isMobile ? 400 : 520)) * 100}%`,
-                      '--print-left-percent': `${(posX / (isMobile ? 320 : 480)) * 100}%`,
+                      '--print-top-percent': anchoredTop ?? `${(posY / (isMobile ? 400 : 520)) * 100}%`,
+                      '--print-left-percent': faceIndex === undefined ? `${(posX / (isMobile ? 320 : 480)) * 100}%` : `${posX}px`,
                     } as React.CSSProperties}
                     onMouseDown={(e) => handleMemojiMouseDown(e, cardId, person.key)}
                     onTouchStart={(e) => handleMemojiTouchStart(e, cardId, person.key)}
