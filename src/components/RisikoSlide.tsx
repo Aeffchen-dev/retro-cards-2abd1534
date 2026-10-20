@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, guidePositions, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_TEAR, RISIKO_ALLOCATION_HEADING, type RisikoPage } from "./risiko-data";
 
 // The tear, shared by the scale's crying face and the dragged dot: one drop
 // hanging from below the left eye, tip first so it shrinks back into the eye.
@@ -51,9 +51,12 @@ const END_INSET = scaleEndInset(MARKER_SIZE);
 // The smileys are pulled in by the difference between that inset and their own
 // half-width, so every face centre sits exactly where the circle's centre does.
 const FACE_PAD = END_INSET - FACE_W / 2;
-// Guidelines sit under every smiley and midway between neighbours, at the value
-// the circle itself would take there — the same inset maths keeps them aligned.
-const GUIDES = guidePositions(FACES.length);
+// Evenly spread columns: one soft band between every pair of neighbouring
+// smileys. Their edges use the circle's own inset maths, so every edge sits
+// exactly under the face it belongs to and all bands come out the same width.
+const BANDS = columnBands(FACES.length);
+// The card's white shows through this gap, so the bands read as separate columns.
+const COLUMN_GAP = 6;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -203,7 +206,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const scale = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-block relative flex flex-col w-full shrink-0">
       <h2 className="risiko-statement retro-body-copy shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      {/* The scale spans the container: the rule and the dashed guides run edge to
+      {/* The scale spans the container: the rule and the grey columns run edge to
           edge, while the smileys and the tiny end labels sit flush with the
           circle's travel — inset by the circle's own radius at both ends. */}
       <div className="relative flex flex-col gap-1 box-border">
@@ -212,11 +215,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <span>Stimme voll zu</span>
         </div>
         <FaceLayer />
-        {/* Dashed guidelines: one under each smiley and one midway between
-            neighbours, running the height of the circle's row, so a free
-            position still reads against a face. */}
+        {/* Columns: one soft grey band between every pair of neighbouring
+            smileys, running the height of the circle's row, so a free position
+            still reads against a face. */}
         <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: HEADER_H, bottom: 0 }} aria-hidden="true">
-          {GUIDES.map((p) => <span key={p} className="risiko-column-line absolute top-0 bottom-0 -translate-x-1/2" style={{ left: `calc(${p}% + ${markerInset(p, END_INSET)}px)` }} />)}
+          {BANDS.map(([from, to]) => <span key={from} className="risiko-column-band absolute top-0 bottom-0" style={{ left: `calc(${from}% + ${markerInset(from, END_INSET) + COLUMN_GAP / 2}px)`, width: `calc((100% - ${2 * END_INSET}px) * ${(to - from) / 100} - ${COLUMN_GAP}px)` }} />)}
         </div>
         <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
           onChange={(v) => onChange(key, String(v))} />

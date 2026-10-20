@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, guidePositions, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_ALLOCATION_HEADING, CRYING_TEAR, risikoPages } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -145,11 +145,18 @@ describe("Risikofaktoren scale", () => {
   });
 });
 
-describe("dashed guidelines", () => {
-  test("sits under every smiley and midway between neighbours", () => {
-    expect(guidePositions(5)).toEqual([0, 12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100]);
-    expect(guidePositions(2)).toEqual([0, 50, 100]);
-    expect(guidePositions(1)).toEqual([0]);
+describe("grey columns", () => {
+  test("one evenly spread band between every pair of smileys", () => {
+    expect(columnBands(5)).toEqual([[0, 25], [25, 50], [50, 75], [75, 100]]);
+    // Every band is as wide as the next and together they cover the smileys'
+    // whole range, so the circle always travels over evenly spread columns.
+    const bands = columnBands(5);
+    expect(new Set(bands.map(([from, to]) => to - from)).size).toBe(1);
+    expect(bands[0][0]).toBe(0);
+    expect(bands[bands.length - 1][1]).toBe(100);
+    expect(bands.slice(1).every(([from], i) => from === bands[i][1])).toBe(true);
+    expect(columnBands(2)).toEqual([[0, 100]]);
+    expect(columnBands(1)).toEqual([]);
   });
 });
 
