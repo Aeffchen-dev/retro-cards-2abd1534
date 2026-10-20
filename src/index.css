@@ -260,6 +260,11 @@
   /* The slider row is a full head taller than its marker, so the handle floats
      free of the smileys above and the buttons below, centred on its rule. */
   --risiko-track-h: 56px;
+  /* How tall the grey scale fields stand on screen. Both scales read on this one
+     grid: the statement fields stop growing here, and the work-split lane is
+     exactly this tall plus the strip its names live in — so a card with one
+     work-split field shows fields as high as a card with two statements. */
+  --risiko-field-h: 120px;
 }
 /* Flex children must shrink to the actual content box, including when the
    statement area has a vertical scrollbar or a long helper sentence. */
@@ -308,8 +313,27 @@
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
    just above it — 26px clears the tallest name, so a name's white backing never bites
-   into the grey band and no guide runs through a partner's name. */
-.workload-lane { container-type: inline-size; --risiko-name-strip: 26px; }
+   into the grey band and no guide runs through a partner's name.
+   On screen the lane stands as tall as the statement scales' fields plus that strip, so
+   the work split is read on a grid of exactly the same height as every other card. In
+   print it stretches over the card instead, the way the printed statement fields do.
+   Size containment lets everything inside centre itself on the lane's own height with
+   cqh, so the bar, the dots and the names follow the fields wherever they end. */
+.workload-lane {
+  container-type: size;
+  --risiko-name-strip: 26px;
+  height: calc(var(--risiko-field-h) + var(--risiko-name-strip));
+}
+/* The bar with the coloured shares runs through the fields' exact middle, the way
+   the statement scales' rule sits dead centre in theirs. */
+.workload-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 2px); /* half of the bar's own 4px height */
+  height: 4px;
+  display: flex;
+}
 
 
 .workload-segment { height: 100%; background: var(--workload-color); }
@@ -357,8 +381,9 @@
   /* Partners take alternating rows, so two names can never end up on top of each
      other — not even when their circles sit right next to each other. */
   /* Every name sits straight under its own dot and wraps onto further lines
-     when it is wider than the room it has. */
-  top: calc(100% + 4px);
+     when it is wider than the room it has. The dot rides the fields' middle, so
+     the drop to the names' strip is half the fields' height minus half the dot. */
+  top: calc(100% + (100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2 + 4px);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -402,7 +427,7 @@
    their foot. The printed sheet is sized to the page instead, so print is left
    to stretch them over the whole card. */
 @media screen {
-  .risiko-scale-core { max-height: 120px; }
+  .risiko-scale-core { max-height: var(--risiko-field-h); }
 }
 .risiko-scale-captions {
   position: absolute;
@@ -1118,6 +1143,9 @@ textarea.bg-retro-post-it:focus,
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
   .print-slide-page .risiko-scale-area { overflow: visible; }
+  /* The work-split fields stretch over the printed card too, instead of standing
+     at the screen's fixed height — the bar and the names follow the fields. */
+  .print-slide-page .workload-lane { height: auto; flex: 1 1 0; }
 
 
   /* Post-it text areas - maintain frontend layout */
