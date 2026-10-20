@@ -124,9 +124,9 @@ const FACE_ANCHORS = [
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, tear: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
 ];
 
-/** Every partner reserves one band on the work-split line: its own circle, room
- *  for its centred name and clear air to the neighbour's circle. Adjacent circles
- *  always sit exactly one band apart, so they never touch. The band may never
+/** Every partner reserves one band on the work-split line: its own circle and
+ *  room for its centred name. Adjacent circles always sit exactly one band
+ *  apart, touching with no margin between them. The band may never
  *  grow past the share of the lane each partner can use — otherwise the circles
  *  would run out of room to move. */
 export const workloadBand = (slot: number, maxBand: number, count: number): string =>

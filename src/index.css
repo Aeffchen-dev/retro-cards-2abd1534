@@ -333,7 +333,7 @@
   max-width: min(
     calc(var(--workload-cx) * 2),
     calc((100cqw - var(--workload-cx)) * 2),
-    calc(var(--workload-band, 60px) - 4px)
+    calc(var(--workload-band, 32px) - 4px)
   );
 }
 
