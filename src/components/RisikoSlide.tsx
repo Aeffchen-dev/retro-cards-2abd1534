@@ -32,7 +32,9 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
-export const FACE_GREY = "#6E7078";
+// The faces sit a shade lighter than the dashed guides and column names they are
+// drawn over, so the smileys read as the softest thing on the scale.
+export const FACE_GREY = "#8A8C94";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 28;
@@ -175,8 +177,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
   <div className="risiko-track relative w-full shrink-0">
-    {/* The rule spans the full card width; only the circle's travel is inset. */}
-    <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W }} />
+    {/* The rule spans the full card width; only the circle's travel is inset. Its
+        ends are rounded off, so the line finishes soft instead of cut square. */}
+    <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
         {marker}

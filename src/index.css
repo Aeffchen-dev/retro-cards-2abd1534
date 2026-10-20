@@ -37,12 +37,14 @@
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
     --risiko-helper-bg: #F1F2F4;
-    /* the columns sit a shade lighter than the info rows' label field */
-    --risiko-column-fill: #EBEDEF;
+    /* the columns sit a shade lighter than the info rows' label field — barely
+       there, so the fields read as a hint rather than a block */
+    --risiko-column-fill: #F4F5F7;
     /* every second column sits a whisker deeper — the two stay close together */
-    --risiko-column-fill-alt: #E4E6E8;
+    --risiko-column-fill-alt: #ECEEF0;
     --risiko-caption: #9B9BA3;
-    /* the scale's own grey: the smileys, their dashed guides and the end labels share it */
+    /* the scale's own grey: the dashed guides and the column names share it; the
+       smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
@@ -373,6 +375,13 @@
      band, so the var lives on the field itself, not on the names' own row. */
   --risiko-caption-band: 15px;
 }
+/* On screen the fields stop growing here: they fill the card up to this height
+   and no further, so the circle keeps a comfortable margin from the names at
+   their foot. The printed sheet is sized to the page instead, so print is left
+   to stretch them over the whole card. */
+@media screen {
+  .risiko-scale-core { max-height: 120px; }
+}
 .risiko-scale-captions {
   position: absolute;
   left: 0;
@@ -383,8 +392,8 @@
   gap: 0 4px;
   padding-bottom: 4px;
 }
-/* They read in the smileys' own grey — the same tone as the five faces and their
-   dashed guides — at 9px, one step under the info rows' 12px floor: the longest
+/* They read in the scale's own grey — the tone of the dashed guides, while the
+   faces above sit a shade lighter — at 9px, one step under the info rows' 12px floor: the longest
    label ("Trifft noch nicht zu") measures 108px at 12px and a column is only 86px
    wide, so anything above ~9.5px would split it over two lines. Below 9px the words
    turn into mush, and on a phone column (48-55px) no size fits one line anyway —
@@ -408,6 +417,15 @@
   overflow-wrap: break-word;
   hyphens: auto;
   min-width: 0;
+  /* Each name paints its own column's grey behind it, with a small foot above
+     the first line: a dashed guide running down behind a two- or three-line name
+     then stops at the name's top edge instead of drawing through its letters. */
+  background: var(--risiko-column-fill);
+  padding-top: 4px;
+}
+/* Every second name stands on the deeper band, exactly like the field behind it. */
+.risiko-scale-caption:nth-child(even) {
+  background: var(--risiko-column-fill-alt);
 }
 
 /* The sentence that explains a post-it's headline: the scale's own grey, no fill,
