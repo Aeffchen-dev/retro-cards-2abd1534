@@ -42,11 +42,17 @@ describe("workload split", () => {
 
 describe("Risikofaktoren scale", () => {
   test("morphs through crying, sad, neutral, smiling and laughing with a centred neutral anchor", () => {
-    expect(scaleFaceGeometry(0).eyeY).toBe(9);
-    expect(scaleFaceGeometry(0).mouth[7]).toBe(14.7); // deeper downturn than the sad face
-    expect(scaleFaceGeometry(0).mouth[1]).toBe(17.9);
+    // Crying: eyes squeezed shut and slanting down to the nose, a tear below
+    // each eye, and a downturn deeper than the sad face's.
+    expect(scaleFaceGeometry(0).eye).toEqual([7.2, 8.4, 10.2, 9.7, 16.8, 8.4, 13.8, 9.7]);
+    expect(scaleFaceGeometry(0).eyeW).toBe(1.2);
+    expect(scaleFaceGeometry(0).mouth[7]).toBe(15.2); // deeper downturn than the sad face
+    expect(scaleFaceGeometry(0).mouth[1]).toBe(18.2);
     expect(scaleFaceGeometry(0).tear).toBe(1);
     expect(scaleFaceGeometry(12.5).tear).toBe(0.5);
+    // The sad face right next to it keeps plain round dot eyes and no tear.
+    expect(scaleFaceGeometry(25).eye).toEqual([9, 9, 9.01, 9, 15, 9, 15.01, 9]);
+    expect(scaleFaceGeometry(25).eyeW).toBe(1.5);
     expect(scaleFaceGeometry(25).mouth[7]).toBe(14);
     expect(scaleFaceGeometry(50).mouth[7]).toBe(15);
     expect(scaleFaceGeometry(75).mouth[7]).toBe(16);
