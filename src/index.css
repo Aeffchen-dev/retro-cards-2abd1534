@@ -492,19 +492,18 @@
   padding-bottom: 4px;
 }
 /* They read in the scale's own grey — the tone of the dashed guides, while the
-   faces above sit a shade lighter — at the info rows' 12px floor. At that size no
-   label fits a column's width (~62px) on one line, and the shortest ones
-   ("Trifft oft zu") would still squeeze onto a single line where a longer
-   neighbour breaks — so every name breaks at its own words into three lines
-   (first word / middle / last word), the same split a phone column already
-   uses. The row reads as one even block instead of a mix of one-, two- and
-   three-line labels. */
+   faces above sit a shade lighter — one step under the info rows' 12px floor.
+   At that size the longest half of a name ("teilweise zu", 12 letters) still
+   fits a column's width (~61px), and every name breaks at its own words into
+   exactly two lines of even length, so the row reads as one even block instead
+   of a mix of one-, two- and three-line labels. Phones keep their own
+   column-scaled size and let a half that cannot fit wrap inside its column. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.15;
   color: var(--risiko-guide);
   /* Plain block text, not a flex item: an anonymous flex item is never allowed to
