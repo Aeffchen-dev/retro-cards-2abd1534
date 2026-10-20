@@ -12,3 +12,5 @@
 - [x] Keep the dashed column lines from running through the question text (white mask behind the labels); verify by pixel sampling.
 - [x] Remove the card title and page counter from the Health Check slides; set question text to the input-label size on a white plate; verify fit, drag and print.
 - [x] Keep the smiley scale inside the container width, enlarge the smileys and centre every column line under its own smiley; verify alignment, drag travel and print.
+- [x] Spread the Health Check rows over the whole card height (lone row centred); verify fit on desktop and mobile.
+
