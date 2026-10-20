@@ -132,3 +132,4 @@
 - [x] Rename the five Health Check scale columns to "Trifft noch nie zu" / "Trifft selten zu" / "Trifft teilweise zu" / "Trifft oft zu" / "Trifft immer zu" (stored left-to-right so each sits under its own face); 45 tests pass, build OK.
 - [x] Leftmost Health Check scale column back to "Trifft noch nicht zu"; 45 tests pass, no clipping on desktop/phone/small phone.
 - [x] Size the five Health Check column labels to fit their column: 9px (one step under the 12px floor, the only exception in the app), one line on wide cards, two on phone columns; 46 tests pass.
+- [x] The last 4 weeks helper sentence now reads "Klicke auf die jeweilige Frage um Notizen zu machen"; verified on the card, 3 helper tests pass.
