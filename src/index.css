@@ -230,7 +230,6 @@
 /* Scale bleeds half a face beyond the content edges so the line spans the full
    container width while the outer smileys sit slightly outside it. */
 .risiko-bleed { margin-left: -12px; margin-right: -12px; width: calc(100% + 24px); }
-.risiko-page .retro-heading { font-size: 30px; letter-spacing: 0; }
 .risiko-page .risiko-helper { height: auto; align-items: stretch; }
 .risiko-helper > span:last-child {
   height: auto;
@@ -243,11 +242,13 @@
   font-size: 14px;
   line-height: 18px;
 }
-@media (max-width: 359px) {
-  .risiko-page .retro-heading { font-size: 25px; }
-}
+/* Question text sits on a white plate shaped like the Post-it input label. */
 .risiko-page .risiko-label {
   letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 4px 12px;
   /* mask the dashed column lines behind the question text (card is white) */
   background: var(--risiko-label-bg);
 }
