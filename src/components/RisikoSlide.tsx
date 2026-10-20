@@ -40,23 +40,20 @@ const FACE_SIZE = 28;
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab.
 const MARKER_SIZE = 32;
-// The tiny end labels share the smileys' line, so the columns start straight
-// under that one row.
-const HEADER_H = FACE_SIZE;
 // The rule is exactly as thick as the work-split bar (h-1), so both scales read
 // as the same line — clearly stronger than the fine dashed guides, and it never
 // touches the grey smileys' own stroke weight.
 const RULE_W = 4;
-// A barely-there padding above the smileys, which sit right at the top of their
-// columns — just enough that the field's edge never grazes a face.
-const FACE_PAD = 3;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
-// The fields stretch to fill whatever height the card has left over, but they
-// never collapse so far that the circle — which stays dead centre in them —
-// would run into the smileys pinned at their top. Anything taller than this
-// floor is shared out above and below the rule's row.
-const FIELD_MIN = (FACE_PAD + HEADER_H + 4 + MARKER_SIZE / 2) * 2;
+// The space a statement keeps above the scale, mirroring --risiko-statement-gap:
+// the smiley row centres itself on it (see .risiko-face-header in index.css), so
+// the row's own height has to be counted in when the fields are given a floor.
+const STATEMENT_GAP = 12;
+// The fields stretch to fill whatever height the card has left over, but never so
+// far that the smiley row — which stands midway between the statement above and
+// the rule below — is squeezed into the circle sitting on that rule.
+const FIELD_MIN = 4 * (2 + FACE_SIZE / 2 - STATEMENT_GAP / 2 + MARKER_SIZE / 2);
 
 // Equal columns share the scale's full width; each smiley (and its dashed
 // guide) sits in the middle of its own column, and the circle's travel runs
@@ -88,7 +85,7 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 );
 
 const FaceLayer = () => (
-  <div className="risiko-face-header absolute left-0 right-0 pointer-events-none flex items-center justify-between box-border" style={{ top: FACE_PAD, height: FACE_SIZE }} aria-hidden="true">
+  <div className="risiko-face-header absolute left-0 right-0 pointer-events-none flex items-center justify-between box-border" aria-hidden="true">
     {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: facePos(i) }}><Face Icon={F} /></span>)}
   </div>
 );
@@ -294,8 +291,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 instead of having the line drawn through it. Painted before the faces
                 and the circle, so both simply stand in front of the line. */}
             <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, height: FACE_PAD }} />)}
-              {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: FACE_PAD + HEADER_H + 4, bottom: 0 }} />)}
+              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-column-guide--stub absolute" style={{ left: facePos(i) }} />)}
+              {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide risiko-column-guide--long absolute" style={{ left: facePos(i) }} />)}
             </div>
             {/* The smileys sit at the top of the field, a slight padding below its
                 top edge, while the rule and the circle stay dead centre in it. */}
