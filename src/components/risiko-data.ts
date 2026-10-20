@@ -41,16 +41,17 @@ export function risikoPages(personKeys: string[], height: number, width: number)
   let page = pages[pages.length - 1];
   if (!page) return pages;
   let used = page.statements.reduce((sum, [, text]) => sum + textHeight(text) + 74, 0);
-  const titleCost = textHeight(personKeys.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit") + 26;
-  for (const key of personKeys) {
-    const cost = 52 + (page.personKeys.length ? 0 : titleCost);
-    if (used && used + cost > budget) {
+  // All partners share one allocation line, so the block costs the same no
+  // matter how many partners there are.
+  const allocationCost = textHeight("Wer leistet wie viel der Beziehungsarbeit?") + 64;
+  if (personKeys.length) {
+    if (used && used + allocationCost > budget) {
       page = { statements: [], personKeys: [] };
       pages.push(page);
       used = 0;
     }
-    used += 52 + (page.personKeys.length ? 0 : titleCost);
-    page.personKeys.push(key);
+    page.personKeys = [...personKeys];
+    used += allocationCost;
   }
   return pages;
 }

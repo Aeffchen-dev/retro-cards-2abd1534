@@ -114,9 +114,6 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
 };
 
 const RisikoSlide = ({ page, persons, values, onChange, pill, onEdit }: RisikoSlideProps) => {
-  const memoji = (emoji: string) => (
-    <span className="risiko-memoji flex items-center justify-center w-7 h-7 rounded-full text-lg leading-none">{emoji}</span>
-  );
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="risiko-auto-gap flex flex-col">
