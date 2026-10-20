@@ -56,6 +56,9 @@ const TRAVEL_INSET = MARKER_SIZE / 2;
 // dashed guide) sits at its column's centre, while the circle keeps gliding
 // through the whole width under them.
 const COL_W = 100 / FACES.length;
+/** CSS left for a marker-travel percentage, so faces/columns line up with the slider ends. */
+const atTravel = (p: number) => `calc(${TRAVEL_INSET}px + ${p} * (100% - ${MARKER_SIZE}px) / 100)`;
+const facePos = (i: number) => atTravel((i * 100) / (FACES.length - 1));
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -76,7 +79,7 @@ const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
 
 const FaceLayer = () => (
   <div className="risiko-face-header relative flex items-center justify-between pointer-events-none shrink-0 box-border" style={{ height: FACE_SIZE }} aria-hidden="true">
-    {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: `${(i + 0.5) * COL_W}%` }}><Face Icon={F} /></span>)}
+    {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: facePos(i) }}><Face Icon={F} /></span>)}
   </div>
 );
 
@@ -227,8 +230,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               the five fields still read as separate. Painted before the faces, so
               the fill never covers a smiley. */}
           <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: `${from}%`, width: `${to - from}%` }} />)}
-            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: `${(i + 0.5) * COL_W}%`, top: HEADER_H }} />)}
+            {columnBands(FACES.length).map(([from, to], i) => <span key={i} className={`risiko-column-band absolute top-0 bottom-0${i % 2 ? " risiko-column-band-alt" : ""}`} style={{ left: i === 0 ? 0 : atTravel(from), right: i === FACES.length - 1 ? 0 : `calc(100% - (${atTravel(to).slice(5, -1)}))` }} />)}
+            {FACES.map((_, i) => <span key={`g${i}`} className="risiko-column-guide absolute bottom-0" style={{ left: facePos(i), top: HEADER_H }} />)}
           </div>
           <FaceLayer />
 

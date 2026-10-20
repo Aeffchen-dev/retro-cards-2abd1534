@@ -151,15 +151,9 @@ describe("Risikofaktoren scale", () => {
 });
 
 describe("grey columns", () => {
-  test("one band per smiley, sitting directly against each other", () => {
-    expect(columnBands(5)).toEqual([[0, 20], [20, 40], [40, 60], [60, 80], [80, 100]]);
+  test("one band per smiley, centred on the slider positions of the faces", () => {
+    expect(columnBands(5)).toEqual([[0, 12.5], [12.5, 37.5], [37.5, 62.5], [62.5, 87.5], [87.5, 100]]);
     const bands = columnBands(5);
-    // Every band is as wide as the next, so each smiley owns an equal field.
-    expect(new Set(bands.map(([from, to]) => to - from)).size).toBe(1);
-    // Together they fill the scale from edge to edge with nothing in between:
-    // the first starts at 0, the last ends at 100 and neighbours share an edge.
-    expect(bands[0][0]).toBe(0);
-    expect(bands[bands.length - 1][1]).toBe(100);
     expect(bands.slice(1).map(([from], i) => from - bands[i][1])).toEqual([0, 0, 0, 0]);
     expect(columnBands(2)).toEqual([[0, 50], [50, 100]]);
     expect(columnBands(1)).toEqual([[0, 100]]);
