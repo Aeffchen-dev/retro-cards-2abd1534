@@ -302,7 +302,7 @@
    readable and the ring still ties the circle to that partner's segment. */
 .risiko-memoji.workload-avatar {
   background: var(--risiko-face-fill);
-  box-shadow: 0 0 0 2px var(--workload-ink);
+  box-shadow: 0 0 0 2.5px var(--workload-ink);
 }
 /* One ink-pulled partner colour, shared by the name, the circle's ring and the share
    figure, so all three read as the same partner. */
@@ -332,7 +332,9 @@
   position: absolute;
   /* Partners take alternating rows, so two names can never end up on top of each
      other — not even when their circles sit right next to each other. */
-  top: calc(100% + 2px + var(--workload-name-row, 0) * 14px);
+  /* Every name sits straight under its own dot and wraps onto further lines
+     when it is wider than the room it has. */
+  top: calc(100% + 4px);
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -342,10 +344,11 @@
   font-size: 12px;
   line-height: 13px;
   font-weight: 700;
-  padding: 0 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0 2px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  width: max-content;
   /* centre of this partner's circle, measured from the lane's left edge */
   --workload-cx: calc(var(--workload-li, 0px)
     + (100cqw - var(--workload-li, 0px) - var(--workload-ri, 0px) - var(--workload-slot, 32px)) * var(--workload-v, 50) / 100

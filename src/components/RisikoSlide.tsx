@@ -380,7 +380,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               // single name, so it may use the whole lane; from three partners up
               // two names share a row, so each is kept within two bands.
               "--workload-name-row": String(i % 2),
-              "--workload-name-cap": partners.length <= 2 ? "100cqw" : "calc(var(--workload-band, 32px) * 2)",
+              "--workload-name-cap": partners.length <= 2 ? "calc(100cqw / 2)" : "var(--workload-band, 32px)",
             } as React.CSSProperties;
             const memojiEl = (
               <>
