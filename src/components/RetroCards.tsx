@@ -1323,7 +1323,7 @@ const RetroCards: React.FC = () => {
               <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
                 {/* Same line-icon faces as the Risikofaktoren scale, best at the top */}
                 {[...FACES].reverse().map((Face, i) => (
-                  <Face key={i} size={16} strokeWidth={1.5} color={FACE_GREY} />
+                  <Face key={i} size={32} strokeWidth={1.5} color={FACE_GREY} />
                 ))}
               </div>
               {/* Draggable Memojis — one per person */}
