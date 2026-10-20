@@ -8,9 +8,9 @@ import { RISIKO_HOT, RISIKO_STATEMENTS, scaleValue } from "./risiko-data";
 const FACES = [Angry, Frown, Meh, Smile, Laugh];
 const FACE_GREY = "#9B9BA3";
 // The faces sit directly on the track line (not above it) with a white
-// fill so the line is hidden behind each face. The dot is smaller than a
-// face and drawn above it (z-10), so the face's rim stays visible around it.
-const FACE_SIZE = 22;
+// fill so the line is hidden behind each face. They are large enough that
+// the 14px dot — drawn above them (z-10) — leaves the smiley readable.
+const FACE_SIZE = 48;
 const FACE_FILL = "#FFFFFF";
 
 const Face = ({ Icon }: { Icon: typeof Angry }) => (
@@ -50,7 +50,7 @@ const END_INSET = FACE_SIZE / 2; // px the track is shortened on each side so it
 const Track = ({ value, readOnly, onChange, ariaLabel, thumb, faces, endFaces }: {
   value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb: React.ReactNode; faces?: boolean; endFaces?: boolean;
 }) => (
-  <div className="relative w-full h-10">
+  <div className="relative w-full h-14">
     <div className="absolute top-1/2 h-px" style={{ background: INK, left: (faces || endFaces) ? END_INSET : 0, right: (faces || endFaces) ? END_INSET : 0 }} />
     {faces && <FaceLayer />}
     {endFaces && <EndFaces />}
@@ -88,7 +88,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
 
   const statement = (key: string, text: string, readOnly: boolean) => (
     <div key={key} className="flex flex-col">
-      <span className="retro-body-copy">{text}</span>
+      <span className="retro-body-copy retro-body-copy-sm">{text}</span>
       <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} faces
         onChange={(v) => onChange(key, String(v))} thumb={dot} />
     </div>
@@ -100,7 +100,7 @@ const RisikoSlide = ({ slideId, persons, values, onChange, pill, label }: Risiko
     const title = persons.length > 2 ? "Wer leistet wie viel Beziehungsarbeit?" : "Verteilung der Beziehungsarbeit";
     return (
       <div className="flex flex-col gap-1 mt-2">
-        <span className="retro-body-copy">{title}</span>
+        <span className="retro-body-copy retro-body-copy-sm">{title}</span>
         {persons.map((p) => (
           <Track key={p.key} value={scaleValue(values[`work_${p.key}`] ?? values.allocation)} readOnly={readOnly}
             ariaLabel={`Beziehungsarbeit ${p.name}`} onChange={(v) => onChange(`work_${p.key}`, String(v))}
