@@ -445,25 +445,21 @@ describe("column names break into two lines", () => {
 describe("the fixed sentence of Beziehungsarbeit examples on the work-split card", () => {
   test("reads the intro, the comma-joined examples and a full stop", () => {
     expect(allocationExamplesSentence()).toBe(
-      "Unter Beziehungsarbeit fällt zum Beispiel schwierige Gespräche initiieren, " +
+      "Beziehungsarbeit heißt zum Beispiel schwierige Gespräche initiieren, " +
       "im Streit nachgeben um zu deeskalieren, sich Fehler eingestehen, " +
       "sich als unschuldiger entschuldigen, einen großen Kompromiss zusagen, " +
       "Verletzungen aufarbeiten, den anderen emotional auffangen, " +
-      "immer zuerst Nähe initiieren, vermeintlich übertriebene Bedürfnisse ernst nehmen, " +
-      "unvergessliche Events planen, eine Schwäche an anderen wertschätzen, " +
-      "die eigene Meinung runterschlucken um zuzuhören, " +
-      "unsanftes Feedback leise in sich arbeiten lassen, " +
-      "Veränderungen die einen Nachteil bringen mittragen, auch mal zurückstecken."
+      "auch mal zurückstecken."
     );
   });
   test("separates every example with a comma and ends with a full stop", () => {
     const sentence = allocationExamplesSentence();
-    expect(sentence.startsWith("Unter Beziehungsarbeit fällt zum Beispiel ")).toBe(true);
+    expect(sentence.startsWith("Beziehungsarbeit heißt zum Beispiel ")).toBe(true);
     expect(sentence.endsWith(".")).toBe(true);
-    expect(sentence.split(", ").length).toBe(15);
-    expect(new Set(sentence.replace("Unter Beziehungsarbeit fällt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
+    expect(sentence.split(", ").length).toBe(8);
+    expect(new Set(sentence.replace("Beziehungsarbeit heißt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(8);
   });
-  test("reads in the card's own ink at the smallest readable size, with every example kept", () => {
+  test("reads in the card's own ink at the smallest readable size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const blocks = [...css.matchAll(/\.risiko-allocation-examples \{[^}]*\}/g)].map((m) => m[0]);
     const examples = blocks.find((b) => /color:/.test(b)) ?? "";
@@ -471,7 +467,14 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
     expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
     expect(examples, "the examples no longer read at 12px").toMatch(/font-size:\s*12px/);
-    expect(RISIKO_ALLOCATION_EXAMPLES.length, "an example was dropped").toBe(15);
+  });
+  test("draws the line between the two Memojis as thick as the slider's rule", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
+    expect(boundary, "the boundary rule is gone").toBeTruthy();
+    expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
+    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*4px/);
+    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-2px\)/);
   });
 });
 

@@ -310,6 +310,9 @@
 }
 @media (max-width: 767px) {
   .risiko-statement { font-size: 28px; }
+  /* The work-split card's headline is a question, not a statement, so it keeps the
+     size every other question on the deck reads — even on a phone. */
+  .risiko-allocation-statement { font-size: 38.4px; }
 }
 /* A phone's card cannot hold the work-split question at the question's own size,
    the whole sentence of examples and the split bar all at once — the bar would be
@@ -335,7 +338,16 @@
    one column. The question keeps only a small gap to the sentence; the sentence
    carries the card's usual gap down to the work-split lane, so the fields still
    start where the statement cards' do. */
-.risiko-allocation-statement { margin-bottom: 10px; }
+.risiko-allocation-statement {
+  margin-bottom: 10px;
+  /* This headline is a question, so it may hyphenate like the deck's other
+     questions: "Beziehungsarbeit" is the longest word in the deck and at the
+     question's own size it is wider than a phone card's text column, where the
+     statement rule (never break inside a word) would push it past the card edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 .risiko-allocation-examples {
   margin: 0 0 var(--risiko-scale-pad);
   font-size: 12px;
@@ -689,9 +701,9 @@
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 0;
-  border-left: 1px solid var(--retro-black);
-  transform: translateX(-0.5px);
+  width: 4px;
+  background: var(--retro-black);
+  transform: translateX(-2px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
