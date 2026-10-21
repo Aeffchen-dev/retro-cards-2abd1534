@@ -6,19 +6,19 @@ const fields = src.slice(src.indexOf("const REFLECTION_FIELDS"), src.indexOf("] 
 const slide = src.slice(src.indexOf("case SLIDE_REFLECTION:"), src.indexOf("case 7:"));
 const vorhaben = readFileSync(new URL("./vorhaben-data.ts", import.meta.url), "utf8");
 
-describe("Feedback card is titled Monthly review for you, my love", () => {
-  test("shows the new name as the pill above the card", () => {
+describe("Feedback card is labelled Feedback above and titled A review for you, my love", () => {
+  test("shows \"Feedback\" as the pill above the card", () => {
     const pills = src.slice(src.indexOf("const SLIDE_PILLS"), src.indexOf("};", src.indexOf("const SLIDE_PILLS")));
-    expect(pills).toContain('102: "Monthly review for you, my love"');
-    expect(pills, "the card still carries the old name above it").not.toContain('102: "Feedback"');
+    expect(pills).toContain('102: "Feedback"');
+    expect(pills, "the card still carries the long sentence above it").not.toContain('102: "Monthly review for you, my love"');
   });
 
-  test("shows the new name inside the card and in the notes header", () => {
-    expect(slide).toContain('<span className="retro-label">Monthly review for you, my love</span>');
-    expect(slide, "the card's own heading still reads Feedback").not.toContain('<span className="retro-label">Feedback</span>');
-    expect(slide).toContain('text="Monthly review for you, my love"');
+  test("shows the short label in the card and the sentence as its heading and notes header", () => {
+    expect(slide).toContain('<span className="retro-label">Feedback</span>');
+    expect(slide, "the card's own label still carries the old sentence").not.toContain('<span className="retro-label">Monthly review for you, my love</span>');
+    expect(slide).toContain('text="A review for you, my love"');
     const header = src.slice(src.indexOf("const getSlideQuestion"), src.indexOf("return questions[slideId]"));
-    expect(header).toContain('[SLIDE_REFLECTION]: "Monthly review for you, my love"');
+    expect(header).toContain('[SLIDE_REFLECTION]: "A review for you, my love"');
   });
 });
 
