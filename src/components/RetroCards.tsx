@@ -47,7 +47,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   1: "Health Check",
   2: "Health Check",
   3: "The last 4 weeks",
-  102: "Feedback",
+  102: "Monthly review for you, my love",
   104: "Ideas",
   105: "Health Check",
   4: "To talk about",
@@ -76,7 +76,7 @@ interface SetupData {
 const REFLECTION_FIELDS = [
   ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
-  ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?", "Deine Antwort", ""],
+  ["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""],
 ] as const;
 
 
@@ -121,7 +121,7 @@ const sanitizeEmoji = (input: string): string => {
 interface ReflectionTexts {
   nice: string;
   thanks: string;
-  unspoken: string;
+  plans: string;
 }
 
 interface MemojisPosition {
@@ -341,14 +341,18 @@ const RetroCards: React.FC = () => {
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
-    const texts: ReflectionTexts = { nice: '', thanks: '', unspoken: '', ...(saved || {}) };
-    // This question used to sit on the Vorhaben card. Anything written there while
-    // it lived there moves over with it, so nobody has to type it again.
-    if (!texts.unspoken.trim()) {
+    const texts: ReflectionTexts = { nice: '', thanks: '', plans: '', ...(saved || {}) };
+    // "Das wollen wir kommenden Monat machen" used to sit on the Ideas card. Anything
+    // written there while it lived there moves over with it, so nobody has to type it again.
+    if (!(texts.plans || "").trim()) {
       const notes = loadFromStorage<Record<string, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
-      const written = notes?.[String(SLIDE_VORHABEN)]?.unspoken;
-      if (typeof written === "string" && written.trim()) texts.unspoken = written;
+      const written = notes?.[String(SLIDE_VORHABEN)]?.plans;
+      if (typeof written === "string" && written.trim()) texts.plans = written;
     }
+    // "Gab es etwas, dass du gedacht aber nicht angesprochen hast?" moved the other way
+    // round, onto the Ideas card. Its old answer is dropped from here — the copy Ideas
+    // needs is made below — so the same text is never kept in two places.
+    delete (texts as any).unspoken;
     // "Das wünsche ich mir" moved the other way round, onto the Vorhaben card. Its old
     // answer is dropped from here — the copy Vorhaben needs is made below — so the same
     // text is never kept in two places.
@@ -391,10 +395,18 @@ const RetroCards: React.FC = () => {
         }
       }
     }
-    // The moved question's old home: its answer now belongs to Feedback (copied
-    // there above), so the Vorhaben card does not keep a second copy of it.
-    const oldVorhaben = migrated[SLIDE_VORHABEN as any];
-    if (oldVorhaben && "unspoken" in oldVorhaben) delete oldVorhaben.unspoken;
+    // "Gab es etwas, dass du gedacht aber nicht angesprochen hast?" now lives on the Ideas
+    // card: an answer written while it still sat on Feedback moves over with it, so nobody
+    // has to type it again.
+    const savedUnspoken = loadFromStorage<Record<string, any>>(STORAGE_KEYS.REFLECTION_TEXTS)?.unspoken;
+    if (typeof savedUnspoken === "string" && savedUnspoken.trim()) {
+      if (!migrated[SLIDE_VORHABEN as any]) migrated[SLIDE_VORHABEN as any] = {};
+      const here = migrated[SLIDE_VORHABEN as any];
+      if (!(here.unspoken || "").trim()) here.unspoken = savedUnspoken;
+    }
+    // "Das wollen wir kommenden Monat machen" now lives on Feedback: the Ideas card stops
+    // holding its own copy of it.
+    if (migrated[SLIDE_VORHABEN as any] && "plans" in migrated[SLIDE_VORHABEN as any]) delete migrated[SLIDE_VORHABEN as any].plans;
     // "Das wünsche ich mir" now lives on the Vorhaben card: an answer written while it
     // still sat on Feedback moves over with it, so nobody has to type it again.
     const savedWish = loadFromStorage<Record<string, any>>(STORAGE_KEYS.REFLECTION_TEXTS)?.idea;
@@ -644,7 +656,7 @@ const RetroCards: React.FC = () => {
       1: "Wie geht's mir persönlich?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
-      [SLIDE_REFLECTION]: "Feedback",
+      [SLIDE_REFLECTION]: "Monthly review for you, my love",
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
@@ -1286,7 +1298,7 @@ const RetroCards: React.FC = () => {
       setPostItTexts({});
       setTakeawayTexts({});
       setEditModeNotes({});
-      setReflectionTexts({ nice: '', thanks: '', unspoken: '' });
+      setReflectionTexts({ nice: '', thanks: '', plans: '' });
       setCapturedPhotos([]);
       setCurrentQuestion("");
       
@@ -1905,9 +1917,9 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">Feedback</span>
+                <span className="retro-label">Monthly review for you, my love</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="Feedback" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="Monthly review for you, my love" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
