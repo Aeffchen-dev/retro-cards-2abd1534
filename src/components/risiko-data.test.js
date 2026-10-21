@@ -611,7 +611,7 @@ describe("the statement's own type", () => {
   });
 });
 
-describe("the slider sits on the card's middle", () => {
+describe("the slider stands with the same breath above and below", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
   const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
   const screen = (css.match(/@media screen \{[\s\S]*?\n\}/g) ?? [])
@@ -638,16 +638,26 @@ describe("the slider sits on the card's middle", () => {
       .toMatch(/page\.statements\.length === 0 \? " risiko-scale-area--work"/);
     expect(css, "the shift reaches the printed sheet").not.toMatch(/\.print-only[^;]*risiko-centre-shift/);
   });
-  test("the shift closes the gap to the card's middle without ever covering the text or the buttons", () => {
+  test("splits the room between the text above and the buttons below evenly", () => {
     const centre = slide.match(/const centre = \(\) => \{[\s\S]*?\n    \};/)?.[0] ?? "";
     expect(centre, "the centring measurement is gone").toBeTruthy();
-    expect(centre, "the card's own middle is no longer the target")
-      .toMatch(/card\.y \+ card\.height \/ 2 - \(rule\.y \+ rule\.height \/ 2\)/);
-    expect(centre, "the shift is no longer clamped to the room that is free")
+    const maths = readFileSync(new URL("./risiko-centring.ts", import.meta.url), "utf8");
+    // It is the scale's own block — rule, column names and the note riding under it —
+    // that stands in the middle of the room, so the card's own middle is only ever
+    // the aim on a card with no button row at all.
+    expect(centre, "the scale's own block is no longer what gets centred")
+      .toMatch(/blockTop: b\.top, blockHeight: b\.height/);
+    expect(centre, "the room is no longer measured from the text above and the buttons below")
+      .toMatch(/aboveBottom: above, footTop/);
+    expect(maths, "the free room is no longer cut in half")
+      .toMatch(/\(aboveBottom \+ footTop\) \/ 2 - \(blockTop \+ blockHeight \/ 2\)/);
+    expect(maths, "the card's own middle is no longer the aim without a button row")
+      .toMatch(/cardTop \+ cardHeight \/ 2 - \(ruleTop \+ ruleHeight \/ 2\)/);
+    expect(maths, "the shift is no longer clamped to the room that is free")
       .toMatch(/Math\.min\(Math\.max\(need, -slackUp\), slackDown\)/);
     expect(centre, "the buttons are no longer the floor it stops at").toMatch(/\.risiko-footer/);
     expect(centre, "the text above is no longer the ceiling it stops at")
-      .toMatch(/\.risiko-allocation-examples/);
+      .toMatch(/\.risiko-allocation-subheading[\s\S]*\.risiko-allocation-examples/);
     expect(slide, "a card that is not on screen is measured anyway").toMatch(/intersectionRatio >= 0\.9/);
   });
 });
