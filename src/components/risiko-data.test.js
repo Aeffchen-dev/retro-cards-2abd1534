@@ -332,8 +332,8 @@ describe("work-split partner colours", () => {
   const colors = Array.from({ length: 8 }, (_, i) =>
     css.match(new RegExp(`--workload-partner-${i}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
   );
-  test("the second partner carries the Health Check's own dark green", () => {
-    expect(colors[1]).toBe("#054C45");
+  test("the second partner carries the Health Check's own deep green", () => {
+    expect(colors[1]).toBe("#0B7A35");
   });
   test("no two partners share a colour", () => {
     expect(colors).toHaveLength(8);
