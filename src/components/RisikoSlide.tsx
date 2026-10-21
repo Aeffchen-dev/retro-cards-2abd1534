@@ -28,9 +28,9 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
-// The faces sit a shade lighter than the column names they stand over, so the
-// smileys read as the softest thing on the scale.
-export const FACE_GREY = "#8A8C94";
+// The faces wear the very grey the scale's own rule is drawn in, so smileys and
+// line read as one ink family instead of two greys standing next to each other.
+export const FACE_GREY = "#80828A";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 44;
@@ -56,7 +56,11 @@ const STATEMENT_GAP = 12;
 // The fields stretch to fill whatever height the card has left over, but never so
 // far that the smiley row — which stands midway between the statement above and
 // the rule below — is squeezed into the circle sitting on that rule.
-const FIELD_MIN = 4 * (2 + FACE_SIZE / 2 - STATEMENT_GAP / 2 + MARKER_SIZE / 2);
+// How far the smiley row stands down from the field's own top edge, mirroring
+// --risiko-face-top in index.css: the row no longer sits flush with the field, so
+// the space it steps over has to be counted in when the fields are given a floor.
+const FACE_DROP = 40;
+const FIELD_MIN = FACE_DROP + 4 * (2 + FACE_SIZE / 2 - STATEMENT_GAP / 2 + MARKER_SIZE / 2);
 
 // The scale spans its container edge to edge: the first and last smiley stand exactly
 // one handle-radius from the container's own edges and the five faces are spread evenly
@@ -810,7 +814,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[28px]">
-        <ActionRow icon="IconPencil" label="Notizen öffnen" accent={pill} onClick={onEdit} />
+        <ActionRow icon="IconPencil" label="Notizen öffnen" accent={pill} iconColor="#FFFFFF" iconStrokeWidth={1} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
             It is the whole block — not the bare sentence — that stands the card's

@@ -13,6 +13,8 @@ export interface ActionRowProps {
   accent: string;
   /** Icon colour, defaults to white */
   iconColor?: string;
+  /** Icon stroke in real, on-screen pixels; defaults to the icon's own weight */
+  iconStrokeWidth?: number;
   /** Label text colour, defaults to #201C1D */
   labelColor?: string;
   /** Background of the label field, defaults to the accent (slide pill) colour */
@@ -60,6 +62,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   label,
   accent,
   iconColor,
+  iconStrokeWidth,
   labelColor,
   fieldBg,
   outlined = false,
@@ -82,7 +85,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         className="shrink-0 w-8 h-8 flex items-center justify-center"
         style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
-        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} /> : null)}
+        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={iconStrokeWidth} /> : null)}
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
