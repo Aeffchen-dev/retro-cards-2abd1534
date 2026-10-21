@@ -1556,3 +1556,15 @@ textarea.bg-retro-post-it:focus,
 
 /* A 2px white gap between neighbouring shares of the work-split bar. */
 .workload-segment-gap { border-left: 2px solid #FFFFFF; background-clip: padding-box; }
+
+/* The Intro card's lede: one long sentence in the display face. It carries the
+   card's whole opening, so it reads a step under the card questions (38.4px) and
+   the paragraphs a step under the body default — the card must hold both without
+   scrolling. Phones step both down again. */
+#root .intro-lede { font-size: 24px; line-height: 1.15; }
+#root .intro-copy { font-size: 16px; line-height: 22px; }
+@media (max-width: 767px) {
+  #root .intro-lede { font-size: 20px; line-height: 1.15; }
+  #root .intro-copy { font-size: 14px; line-height: 20px; }
+}
+
