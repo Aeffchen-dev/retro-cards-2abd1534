@@ -11,3 +11,5 @@
 
 ## Open
 - [ ] The rule now passes straight behind the unfilled smileys (their own ask: "grey full = grey outline no fill"). If they'd rather the line stopped at each face's edge, the faces need a plate of the card's surface again — waiting on the user's call.
+- [x] Setup card back to yesterday's caps: at most 500px wide and 720px tall, always in that 500:720 proportion (measured 469×674 on an 873×755 window).
+- [x] "Kamera öffnen": the camera glyph reads light orange (#FFA24D) on the slide's purple tile.
