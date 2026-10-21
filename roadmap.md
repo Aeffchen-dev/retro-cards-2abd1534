@@ -309,5 +309,5 @@
 - [ ] range slider line colour grey (was ink) — IN PROGRESS
 - [ ] grey smileys vertically centred on the slider line, on top — IN PROGRESS
 - [ ] visual verification of the risiko card in the preview (navigation via keyboard/swipe pending)
-- [ ] grey smileys: remove the white plate halo (plate hugs the drawn face circle) — IN PROGRESS
-- [ ] answer dot z-index above the grey smileys — IN PROGRESS
+- [x] grey smileys: remove the white plate halo (plate hugs the drawn face circle)
+- [x] answer dot z-index above the grey smileys
