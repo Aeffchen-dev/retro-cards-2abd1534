@@ -117,8 +117,10 @@ interface RisikoSlideProps {
 
 const INK = "var(--retro-black)";
 // White drag hints inside the untouched dot: it can be pulled left or right.
-// Drawn smaller than the dot itself so the circle, not the hint, reads as the handle.
-const ARROW_SIZE = 20;
+// Drawn at about two thirds of the 40px dot so the circle, not the hint, reads as
+// the handle, and so the arrow stays legible on a phone.
+const ARROW_SIZE = 26;
+
 const ARROW_W = 1.15;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
