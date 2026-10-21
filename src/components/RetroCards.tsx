@@ -1980,7 +1980,7 @@ const RetroCards: React.FC = () => {
       case 7: {
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
-            <div className="flex flex-col items-start gap-6 w-full">
+            <div className="flex flex-col items-start gap-4 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
@@ -1988,7 +1988,7 @@ const RetroCards: React.FC = () => {
               {/* The same scale the Health Check statements ride: five smileys over
                   their dashed columns and a circle that can be pulled along the rule.
                   The answer is kept with this card's own notes, under its own key. */}
-              <div className="risiko-page w-full">
+              <div className="risiko-page risiko-page--intimacy w-full">
                 <StatementScale
                   ariaLabel="Sind wir uns körperlich nah?"
                   value={editModeNotes[7]?.scale}
