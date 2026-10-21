@@ -392,15 +392,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       // The room between the text above and the buttons below is cut in half: the
       // scale's own block — rule, column names and the note riding under it — then
       // stands with the same breath above and below, so nothing reads as bunched at
-      // one end of the card. A card with no button row (the Intimacy scale, which
-      // sits between its own fields) has no such room, so there the rule still aims
-      // at the card's own middle.
-      const need = footTop === undefined
-        ? card.y + card.height / 2 - (rule.y + rule.height / 2)
-        : (above + footTop) / 2 - (b.top + b.height / 2);
-      const slackUp = b.top - above - 8;
-      const slackDown = footTop === undefined ? 0 : footTop - b.bottom - 8;
-      const shift = Math.min(Math.max(need, -slackUp), slackDown);
+      // one end of the card.
+      const shift = centreShift({
+        cardTop: card.y, cardHeight: card.height,
+        ruleTop: rule.y, ruleHeight: rule.height,
+        aboveBottom: above, footTop, blockTop: b.top, blockHeight: b.height,
+      });
       pageEl.style.setProperty("--risiko-centre-shift", `${Math.round(shift)}px`);
     };
     // The deck's own transform settles a beat after a card arrives: until then the
