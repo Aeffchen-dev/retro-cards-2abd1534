@@ -51,6 +51,7 @@
        own grey and a hairline above it separates it from the button above. */
     --retro-info-text: #6E7078;
     --retro-info-rule: #C9CBD1;
+    --intimacy-accent: #FF6BEF;
 
     --risiko-caption: #9B9BA3;
     /* the scale's own grey: the column names and the printed intro sentence share
@@ -297,10 +298,29 @@
      themselves on it, so it has to stay one number the face row can read. */
   --risiko-statement-gap: 12px;
 }
-/* The Intimacy card carries the scale between its question and its two answer
-   fields, so the scale stands a head shorter here than on the Health Check cards,
-   where it has the whole card to itself. */
-.risiko-page--intimacy { --risiko-field-h: 80px; }
+.intimacy-rating {
+  display: flex;
+  gap: 8px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--retro-black);
+}
+.intimacy-rating .intimacy-star {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+}
+.intimacy-rating .intimacy-star svg { width: 32px; height: 32px; }
+.intimacy-star[data-filled="true"] svg { fill: currentColor; }
+.intimacy-rating .intimacy-star:hover { color: var(--intimacy-accent); }
+.intimacy-rating .intimacy-star:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  box-shadow: none;
+}
 /* Flex children must shrink to the actual content box, including when the
    statement area has a vertical scrollbar or a long helper sentence. */
 .risiko-page :is(.risiko-scale-area, .risiko-body, .risiko-block, .risiko-footer),
