@@ -272,6 +272,11 @@ describe("grey columns", () => {
     expect(slide, "the plain name label is gone").toContain("’s Anteil:");
     expect(/className="workload-label"/.test(run), "a colour run has no name above the rule").toBe(true);
     expect(/className="workload-percentage"/.test(run), "a colour run has no share below the rule").toBe(true);
+    // A name longer than its colour run breaks onto a second line inside the room
+    // the component measured for it, so it can never cross a circle or the card's edge.
+    expect(/max-width:\s*var\(--workload-label-cap/.test(label), "the name may run past its own colour").toBe(true);
+    expect(label).not.toMatch(/white-space:\s*nowrap/);
+    expect(slide, "the component never measures the name's room").toContain('"--workload-label-cap"');
     // Nothing hangs under the circles any more — the names moved above the rule.
     expect(slide, "a name still hangs under a circle").not.toContain("workload-name");
   });
