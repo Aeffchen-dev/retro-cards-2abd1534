@@ -1385,6 +1385,24 @@ const RetroCards: React.FC = () => {
                 ))}
               </div>
             )}
+            {/* Screen: photos as photo-booth strips, three below each other */}
+            {capturedPhotos.length > 0 && (
+              <div className="screen-only flex-1 min-h-0 w-full flex flex-row items-stretch justify-center gap-4 pt-6 overflow-hidden">
+                {Array.from({ length: Math.ceil(capturedPhotos.length / 3) }, (_, s) => capturedPhotos.slice(s * 3, s * 3 + 3)).map((strip, s) => (
+                  <div
+                    key={s}
+                    className="h-full max-h-[460px] flex flex-col gap-2 p-2 pb-6 bg-white shadow-lg"
+                    style={{ aspectRatio: "0.42", transform: `rotate(${s % 2 ? 2 : -2}deg)`, border: "1px solid #E4E6E8" }}
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <div key={i} className="flex-1 min-h-0" style={{ background: "#E4E6E8" }}>
+                        {strip[i] && <img src={strip[i]} alt={`Foto ${s * 3 + i + 1}`} className="w-full h-full object-cover" />}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="mt-auto pt-7">
               <ActionRow
                 iconNode={<Camera size={16} />}
@@ -1637,7 +1655,7 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute left-0 right-0 flex items-center" style={{ bottom: '0px' }}>
+            <div className="absolute left-0 right-0 flex items-center justify-center" style={{ bottom: '0px' }}>
               <ActionRow
                 icon="IconArrowRight"
                 label="Weiter swipen"
@@ -1658,7 +1676,7 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full"><RevealText text="Stärkt eure Connection" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
-              <div className="flex flex-col gap-4 w-full retro-body-copy">
+              <div className="flex flex-col gap-4 w-full max-w-[340px] retro-body-copy">
 
                 <p>Retro Cards ist euer monatlicher Check-in für eure Beziehung. Nehmt euch Zeit füreinander, sprecht ehrlich über das, was euch bewegt, und stärkt, was euch verbindet.</p>
                 <p>Macht daraus euren Date-Abend. Schnappt euch euer Lieblingsgetränk, macht’s euch gemütlich und genießt ein gutes Gespräch.</p>
