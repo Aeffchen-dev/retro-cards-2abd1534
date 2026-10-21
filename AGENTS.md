@@ -17,4 +17,5 @@
 - Keep both scales on one shared field height (`--risiko-field-h`): it caps the statement scale's field on screen and sets the work-split lane's height, and the lane centres its bar, dots and names on its own height with `cqh` (size containment) so print can stretch the lane without them coming loose.
 - Centre the Risikofaktoren slider with a fixed scale height and an even split of the free space, closing the last pixels with a shift that halves the room between the text above and the buttons below — the scale's block, note included, stands there, clamped to the room, read on screen only, and given to the clip's own element. A note on the scale rides inside that block, screen-only, keeping its press and the card's padding as its gap.
 - Pass a shared row component's label as one element: its label field lays its children side by side, so a bare fragment splits a sentence.
+- A reveal's end state beats a declared font-size: settle it on the element's own token, not `inherit`.
 
