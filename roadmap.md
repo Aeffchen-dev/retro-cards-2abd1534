@@ -274,4 +274,5 @@
 - [x] Dot smiley: no white outline behind it, and its own colour back instead of the smileys' grey.
 - [x] Dot smiley: white fill (the face\u2019s own white, on screen and on paper).
 - [x] Dot smiley: drawn with the range slider line2019s own stroke width (4px).
+- [x] Deck's ink stroke: 4px -> 2.2px (the rule, the work-split bar and the split line), so the dot's face draws at the smileys' own weight.
 
