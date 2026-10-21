@@ -424,6 +424,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
     return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
   };
+  // A colour run belongs to exactly one partner, so the name printed above the
+  // rule and the share printed below it can both be read off that one colour.
+  const partnerName = (key: string) => partners.find(p => p.key === key)?.name ?? "";
   // Where the pointer sits on one partner's scale, and how far that partner's
   // circle is from it — the same maths picks who gets grabbed and how far the
   // grab has travelled since.
@@ -481,8 +484,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
           {/* The work split is read on the same grid as the statements: no fill,
               only the dashed grey lines between every pair of neighbouring
-              columns, the scale's own edges left bare. They stop above the names'
-              strip, and the bar, the circles and the share figures all paint on top. */}
+              columns, the scale's own edges left bare. They stop above the quiet
+              strip at the lane's foot, and the bar, the circles and the names and
+              share figures printed on it all paint on top. */}
           <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
             style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {columnEdges(FACES.length).map((at) => (
@@ -496,9 +500,13 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />
             ))}
           </div>
+          {/* Every colour run carries its partner's name just above the rule and
+              that partner's share just below it, so a name and its number always
+              stand on the same colour and never drift onto a neighbour's run. */}
           <div className="workload-bar" aria-hidden="true">
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
+                <span className="workload-label">{partnerName(segment.key)}&rsquo;s Anteil:</span>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
             ))}
@@ -537,17 +545,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               // the last sits just left of the boundary it rides, the last one just
               // right of it — together they open the 4px gap the split line centres in.
               "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
-              // Names take alternating rows. With two partners each row holds a
-              // single name, so it may use the whole lane; from three partners up
-              // two names share a row, so each is kept within two bands.
-              "--workload-name-row": String(i % 2),
-              "--workload-name-cap": partners.length <= 2 ? "calc(100cqw / 2)" : "var(--workload-band, 32px)",
+              "--workload-band": band,
             } as React.CSSProperties;
             const memojiEl = (
-              <>
-                <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-                <span className="workload-name" aria-hidden="true">{p.name}</span>
-              </>
+              <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
             );
             if (readOnly) {
               return (
