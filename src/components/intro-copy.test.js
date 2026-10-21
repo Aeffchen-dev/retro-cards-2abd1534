@@ -112,3 +112,18 @@ describe("intro card on desktop", () => {
     expect(css.indexOf(narrow), "the narrower cap must be declared after the wider one").toBeGreaterThan(css.indexOf(wide));
   });
 });
+
+describe("intro card on a full-height phone", () => {
+  const tall =
+    [...css.matchAll(/@media \(max-width: 767px\) and \(min-height: (\d+)px\) \{[\s\S]*?\n\}/g)]
+      .map((m) => m[0])
+      .find((b) => b.includes(".intro-block")) ?? "";
+
+  test("tightens the gaps so the longest opening still ends inside the card", () => {
+    expect(tall, "the full-height-phone gap block is gone").toContain(".intro-copy");
+    expect(tall.match(/min-height: (\d+)px/)?.[1], "the gap block starts below the short-window ceiling").toBe("691");
+    expect(tall.match(/#root \.intro-block \{ gap: (\d+)px/)?.[1], "block gap").toBe("16");
+    expect(tall.match(/#root \.intro-copy \{ gap: (\d+)px/)?.[1], "paragraph gap").toBe("10");
+    expect(tall.match(/font-size: (\d+)px/)?.[1], "the gap block must not shrink any text").toBeFalsy();
+  });
+});
