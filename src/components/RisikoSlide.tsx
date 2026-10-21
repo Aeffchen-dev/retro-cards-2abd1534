@@ -577,9 +577,19 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)}</span>
             ))}
           </div>
+          {/* Each split's figures stand right under the foot of its boundary line —
+              the share on either side in that partner's colour — with "Split"
+              on its own line below. */}
           <div className="workload-shares" aria-hidden="true">
-            {segments.map((segment, i) => (
-              <span key={`sh${i}`} className={`workload-percentage workload-color-${i % 8}`} style={{ left: centreAt(i, SHARE_W / 2) }}>{shares[segment.key]}%</span>
+            {segments.slice(0, -1).map((segment, i) => (
+              <span key={`sh${i}`} className="workload-split" style={{ left: splitAt(i) }}>
+                <span className="workload-split-figures">
+                  <span className={`workload-percentage workload-color-${i % 8}`}>{shares[segment.key]}%</span>
+                  <span className="workload-split-sep">/</span>
+                  <span className={`workload-percentage workload-color-${(i + 1) % 8}`}>{shares[segments[i + 1].key]}%</span>
+                </span>
+                <span className="workload-split-word">Split</span>
+              </span>
             ))}
           </div>
           {partners.map((p, i) => {
