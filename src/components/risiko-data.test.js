@@ -352,6 +352,20 @@ describe("work-split split line", () => {
     expect(slide).toContain("{at}% / {100 - at}%");
     expect(slide).not.toContain("{at}:{100 - at}%");
   });
+  test("reads as the footnote's second line on screen, with nothing left under the circles", () => {
+    // The note block holds the helper sentence first and the column ratios straight
+    // under it — the row no longer stands under the two circles.
+    const noteAt = slide.indexOf("risiko-footer-note");
+    const note = slide.slice(noteAt, slide.indexOf("</div>", noteAt));
+    expect(noteAt, "the footnote has no block of its own").toBeGreaterThan(-1);
+    expect(note, "the ratios do not read under the helper sentence").toContain("<SplitCaptions />");
+    expect(note.indexOf("risiko-helper"), "the ratios read before the sentence").toBeLessThan(note.indexOf("SplitCaptions"));
+    // The lane's own copy is the printed one only, so on screen nothing hangs there.
+    expect(slide, "the ratios still stand under the lane on screen").toContain("{readOnly && <SplitCaptions />}");
+    // The notes button still keeps the card's own padding from the whole note.
+    const foot = slide.slice(slide.indexOf("risiko-footer screen-only"), noteAt);
+    expect(foot, "the note no longer stands a card padding under the button").toContain("gap-[28px]");
+  });
   test("lets the longest word break only at its own soft hyphen", () => {
     expect(softHyphenate(RISIKO_ALLOCATION_HEADING)).toContain("Beziehungs\u00ADarbeit");
     const head = css.match(/\.risiko-allocation-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
