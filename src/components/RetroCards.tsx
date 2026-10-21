@@ -1530,24 +1530,28 @@ const RetroCards: React.FC = () => {
       }
 
 
-      case 3:
+      case 3: {
+        // Five questions ride the centred block; the last one keeps the card's
+        // bottom-left corner — the same content edge the notes button uses. The
+        // block keeps a room of its own at the foot, so centring can never slide
+        // a row into the pinned one.
+        const blockRows = [
+          ["IconTrendingUp", "Ein voller Erfolg"],
+          ["IconFaceJoy", "Ein schöner Moment"],
+          ["IconPeak", "Das habe ich gelernt"],
+          ["IconTrendingDown", "Das hat mich Kraft gekostet"],
+          ["IconEyes", "Was beschäftigt mich grade?"],
+        ] as const;
         return (
-          <div className="flex flex-col items-start w-full h-full">
+          <div className="flex flex-col items-start w-full h-full relative">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">The last 4 weeks</span>
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col flex-1 justify-center w-full" style={{ gap: '24px', marginTop: '28px' }}>
-              {([
-                ["IconTrendingUp", "Ein voller Erfolg"],
-                ["IconFaceJoy", "Ein schöner Moment"],
-                ["IconPeak", "Das habe ich gelernt"],
-                ["IconTrendingDown", "Das hat mich Kraft gekostet"],
-                ["IconEyes", "Was beschäftigt mich grade?"],
-                ["IconStar", "4 Wochen in einem Wort"],
-              ] as const).map(([iconName, label], i) => (
+            <div className="flex flex-col flex-1 justify-center w-full" style={{ gap: '24px', marginTop: '28px', paddingBottom: '40px' }}>
+              {blockRows.map(([iconName, label], i) => (
                 <ActionRow
                   key={i}
                   icon={iconName}
@@ -1557,13 +1561,19 @@ const RetroCards: React.FC = () => {
                   onClick={() => openQuestionEdit(3, i, String(label))}
                 />
               ))}
-
             </div>
-
-
-
+            <div className="absolute left-0 bottom-0 w-full">
+              <ActionRow
+                icon="IconStar"
+                label="4 Wochen in einem Wort"
+                accent={ROSA_SHADES[5]}
+                className="retro-body-copy"
+                onClick={() => openQuestionEdit(3, 5, "4 Wochen in einem Wort")}
+              />
+            </div>
           </div>
         );
+      }
 
       case 4:
         return (
