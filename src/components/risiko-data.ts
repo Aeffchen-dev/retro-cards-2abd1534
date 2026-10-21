@@ -5,7 +5,7 @@ export const RISIKO_STATEMENTS = [
   ["conflicts", "Wir lösen Konflikte fair und als Team"],
   ["metime", "Wir räumen einander ausreichend Me-Time ein und machen auch mal Dinge ohne den anderen"],
   ["quality", "Wir planen genug gemeinsame Erlebnisse im Alltag ein, die uns in Verbindung bringen"],
-  ["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten einander dabei zu wachsen"],
+  ["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten uns dabei zu wachsen"],
 ] as const;
 
 export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
