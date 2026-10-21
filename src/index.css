@@ -340,6 +340,7 @@
    still closes above the scale and the notes with room to spare. */
 .risiko-statement {
   font-size: 32.6px;
+  line-height: 1.05;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   /* The statement keeps every word whole: it breaks only between words, and a
