@@ -129,9 +129,6 @@ describe("info box appearance", () => {
     expect(actionRow, "the mark is not handed the tile's 32px column").toMatch(
       /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-center leading-none"/,
     );
-    expect(actionRow, "the mark is not flushed to the column's left edge").not.toMatch(
-      /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-center/,
-    );
     expect(actionRow, "the info sentence lost the field's own padding").toMatch(
       /isInfo\s*\?\s*"flex items-center px-3/,
     );
