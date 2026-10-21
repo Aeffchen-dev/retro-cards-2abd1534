@@ -46,9 +46,10 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// The scale's grey smileys draw with this pen: 0.9 of the 24 grid painted into
-// the 44px face ≈ 1.65px (user: "grey smilies stroke width less").
-const FACE_PEN = 0.9;
+// The scale's grey smileys draw with this pen: 1.1 of the 24 grid painted into
+// the 44px face ≈ 2px (user: "grey smilies stroke width less", then "all smilie
+// stroke withs a bit more"). The rule and the answer's face take this pen too.
+const FACE_PEN = 1.1;
 
 // One pen for the whole scale: the rule and the answer dot's face draw exactly
 // as thick as the grey smileys standing above them (user: "outline range slider
