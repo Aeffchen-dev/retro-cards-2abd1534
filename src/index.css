@@ -371,8 +371,8 @@
 .print-only { --risiko-face-size: 28px; }
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
-   just above it — 26px clears the tallest name, so a name's white backing never bites
-   into the grey band and no guide runs through a partner's name.
+   just above it — a quiet band 26px tall, so no guide runs right up to the split
+   labels that follow the lane and nothing printed on the bar crowds them.
    On screen the lane stands as tall as the statement scales' fields plus that strip, so
    the work split is read on a grid of exactly the same height as every other card. In
    print it stretches over the card instead, the way the printed statement fields do.
@@ -412,40 +412,35 @@
 }
 /* One ink-pulled partner colour, shared by the name, the circle's ring and the share
    figure, so all three read as the same partner. */
-.workload-name, .workload-percentage, .workload-avatar {
+.workload-label, .workload-percentage, .workload-avatar {
   --workload-ink: color-mix(in srgb, var(--workload-color) 55%, #101010);
 }
-/* The share sits above the rule, never on it. */
+/* The share sits below the rule, never on it: the name is printed above the rule on
+   the very same colour run, so a partner reads as one block — name, colour, number. */
 .workload-percentage {
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 3px);
+  top: calc(100% + 5px);
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
   color: var(--workload-color);
-  font-weight: 700;
   font-size: 16px;
   line-height: 17px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0 3px;
   white-space: nowrap;
 }
-/* Every partner's name sits centred under its own Memoji, in that partner's colour.
-   The colour is pulled towards ink so short bold labels stay readable on white.
-   The box may only grow into the space that is really free: up to the lane edges and
-   up to the middle of the gap to the neighbouring Memoji. Two names can therefore
-   never end up on top of each other; a name longer than its space is shortened. */
-.workload-name {
+/* Every partner is named on its own colour run, just above the rule, in that
+   partner's colour pulled towards ink so a short bold label stays readable on white.
+   Because the label rides the run and not the circle, it can never drift onto a
+   neighbour's colour: the two circles that mark a split sit right together, while
+   each run's middle — where its name and its share stand — is always its own.
+   The white backing masks the dashed guides behind it. */
+.workload-label {
   position: absolute;
-  /* Partners take alternating rows, so two names can never end up on top of each
-     other — not even when their circles sit right next to each other. */
-  /* Every name sits straight under its own dot and wraps onto further lines
-     when it is wider than the room it has. The dot rides the fields' middle, so
-     the drop to the names' strip is half the fields' height minus half the dot. */
-  top: calc(100% + (100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2 + 4px);
   left: 50%;
+  bottom: calc(100% + 5px);
   transform: translateX(-50%);
-  text-align: center;
   background: var(--risiko-label-bg);
   color: var(--workload-ink);
   /* 12px is the smallest text size in the app, so a name never shrinks below it. */
@@ -453,21 +448,7 @@
   line-height: 13px;
   font-weight: 700;
   padding: 0 2px;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  width: max-content;
-  /* centre of this partner's circle, measured from the lane's left edge */
-  --workload-cx: calc(var(--workload-li, 0px)
-    + (100cqw - var(--workload-li, 0px) - var(--workload-ri, 0px) - var(--workload-slot, 32px)) * var(--workload-v, 50) / 100
-    + var(--workload-slot, 32px) / 2);
-  /* A name may use all the room its own row has: up to the lane edges, and up to
-     whatever the component says is free on that row. */
-  max-width: min(
-    calc(var(--workload-cx) * 2),
-    calc((100cqw - var(--workload-cx)) * 2),
-    var(--workload-name-cap, 100cqw)
-  );
+  white-space: nowrap;
 }
 
 /* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — stand in
