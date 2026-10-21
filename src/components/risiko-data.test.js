@@ -178,18 +178,18 @@ describe("grey columns", () => {
     expect(columnEdges(5)).not.toContain(0);
     expect(columnEdges(5)).not.toContain(100);
   });
-  test("the columns carry no fill and no dashed lines", () => {
-    // The five fields are not drawn at all: no fill, no divider, no guide. What
-    // the scale shows is its smileys, its rule and its names — nothing else.
+  test("the columns carry no fill and every line stands solid", () => {
+    // The five fields carry no paint of their own: what draws them are their lines,
+    // and every one of those lines is a normal stroke, never a dashed one.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     // nothing is painted behind a column
     expect(css).not.toMatch(/--risiko-column-fill/);
     expect(slide).not.toMatch(/risiko-column-band/);
-    // and no dashed line stands between them any more, on either scale
+    // the lines are drawn solid on both scales
     expect(css, "the stylesheet draws a dashed line again").not.toMatch(/border[^;]*dashed/);
-    expect(slide, "the statement scale draws column dividers").not.toMatch(/risiko-column-edge|risiko-column-guide/);
-    expect(slide, "the work-split lane draws column dividers").not.toMatch(/columnEdges\(FACES\.length\)/);
+    expect(slide, "the statement scale draws no column lines").toMatch(/risiko-column-edge risiko-guide-full/);
+    expect(slide, "the work-split lane draws no column lines").toMatch(/columnEdges\(FACES\.length\)/);
   });
   test("the scale smileys sit a shade lighter than the column names", () => {
     // The five names under the rule read in the scale's darker grey

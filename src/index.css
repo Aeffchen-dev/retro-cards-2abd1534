@@ -53,6 +53,11 @@
     --retro-info-rule: #C9CBD1;
     --intimacy-accent: #FF6BEF;
 
+    /* The scale's columns are drawn, not filled: a solid guide runs down each
+       smiley's own column (--risiko-line) and a shade lighter solid divider
+       stands between every pair of neighbouring columns (--risiko-column-line). */
+    --risiko-line: #80828A;
+    --risiko-column-line: #C9CBD1;
     --risiko-caption: #9B9BA3;
     /* the scale's own grey: the column names and the printed intro sentence share
        it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
@@ -355,6 +360,22 @@
 }
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
+}
+/* The first two Health Check cards draw their own track: six solid grey lines
+   across the face column — one above the first smiley, one below the last and
+   one between every neighbouring pair — so the column reads as five stacked
+   fields an answer can rest in. Each starts at the column's own left edge and
+   stops short of the resting Memoji's spot; the faces draw on top of them. */
+.health-check-guides {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.health-check-guide {
+  position: absolute;
+  left: 0;
+  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px));
+  border-top: 1px solid var(--risiko-column-line);
 }
 .health-check-page .health-check-face,
 .health-check-page .health-check-face svg {
@@ -839,6 +860,25 @@
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
+/* A solid line that stretches the stack's whole height: from the smileys' own top
+   edge, behind each face (whose plate keeps the face readable), down past the last
+   column name. Both families use it — the smileys' own guides and the lighter
+   dividers between them — so every line on the scale spans smileys, rule and names. */
+.risiko-guide-full { top: 0; bottom: 0; }
+/* Each smiley's column carries its own solid guide straight down it, centred on
+   the face. The face's plate and every name's plate keep the line from reading
+   through either of them, so it looks threaded behind the scale, not over it. */
+.risiko-column-guide {
+  width: 0;
+  border-left: 1px solid var(--risiko-line);
+  transform: translateX(-0.5px);
+}
+/* The divider between two neighbouring columns, a shade behind the guides, so the
+   range still reads as five identical fields with the scale's own edges left open. */
+.risiko-column-edge {
+  width: 0;
+  border-left: 1px solid var(--risiko-column-line);
+}
 /* The work-split's boundary line: solid ink, standing from the lane's top edge
    down to the names' strip. Its left lands on the centre of the 4px gap between
    the two circles that meet at the boundary. */
@@ -1478,6 +1518,12 @@ textarea.bg-retro-post-it:focus,
     margin: 0 !important;
   }
 
+
+  /* On paper the Health Check track reaches its own end point, measured against
+     the printed card rather than the device's width. */
+  .health-check-guide {
+    --health-guide-end: var(--health-guide-print-end);
+  }
 
   .print-emoji-scale > * {
     margin-top: 0 !important;
