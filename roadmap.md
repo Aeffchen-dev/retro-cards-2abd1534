@@ -319,3 +319,6 @@
 - [x] no snapping on the statement scale (user reverted the snap)
 - [x] slider rule in the text's grey (#6E7078)
 - [x] grey smileys' white halo restored
+- [x] info ℹ icon stroke lightened to 1.5px
+- [x] slider rule in the vertical column lines' grey (#C9CBD1)
+- [ ] answer: do the grey smileys wear a white outline or a white fill beyond the outline
