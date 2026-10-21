@@ -71,6 +71,10 @@ const TRAVEL = 100 - 2 * TRAVEL_INSET;
 const faceX = (i: number) => `${TRAVEL_INSET + i * COLUMN}%`;
 /** CSS left for the circle at a slider value: 0 in the first column's middle, 100 in the last. */
 const markerLeft = (value: number) => `calc(${TRAVEL_INSET}% + ${value} * ${TRAVEL / 100}%)`;
+/** The slider snaps: every answer lands on one of the five face anchors (user:
+ *  "range slider snap"), so drag, press and keyboard all settle on a smiley. */
+const SNAP = 25;
+const snapValue = (v: number) => Math.round(v / SNAP) * SNAP;
 /** CSS left for the line between face `i` and the face to its right: their columns' border. */
 const edgeX = (i: number) => `${(i + 1) * COLUMN}%`;
 /** The work-split lane keeps its own evenly divided grid: its circles ride the share
@@ -327,12 +331,12 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
     e.currentTarget.setPointerCapture(e.pointerId);
-    onChange(String(Math.round(v)));
+    onChange(String(snapValue(v)));
   };
   const dragField = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!fieldDrag.current) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v !== null) onChange(String(Math.round(v)));
+    if (v !== null) onChange(String(snapValue(v)));
   };
   const releaseField = () => { fieldDrag.current = null; };
 
