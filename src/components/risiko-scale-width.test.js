@@ -1,9 +1,11 @@
 import { test, expect } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleEndInset, MARKER_SIZE } from "./risiko-data";
+import { scaleEndInset } from "./risiko-data";
 
 const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+// The handle's own size lives in the component; the scale's ends stand one radius in.
+const MARKER_SIZE = Number(slide.match(/const MARKER_SIZE = (\d+);/)?.[1] ?? 0);
 
 // The scale used to keep a band of the card unused at both ends: the outermost
 // smiley stood 10% in from the edge while the rule ran the full width. Now the
