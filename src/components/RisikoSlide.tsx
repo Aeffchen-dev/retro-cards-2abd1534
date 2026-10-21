@@ -438,35 +438,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // that one until the pointer is lifted, wherever on the bar the press landed.
   const workloadDrag = useRef<{ index: number } | null>(null);
 
-  // A press inside the field — anywhere above the rule — picks the circle up and
-  // keeps dragging it, so the whole grey band is the handle and not only the
-  // rule's row. The value is read with the slider's own maths, so both ways of
-  // grabbing land the circle exactly under the pointer.
-  const fieldDrag = useRef<HTMLDivElement | null>(null);
-  const fieldValueAt = (el: HTMLElement, clientX: number) => {
-    const box = el.getBoundingClientRect();
-    const from = (box.width * facePct(0)) / 100;
-    const travel = (box.width * (100 - 2 * facePct(0))) / 100;
-    if (travel <= 0) return null;
-    return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
-  };
-  const grabField = (key: string, readOnly: boolean) => (e: React.PointerEvent<HTMLDivElement>) => {
-    // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
-    // Everywhere else in the field — the rule's outer ends included, which the slider's own
-    // track does not reach — a press places the dot, so the whole line is a tap target.
-    if (readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
-    const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v === null) return;
-    fieldDrag.current = e.currentTarget;
-    e.currentTarget.setPointerCapture(e.pointerId);
-    onChange(key, String(Math.round(v)));
-  };
-  const dragField = (key: string) => (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!fieldDrag.current) return;
-    const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v !== null) onChange(key, String(Math.round(v)));
-  };
-  const releaseField = () => { fieldDrag.current = null; };
 
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean, below?: React.ReactNode) => (
