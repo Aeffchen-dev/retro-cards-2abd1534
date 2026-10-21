@@ -42,6 +42,9 @@
     /* the answer dot's own 1px ring: the Health Check's own light green
        (BRAND.neonGreen), so the handle belongs to the chapter's colour story */
     --risiko-marker-ring: #63E82B;
+    /* the answer dot's own box: the same 44px the marker's React constant hands
+       the thumb, so the scale can work the gap under the rule out from the dot */
+    --risiko-marker-size: 44px;
 
     --risiko-helper-bg: #F1F2F4;
     /* the columns carry no fill: they are drawn only as dashed grey lines, and
@@ -581,6 +584,11 @@
      scale is centred in. The printed sheet is sized to the page instead, so print
      is left to stretch the field over the whole card. */
   .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
+  /* The names ride up to the rule instead of waiting at the field's foot: the
+     field keeps its height, but the empty room under the circle is handed back to
+     the scale, so the block — rule, names, and the dashed lines drawn against it —
+     ends just past the names and its shorter self re-centres on the card. */
+  .risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }
   /* The interactive slider sits on the card's mid-line: the scale stops growing
      to fill the card and the free space around it is split evenly, so it lands in
      the middle of the room between the statement above and the buttons below.
@@ -617,6 +625,16 @@
    own position lives here too, so the guides read it from their own parent. */
 .risiko-scale-stack {
   --risiko-face-top: 0px;
+  /* On screen the field stands at the taller of its own basis and the floor the
+     card hands it (see --risiko-field-min), and it centres the rule in the room
+     that is left under the smileys — so half of that room is the rule's own drop
+     from the field's foot, and the stack can say where the rule really sits. */
+  --risiko-field-live: max(var(--risiko-field-h), var(--risiko-field-min, 0px));
+  /* The column names rise to just under the circle: the room below the rule, less
+     the circle's own radius and a hair of air, is how far the row can travel up.
+     A card whose field is too short for that (Intimacy's) lifts by nothing and
+     keeps its names where they stand. */
+  --risiko-caption-lift: max(0px, calc((var(--risiko-field-live) - var(--risiko-face-size) - 4px) / 2 - var(--risiko-marker-size) / 2 - 4px));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -821,12 +839,12 @@
 .risiko-expression-point {
   position: relative;
   display: block;
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-  max-width: 44px;
-  max-height: 44px;
+  width: var(--risiko-marker-size);
+  height: var(--risiko-marker-size);
+  min-width: var(--risiko-marker-size);
+  min-height: var(--risiko-marker-size);
+  max-width: var(--risiko-marker-size);
+  max-height: var(--risiko-marker-size);
   aspect-ratio: 1;
 
   border-radius: 50%;

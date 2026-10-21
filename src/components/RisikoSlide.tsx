@@ -325,7 +325,11 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
             </div>
             {/* The smileys sit flush with the field's top edge, while the rule
                 and the circle centre on the long dashed line under them. */}
-            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: fieldMin ?? FIELD_MIN }}>
+            {/* The floor travels as a token too (see --risiko-field-min): the stack
+                works the rule's own height out of the taller of the floor and the
+                field's basis, which is what tells the names how far they may rise. */}
+            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border"
+              style={{ minHeight: fieldMin ?? FIELD_MIN, "--risiko-field-min": `${fieldMin ?? FIELD_MIN}px` } as React.CSSProperties}>
               <FaceLayer />
               <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
                 onChange={(v) => onChange(String(v))} />
