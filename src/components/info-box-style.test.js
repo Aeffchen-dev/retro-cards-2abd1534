@@ -23,11 +23,11 @@ describe("info box appearance", () => {
       /border-top:\s*1px solid var\(--retro-info-rule\);/,
     );
     expect(rule, "the line runs the card's whole content width").toMatch(/width:\s*100%;/);
-    // user: "the margin between info I text and border-top must reflect card padding"
-    expect(rule, "the hairline keeps the card's padding above the letters").toMatch(
-      /padding-top:\s*var\(--retro-card-pad\);/,
+    // user: "INFO TEXT TOPPADDING ONLY 8PX" — the hairline keeps only a small
+    // breath above the letters; the card padding stands between CTA and row.
+    expect(rule, "the hairline keeps 8px above the letters").toMatch(
+      /padding-top:\s*8px;/,
     );
-    expect(css, "the card's padding token holds 28px").toMatch(/--retro-card-pad:\s*28px;/);
 
     expect(rule, "the border never squeezes the label").toMatch(/height:\s*auto;/);
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);

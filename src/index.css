@@ -1138,10 +1138,9 @@ button {
       not leave the line stopping half way across the card */
   width: 100%;
   border-top: 1px solid var(--retro-info-rule);
-  /* the air between the hairline and the sentence reads the card's own padding,
-     not a token of its own (user: "the margin between info I text and border-top
-     must reflect card padding") */
-  padding-top: var(--retro-card-pad);
+  /* the air between the hairline and the sentence is its own small breath —
+     8px, like the row's original padding (user: "info text top padding only 8px") */
+  padding-top: 8px;
 }
 
 
