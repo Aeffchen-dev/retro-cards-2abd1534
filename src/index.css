@@ -551,8 +551,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 1.5px); /* half of the bar's own 3px height */
-  height: 3px;
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 2px);
+  height: 4px;
   display: flex;
 }
 
@@ -797,6 +797,9 @@
    own 6px of breath. Two pixels come off that maximum (user: "text sie -2px"). */
 .risiko-scale-stack .risiko-scale-caption {
   font-size: calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px);
+  color: var(--risiko-guide);
+}
+.risiko-scale-stack .risiko-scale-caption[data-active="true"] {
   color: var(--retro-black);
 }
 /* The grey and size the work-split card's ratio legend falls back to: it names
@@ -958,7 +961,7 @@
    through either of them, so it looks threaded behind the scale, not over it. */
 .risiko-column-guide {
   width: 0;
-  border-left: 1px solid var(--risiko-line);
+  border-left: 1px solid var(--risiko-column-line);
   transform: translateX(-0.5px);
 }
 /* The divider between two neighbouring columns, a shade behind the guides, so the
@@ -967,7 +970,7 @@
   width: 0;
   /* the lines wear the very colour the column names are printed in (user: "grey
      lines as text color"), so the grid and its labels read as one ink */
-  border-left: 1px solid var(--retro-black);
+  border-left: 1px solid var(--risiko-column-line);
 }
 /* The work-split's boundary line: solid ink, standing from the lane's top edge
    down to the names' strip. It is the deck's one shared stroke, and its left
@@ -975,9 +978,9 @@
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: 4px;
   background: var(--retro-black);
-  transform: translateX(-1.5px);
+  transform: translateX(-2px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }

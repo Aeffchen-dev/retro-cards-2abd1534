@@ -342,7 +342,7 @@ describe("grey columns", () => {
     // the work-split bar is 3px tall, however it is drawn
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
-    expect(thick, "the work-split bar's thickness is gone").toBe(3);
+    expect(thick, "the work-split bar's thickness is gone").toBe(4);
     const rule = Number(slide.match(/const RULE_W = ([\d.]+)/)?.[1]);
     expect(rule, "the slider rule does not match the work-split bar's 3px").toBe(thick);
   });
@@ -582,8 +582,8 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*3px/);
-    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
+    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*4px/);
+    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-2px\)/);
   });
   test("reads at the same size as the deck's other questions, also on a phone", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
