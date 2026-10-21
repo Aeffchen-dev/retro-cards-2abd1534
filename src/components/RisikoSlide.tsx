@@ -651,11 +651,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         </div>
         {/* The split each column stands for, labelled in the same row, type and
             grey the statement scales name their columns with — one label per
-            column, centred on it, in the couple's ratio with a colon and %. */}
+            column, centred on it, with each share carrying its own % and a slash
+            between them, so a column reads "10% / 90%". */}
         <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
           {FACES.map((_, i) => {
             const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-            return <span key={`sp${i}`} className="risiko-scale-caption">{at}:{100 - at}%</span>;
+            return <span key={`sp${i}`} className="risiko-scale-caption">{at}% / {100 - at}%</span>;
           })}
         </div>
       </div>
