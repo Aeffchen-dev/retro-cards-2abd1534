@@ -198,9 +198,11 @@ describe("grey columns", () => {
     expect(css).not.toMatch(/--risiko-column-fill/);
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     expect(slide).not.toMatch(/risiko-column-band/);
-    // and the dividers are drawn on both scales, screen and print alike
-    const edges = slide.match(/columnEdges\(FACES\.length\)/g) ?? [];
-    expect(edges.length, "the dividers are missing from a scale").toBeGreaterThanOrEqual(2);
+    // and the dividers are drawn on both scales, screen and print alike: the
+    // statement scale places them between its smileys (edgeX), the work-split
+    // lane between its own even columns (columnEdges)
+    expect(slide, "the statement scale draws no column dividers").toMatch(/className="risiko-column-edge risiko-guide-full/);
+    expect(slide, "the work-split lane draws no column dividers").toMatch(/columnEdges\(FACES\.length\)/);
   });
   test("the scale smileys sit a shade lighter than their dotted guides and column names", () => {
     // The dotted line down each column reads as a whisper (--risiko-line), the
@@ -312,9 +314,14 @@ describe("grey columns", () => {
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
     // The dotted lines run down through the names' band now, so each name keeps
     // a plate of the card's own surface — never a grey fill: the line passes
-    // behind the word instead of drawing through its letters.
-    expect(/background:\s*var\(--risiko-surface\)/.test(caption), "the name does not keep a plate of the card's surface").toBe(true);
-    expect(caption).not.toMatch(/background:\s*(#|var[(]--risiko-(guide|caption|column|helper))/);
+    // behind the word instead of drawing through its letters. The plate is its
+    // own inline span inside the name line, so it hugs the letters and nothing
+    // wider than them.
+    const plate = css.match(/\.risiko-caption-plate \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(plate, "the name has no plate of its own").toBeTruthy();
+    expect(/background:\s*var\(--risiko-surface\)/.test(plate), "the plate is not the card's own surface").toBe(true);
+    expect(/padding-inline/.test(plate), "the plate does not keep a little breath around the word").toBe(true);
+    expect(caption, "the name itself no longer needs a background").not.toMatch(/background/);
     // and the plate repaints for paper, so it never shows as a pale patch
     expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });

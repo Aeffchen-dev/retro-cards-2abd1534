@@ -284,6 +284,10 @@
      exactly this tall plus the strip its names live in — so a card with one
      work-split field shows fields as high as a card with two statements. */
   --risiko-field-h: 120px;
+  /* How far the circle's centre stops short of each scale end: the handle's own
+     radius, mirroring scaleEndInset(MARKER_SIZE) in RisikoSlide.tsx, so the outer
+     smileys and the names under them are placed with the same maths. */
+  --risiko-scale-inset: 16px;
   /* The space a statement's last line keeps above the scale. The smileys centre
      themselves on it, so it has to stay one number the face row can read. */
   --risiko-statement-gap: 12px;
@@ -434,6 +438,10 @@
    tuned with; tablet and desktop use the smaller token above. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
+/* The dashed guide runs the line's whole height now and passes straight behind each
+   smiley, so the face keeps a plate of the card's own surface: the line disappears
+   behind the disc and reappears under it, exactly like a name's plate below. */
+.risiko-face { background: var(--risiko-surface); border-radius: 50%; }
 
 /* The printed copy is a fixed A4 layout, not a device, so it keeps the full 28px
    the print pages were tuned with — the token is set on its container, which the
@@ -590,12 +598,11 @@
   padding-top: calc(var(--risiko-face-size) + 4px);
 }
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
-/* Each face's column keeps its two stretches of dashed guide: a stub from the
-   stack's top down to the face, then the long run from just under the face to
-   the foot of the column names — both read the face row's own position, so they
-   follow it anywhere. */
-.risiko-column-guide--stub { top: 0; height: var(--risiko-face-top); }
-.risiko-column-guide--long { top: calc(var(--risiko-face-top) + var(--risiko-face-size) + 4px); bottom: 0; }
+/* A dashed line that stretches the stack's whole height: from the smileys' own top
+   edge, behind each face (whose plate keeps the face readable), down past the last
+   column name. Both families use it — the smileys' own guides and the lighter column
+   dividers between them — so every line on the scale spans smileys, rule and names. */
+.risiko-guide-full { top: 0; bottom: 0; }
 /* The field and the names under it form one stack, and the dashed lines are
    drawn against that stack — so a line starts at the smileys and ends just past
    the last name, on the screen and on the printed sheet alike. The face row's
@@ -617,6 +624,30 @@
   gap: 0 4px;
   padding-bottom: 4px;
 }
+/* The statement scale's names sit under the smiley they belong to, so the row's
+   columns are the stretches of the scale each face owns: the two outer ones reach
+   only their smiley's own centre — a name centred on the first or last smiley would
+   hang over the card's edge — while the three inside stand exactly on their face.
+   The work-split lane's split figures keep the evenly divided grid above. */
+.risiko-scale-stack .risiko-scale-captions {
+  gap: 0;
+  grid-template-columns:
+    calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8)
+    repeat(3, calc((100% - 2 * var(--risiko-scale-inset)) / 4))
+    calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8);
+}
+/* The two end names line up with the card's own edges rather than their smiley's
+   centre, and they take their own width instead of their narrow stretch: the first
+   stands at the card's left edge and grows inwards, the last at its right edge. That
+   keeps both inside the card without ever forcing a name to break. */
+.risiko-scale-stack .risiko-scale-caption:first-child { text-align: left; }
+.risiko-scale-stack .risiko-scale-caption:last-child { text-align: right; }
+.risiko-scale-stack .risiko-scale-caption:first-child,
+.risiko-scale-stack .risiko-scale-caption:last-child {
+  width: max-content;
+  justify-self: start;
+}
+.risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
 /* They read in the scale's own grey — the tone of the dashed guides, while the
    faces above sit a shade lighter — one step under the info rows' 12px floor.
    At that size the longest half of a name ("teilweise zu", 12 letters) still
@@ -647,11 +678,15 @@
      plate of the card's own surface: the line passes behind the word and
      reappears just under it. The plate bleeds into the 4px gap between the
      columns, so it never touches a neighbour's letters. */
-  background: var(--risiko-surface);
   padding-top: 4px;
-  padding-inline: 2px;
-  margin-inline: -2px;
 }
+/* The plate is only as wide as the word it protects, so the dashed lines that run
+   down through the names' band stay visible beside it — only the letters themselves
+   sit on the card's own surface. */
+.risiko-caption-plate { background: var(--risiko-surface); padding-inline: 3px; }
+/* The outer names touch the card's edge, so their plate never bleeds past it. */
+.risiko-scale-stack .risiko-scale-caption:first-child .risiko-caption-plate { padding-left: 0; }
+.risiko-scale-stack .risiko-scale-caption:last-child .risiko-caption-plate { padding-right: 0; }
 /* Each name stands in its own lines: the spans the component emits (first word /
    middle words / last word) become real lines on every device, so the row never
    mixes single-line and wrapped labels. */

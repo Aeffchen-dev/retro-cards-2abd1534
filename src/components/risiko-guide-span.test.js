@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 
 const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+const FACES_COUNT = 5;
 
 // The dotted guides no longer stop at the field's foot: they are drawn against a
 // stack that holds the field *and* the column names, so a line runs from the
@@ -17,7 +18,7 @@ test("the dotted guides run from the smileys down past the column names", () => 
   // the two dashed families are drawn against the stack, before anything else,
   // so a line can never cover a smiley, a guide or the handle
   expect(guides, "the smiley guides are missing").toBeGreaterThan(stack);
-  expect(columns, "the column dividers are missing").toBeGreaterThan(stack);
+  expect(columns, "the column lines are missing").toBeGreaterThan(stack);
   expect(guides).toBeLessThan(field);
   // ...and the field and the names live inside that same stack
   expect(field, "the field is missing").toBeGreaterThan(stack);
@@ -25,9 +26,18 @@ test("the dotted guides run from the smileys down past the column names", () => 
   // the chapter's own sentence box sits outside the stack: the lines must stop
   // with the names, not run down through the box
   expect(slide.indexOf("{below && (")).toBeGreaterThan(captions);
-  // both families stretch the stack's full height, from the smileys' top edge
-  expect(/\.risiko-column-guide--long \{[^}]*bottom: 0;/.test(css), "the long guide does not reach the stack's foot").toBe(true);
-  expect(/\.risiko-column-guide--stub \{ top: 0;/.test(css), "the stub does not start at the stack's top").toBe(true);
+  // both families stretch the stack's full height, from the smileys' top edge to
+  // the foot of the names, on screen and on paper alike
+  const full = css.match(/\.risiko-guide-full \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  expect(full, "the guides have no full-height rule").toBeTruthy();
+  expect(/top:\s*0;/.test(full), "the guides do not start at the stack's top").toBe(true);
+  expect(/bottom:\s*0;/.test(full), "the guides do not reach the stack's foot").toBe(true);
+  // one guide per smiley, one lighter line per pair of neighbours — and both
+  // families carry the full-height rule
+  expect(slide, "the smileys' guides are not drawn full height").toMatch(/className="risiko-column-guide risiko-guide-full/);
+  expect(slide, "the column lines are not drawn full height").toMatch(/className="risiko-column-edge risiko-guide-full/);
+  expect(slide.match(/FACES\.map\(\(_, i\) => <span key=\{`gu\$\{i\}`\}/)?.[0], "the guides are not drawn per smiley").toBeTruthy();
+  expect(slide.match(/FACES\.slice\(0, -1\)\.map/)?.[0], "the column lines are not drawn per pair of neighbours").toBeTruthy();
   expect(/\.risiko-scale-stack \{[^}]*position: relative;/.test(css), "the stack is not a positioning parent").toBe(true);
 });
 
@@ -37,4 +47,20 @@ test("the column names paint above the dotted lines that run through them", () =
   const captions = slide.indexOf('className="risiko-scale-captions');
   const stackEnd = slide.indexOf("</div>", slide.indexOf("</div>", captions) + 1);
   expect(slide.slice(captions, stackEnd).includes("risiko-scale-stack"), "the stack closes before the names").toBe(false);
+});
+
+test("no dotted line draws through a smiley", () => {
+  // The guides run the stack's whole height now, so they pass straight behind the
+  // face row. Two things keep the smileys clean: the row is painted after both
+  // dashed families, and every face carries a disc of the card's own surface
+  // behind its outline, so a line reads as threaded behind the face.
+  const guides = slide.indexOf('className="risiko-scale-guides');
+  const columns = slide.indexOf('className="risiko-columns');
+  const faceRow = slide.indexOf("<FaceLayer />");
+  expect(faceRow, "the smiley row is missing").toBeGreaterThan(guides);
+  expect(faceRow).toBeGreaterThan(columns);
+  const face = css.match(/\.risiko-face \{([^}]*)\}/)?.[1] ?? "";
+  expect(face, "the face has no rule of its own").toBeTruthy();
+  expect(/background:\s*var\(--risiko-surface\)/.test(face), "the smiley has no plate of the card's surface").toBe(true);
+  expect(/border-radius:\s*50%/.test(face), "the smiley's plate is not a disc").toBe(true);
 });
