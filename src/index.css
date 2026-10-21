@@ -1095,11 +1095,8 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--risiko-face-fill);
-  /* a subtle white outline just outside the answer's own circle (user:
-     "sliderdot add a subtle white outline"): the grey smileys draw without a
-     fill now, so this is what keeps the answer clear of the rule and of any
-     face it rests on */
-  box-shadow: 0 0 0 2px var(--risiko-face-fill);
+  /* no ring beyond the face's own plate (user: "REMOVE 2PX WEI0EN RAND"): the
+     white stops exactly where the drawn circle's outline stands */
 }
 
 /* The draggable dot never shows a focus outline. */

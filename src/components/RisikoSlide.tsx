@@ -8,10 +8,13 @@ import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdge
 // traced from the very anchor curve the dragged dot morphs through. The five grey
 // scale faces, the printed average-mood face and the five Health Check faces are
 // all this one drawing, so a single feature can carry its own pen everywhere at
-// once. The mouth draws one pixel on every smiley, whatever weight its own
-// outline wears (user: "mouth stroke width all smileys 1px"); the icon paints its
-// 24-unit view into `size` pixels, so that pixel pen is stated back in grid units.
-const MOUTH_PEN_PX = 1;
+// once. The mouth keeps its own pen on every smiley, whatever weight its own
+// outline wears, and a face may overrule it: the five grey scale smileys draw
+// theirs finer than every other face in the deck (user: "MOUTH 1,4 GREY SMILIES"
+// against "1,6 FOR THE OTHERS SMILIES MOUTH"). The icon paints its 24-unit view
+// into `size` pixels, so each pixel pen is stated back in grid units.
+const MOUTH_PEN_PX = 1.6;
+const SCALE_MOUTH_PEN_PX = 1.4;
 // The eyes are filled circles a step above the pen of their outline and mouth:
 // this radius lands a 3.7px dot on the deck's 44px faces — the step the user
 // asked for on every face ("eye dot bit bigger. for aLL") — and the answer dot's
@@ -19,7 +22,7 @@ const MOUTH_PEN_PX = 1;
 const EYE_R = 1;
 
 const smiley = (mouth: number[]) =>
-  ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
+  ({ size = 24, strokeWidth = 1.5, color, mouthPen = MOUTH_PEN_PX }: { size?: number; strokeWidth?: number; color?: string; mouthPen?: number }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -35,7 +38,7 @@ const smiley = (mouth: number[]) =>
       <circle cx="12" cy="12" r="10" />
       <circle cx="9" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
       <circle cx="15" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
-      <path d={mouthPath(mouth)} strokeWidth={MOUTH_PEN_PX * (24 / size)} />
+      <path d={mouthPath(mouth)} strokeWidth={mouthPen * (24 / size)} />
     </svg>
   );
 
@@ -59,24 +62,25 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// One pen for the whole scale: the answer dot's own face, the five grey smileys
-// and the rule they stand on all draw this many pixels, on screen and on paper.
-// The dot used to ride the line a step finer (user: "smiley outlines and the
-// slider line +20% stroke width compared to face") and its face was set to a
-// round 2px (user: "make face astrerpke width 2px") — until "range slider dot
-// stroke with vs slider line stroke with" was answered "Kreis wie die Linie",
-// which lifted the dot's pen to the very weight of the line it rides.
-const FACE_PEN_PX = 2.4;
-// The icon paints its 24-grid drawing into the 44px face, so that pixel pen has
-// to be stated back in grid units: FACE_PEN is what the drawing's strokeWidth
-// takes, and it lands the asked-for 2.4px at the face's own size.
+// Two pens on the scale. The answer dot's own outline circle and the rule it
+// rides draw one weight (user: "OUTLINE CIRCLE SLIDER DOT AND SLIDR LINE STROKE
+// WIDT" → "2PX"), and the five grey smileys stand a step finer than that (user:
+// "ROUND CIRCLE OF GREY SMILIES 1,8"). The dot once rode the line a step finer,
+// then both were lifted to one shared 2.4px pen ("Kreis wie die Linie") — that
+// single pen is now split again into these two.
+const FACE_PEN_PX = 2;
+const SCALE_PEN_PX = 1.8;
+// The icon paints its 24-grid drawing into the 44px face, so each pixel pen has
+// to be stated back in grid units: FACE_PEN is what the dot's drawing takes and
+// SCALE_PEN what the grey smileys' does, landing the asked-for pixels at the
+// face's own size.
 const FACE_PEN = FACE_PEN_PX * (24 / FACE_SIZE);
+const SCALE_PEN = SCALE_PEN_PX * (24 / FACE_SIZE);
 
-// The scale's smileys and rule wear exactly that pen — the step the rule once
-// stood over the answer is retired. The work-split bar keeps its own heavier
-// 3px: it carries the shares, it is not a track.
-const SCALE_PEN = FACE_PEN;
-const RULE_W = SCALE_PEN * (FACE_SIZE / 24);
+// The rule wears the answer's own pen — line and circle are one weight. The
+// work-split bar keeps its own heavier 3px: it carries the shares, it is not a
+// track.
+const RULE_W = FACE_PEN * (FACE_SIZE / 24);
 // The dot states its own pixel width next to the rule's even though both land on
 // the same number: the marker draws through a zoomed window, so its pen is
 // converted separately (see MARKER_PEN).
@@ -150,7 +154,7 @@ const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color
   // overlay fits all five and the circles can grow without the pen thickening
   // the face's outline and mouth with them.
   <span className="risiko-face relative flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={SCALE_PEN} color={color} />
+    <Icon size={FACE_SIZE} strokeWidth={SCALE_PEN} color={color} mouthPen={SCALE_MOUTH_PEN_PX} />
     <svg className="absolute inset-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
       <circle cx="9" cy="9" r={EYE_R} />
       <circle cx="15" cy="9" r={EYE_R} />

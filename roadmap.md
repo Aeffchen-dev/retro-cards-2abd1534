@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Done
+- [x] Scale pens split again: the answer dot's outline circle and the rule it rides draw **2px** ("OUTLINE CIRCLE SLIDER DOT AND SLIDR LINE STROKE WIDT" → "2PX"), the five grey smileys' round outline stands a step finer at **1.8px**, the grey smileys' mouth draws **1.4px** and every other face's mouth (Health Check, the dragged dot) **1.6px**; the dot's 2px white ring is gone, so the white stops exactly at its own edge.
 - [x] Smileys, one drawing: every face in the deck (scale smileys, Health Check faces, printed average-mood face, answer dot) is built from the scale's own anchor mouths, so the **mouth now draws one pixel on all of them** and the **eyes are filled dots a step bigger** (0.8 → 1 grid unit, 3.67px at the 44px face) while each outline keeps its own weight (2.4px on the scale, 2.2px in Health Check).
 - [x] Scale pens: one shared 2.4px pen for the rule, the five grey smileys and the answer dot's own face (the 20% step between scale and answer is retired), and every vertical line — the column guides, the dividers between columns and the work-split's boundary — is a single pixel.
 - [x] Info row: the ℹ glyph is 12px and rides the sentence's first line; the sentence starts at exactly the same x as "Notizen öffnen"; 8px hairline gaps; the mark stands in an unfilled 32px column at the row's edge.
