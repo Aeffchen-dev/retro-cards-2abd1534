@@ -69,12 +69,9 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     // plus the rule's own pen — not a pale ring around the outline.
     expect(plate).toContain("calc(var(--risiko-marker-size) * 1.05)");
     expect(plate).toContain("border-radius: 50%;");
-    // a subtle white outline just outside the answer's own circle (user:
-    // "sliderdot add a subtle white outline") — the grey smileys draw without a
-    // fill now, so this is what keeps the answer clear of the rule behind it
-    expect(plate, "the answer wears no white outline").toContain(
-      "box-shadow: 0 0 0 2px var(--risiko-face-fill);",
-    );
+    // The white stops at the drawn circle's own edge: the 2px ring that once
+    // stood just outside it is gone (user: "REMOVE 2PX WEI0EN RAND").
+    expect(plate, "the answer still wears a white outline").not.toContain("box-shadow");
   });
 
   test("the circle and face are drawn 20% bigger than the scale's smileys", () => {
