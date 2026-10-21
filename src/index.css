@@ -531,7 +531,7 @@
 }
 .workload-split-figures { display: flex; align-items: baseline; gap: 2px; }
 .workload-split-sep { color: var(--retro-black); font-weight: 700; font-size: 14px; }
-.workload-split-word { font-size: 12px; line-height: 14px; color: var(--retro-black); }
+.workload-split-word { font-size: 14px; color: var(--retro-black); margin-left: 4px; }
 .workload-percentage {
   position: relative;
   background: var(--risiko-label-bg);
