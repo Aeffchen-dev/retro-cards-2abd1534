@@ -8,7 +8,7 @@ const deck = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 const FOOT_AT = slide.indexOf("risiko-footer screen-only");
 
 /** The sentence the user wrote for every Health Check statement card's info box. */
-const INFO = "Die Aussage beschreibt, was eine glückliche Beziehung ausmacht. Gleich sie mit deiner aktuellen Beziehung ab: Trifft die Aussage da auch zu? Schiebe den schwarzen Kreis nach links oder rechts zur passenden Antwort. Welches Gefühl im Slider dominiert am Ende als Durchschnitt deiner Antworten?";
+const INFO = "Trifft diese Aussage auch auf eure Beziehung zu? Schiebt den Regler zur passenden Antwort. Wie gut schneidet ihr später ab? Welches Gefühl dominiert am Ende?";
 
 describe("statement card info sentence", () => {
   test("is the user's wording, held once in the shared data module", () => {
