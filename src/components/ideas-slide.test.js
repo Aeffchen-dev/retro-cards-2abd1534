@@ -38,13 +38,17 @@ describe("Ideas card wears the Questions combo", () => {
     expect(pill).not.toContain("SLIDE_REFLECTION || slideId === SLIDE_VORHABEN");
 
     const label = src.slice(src.indexOf("const labelColorOf"), src.indexOf("}, [questionComboIdx]"));
-    expect(label).toContain("if (slideId === SLIDE_VORHABEN) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;");
+    // Ideas no longer follows the combo here: its bars carry a fixed neon, so the
+    // helper keeps only the cards whose labels still ride the random draw.
+    expect(label).not.toContain("slideId === SLIDE_VORHABEN");
     expect(label).toContain("if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue;");
   });
 
   test("the slide takes both colours as props so dark labels stay readable", () => {
     expect(src).toContain("pillColor={pillColorOf(SLIDE_VORHABEN)}");
-    expect(src).toContain("labelColor={labelColorOf(SLIDE_VORHABEN)}");
+    // The bars wear the deck's neon violet rather than the random combo's lime,
+    // so the card's own labels read as a neon of their own.
+    expect(src).toContain('labelColor="#AF25FF"');
     // Passed to the writing fields as a real colour, not a CSS var, so the
     // label bar's contrast lightening can still see it.
     expect(slide).toContain("accent={labelColor}");
