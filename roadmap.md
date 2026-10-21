@@ -306,8 +306,6 @@
 - [x] column header texts another font (Stack Sans Text, via #root rule)
 - [x] info icon 1.5px stroke, same colour as text
 - [x] grey smileys' eyes bigger circles
-- [x] range slider line colour grey (was ink)
-- [x] grey smileys vertically centred on the slider line, on top
-- [x] visual verification of the risiko card in the preview (dot places at a click, rides above the faces, no white halo)
-- [x] grey smileys: remove the white plate halo (plate hugs the drawn face circle)
-- [x] answer dot z-index above the grey smileys
+- [ ] range slider line colour grey (was ink) — IN PROGRESS
+- [ ] grey smileys vertically centred on the slider line, on top — IN PROGRESS
+- [ ] visual verification of the risiko card in the preview (navigation via keyboard/swipe pending)
