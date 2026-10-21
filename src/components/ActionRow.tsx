@@ -100,7 +100,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         className={tileClass}
         style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
-        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={resolvedStrokePx} /> : null)}
+        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
       </span>
       <span
         className={fieldClass}

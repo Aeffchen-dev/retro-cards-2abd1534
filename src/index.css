@@ -54,8 +54,17 @@
        colour its label bar wears */
     --retro-textarea-bg: #E4E6E8;
     --retro-info-rule: #C9CBD1;
-    /* the card's own padding, as a token: the info row keeps this much air
-       between its hairline and its sentence, and again under the sentence */
+    /* the one breath the info note keeps, in all three of its places: between
+       the button above and the hairline, between the hairline and the letters,
+       and between the ℹ mark and its sentence (user: "gap top border info text
+       to CTA same as info text top padding", "info I gap to text 8px") */
+    --retro-info-gap: 8px;
+    /* the "i" inside the ℹ mark reads darker than its ring, and is drawn with a
+       heavier pen, so the letter stays legible at 16px (user: "i in info I
+       darker if thicker") */
+    --retro-info-ink: #3F4147;
+    /* the card's own padding, as a token: the note keeps this much air under
+       itself, and the card's edges stand this clear of its content */
     --retro-card-pad: 28px;
     --intimacy-accent: #FF6BEF;
 
@@ -892,7 +901,9 @@
   overflow-wrap: anywhere;
   height: auto;
   min-height: 32px;
-  padding-top: 4px;
+  /* no top padding: the row's own 8px is the whole breath under the hairline,
+     so it reads the same as the 8px the button keeps above it (user: "gap top
+     border info text to CTA same as info text top padding") */
   padding-bottom: 4px;
   white-space: normal;
   overflow: visible;
@@ -919,7 +930,9 @@
   overflow-wrap: anywhere;
   height: auto;
   min-height: 32px;
-  padding-top: 4px;
+  /* no top padding: the row's own 8px is the whole breath under the hairline,
+     so it reads the same as the 8px the button keeps above it (user: "gap top
+     border info text to CTA same as info text top padding") */
   padding-bottom: 4px;
   white-space: normal;
   overflow: visible;
@@ -960,11 +973,12 @@
    hairline above it spans only that content width — the card's own edges stay
    bare (user: "info text left and right padding same as from card", "border-top
    only container not fullwidth"). Only its foot reaches the card's own edge. */
-/* Every ℹ row keeps half the usual breath between the mark and its sentence: the
-   field's own 12px of padding falls to 6px on its icon side, so the mark and the
-   words read as one line rather than two blocks set apart. */
+/* Every ℹ row keeps the note's own breath between the mark and its sentence: the
+   field's 12px of padding falls to the info gap's 8px on its icon side, so the
+   mark and the words read as one line rather than two blocks set apart (user:
+   "info I gap to text 8px"). */
 .retro-info-row > span + span {
-  padding-left: 6px;
+  padding-left: var(--retro-info-gap);
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
@@ -1142,9 +1156,22 @@ button {
       not leave the line stopping half way across the card */
   width: 100%;
   border-top: 1px solid var(--retro-info-rule);
-  /* the air between the hairline and the sentence is its own small breath —
-     8px, like the row's original padding (user: "info text top padding only 8px") */
-  padding-top: 8px;
+  /* the air between the hairline and the sentence is the note's own breath —
+     the same 8px the button above keeps over the hairline and the ℹ mark keeps
+     over its sentence (user: "info text top padding only 8px", "gap top border
+     info text to CTA same as info text top padding") */
+  padding-top: var(--retro-info-gap);
+}
+
+/* The "i" inside the ℹ mark reads darker than its ring so the letter holds up
+   beside the sentence (user: "i in info I darker if thicker"), but its pen goes
+   no heavier than the scale smileys' own: those draw 0.9 units in a 24-unit box
+   at 44px, i.e. 1.65px on screen, so the letter takes the same 1.65px — which is
+   2.475 units in the icon's own 24-unit box at 16px (user: "stroke width max
+   like grey smiley"). The ring keeps the footnote's lighter pen. */
+.retro-info-mark path {
+  stroke: var(--retro-info-ink);
+  stroke-width: 2.475;
 }
 
 

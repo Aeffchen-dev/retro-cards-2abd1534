@@ -24,14 +24,57 @@ describe("info box appearance", () => {
       /border-top:\s*1px solid var\(--retro-info-rule\);/,
     );
     expect(rule, "the line runs the card's whole content width").toMatch(/width:\s*100%;/);
-    // user: "INFO TEXT TOPPADDING ONLY 8PX" — the hairline keeps only a small
-    // breath above the letters; the card padding stands between CTA and row.
-    expect(rule, "the hairline keeps 8px above the letters").toMatch(
-      /padding-top:\s*8px;/,
+    // user: "INFO TEXT TOPPADDING ONLY 8PX" and "gap top border info text to CTA
+    // same as info text top padding" — the hairline keeps one small breath above
+    // the letters, and the button above keeps exactly that much over the hairline.
+    expect(rule, "the hairline keeps the note's own breath above the letters").toMatch(
+      /padding-top:\s*var\(--retro-info-gap\);/,
     );
 
     expect(rule, "the border never squeezes the label").toMatch(/height:\s*auto;/);
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);
+  });
+
+  test("the note keeps one 8px breath in all three of its places", () => {
+    // user: "gap top border info text to CTA same as info text top padding" and
+    // "info I gap to text 8px" — a single token sets the hairline's breath above
+    // the letters, the button's breath over the hairline and the ℹ mark's breath
+    // over its sentence, so the three can never drift apart.
+    expect(css, "the note's breath is not its own token").toMatch(/--retro-info-gap:\s*8px;/);
+    expect(css, "the mark does not stand the same breath from its sentence").toMatch(
+      /\.retro-info-row > span \+ span \{\s*padding-left:\s*var\(--retro-info-gap\);?\s*\}/,
+    );
+    const stacks = [
+      ["the Risikofaktoren footer", risiko],
+      ["the Health Check stack", cards],
+    ];
+    for (const [where, src] of stacks) {
+      expect(src, `the button in ${where} does not stand the note's breath over the hairline`).toContain(
+        "gap-[var(--retro-info-gap)]",
+      );
+    }
+  });
+
+  test("the i inside the ℹ mark reads darker and draws no heavier than the scale smileys", () => {
+    // user: "i in info I darker if thicker", then "stroke width max like grey
+    // smiley" — the letter wears its own darker ink, and its pen stops exactly at
+    // the weight the grey scale smileys draw with.
+    expect(css, "the letter's own ink is missing").toMatch(/--retro-info-ink:\s*#3F4147;/);
+    const mark = css.match(/\.retro-info-mark path \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(mark, "the letter does not wear the darker ink").toMatch(/stroke:\s*var\(--retro-info-ink\);/);
+    const units = parseFloat(mark.match(/stroke-width:\s*([\d.]+)/)?.[1] ?? "0");
+    expect(units, "the letter's pen is not declared").toBeGreaterThan(0);
+    /* Both weights are stated in their own 24-unit box, so both are compared as
+       the pixels they actually paint: the mark draws at 16px, the smileys at 44. */
+    const letterPen = (units * 16) / 24;
+    const facePen =
+      (parseFloat(risiko.match(/const FACE_PEN = ([\d.]+)/)?.[1] ?? "0") *
+        parseFloat(risiko.match(/const FACE_SIZE = (\d+)/)?.[1] ?? "0")) /
+      24;
+    const ringPen = (1.5 * 16) / 24; // the ℹ ring's own strokePx, painted at 16px
+    expect(letterPen, "the letter draws heavier than the grey smileys").toBeLessThanOrEqual(facePen + 0.01);
+    expect(letterPen, "the letter draws no heavier than its own ring").toBeGreaterThan(ringPen);
+    expect(actionRow, "the mark is not handed its own hook").toMatch(/className=\{isInfo \? "retro-info-mark"/);
   });
 
   test("the sentence keeps the card's padding under itself", () => {
