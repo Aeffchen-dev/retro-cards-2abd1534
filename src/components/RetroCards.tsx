@@ -88,7 +88,7 @@ interface SetupData {
 const REFLECTION_FIELDS = [
   ["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Danke für", "Deine Antwort", ""],
-  ["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""],
+  ["unspoken", "Letzte Chance", "Deine Antwort", ""],
 ] as const;
 
 
@@ -133,7 +133,7 @@ const sanitizeEmoji = (input: string): string => {
 interface ReflectionTexts {
   nice: string;
   thanks: string;
-  plans: string;
+  unspoken: string;
 }
 
 interface MemojisPosition {
@@ -261,14 +261,14 @@ const migrateMovedAnswers = () => {
     const v = from[fromKey];
     if (typeof v === "string" && v.trim() && !(to[toKey] || "").trim()) { to[toKey] = v; changed = true; }
   };
-  // "Das wollen wir kommenden Monat machen" moved from Ideas to Feedback...
-  carry(ideas, "plans", here, "plans");
-  // ...and "Gab es etwas, dass du gedacht aber nicht angesprochen hast?" the other way round.
-  carry(here, "unspoken", ideas, "unspoken");
+  // "Das wollen wir kommenden Monat machen" moves from Feedback over to Ideas...
+  carry(here, "plans", ideas, "plans");
+  // ...and "Letzte Chance" the other way round, from Ideas to Feedback.
+  carry(ideas, "unspoken", here, "unspoken");
   // "Das wünsche ich mir" moved from Feedback to Ideas earlier.
   carry(here, "idea", ideas, "idea");
   // The old homes drop their copies now that the new ones hold the text.
-  for (const [box, key] of [[here, "unspoken"], [here, "idea"], [ideas, "plans"]] as const) {
+  for (const [box, key] of [[here, "plans"], [here, "idea"], [ideas, "unspoken"]] as const) {
     if (key in box) { delete box[key]; changed = true; }
   }
   if (!changed) return;
@@ -393,11 +393,11 @@ const RetroCards: React.FC = () => {
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
-    const texts: ReflectionTexts = { nice: '', thanks: '', plans: '', ...(saved || {}) };
+    const texts: ReflectionTexts = { nice: '', thanks: '', unspoken: '', ...(saved || {}) };
     // The answers of the questions that changed cards are already in place: the moves run
     // against storage at startup (migrateMovedAnswers). Only the keys this card no longer
     // asks are dropped here, so a stale copy can never turn up in a field.
-    delete (texts as any).unspoken;
+    delete (texts as any).plans;
     delete (texts as any).idea;
     return texts;
   });
@@ -1317,7 +1317,7 @@ const RetroCards: React.FC = () => {
       setPostItTexts({});
       setTakeawayTexts({});
       setEditModeNotes({});
-      setReflectionTexts({ nice: '', thanks: '', plans: '' });
+      setReflectionTexts({ nice: '', thanks: '', unspoken: '' });
       setCapturedPhotos([]);
       setCurrentQuestion("");
       
