@@ -78,10 +78,9 @@ describe("info box appearance", () => {
     );
     expect(markSize, "the mark does not draw smaller than the other CTA glyphs").toBeLessThan(16);
     const letterPen = (units * markSize) / 24;
-    const facePen =
-      (parseFloat(risiko.match(/const FACE_PEN = ([\d.]+)/)?.[1] ?? "0") *
-        parseFloat(risiko.match(/const FACE_SIZE = (\d+)/)?.[1] ?? "0")) /
-      24;
+    const facePen = parseFloat(
+      risiko.match(/const FACE_PEN_PX = ([\d.]+)/)?.[1] ?? "0",
+    );
     const ringPen = 1.5; // the ℹ ring's own strokePx, painted 1:1 on screen
     expect(letterPen, "the letter draws heavier than the grey smileys").toBeLessThanOrEqual(facePen + 0.01);
     expect(letterPen, "the letter draws no heavier than its own ring").toBeGreaterThan(ringPen);

@@ -211,17 +211,21 @@ describe("grey columns", () => {
     // face" — the answer dot's face keeps the reference pen, while the five grey
     // smileys and the rule they stand on take a pen 20% over it.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const facePx = Number(src.match(/const FACE_PEN_PX = ([\d.]+);/)?.[1] ?? 0);
     const step = Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
-    expect(pen, "the face's pen is not a named value").toBeGreaterThan(0);
+    // The face's pen is stated as a real pixel, so it is the width the answer
+    // dot's own smiley paints (user: "make face astrerpke width 2px").
+    expect(facePx, "the answer's face does not draw the asked-for 2px").toBeCloseTo(2, 5);
     expect(step, "the scale's pen is not a 20% step over the face's").toBeCloseTo(1.2, 5);
     expect(src, "the scale faces no longer wear the heavier pen").toContain("strokeWidth={SCALE_PEN}");
     expect(src, "the rule does not take the smileys' pen").toContain(
       "const RULE_W = SCALE_PEN * (FACE_SIZE / 24);",
     );
-    // Both pens are converted to pixels: the scale draws about 2.4px, the answer's
-    // face a step finer at about 2px.
+    // The scale's pen is a grid-unit value, so both are compared as the pixels
+    // they actually paint: the smileys and the rule draw 2.4px, the answer's
+    // face a step finer at exactly 2px.
+    const pen = facePx * (24 / face);
     const drawn = pen * step * (face / 24);
     const faceDrawn = pen * (face / 24);
     expect(drawn, "the scale's pen is too faint to read").toBeGreaterThan(2.2);
@@ -617,8 +621,8 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
   });
   test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const pen = Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0) *
-      Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const pen = Number(src.match(/const FACE_PEN_PX = ([\d.]+);/)?.[1] ?? 0) *
+      (24 / 44) * Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0);
     const eyeR = Number(src.match(/const EYE_R = ([\d.]+);/)?.[1] ?? 0);
     expect(eyeR, "the eyes' circle radius is not a named value").toBeGreaterThan(0);
     expect(src, "the eyes are not drawn over the face as circles").toMatch(/<circle cx="9" cy="9" r=\{EYE_R\}/);

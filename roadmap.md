@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Done
-- [x] Scale pens: the five grey smileys' outlines and the rule draw 20% heavier than the answer dot's own face (measured 2.42px against 2.017px), and every vertical line — the column guides, the dividers between columns and the work-split's boundary — is a single pixel.
+- [x] Scale pens: the five grey smileys' outlines and the rule draw 20% heavier than the answer dot's own face (exactly 2.4px against the face's exactly 2px), and every vertical line — the column guides, the dividers between columns and the work-split's boundary — is a single pixel.
 - [x] Info row: the ℹ glyph is 12px and rides the sentence's first line; the sentence starts at exactly the same x as "Notizen öffnen"; 8px hairline gaps; the mark stands in an unfilled 32px column at the row's edge.
 - [x] Grey scale smileys: outline only, no fill, no plate; the guides keep their grey.
 - [x] Notes button: grey field with a grey ring, black pencil outside edit mode (pink X and pink pencil kept where they belong).
