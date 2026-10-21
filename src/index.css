@@ -470,16 +470,12 @@
 .workload-color-5 { --workload-color: var(--workload-partner-5); }
 .workload-color-6 { --workload-color: var(--workload-partner-6); }
 .workload-color-7 { --workload-color: var(--workload-partner-7); }
-/* The circle is a white disc ringed in its partner's name colour: the Memoji stays
-   readable and the ring still ties the circle to that partner's segment. */
+/* The circle is a white disc ringed in its partner's own colour — the very colour its
+   name and its share figure wear — one hairline pixel thick, so the Memoji stays the
+   readable part of the circle and the ring only ties it to its segment. */
 .risiko-memoji.workload-avatar {
   background: var(--risiko-face-fill);
-  box-shadow: 0 0 0 2.5px var(--workload-ink);
-}
-/* One ink-pulled partner colour, shared by the name, the circle's ring and the share
-   figure, so all three read as the same partner. */
-.workload-label, .workload-percentage, .workload-avatar {
-  --workload-ink: color-mix(in srgb, var(--workload-color) 55%, #101010);
+  box-shadow: 0 0 0 1px var(--workload-color);
 }
 /* The shares ride in their own row below the circles. The row is a line rather than
    a box: every number stands on it and grows downwards, so a taller number never
@@ -527,15 +523,15 @@
   z-index: 5;
   pointer-events: none;
 }
-/* A name is printed in its partner's colour pulled towards ink, so a short bold
-   label stays readable on white. A name wider than the row's fixed width breaks at
-   its own words onto a second line rather than reaching over a neighbour's circle. */
+/* A name is printed in its partner's own colour, the same one its share figure and its
+   circle's ring carry. A name wider than the row's fixed width breaks at its own words
+   onto a second line rather than reaching over a neighbour's circle. */
 .workload-label {
   position: absolute;
   bottom: 0;
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
-  color: var(--workload-ink);
+  color: var(--workload-color);
   /* 12px is the smallest text size in the app, so a name never shrinks below it. */
   font-size: 12px;
   line-height: 13px;
