@@ -5,20 +5,28 @@ const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8"
 const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
 
-// The scales carry no dashed lines any more: the smileys, the rule and the column
-// names stand on their own, with nothing drawn behind them.
-test("no dashed line is drawn on any scale", () => {
+// The scales' column lines are back, drawn with a normal stroke: a solid guide
+// down each smiley's own column, solid dividers between neighbouring columns, and
+// a solid six-line track on the first two Health Check cards. Nothing is dashed.
+test("every scale line is drawn with a solid stroke", () => {
   // no dashed border anywhere in the deck's own stylesheet
   expect(css, "the stylesheet draws a dashed line again").not.toMatch(/border[^;]*dashed/);
-  // the smileys' own guides and the column dividers are gone from the statement
-  // scales, and so is the full-height rule they used to stretch on
-  expect(slide, "a scale still draws a guide line").not.toMatch(/risiko-column-guide|risiko-column-edge/);
-  expect(slide, "a scale still wraps its guides in a layer").not.toMatch(/risiko-scale-guides|risiko-columns|risiko-guide-full/);
-  // the first two Health Check cards lost their dashed track too
-  expect(cards, "a Health Check card still draws its dashed track").not.toMatch(/health-check-guide/);
-  // the two greys that only ever painted those lines went with them
-  expect(css, "--risiko-line survived its lines").not.toMatch(/--risiko-line:/);
-  expect(css, "--risiko-column-line survived its lines").not.toMatch(/--risiko-column-line:/);
+  // the statement scales draw one guide per smiley column and one divider between
+  // every pair of neighbouring columns, each stretching the stack's whole height
+  expect(slide, "the statement scale draws no guides").toMatch(/risiko-column-guide risiko-guide-full/);
+  expect(slide, "the statement scale draws no dividers").toMatch(/risiko-column-edge risiko-guide-full/);
+  // the work-split lane keeps the same drawn columns, on its own even grid
+  expect(slide, "the work-split lane draws no dividers").toMatch(/columnEdges\(FACES\.length\)/);
+  expect(slide, "the work-split lane draws no guides").toMatch(/left: lanePos\(i\)/);
+  // the first two Health Check cards draw their track again
+  expect(cards, "a Health Check card lost its track").toMatch(/className="health-check-guides"/);
+  // and every one of those lines is a normal stroke in the scale's own two greys
+  const guide = css.match(/\.risiko-column-guide \{[\s\S]*?\}/)?.[0] ?? "";
+  expect(guide, "the guide is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-line\)/);
+  const edge = css.match(/\.risiko-column-edge \{[\s\S]*?\}/)?.[0] ?? "";
+  expect(edge, "the divider is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-column-line\)/);
+  const track = css.match(/\.health-check-guide \{[\s\S]*?\}/)?.[0] ?? "";
+  expect(track, "the Health Check track is not a solid line").toMatch(/border-top:\s*1px solid var\(--risiko-column-line\)/);
 });
 
 test("the column names still stand under the field in their own row", () => {
