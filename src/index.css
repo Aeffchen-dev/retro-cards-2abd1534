@@ -441,7 +441,9 @@
   font-weight: 700;
   padding: 0 3px;
   white-space: nowrap;
-  max-width: 48px;
+  /* The number always takes its own width, however little room is left beside it. */
+  width: max-content;
+  max-width: 60px;
 }
 /* The names ride in their own row just above the rule, standing on it and growing
    upwards, so the row never has to be measured to make room for a longer name.
@@ -470,6 +472,9 @@
   font-weight: 700;
   padding: 0 2px;
   text-align: center;
+  /* A name always claims its own width up to this line — how little room happens to
+     be left beside it must never squeeze it into yet another line. */
+  width: max-content;
   max-width: 96px;
   overflow-wrap: anywhere;
   hyphens: auto;

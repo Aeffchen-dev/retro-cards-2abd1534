@@ -428,7 +428,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // takes a second line instead, so a one-sided split can neither squeeze a
   // partner's name into a sliver nor push a number off the card's edge.
   const LABEL_W = 96;
-  const SHARE_W = 48;
+  const SHARE_W = 60;
   // The middle of one colour run, measured exactly the way the run itself is
   // drawn, and held inside the lane's own edges by half of its row's fixed width.
   const centreAt = (i: number, half: number) => {
