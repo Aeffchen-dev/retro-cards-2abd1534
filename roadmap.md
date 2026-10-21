@@ -10,6 +10,7 @@
 - [x] Statement wording, print and clear flow unchanged: 170 checks pass, print stays 18 pages.
 
 ## Open
+- [ ] Desktop: the card sits much bigger against the background graphic than it did yesterday — bring its size back in line with yesterday so the background reads again.
 - [ ] The rule now passes straight behind the unfilled smileys (their own ask: "grey full = grey outline no fill"). If they'd rather the line stopped at each face's edge, the faces need a plate of the card's surface again — waiting on the user's call.
 - [x] Setup card back to yesterday's caps: at most 500px wide and 720px tall, always in that 500:720 proportion (measured 469×674 on an 873×755 window).
-- [x] "Kamera öffnen": the camera glyph reads light orange (#FFA24D) on the slide's purple tile.
+- [x] "Kamera öffnen": the camera glyph reads light orange (#FFE0B5) on the slide's purple tile — pale enough to clear 3.5:1 there.
