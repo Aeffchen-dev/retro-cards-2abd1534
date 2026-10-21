@@ -13,6 +13,8 @@ interface PostItFieldProps {
   accent?: string;
   /** Small grey sentence under the label bar, above the writing area */
   helper?: string;
+  /** Bullet points by default: every line starts with "• " */
+  bullets?: boolean;
 
 }
 
@@ -36,6 +38,26 @@ const readableBg = (hex?: string) => {
   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 };
 
+export const BULLET = "• ";
+
+/** Every non-empty line carries exactly one leading bullet. */
+export const bulletize = (text: string): string =>
+  text
+    .split("\n")
+    .map((line) => {
+      const body = line.replace(/^\s*/, "").replace(/^[•▪◦-]\s*/, "");
+      return body.length ? BULLET + body : line;
+    })
+    .join("\n");
+
+/** Pressing Enter starts the next line with a fresh bullet. */
+export const bulletOnEnter = (text: string, from: number, to: number) => {
+  const value = text.slice(0, from) + "\n" + BULLET + text.slice(to);
+  return { value, caret: from + 1 + BULLET.length };
+};
+
+
+
 
 /**
  * Post-it style input with a 32px label bar directly above (0px gap).
@@ -51,7 +73,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   className = "",
   accent,
   helper,
-
+  bullets = false,
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
@@ -76,15 +98,31 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap"
         style={{ minHeight: minHeight ? `${minHeight}px` : undefined }}
       >
-        {value || placeholder}
+        {(bullets ? bulletize(value) : value) || placeholder}
       </div>
     ) : (
       <textarea
         value={value}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => {
+          let next = e.target.value;
+          if (bullets && !value.length && next.length && !next.startsWith(BULLET)) {
+            next = BULLET + next;
+          }
+          onChange?.(next);
+        }}
+        onKeyDown={(e) => {
+          if (!bullets || e.key !== "Enter" || e.shiftKey) return;
+          e.preventDefault();
+          const el = e.currentTarget;
+          const start = el.selectionStart ?? el.value.length;
+          const end = el.selectionEnd ?? start;
+          const { value: next, caret } = bulletOnEnter(el.value, start, end);
+          onChange?.(next);
+          requestAnimationFrame(() => el.setSelectionRange(caret, caret));
+        }}
         className="w-full flex-1 p-3 bg-retro-post-it retro-input retro-input-dark-text border-none text-base"
         style={{ borderRadius: "0px", minHeight: minHeight ? `${minHeight}px` : undefined }}
-        placeholder={placeholder}
+        placeholder={bullets && !placeholder.startsWith(BULLET) ? BULLET + placeholder : placeholder}
       />
     )}
   </div>
