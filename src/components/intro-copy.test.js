@@ -102,20 +102,21 @@ describe("intro card on desktop", () => {
     [...css.matchAll(new RegExp(`@media \\(min-width: 1024px\\) and \\(min-height: ${h}px\\) \\{[\\s\\S]*?\\n\\}`, "g"))]
       .map((m) => m[0])
       .find((b) => b.includes(".intro-lede")) ?? "";
-  const wide = tier(860);
-  const narrow = tier(905);
+  const wide = tier(930);
+  const narrow = tier(955);
 
   test("caps the lede and the paragraphs at a narrow column", () => {
     expect(wide, "the 320px desktop cap is gone").toContain(".intro-copy");
-    expect(wide.match(/max-width: (\d+)px/)?.[1], "the 860px tier's cap moved").toBe("320");
+    expect(wide.match(/max-width: (\d+)px/)?.[1], "the 930px tier's cap moved").toBe("320");
     expect(narrow, "the 288px desktop cap is gone").toContain(".intro-copy");
-    expect(narrow.match(/max-width: (\d+)px/)?.[1], "the 905px tier's cap moved").toBe("288");
+    expect(narrow.match(/max-width: (\d+)px/)?.[1], "the 955px tier's cap moved").toBe("288");
   });
 
   test("only caps the column as far as the card can hold it", () => {
-    // 320px needs ~661px of text (a ~847px window up); 288px needs ~711px (a ~902px window up).
-    expect(wide.match(/min-height: (\d+)px/)?.[1], "the 320px cap waits for a shorter window than it fits").toBe("860");
-    expect(narrow.match(/min-height: (\d+)px/)?.[1], "the 288px cap waits for a shorter window than it fits").toBe("905");
+    // Measured against the card every card now wears (88% of the slide): the 320px
+    // column needs 786px of card and the 288px column needs 808px.
+    expect(wide.match(/min-height: (\d+)px/)?.[1], "the 320px cap waits for a shorter window than it fits").toBe("930");
+    expect(narrow.match(/min-height: (\d+)px/)?.[1], "the 288px cap waits for a shorter window than it fits").toBe("955");
     expect(css.indexOf(narrow), "the narrower cap must be declared after the wider one").toBeGreaterThan(css.indexOf(wide));
   });
 });
