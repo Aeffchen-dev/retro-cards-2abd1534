@@ -580,9 +580,13 @@ describe("mood test chapter", () => {
     expect(slide).toContain("RISIKO_CHAPTER_INFO");
     expect(slide).toContain("averageMood(values)");
     expect(slide).toContain("moodFaceIndex(mood)");
-    expect(slide).toContain("label={chapterIntro(chapterMood, INK)}");
-
+    // The chapter's own words no longer stand in an info box on screen — the user
+    // asked to "remove the upper info text box from that slide". They reach the
+    // printed card only.
+    expect(slide).not.toContain("label={chapterIntro(chapterMood, INK)}");
+    expect(slide).toContain('<p className="risiko-chapter-info">{chapterIntro(chapterMood, FACE_GREY)}</p>');
   });
+
 });
 
 describe("chapter card pagination", () => {
@@ -691,17 +695,19 @@ describe("the chapter card's own text", () => {
     expect(slide, "the chapter still renders its own big question").not.toMatch(/risiko-chapter-heading/);
     expect(css, "the chapter heading's own type rule is still there").not.toMatch(/\.risiko-chapter-heading/);
   });
-  test("leads the info sentence with its own words and carries the mood smiley inside them", () => {
-    // The sentence now stands inside the card's info box on screen and keeps its
-    // place straight under the card on paper; either way it opens with the
-    // chapter's own words and the average-mood smiley rides inside them.
+  test("leads the printed sentence with its own words and carries the mood smiley inside them", () => {
+    // The sentence no longer stands in an info box on screen (the user asked to
+    // "remove the upper info text box from that slide"); it keeps its place
+    // straight under the card on paper, opening with the chapter's own words with
+    // the average-mood smiley riding inside them.
     const intro = slide.match(/const chapterIntro = [\s\S]*?\n {2}\);/)?.[0] ?? "";
     expect(intro, "the sentence no longer opens with the chapter's words").toMatch(
       /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
     );
-    expect(slide, "the intro no longer reaches the card's info box").toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
+    expect(slide, "the intro still reaches the card's info box").not.toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
     expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, FACE_GREY\)\}<\/p>/);
   });
+
 
 });
 

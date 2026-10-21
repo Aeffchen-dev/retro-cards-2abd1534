@@ -689,8 +689,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // Blocks share the free space evenly; the buttons sit below, never underneath.
   const body = (readOnly: boolean) => (
     <div className="risiko-body flex flex-col w-full flex-1 min-h-0 justify-evenly gap-6">
-      {page.statements.map(([k, t], i) => scale(k, t, readOnly,
-        !readOnly && isChapterStart && i === 0 ? chapterBox : undefined))}
+      {page.statements.map(([k, t]) => scale(k, t, readOnly))}
+
       {page.personKeys.length > 0 && allocation(readOnly)}
     </div>
   );
@@ -725,11 +725,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     </span>
   );
 
-  // The chapter's own sentence, in the card's info box, straight under the scale it
-  // belongs to — the user asked to "info box move below slider".
-  const chapterBox = (
-    <ActionRow className="risiko-helper" icon="IconInfo" label={chapterIntro(chapterMood, INK)} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
-  );
+  // The chapter's own sentence no longer stands on screen — the user asked to
+  // "remove the upper info text box". It keeps its place on paper, straight under
+  // the card's top edge, where the print-only block below renders it.
+
 
 
 
