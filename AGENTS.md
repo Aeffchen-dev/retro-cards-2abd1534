@@ -17,7 +17,8 @@
 - Keep both scales on one shared field height (`--risiko-field-h`): it caps the statement scale's field on screen and sets the work-split lane's height, and the lane centres its bar, dots and names on its own height with `cqh` (size containment) so print can stretch the lane without them coming loose.
 - Centre the Risikofaktoren slider with a fixed scale height and an even split of the room between the text and the buttons, closing the last pixels with a screen-only shift; the scale area grows to the card's whole height so free room goes into the gaps between blocks rather than a band at the card's foot. A note on the scale rides inside that block, screen-only, keeping its press and the card's padding as its gap.
 - Pass a shared row component's label as one element: its label field lays its children side by side, so a bare fragment splits a sentence.
-- A reveal's end state beats a declared font-size: settle it on the element's own token, not `inherit`.
+- Set reveal sizes on their own token, not `inherit`.
+- Isolate font previews in a dialog; choices never change deck fonts or answers.
 - Intimacy uses a focused icon-rating control that maps to the existing scale answer key, preserving saved answers and the shared notes/print flow.
 - Keep per-card behaviour behind an opt-in flag on the shared component so siblings stay untouched, and let print normalise rather than rewrite saved answers; derive card colours from the shared colour helpers and theme overrides, passing real values to shared fields so their contrast lightening works.
 

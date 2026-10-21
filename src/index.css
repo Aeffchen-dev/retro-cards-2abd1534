@@ -49,9 +49,7 @@
   .font-preview-dialog { padding: 20px; }
   .font-preview-dialog .font-preview-question { font-size: 32px; }
 }
-@media print {
-  .font-preview-trigger, .font-preview-dialog { display: none !important; }
-}
+.font-preview-trigger, .font-preview-dialog { print-color-adjust: exact; }
 /* Custom Kokoro font */
 @font-face {
   font-family: "Kokoro";
