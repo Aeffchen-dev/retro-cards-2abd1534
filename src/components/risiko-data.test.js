@@ -272,9 +272,11 @@ describe("grey columns", () => {
       "the names do not stand above the rule").toBe(true);
     expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 \+ \d+px\)/.test(below),
       "the shares do not stand below the rule").toBe(true);
-    // The name is the couple's own wording, the number keeps the partner's plain colour.
-    expect(/color:\s*var\(--workload-ink\)/.test(label), "the name does not use the partner's readable ink").toBe(true);
+    // The name, the number and the circle's ring all wear the partner's plain colour.
+    expect(/color:\s*var\(--workload-color\)/.test(label), "the name does not use the partner's colour").toBe(true);
     expect(/color:\s*var\(--workload-color\)/.test(share), "the share does not use the partner's colour").toBe(true);
+    const avatar = row("risiko-memoji\\.workload-avatar");
+    expect(/box-shadow:\s*0 0 0 1px var\(--workload-color\)/.test(avatar), "the circle's ring is not the partner's colour at 1px").toBe(true);
     // A name longer than the row's fixed width breaks at its own words onto a second
     // line; a number never has to, because "100%" is already the widest it gets.
     expect(label).not.toMatch(/white-space:\s*nowrap/);
