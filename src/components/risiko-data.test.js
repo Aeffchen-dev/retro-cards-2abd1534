@@ -334,12 +334,12 @@ describe("grey columns", () => {
     // 11px and would not fit at 12px. Every name still breaks at its own words into
     // exactly two lines, so the row reads as one even block.
     expect(/font-size:\s*11px/.test(caption), "the labels do not read at their own small size").toBe(true);
-    // The names stand in Stack Sans Text — the headline family's own upright
-    // companion — and they win it against the global #root typography only
-    // through a #root rule of their own.
-    expect(/font-family:\s*"Stack Sans Text"/.test(caption), "the labels do not name their own face in the class rule").toBe(true);
-    expect(css, "the labels' face does not survive the global #root rule")
-      .toMatch(/#root \.risiko-scale-caption \{\s*font-family: "Stack Sans Text"/);
+    // The names read in the deck's own body face again (user: "revert all font
+    // families to the ones from yesterday") — no face of their own, so no #root
+    // rule is needed to win one either.
+    expect(/font-family:\s*"Figtree"/.test(caption), "the labels do not name their own face in the class rule").toBe(true);
+    expect(css, "the labels still carry a #root face rule of their own")
+      .not.toMatch(/#root \.risiko-scale-caption/);
     // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));

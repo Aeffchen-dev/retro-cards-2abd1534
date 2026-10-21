@@ -814,12 +814,7 @@
 /* The grey and size the work-split card's ratio legend falls back to: it names
    no column, it only repeats each column's own split, so it stays a footnote. */
 .risiko-scale-caption {
-  /* A grotesque with upright, square-cut letters: the column names are the smallest
-     text on the card and have to stay readable at a glance, which the rounder,
-     more slanted terminals of the deck's body face do not give them. Stack Sans
-     Text is the headline face's own upright companion, so the names read as part
-     of the question's family. */
-  font-family: "Stack Sans Text", "Hanken Grotesk", "Figtree", Arial, sans-serif;
+  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
@@ -1818,13 +1813,6 @@ textarea.bg-retro-post-it:focus,
   font-weight: 400;
   font-feature-settings: normal;
   letter-spacing: -0.02em;
-}
-
-/* The scale's column names read in the headline family's own upright companion:
-   the smallest text on the card, so it keeps a square-cut face of its own against
-   the global #root typography — a plain class rule loses to #root *. */
-#root .risiko-scale-caption {
-  font-family: "Stack Sans Text", "Hanken Grotesk", "Figtree", Arial, sans-serif;
 }
 
 
