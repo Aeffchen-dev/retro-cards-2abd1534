@@ -306,7 +306,7 @@
 - [x] column header texts another font (Stack Sans Text, via #root rule)
 - [x] info icon 1.5px stroke, same colour as text
 - [x] grey smileys' eyes bigger circles
-- [ ] range slider line colour grey (was ink) — IN PROGRESS
+- [x] range slider line colour grey (was ink)
 - [x] grey smileys vertically centred on the slider line, on top
 - [x] visual verification of the risiko card in the preview
 - [x] grey smileys: remove the white outline/plate
