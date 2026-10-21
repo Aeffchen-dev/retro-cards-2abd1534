@@ -407,6 +407,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // The lane point a boundary sits at: the centre of the gap between the two
   // circles that meet there — the same maths the circles read, so the colours,
   // the black split line and the circles all agree at every split.
+  // One number for width and height, so the avatar circle can never be
+  // squeezed into an oval when the lane gets crowded.
+  const band = workloadBand(SLOT, BAND, partners.length);
   const slotPx = `${SLOT}px`;
   const splitAt = (i: number) => {
     const li = i ? `calc(${band} * ${i})` : "0px";
