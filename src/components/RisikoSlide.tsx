@@ -356,12 +356,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     return () => window.removeEventListener("resize", check);
   }, [onOverflow, page]);
 
-  // The slider is centred on the card: the row around the scale splits its free
-  // space evenly, but the statement above and the buttons below are not equally
-  // tall, so that space's mid-point sits a little off the card's own middle. The
-  // shift below closes exactly that gap — and never further than the room between
-  // the text above and the buttons below, so a crowded card (the chapter's heading
-  // and intro) stops short instead of covering anything.
+  // The scale's block — rule, column names and the note riding under it — stands
+  // with the same breath above and below: the shift below cuts the free room
+  // between the text above and the buttons exactly in half, so no card reads as
+  // bunched at one end. It never travels further than that room, so a crowded card
+  // (the chapter's heading, scale and intro) stops short instead of covering
+  // anything, and a card with no button row keeps its aim at the card's middle.
   const pageRef = useRef<HTMLDivElement>(null);
   React.useEffect(() => {
     const pageEl = pageRef.current;
@@ -384,11 +384,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       if (!mover || !pivot || !box) return;
       const card = pageEl.getBoundingClientRect();
       const rule = pivot.getBoundingClientRect();
-      const need = card.y + card.height / 2 - (rule.y + rule.height / 2);
-      const above = Math.max(...[".risiko-statement", ".risiko-allocation-examples", ".risiko-chapter"]
+      const above = Math.max(...[".risiko-statement", ".risiko-allocation-subheading",
+        ".risiko-allocation-examples", ".risiko-chapter"]
         .map((sel) => pageEl.querySelector<HTMLElement>(sel)?.getBoundingClientRect().bottom ?? 0));
       const footTop = pageEl.querySelector<HTMLElement>(".risiko-footer")?.getBoundingClientRect().top;
       const b = box.getBoundingClientRect();
+      // The room between the text above and the buttons below is cut in half: the
+      // scale's own block — rule, column names and the note riding under it — then
+      // stands with the same breath above and below, so nothing reads as bunched at
+      // one end of the card. A card with no button row (the Intimacy scale, which
+      // sits between its own fields) has no such room, so there the rule still aims
+      // at the card's own middle.
+      const need = footTop === undefined
+        ? card.y + card.height / 2 - (rule.y + rule.height / 2)
+        : (above + footTop) / 2 - (b.top + b.height / 2);
       const slackUp = b.top - above - 8;
       const slackDown = footTop === undefined ? 0 : footTop - b.bottom - 8;
       const shift = Math.min(Math.max(need, -slackUp), slackDown);
