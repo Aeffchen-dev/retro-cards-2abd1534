@@ -551,8 +551,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 1.1px); /* half of the bar's own 2.2px height */
-  height: 2.2px;
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 1.5px); /* half of the bar's own 3px height */
+  height: 3px;
   display: flex;
 }
 
@@ -975,9 +975,9 @@
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 2.2px;
+  width: 3px;
   background: var(--retro-black);
-  transform: translateX(-1.1px);
+  transform: translateX(-1.5px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
@@ -1004,7 +1004,7 @@
 }
 /* The rule stops exactly where the face's own outline starts: a plate the size of
    the drawn circle including its stroke (the zoomed window paints the circle
-   across the whole 44px dot, so the plate is that dot plus the rule's own 2.2px
+   across the whole 44px dot, so the plate is that dot plus the rule's own 3px
    pen ≈ 46px) so no pale ring shows around the smiley — the line simply meets its
    edge. The plate carries the face's own white fill (`--risiko-face-fill`), the
    same white the Memojis wear, so the smiley reads white-filled on screen and on

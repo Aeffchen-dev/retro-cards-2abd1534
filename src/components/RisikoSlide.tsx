@@ -45,8 +45,8 @@ const MARKER_SIZE = 44;
 
 // One ink stroke for the whole deck: the rule, the work-split bar and the split
 // line are all this thick, and it is the very weight the grey smileys' own lines
-// draw — 1.2 of a 24 grid painted at 44px lands at 2.2px.
-const RULE_W = 2.2;
+// draw — 1.36 of a 24 grid painted at 44px lands at 3px.
+const RULE_W = 3;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
@@ -103,7 +103,7 @@ const EYE_W = MARKER_PEN;
 // The scale's grey smileys draw lighter than the rule and the dot, so the ink
 // answer stays the heavy mark on the line (user: "grey smilies stroke width
 // less"). 0.9 of the 24 grid painted into the 44px face ≈ 1.65px, against the
-// rule's 2.2px.
+// rule's 3px.
 const FACE_PEN = 0.9;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
