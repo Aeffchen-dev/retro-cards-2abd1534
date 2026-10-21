@@ -250,7 +250,7 @@ describe("grey columns", () => {
     expect(slide, "the lane still carries a fixed height").not.toMatch(/workload-lane[^"]*h-\[\d+px\]/);
     // The bar rides the fields' middle, so both scales read the same way.
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
+    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 1\.5px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
   test("each partner is named above the rule and its share printed below, on that partner's own colour", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
@@ -342,7 +342,7 @@ describe("grey columns", () => {
     // the work-split bar is 3px tall, however it is drawn
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
-    expect(thick, "the work-split bar's thickness is gone").toBe(4);
+    expect(thick, "the work-split bar's thickness is gone").toBe(3);
     const rule = Number(slide.match(/const RULE_W = ([\d.]+)/)?.[1]);
     expect(rule, "the slider rule does not match the work-split bar's 3px").toBe(thick);
   });
@@ -819,7 +819,7 @@ describe("the statement's one size", () => {
     const statement = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? [])
       .find((block) => block.includes("font-size")) ?? "";
     expect(statement, "the statement's own size is gone").toMatch(/font-size:\s*32\.6px/);
-    expect(statement).toMatch(/line-height:\s*1\.2/);
+    expect(statement).toMatch(/line-height:\s*1\.3/);
   });
 
   test("a phone steps the statement down, but not under the deck's floor", () => {
