@@ -38,6 +38,18 @@ const SLIDE_RISIKO = 105;
 const RISIKO_CONTINUATION = 200;
 const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTINUATION;
 
+// The first two Health Check cards are one compact part: five smileys and their
+// dashed guides. Both shrank by 30% — the faces are 24px where they were 34px,
+// and the column they span covers only 70% of the field instead of all of it.
+// Faces, guides and the Memoji that anchors to a face all read this one geometry.
+const HC_FACE = 24;
+const HC_SPAN_PCT = 70;
+const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
+/** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
+const hcSpanPoint = (f: number) =>
+  `calc(${HC_OFFSET_PCT}% + (${HC_SPAN_PCT}% - ${HC_FACE}px) * ${f} + ${HC_FACE / 2}px)`;
+
+
 // Pill label displayed ABOVE the card for each slide (null = no pill)
 const SLIDE_PILLS: Record<number, string | null> = {
   103: "Relationship by design",
@@ -1420,18 +1432,21 @@ const RetroCards: React.FC = () => {
               <div className="health-check-guides" aria-hidden="true">
                 {Array.from({ length: 6 }, (_, i) => (
                   <span key={i} className="health-check-guide" style={{
-                    top: `calc(17px + (100% - 34px) * ${(i - 0.5) / 4})`,
+                    top: hcSpanPoint((i - 0.5) / 4),
                   }} />
+
                 ))}
               </div>
-              <div className="flex flex-col items-start justify-between h-full print-emoji-scale">
+              <div className="relative h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (
                   <Button
                     key={i}
                     variant="ghost"
                     aria-label={["Lachend", "Glücklich", "Neutral", "Traurig", "Weinend"][i]}
-                    className="swiper-no-swiping h-[34px] w-[34px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[34px]"
+                    style={{ top: `calc(${hcSpanPoint(i / 4)} - ${HC_FACE / 2}px)`, left: 0 }}
+                    className="swiper-no-swiping absolute h-[24px] w-[24px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[24px]"
+
                     onClick={(event) => {
                       event.stopPropagation();
                       const container = event.currentTarget.closest<HTMLElement>(".print-memoji-container");
@@ -1451,7 +1466,7 @@ const RetroCards: React.FC = () => {
                       }));
                     }}
                   >
-                    <Face size={34} strokeWidth={1.5} color="var(--retro-black)" />
+                    <Face size={HC_FACE} strokeWidth={1.5} color="var(--retro-black)" />
                   </Button>
                 ))}
               </div>
@@ -1460,7 +1475,7 @@ const RetroCards: React.FC = () => {
                 const posX = memojisPositions[cardId]?.[person.key]?.x ?? defaultX;
                 const posY = memojisPositions[cardId]?.[person.key]?.y ?? defaultY(i);
                 const faceIndex = memojisPositions[cardId]?.[person.key]?.faceIndex;
-                const anchoredTop = faceIndex === undefined ? undefined : `calc((100% - 34px) * ${faceIndex / 4} - 11px)`;
+                const anchoredTop = faceIndex === undefined ? undefined : `calc(${hcSpanPoint(faceIndex / 4)} - 28px)`;
                 return (
                   <div
                     key={person.key}
