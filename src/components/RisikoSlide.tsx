@@ -38,8 +38,8 @@ const FACE_SIZE = 44;
 // 44px on screen and on paper — the very size the answer dot fills, so a dragged
 // face and a scale face are the same thing and the morph between them matches.
 // FACE_SIZE is the icon's intrinsic size, drawn one-to-one at the token's size.
-// The draggable marker shares the dot's 44px box and wears a 1px ring in the
-// Health Check's light green (see --risiko-marker-ring).
+// The draggable marker shares the dot's 44px box and is drawn in the very grey the
+// scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
 
@@ -78,11 +78,11 @@ const lanePos = (i: number) => `${(i + 0.5) * (100 / FACES.length)}%`;
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
 const SLOT = 32, BAND = SLOT;
-const FACE_FILL = "var(--risiko-face-fill)";
-// The knocked-out features: a fine mouth line, round eyes with some weight.
-// The eyes stay heavier than the small scale faces, but keep the same shape.
-const MOUTH_W = 1;
-const EYE_W = 2.4;
+// The marker's features are drawn in the very language of the scale's smileys:
+// the same fine outline, the same round-dot eyes at the same 1.2 stroke, so the
+// dragged face and a scale face are one and the same drawing — only the morphs.
+const MOUTH_W = 1.2;
+const EYE_W = 1.2;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
@@ -132,12 +132,13 @@ const MorphFace = ({ value }: { value: number }) => {
   const path = mouthPath(mouth);
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
-      stroke={FACE_FILL} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
-      {/* One eye is a single stroke: a round dot at every anchor on this scale,
-          the same stroke the small smileys draw — only heavier inside the disc. */}
+      stroke={INK} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
+      {/* The same drawing as the header smileys — the round outline, the fine
+          mouth, the round-dot eyes — only in the ink of the rule it rides, not
+          in their grey (user: "color back instead of grey"). */}
+      <circle cx="12" cy="12" r="10" />
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      // The marker's eyes are drawn heavier than the small scale faces, so its
-      // brows sit higher: they must keep a clear gap above the eye dots.
+      {/* The brows only rise between the anchors, where no header face stands. */}
       <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
       <path d={path} />
     </svg>
@@ -165,7 +166,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
     <span ref={pointRef} className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""} ${hintReady ? "has-navigation-hint" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot">
         <svg width={ARROW_SIZE} height={ARROW_SIZE} viewBox="0 0 24 24" fill="none"
-          stroke={FACE_FILL} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
+          stroke={INK} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 8 L6 12 L10 16 M14 8 L18 12 L14 16 M8 12 L16 12" />
         </svg>
       </span>
