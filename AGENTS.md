@@ -17,3 +17,5 @@
 - Keep both scales on one shared field height (`--risiko-field-h`): it caps the statement scale's field on screen and sets the work-split lane's height, and the lane centres its bar, dots and names on its own height with `cqh` (size containment) so the printed card can stretch the lane without any of them coming loose.
 - Centre the Risikofaktoren slider on the card by giving the scale its own fixed height and splitting the free space around it evenly, then closing the last pixels with a shift measured against the card's own middle — clamped to the room between text above and buttons below, read only on the on-screen card, because the deck keeps the others mounted, scaled and tilted.
 - Pass a shared row component's label as one element: its label field lays its children side by side, so a bare fragment splits a sentence into columns.
+- Risikofaktoren field: dashed dividers between neighbouring columns only (edges bare), names in a flow row under it, smileys flush with its top, rule centred on the long guide's midpoint.
+
