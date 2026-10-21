@@ -497,11 +497,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             ))}
           </div>
           <div className="workload-bar" aria-hidden="true">
-
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: `${segment.width}%` }}>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
+            ))}
+          </div>
+          {/* Each boundary carries its own solid ink line: not dashed like the grey
+              guides, but standing exactly as tall as they do — from the lane's top
+              edge down to the names' strip — and centred in the 4px gap the two
+              circles part to either side of it. Painted after the bar, so the line
+              reads over the colours; the circles draw above it. */}
+          <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {segments.slice(0, -1).map((segment, i) => (
+              <span key={`bl${i}`} className="workload-boundary absolute" style={{ left: splitAt(i) }} />
             ))}
           </div>
           {partners.map((p, i) => {
