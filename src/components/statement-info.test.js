@@ -27,9 +27,9 @@ describe("statement card info sentence", () => {
     expect(footer).toContain("Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst");
   });
 
-  test("leaves the Intimacy card the short line its scale needs", () => {
+  test("leaves the Intimacy card alone", () => {
     const intimacy = deck.slice(deck.indexOf("case 7:"), deck.indexOf("Das war so hot"));
-    expect(intimacy).toContain("Schiebt den schwarzen Kreis nach links und rechts");
+    expect(intimacy, "the Intimacy card shows the old helper sentence").not.toContain("Schiebt den schwarzen Kreis nach links und rechts");
     expect(intimacy).not.toContain("Die Aussage beschreibt");
   });
 });
