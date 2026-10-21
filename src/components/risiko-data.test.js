@@ -426,6 +426,7 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(sentence.endsWith(".")).toBe(true);
     expect(sentence.split(", ").length).toBe(15);
     expect(new Set(sentence.replace("Unter Beziehungsarbeit fällt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
+  });
   test("reads in the card's own ink at the smallest readable size, with every example kept", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const examples = css.match(/\.risiko-allocation-examples \{[\s\S]*?\n\}/)?.[0] ?? "";
