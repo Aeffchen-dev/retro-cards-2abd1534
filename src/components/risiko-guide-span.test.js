@@ -30,6 +30,11 @@ test("every scale line is drawn with a solid stroke", () => {
   expect(edge, "the divider is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-column-line\)/);
   const track = css.match(/\.health-check-guide \{[\s\S]*?\}/)?.[0] ?? "";
   expect(track, "the Health Check track is not a solid line").toMatch(/border-top:\s*1px solid var\(--risiko-column-line\)/);
+  // every vertical line on the scales is a single pixel wide (user: "Vertical
+  // lines 1px stroke width") — the guides, the column dividers and the
+  // work-split's own boundary between two partners' colours
+  const boundary = css.match(/\.workload-boundary \{[\s\S]*?\}/)?.[0] ?? "";
+  expect(boundary, "the work-split's vertical line is not one pixel").toMatch(/width:\s*1px/);
 });
 
 // No line runs down a smiley's own centre: the statement scale's columns are drawn
