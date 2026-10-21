@@ -55,16 +55,26 @@ describe("info box appearance", () => {
     }
   });
 
-  test("the i inside the ℹ mark reads darker and heavier than its ring", () => {
-    // user: "i in info I darker if thicker" — the letter is only a few pixels
-    // tall, so it wears its own darker ink and a heavier pen than the circle.
+  test("the i inside the ℹ mark reads darker and draws no heavier than the scale smileys", () => {
+    // user: "i in info I darker if thicker", then "stroke width max like grey
+    // smiley" — the letter wears its own darker ink, and its pen stops exactly at
+    // the weight the grey scale smileys draw with.
     expect(css, "the letter's own ink is missing").toMatch(/--retro-info-ink:\s*#3F4147;/);
     const mark = css.match(/\.retro-info-mark path \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(mark, "the letter does not wear the darker ink").toMatch(/stroke:\s*var\(--retro-info-ink\);/);
-    expect(mark, "the letter is not drawn with a heavier pen").toMatch(/stroke-width:\s*3;/);
-    expect(actionRow, "the mark is not handed its own hook").toMatch(
-      /className=\{isInfo \? "retro-info-mark"/,
-    );
+    const units = parseFloat(mark.match(/stroke-width:\s*([\d.]+)/)?.[1] ?? "0");
+    expect(units, "the letter's pen is not declared").toBeGreaterThan(0);
+    /* Both weights are stated in their own 24-unit box, so both are compared as
+       the pixels they actually paint: the mark draws at 16px, the smileys at 44. */
+    const letterPen = (units * 16) / 24;
+    const facePen =
+      (parseFloat(risiko.match(/const FACE_PEN = ([\d.]+)/)?.[1] ?? "0") *
+        parseFloat(risiko.match(/const FACE_SIZE = (\d+)/)?.[1] ?? "0")) /
+      24;
+    const ringPen = (1.5 * 16) / 24; // the ℹ ring's own strokePx, painted at 16px
+    expect(letterPen, "the letter draws heavier than the grey smileys").toBeLessThanOrEqual(facePen + 0.01);
+    expect(letterPen, "the letter draws no heavier than its own ring").toBeGreaterThan(ringPen);
+    expect(actionRow, "the mark is not handed its own hook").toMatch(/className=\{isInfo \? "retro-info-mark"/);
   });
 
   test("the sentence keeps the card's padding under itself", () => {
