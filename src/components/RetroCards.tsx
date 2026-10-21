@@ -1526,18 +1526,6 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            {/* Helper sentence straight under the headline, one card padding away from it. */}
-            <div className="w-full shrink-0" style={{ marginTop: '28px' }}>
-              <ActionRow
-                icon="IconInfo"
-                label="Klicke auf eine Frage um deine Notizen einzublenden"
-                accent="#F1F2F4"
-                fieldBg="#F1F2F4"
-                iconColor="#201C1D"
-                labelColor="#201C1D"
-                className="hc-helper retro-body-copy"
-              />
-            </div>
             <div className="flex flex-col flex-1 justify-between w-full" style={{ gap: '16px', marginTop: '28px' }}>
               {([
                 ["IconTrendingUp", "Ein voller Erfolg"],
@@ -2293,7 +2281,7 @@ const RetroCards: React.FC = () => {
 
                     style={{
                       ...cardStyle,
-                      ...(hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && !isRisikoSlide(slideId)
+                      ...(hasEditButton(slideId) && !isRisikoSlide(slideId)
                         ? { paddingBottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '112px' : '72px' }
                         : {}),
                     }}
@@ -2384,8 +2372,9 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit/Close action row - bottom left. The two smiley cards
                         draw their own button above their helper sentence, so the
-                        shared overlay would paint a second one there. */}
-                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
+                        shared overlay would paint a second one there. The last-4-weeks
+                        card has no info box: its button stands in the corner alone. */}
+                    {hasEditButton(slideId) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
