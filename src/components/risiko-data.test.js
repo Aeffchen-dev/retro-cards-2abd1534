@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -123,7 +123,6 @@ describe("Risikofaktoren scale", () => {
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt?");
-    expect(RISIKO_ALLOCATION_SUBHEADING).toBe("Oder leistet einer von uns einen deutlich größeren Anteil?");
   });
   test("shows one statement per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);

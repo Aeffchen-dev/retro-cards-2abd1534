@@ -290,6 +290,10 @@
   /* the card's own surface: a name's plate keeps this colour, so the word always
      stands on clean paper (paper repaints it) */
   --risiko-surface: #FFFFFF;
+  /* what the scale's own field — and the plates the faces and column names stand
+     on — are painted with: the card's surface on paper, a soft grey panel on
+     screen (below) */
+  --risiko-field-bg: var(--risiko-surface);
   /* The slider row is a full head taller than its marker, so the handle floats
      free of the smileys above and the buttons below, centred on its rule. */
   --risiko-track-h: 56px;
@@ -298,6 +302,9 @@
      exactly this tall plus the strip its names live in — so a card with one
      work-split field shows fields as high as a card with two statements. */
   --risiko-field-h: 120px;
+  /* the strip the work-split card's area keeps above the lane, for a partner name
+     that wraps to a second line and grows upwards past the lane's own top edge */
+  --risiko-work-headroom: 24px;
   /* How far the circle's centre stops short of each scale end: the handle's own
      radius, mirroring scaleEndInset(MARKER_SIZE) in RisikoSlide.tsx, so the outer
      smileys and the names under them are placed with the same maths. */
@@ -309,19 +316,19 @@
 .intimacy-rating {
   display: flex;
   gap: 8px;
-  height: 32px;
+  height: 44px;
   flex-shrink: 0;
   color: var(--retro-black);
 }
 .intimacy-rating .intimacy-star {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border-radius: 0;
   color: inherit;
   background: transparent;
 }
-.intimacy-rating .intimacy-star svg { width: 32px; height: 32px; }
+.intimacy-rating .intimacy-star svg { width: 44px; height: 44px; }
 /* A chosen heart wears the card's own pink, filled and outlined; an empty one
    keeps only its ink outline. */
 .intimacy-star[data-filled="true"] svg {
@@ -454,11 +461,14 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
+/* The sentence of examples under the work-split question reads as the deck's small
+   grey info text — the same colour and the same size — but it carries no hairline
+   above it, so it stays a plain line under the question instead of a second info box. */
 .risiko-allocation-examples {
   margin: 0 0 var(--risiko-scale-pad);
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--retro-black);
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--retro-info-text);
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -499,7 +509,7 @@
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 /* Each smiley keeps a plate of the card's own surface behind it, so the face always
    stands on clean paper — exactly like a name's plate below. */
-.risiko-face { background: var(--risiko-surface); border-radius: 50%; }
+.risiko-face { background: var(--risiko-field-bg); border-radius: 50%; }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces
@@ -637,7 +647,11 @@
      is neither squeezed by the row around it nor allowed to eat the space the
      scale is centred in. The printed sheet is sized to the page instead, so print
      is left to stretch the field over the whole card. */
-  .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
+  /* The field stands at its own height as a floor: it grows to hold the column
+     names at its foot, so the grey panel behind the scale wraps the whole control
+     — smileys, rule and names — instead of stopping under the rule. It still
+     shrinks, and still scrolls, when a statement is too tall for the card. */
+  .risiko-scale-field { flex: 0 1 auto; min-height: var(--risiko-field-h); }
   /* The names ride up to the rule instead of waiting at the field's foot: the
      field keeps its height, but the empty room under the circle is handed back to
      the scale, so the block — rule and names — ends just past the names and its
@@ -655,6 +669,28 @@
      slide it out of the area's own clip and slice the names' tops: the area shifts
      instead, carrying its clip edge along with the block inside it. */
   .risiko-scale-area--work { transform: translateY(var(--risiko-centre-shift, 0px)); }
+  /* The lane's own box starts at the rule's headroom, but a partner whose name
+     wraps to two lines grows that name upwards, past the lane's top edge. The
+     area is the lane's clip now, so it keeps a strip of its own above the lane —
+     no more than the card's padding — for exactly that overhang. */
+  .risiko-scale-area--work { padding-top: var(--risiko-work-headroom); }
+  /* Nothing floats in an empty band: the card's content stands as one tight stack
+     that rides the card's middle, so the scale never keeps more room between
+     itself and the text above or the buttons below than the card's own padding.
+     The area stops eating the card and takes its content's height instead — it
+     still shrinks, and still scrolls, when a statement grows too tall for the
+     card, so the deck's "fewer statements per card" signal keeps working. */
+  .risiko-page { justify-content: center; }
+  .risiko-page .risiko-scale-area { flex: 0 1 auto; }
+  /* The scale stands in its own grey panel on screen: the field — smileys, rule
+     and column names — is painted with the field colour, so the slider reads as
+     one control rather than marks loose on the card. The faces and names keep
+     plates of the same colour, so nothing shows through as a white tile. */
+  .risiko-page { --risiko-field-bg: #F1F2F4; }
+  .risiko-scale-field { background: var(--risiko-field-bg); border-radius: 14px; }
+  /* The first two Health Check cards draw their own scale; theirs is the same
+     panel, and the guides and faces inside it keep their own ink colours. */
+  .health-check-page .print-memoji-container { background: var(--risiko-field-bg, #F1F2F4); border-radius: 14px; }
 }
 /* The smiley row sits flush with the field's top edge: no padding above the
    faces, so their stubs vanish and the field's own drawing starts right under
@@ -756,7 +792,7 @@
 }
 /* The plate is only as wide as the word it carries, so the row keeps its even
    columns and only the letters themselves sit on the card's own surface. */
-.risiko-caption-plate { background: var(--risiko-surface); padding-inline: 3px; }
+.risiko-caption-plate { background: var(--risiko-field-bg); padding-inline: 3px; }
 /* The outer names touch the card's edge, so their plate never bleeds past it. */
 .risiko-scale-stack .risiko-scale-caption:first-child .risiko-caption-plate { padding-left: 0; }
 .risiko-scale-stack .risiko-scale-caption:last-child .risiko-caption-plate { padding-right: 0; }
@@ -855,7 +891,8 @@
    shows through behind it. */
 .risiko-footer {
   background: var(--risiko-label-bg);
-  margin-top: 16px;
+  /* the buttons stand no further under the scale than the card's own padding */
+  margin-top: var(--risiko-scale-pad);
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
@@ -1028,7 +1065,8 @@ button {
    12px is the app's floor — no text anywhere is set smaller than that. */
 @media (max-width: 1023px) {
   .retro-info-row,
-  .post-it-helper {
+  .post-it-helper,
+  .risiko-allocation-examples {
     font-size: 12px;
     line-height: 16px;
   }
@@ -1756,3 +1794,19 @@ textarea.bg-retro-post-it:focus,
 .retro-summary-row dt { color: #6E7078; }
 .retro-summary-row dd { margin: 0; }
 @media (max-width: 767px) { .retro-summary-row { grid-template-columns: 110px 1fr; font-size: 12px; line-height: 16px; } }
+
+/* The work-split card's ratio row stands directly under the lane and names each
+   column's own split on two lines — the shares over the word "Split". The row
+   wears the same solid ink outline the lane's own boundary is drawn with, so the
+   bar and its ratios read as one diagram rather than two separate tables. */
+.risiko-scale-captions.risiko-split-captions {
+  border: 1px solid var(--retro-black);
+  padding: 6px 0;
+  margin-top: 8px;
+}
+.risiko-split-captions .risiko-scale-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}

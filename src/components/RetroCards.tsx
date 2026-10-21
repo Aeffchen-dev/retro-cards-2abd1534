@@ -88,7 +88,7 @@ interface SetupData {
 const REFLECTION_FIELDS = [
   ["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Danke für", "Deine Antwort", ""],
-  ["unspoken", "Letzte Chance", "Deine Antwort", ""],
+  ["unspoken", "Letzte Chance", "Deine Antwort", "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen"],
 ] as const;
 
 

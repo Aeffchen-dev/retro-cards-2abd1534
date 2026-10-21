@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -364,10 +364,15 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
  *  on screen the very same row reads as the footnote's second line, under the
  *  helper sentence, so nothing hangs under the circles any more. */
 const SplitCaptions = () => (
-  <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
+  <div className="risiko-scale-captions risiko-split-captions pointer-events-none" aria-hidden="true">
     {FACES.map((_, i) => {
       const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-      return <span key={`sp${i}`} className="risiko-scale-caption">{at}% / {100 - at}%</span>;
+      return (
+        <span key={`sp${i}`} className="risiko-scale-caption">
+          <span className="risiko-split-ratio">{at}% / {100 - at}%</span>
+          <span className="risiko-split-word">Split</span>
+        </span>
+      );
     })}
   </div>
 );
@@ -418,6 +423,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         .map((sel) => pageEl.querySelector<HTMLElement>(sel)?.getBoundingClientRect().bottom ?? 0));
       const footTop = pageEl.querySelector<HTMLElement>(".risiko-footer")?.getBoundingClientRect().top;
       const b = box.getBoundingClientRect();
+      // A card whose stack is already tight — the scale no further from the text
+      // above or the buttons below than the card's own padding — has nothing left
+      // to centre: the shift stays home, so the block is never nudged past the
+      // area's own edge.
+      const pad = parseFloat(getComputedStyle(pageEl).getPropertyValue("--risiko-scale-pad")) || 28;
+      if ((footTop ?? card.y + card.height) - above - b.height <= 2 * pad) return;
       // The room between the text above and the buttons below is cut in half: the
       // scale's own block — rule, column names and the note riding under it — then
       // stands with the same breath above and below, so nothing reads as bunched at
@@ -698,10 +709,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             );
           })}
         </div>
-        {/* On paper the column ratios still read straight under the lane. On screen
-            the same row stands under the helper sentence instead, so under the
-            circles nothing is left but the two live shares. */}
-        {readOnly && <SplitCaptions />}
+        {/* The column ratios read straight under the lane, on screen and on paper:
+            each column names its own split on two lines, and the row wears the same
+            solid ink outline the lane itself is drawn with, so lane and ratios read
+            as one diagram. */}
+        <SplitCaptions />
       </div>
     );
   };
@@ -764,7 +776,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {page.statements.length === 0 && (
         <>
           <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{softHyphenate(RISIKO_ALLOCATION_HEADING)}</h2>
-          <p className="risiko-allocation-subheading shrink-0" lang="de">{RISIKO_ALLOCATION_SUBHEADING}</p>
           <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
         </>
       )}
@@ -785,7 +796,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             own padding under the button. */}
         <div className="risiko-footer-note w-full min-w-0 flex flex-col gap-1">
           <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du die Trennlinie nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
-          {page.personKeys.length > 0 && <SplitCaptions />}
         </div>
       </div>
     </div>
