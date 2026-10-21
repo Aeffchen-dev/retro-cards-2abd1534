@@ -845,13 +845,13 @@
   aspect-ratio: 1;
 
   border-radius: 50%;
+  background: var(--retro-black);
   /* the ring is the dot's own border, not an outline: an outline is painted
      just outside the box and, on the marker's fractional position, smears into
      a soft glow — a border shares the disc's own edge and reads as one crisp
      hairline in every state: the plain dot, the dragged face and the saved
      answer all wear it */
   border: 1px solid var(--risiko-marker-ring);
-  background: var(--risiko-marker-ring);
   /* the thumb is as narrow as a scale face, so the marker must not be squeezed
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;
