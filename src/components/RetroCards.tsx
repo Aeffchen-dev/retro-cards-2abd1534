@@ -2318,15 +2318,14 @@ const RetroCards: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  {/* The Setup card keeps the measures it had before the deck's cards
-                      grew to fill the slide: at most 500px wide and 720px tall, and
-                      always in that proportion (user: "make sure the card slider itself
-                      has the same max width and height applied as it used to have
-                      yesterday also keep the ratio of width to height" — see
-                      .retro-setup-card in index.css). Every other card still takes the
-                      full height the slide offers. */}
+                  {/* Every card in the deck wears one measure: the height the slide
+                      offers, capped at 88% of it (user: "each card in slider should
+                      have same measurements (use the ones from yesterday)"). No card
+                      — the Setup card included — stands taller or shorter than its
+                      neighbours, and none is sized by a rule of its own. */}
                   <div
-                    className={`retro-card-container relative w-full max-w-[500px] ${slideId === SLIDE_SETUP ? "retro-setup-card" : "flex-1"} min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+                    className={`retro-card-container relative flex-1 w-full max-w-[500px] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+
 
                     style={{
                       ...cardStyle,
