@@ -827,8 +827,8 @@
   min-height: 44px;
   max-width: 44px;
   max-height: 44px;
-
   aspect-ratio: 1;
+
   border-radius: 50%;
   background: var(--retro-black);
   /* the thumb is as narrow as a scale face, so the marker must not be squeezed
