@@ -44,8 +44,15 @@ describe("intro card copy", () => {
   test("sizes the lede and the paragraphs so the card holds both without scrolling", () => {
     const lede = css.match(/#root \.intro-lede \{ font-size: (\d+)px/)?.[1];
     const copy = css.match(/#root \.intro-copy \{ font-size: (\d+)px/)?.[1];
-    expect(lede, "the lede's size moved off its token").toBe("24");
+    expect(lede, "the lede's size moved off its token").toBe("28");
     expect(copy, "the paragraphs' size moved off the body default").toBe("16");
+    // the headline reads as big as the card can hold: where the card keeps its full
+    // width and stands tall enough, the lede grows a step further
+    const wide = css.match(/@media \(min-width: 768px\) and \(max-width: 1023px\) and \(min-height: 750px\) \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(wide.match(/#root \.intro-lede \{ font-size: (\d+)px/)?.[1], "the lede never grows where the card has room").toBe("32");
+    // and the opening spreads through the card's whole height rather than leaving a
+    // band of empty paper at its foot
+    expect(css, "the opening no longer fills the card").toMatch(/#root \.intro-copy \{ flex: 1 1 auto; justify-content: space-between; \}/);
     // Phones: both step down again, and nothing reads smaller than the 12px floor.
     // Several 767px blocks exist — take the one that carries the Intro card's rules.
     const phone =
