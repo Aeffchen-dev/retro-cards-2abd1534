@@ -125,7 +125,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
           requestAnimationFrame(() => el.setSelectionRange(caret, caret));
         }}
         className="w-full flex-1 p-3 retro-input retro-input-dark-text border-none text-base"
-        style={{ borderRadius: "0px", minHeight: minHeight ? `${minHeight}px` : undefined, background: readableBg(accent) }}
+        style={{ borderRadius: "0px", minHeight: minHeight ? `${minHeight}px` : undefined, background: "var(--retro-textarea-bg)" }}
         placeholder={bullets && !placeholder.startsWith(BULLET) ? BULLET + placeholder : placeholder}
       />
     )}

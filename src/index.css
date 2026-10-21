@@ -50,6 +50,9 @@
 
        own grey and a hairline above it separates it from the button above. */
     --retro-info-text: #6E7078;
+    /* the writing fields' own fill: every text area sits on this grey, whatever
+       colour its label bar wears */
+    --retro-textarea-bg: #E4E6E8;
     --retro-info-rule: #C9CBD1;
     --intimacy-accent: #FF6BEF;
 

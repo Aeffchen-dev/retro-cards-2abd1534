@@ -776,7 +776,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {page.statements.length === 0 && (
         <>
           <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{softHyphenate(RISIKO_ALLOCATION_HEADING)}</h2>
-          <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
+          <p className="risiko-allocation-examples shrink-0 mt-4" lang="de">{allocationExamplesSentence()}</p>
         </>
       )}
       <div ref={areaRef} className={`risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto${page.statements.length === 0 ? " risiko-scale-area--work" : ""}`}>
