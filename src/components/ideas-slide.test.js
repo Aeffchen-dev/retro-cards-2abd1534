@@ -25,5 +25,31 @@ describe("Vorhaben card carries the next-retro sentence and sits before Takeaway
     for (const id of ["0", "1", "2", "3", "4", "7", "8", "9", "10", "SLIDE_REFLECTION", "SLIDE_VORHABEN", "SLIDE_LOGO", "SLIDE_INTRO", "SLIDE_SETUP"]) {
       expect(deck, `card ${id} vanished from the deck`).toContain(id);
     }
+});
+
+describe("Ideas card wears the Questions combo", () => {
+  test("its pill and label bars come from the same random combo as the Questions card", () => {
+    const pill = src.slice(src.indexOf("const pillColorOf"), src.indexOf("const labelColorOf"));
+    // One branch covers Ideas and Questions: the combo's square colour.
+    expect(pill).toContain("slideId === SLIDE_VORHABEN || slideId === 10");
+    expect(pill).toContain("QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square");
+    // Feedback keeps its own blue; Ideas no longer shares it.
+    expect(pill).toContain("if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;");
+    expect(pill).not.toContain("SLIDE_REFLECTION || slideId === SLIDE_VORHABEN");
+
+    const label = src.slice(src.indexOf("const labelColorOf"), src.indexOf("}, [questionComboIdx]"));
+    expect(label).toContain("if (slideId === SLIDE_VORHABEN) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;");
+    expect(label).toContain("if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue;");
   });
+
+  test("the slide takes both colours as props so dark labels stay readable", () => {
+    expect(src).toContain("pillColor={pillColorOf(SLIDE_VORHABEN)}");
+    expect(src).toContain("labelColor={labelColorOf(SLIDE_VORHABEN)}");
+    // Passed to the writing fields as a real colour, not a CSS var, so the
+    // label bar's contrast lightening can still see it.
+    expect(slide).toContain("accent={labelColor}");
+    expect(slide).toContain('color={pillColor}');
+    expect(slide).not.toContain('accent="var(--vorhaben-label)"');
+  });
+});
 });

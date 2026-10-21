@@ -480,7 +480,7 @@ const RetroCards: React.FC = () => {
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
-      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.spiralBlue;
+      if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: rosa pill with orange accents
@@ -490,8 +490,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 7) return BRAND.maroon;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return BRAND.lightBlue;
-      // Questions: random combo per question
-      if (slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square;
+      // Ideas + Questions: the same random combo the Questions card wears
+      if (slideId === SLIDE_VORHABEN || slideId === 10) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square;
       const idx = slides.indexOf(slideId);
       return CARD_THEMES[(idx < 0 ? 0 : idx) % CARD_THEMES.length].pill;
     },
@@ -506,7 +506,9 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.deepGreen;   // olive pill → the card's own dark olive
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
-      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.babyBlue; // blue labels
+      if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // blue labels
+      // Ideas: the Questions combo's own companion colour
+      if (slideId === SLIDE_VORHABEN) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
@@ -1938,6 +1940,8 @@ const RetroCards: React.FC = () => {
         return (
           <VorhabenSlide
             slideId={SLIDE_VORHABEN}
+            pillColor={pillColorOf(SLIDE_VORHABEN)}
+            labelColor={labelColorOf(SLIDE_VORHABEN)}
             values={editModeNotes[SLIDE_VORHABEN] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
@@ -2246,7 +2250,11 @@ const RetroCards: React.FC = () => {
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
-                [SLIDE_VORHABEN]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
+                // Ideas wears the same combo as the Questions card
+                [SLIDE_VORHABEN]: {
+                  pill: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
+                  pillDot: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon,
+                },
                 [SLIDE_RISIKO]: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
