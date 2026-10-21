@@ -43,8 +43,9 @@ const FACE_SIZE = 44;
 const MARKER_SIZE = 44;
 
 
-// One ink stroke for the whole deck: the rule, the work-split bar and the split
-// line are all this thick — 3px, the weight the deck's other strokes share.
+// One stroke for the whole deck: the rule, the work-split bar and the split line
+// are all this thick — 3px. The rule draws in the smileys' own grey, the split
+// and the answer dot stay ink.
 const RULE_W = 3;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
