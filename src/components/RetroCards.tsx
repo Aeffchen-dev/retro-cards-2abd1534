@@ -1675,7 +1675,7 @@ const RetroCards: React.FC = () => {
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full intro-block">
-              <h2 className="retro-heading intro-lede w-full"><RevealText text="Eure monatliche Beziehungsweise Check-in Routine, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern" color={pillColorOf(cardIndex)} slideIndex={cardIndex} stagger={45} /></h2>
+              <h2 className="retro-heading intro-lede w-full"><RevealText text="Eure monatliche Beziehungs Check-in Routine, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern" color={pillColorOf(cardIndex)} slideIndex={cardIndex} stagger={45} /></h2>
               <div className="flex flex-col gap-4 w-full retro-body-copy intro-copy">
 
                 <p>Macht daraus eure Date Night, schnappt euch euer Lieblingsgetränk und macht's euch gemütlich.</p>
