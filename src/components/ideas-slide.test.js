@@ -5,10 +5,12 @@ const src = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 const slide = readFileSync(new URL("./VorhabenSlide.tsx", import.meta.url), "utf8");
 
 describe("Vorhaben card carries the next-retro sentence and sits before Takeaways", () => {
-  test("shows \"Das nehmen wir uns bis zur nächsten Retro vor\" as its pill and heading", () => {
+  test("shows \"Ideas\" above the card and the next-retro sentence as its heading", () => {
     const pills = src.slice(src.indexOf("const SLIDE_PILLS"), src.indexOf("};", src.indexOf("const SLIDE_PILLS")));
-    expect(pills).toContain('104: "Das nehmen wir uns bis zur nächsten Retro vor"');
+    // The short word above the card, the full sentence inside it.
+    expect(pills).toContain('104: "Ideas"');
     expect(pills).not.toContain("Vorhaben");
+    expect(pills).not.toContain("Das nehmen wir uns");
     expect(slide).toContain('text="Das nehmen wir uns bis zur nächsten Retro vor"');
     expect(slide).not.toContain('text="Vorhaben"');
   });
