@@ -71,6 +71,10 @@ const TRAVEL = 100 - 2 * TRAVEL_INSET;
 const faceX = (i: number) => `${TRAVEL_INSET + i * COLUMN}%`;
 /** CSS left for the circle at a slider value: 0 in the first column's middle, 100 in the last. */
 const markerLeft = (value: number) => `calc(${TRAVEL_INSET}% + ${value} * ${TRAVEL / 100}%)`;
+/** The slider snaps: every answer lands on one of the five face anchors (user:
+ *  "range slider snap"), so drag, press and keyboard all settle on a smiley. */
+const SNAP = 25;
+const snapValue = (v: number) => Math.round(v / SNAP) * SNAP;
 /** CSS left for the line between face `i` and the face to its right: their columns' border. */
 const edgeX = (i: number) => `${(i + 1) * COLUMN}%`;
 /** The work-split lane keeps its own evenly divided grid: its circles ride the share
@@ -112,20 +116,26 @@ const FACE_PEN = 0.9;
 const EYE_R = 0.68;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
-  // No plate behind the face: it sits straight on its column's fill, which is
-  // only a shade off the card's white, so the smiley reads as being inside it.
+  // No plate circle behind the face: the white fill sits inside the face's own
+  // outline, so the rule stops at the outline's edge without a pale ring showing
+  // around the smiley (user: "grey smilies remove white outline").
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
-  // The eyes are drawn over the icon as filled circles of their own: every face
+  // The eyes ride on that white fill as filled circles of their own: every face
   // in the set keeps its dot eyes on the same 24-grid pair (9,9 / 15,9), so one
   // overlay fits all five and the circles can grow without the pen thickening
   // the face's outline and mouth with them.
   <span className="risiko-face relative flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
     <svg className="absolute inset-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
+      {/* White fill painted inside the face's own outline — no plate circle
+          sticking out past it, so no white ring shows around the smiley, and
+          the rule stops exactly where the outline starts. The dot eyes ride on
+          the fill; the icon draws its outline and mouth over both. */}
+      <circle cx="12" cy="12" r="10" stroke="none" style={{ fill: "var(--risiko-face-fill, #fff)" }} />
       <circle cx="9" cy="9" r={EYE_R} />
       <circle cx="15" cy="9" r={EYE_R} />
     </svg>
+    <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
   </span>
 );
 
@@ -235,7 +245,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         the ink answer dot stays the heavy mark on it. */}
     <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: FACE_GREY, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
-    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
     ) : (
@@ -243,7 +253,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
           style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
-          value={[value]} min={0} max={100} step={1}
+          value={[value]} min={0} max={100} step={SNAP}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
           onPointerCancel={() => setDragging(false)}
@@ -263,7 +273,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
           {marker}
         </div>
       </>
@@ -322,12 +332,12 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
     e.currentTarget.setPointerCapture(e.pointerId);
-    onChange(String(Math.round(v)));
+    onChange(String(snapValue(v)));
   };
   const dragField = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!fieldDrag.current) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v !== null) onChange(String(Math.round(v)));
+    if (v !== null) onChange(String(snapValue(v)));
   };
   const releaseField = () => { fieldDrag.current = null; };
 

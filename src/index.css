@@ -519,9 +519,10 @@
    dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
-/* Each smiley keeps a plate of the card's own surface behind it, so the face always
-   stands on clean paper — exactly like a name's plate below. */
-.risiko-face { background: var(--risiko-field-bg); border-radius: 50%; }
+/* No plate behind the smileys any more (user: "grey smilies remove white
+   outline"): each face paints its white fill inside its own outline, so the
+   rule meets the face's edge without a pale ring showing around it. */
+.risiko-face { border-radius: 50%; }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces
@@ -927,9 +928,10 @@
 .risiko-thumb > * { pointer-events: none; }
 /* The slider row's height is shared with the footer's margin maths below. */
 .risiko-track { height: var(--risiko-track-h); }
-/* The rule is the scale's own ground line: it paints over the column grid but stays
-   under the circle (z-10) and under the smiley row (z-30), so nothing ever hides
-   the answer it carries. */
+/* The rule is the scale's own ground line: it paints over the column grid and
+   stays under the smiley row (z-30), while the answer circle rides on top of
+   everything (z-40, user: "range slider z-index to top") — its own white plate
+   covers a smiley as it passes, so the answer is never hidden. */
 .risiko-rule { z-index: 1; }
 /* The button block sits below the scale and carries the card colour, so nothing
    shows through behind it. */
