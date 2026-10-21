@@ -47,6 +47,11 @@
     --risiko-marker-size: 44px;
 
     --risiko-helper-bg: #F1F2F4;
+    /* The info box carries no fill any more: its sentence reads in the scale's
+       own grey and a hairline above it separates it from the button above. */
+    --retro-info-text: #6E7078;
+    --retro-info-rule: #C9CBD1;
+
     /* the columns carry no fill: they are drawn only as dashed grey lines, and
        those lines sit a shade behind the smileys' own guides (--risiko-line) */
     --risiko-column-line: #C9CBD1;
@@ -951,7 +956,18 @@ button {
   line-height: 18px;
 }
 
+/* The info box (ℹ + helper sentence) is no longer a filled plate: it reads as
+   plain grey text with a grey hairline drawn above it, so the sentence sits
+   under the button as a footnote instead of a second tile. The row keeps its
+   own height so the border and the gap above the text never squeeze the label. */
+.retro-info-row {
+  height: auto;
+  border-top: 1px solid var(--retro-info-rule);
+  padding-top: 8px;
+}
+
 /* Info rows (the ℹ helper sentences) read one size smaller on phones and
+
    tablets: the same sentence then fits in fewer lines without squeezing the
    scale or the notes row. Desktop keeps the regular 16px body copy.
    Placed after .retro-body-copy so it wins over the default size.
