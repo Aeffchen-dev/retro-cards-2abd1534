@@ -4,7 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES, StatementScale } from "@/components/RisikoSlide";
-import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
+import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, INTIMACY_CAPTIONS } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
