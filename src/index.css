@@ -1610,10 +1610,10 @@ textarea.bg-retro-post-it:focus,
 /* Questions slide: same headline size as all other slides */
 
 /* Phones: the column names keep their own column-scaled size (captionLines splits
-   every name into two lines); a half too wide for the narrow column wraps inside it. */
+   every name into two lines); a half too wide for the narrow column wraps inside it.
+   The smileys need no phone copy of their token any more — one shared 44px
+   everywhere, the size the answer dot fills. */
 @media (max-width: 767px) {
-  /* phones keep the smileys at their full size */
-  :root { --risiko-face-size: 32px; }
   .risiko-scale-captions { container-type: inline-size; }
   .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { white-space: normal; }
