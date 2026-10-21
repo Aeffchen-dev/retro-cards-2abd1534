@@ -288,3 +288,4 @@
 - [ ] Grey smileys: move them 40px down.
 - [ ] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.
 - [ ] Adjust the smileys' grey so it sits with the deck's other greys.
+- [ ] Desktop: give the card a max height below the one it reaches now.
