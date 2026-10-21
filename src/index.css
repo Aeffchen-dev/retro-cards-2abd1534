@@ -259,6 +259,9 @@
   min-width: 0;
   max-width: 100%;
   --risiko-scale-pad: 28px; /* the card's own padding */
+  /* the card's own surface: a name that stands on a dashed line keeps a plate of
+     this colour, so the line passes behind the word (paper repaints it) */
+  --risiko-surface: #FFFFFF;
   /* The slider row is a full head taller than its marker, so the handle floats
      free of the smileys above and the buttons below, centred on its rule. */
   --risiko-track-h: 56px;
@@ -594,9 +597,14 @@
   overflow-wrap: break-word;
   hyphens: auto;
   min-width: 0;
-  /* No fill: the names stand on the card's own ground, and the dashed lines stop
-     above this band, so nothing ever draws through a name's letters. */
+  /* The dotted lines run down through this band now, so every name keeps a
+     plate of the card's own surface: the line passes behind the word and
+     reappears just under it. The plate bleeds into the 4px gap between the
+     columns, so it never touches a neighbour's letters. */
+  background: var(--risiko-surface);
   padding-top: 4px;
+  padding-inline: 2px;
+  margin-inline: -2px;
 }
 /* Each name stands in its own lines: the spans the component emits (first word /
    middle words / last word) become real lines on every device, so the row never
@@ -1260,7 +1268,7 @@ textarea.bg-retro-post-it:focus,
   }
 
   /* The printed card is padded by 40px, so the scale keeps the same rhythm there. */
-  .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
+  .print-slide-page .risiko-page { --risiko-scale-pad: 40px; --risiko-surface: #F0EFEE; }
   /* Paper always shows the whole sentence of examples: the phone's short reading
      window must never follow a print onto the sheet. */
   /* The buttons are not printed, so the print copy carries the scale's lower margin
