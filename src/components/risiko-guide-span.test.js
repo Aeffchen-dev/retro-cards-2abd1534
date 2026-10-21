@@ -9,7 +9,7 @@ const FACES_COUNT = 5;
 // stack that holds the field *and* the column names, so a line runs from the
 // smileys down past the last name. The names themselves paint over the line.
 test("the dotted guides run from the smileys down past the column names", () => {
-  const stack = slide.indexOf('<div className="risiko-scale-stack">');
+  const stack = slide.indexOf('className="risiko-scale-stack"');
   const guides = slide.indexOf('className="risiko-scale-guides');
   const columns = slide.indexOf('className="risiko-columns');
   const field = slide.indexOf('className="risiko-scale-field');
@@ -63,4 +63,44 @@ test("no dotted line draws through a smiley", () => {
   expect(face, "the face has no rule of its own").toBeTruthy();
   expect(/background:\s*var\(--risiko-surface\)/.test(face), "the smiley has no plate of the card's surface").toBe(true);
   expect(/border-radius:\s*50%/.test(face), "the smiley's plate is not a disc").toBe(true);
+});
+
+// The column names no longer wait at the field's foot: on screen they rise to
+// stand just under the circle that rides the rule. The stack works that place out
+// of the field's own live height — the taller of its basis and the floor the card
+// hands it — less the circle's own radius and 4px of air. The printed sheet keeps
+// the names where they have always stood.
+test("the column names rise to just under the circle on screen", () => {
+  // the field's floor rides on the stack as a token: custom properties only
+  // travel downwards, so the field cannot tell its own parent how tall it stands
+  expect(slide, "the field's floor never reaches the stack")
+    .toMatch(/className="risiko-scale-stack"[^>]*--risiko-field-min/);
+  expect(slide, "the field lost its own floor")
+    .toMatch(/className="risiko-scale-field[^"]*" style=\{\{ minHeight: fieldMin \?\? FIELD_MIN \}\}/);
+
+  const stack = css.match(/\.risiko-scale-stack \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  expect(stack, "the stack does not know the field's live height")
+    .toMatch(/--risiko-field-live:\s*max\(var\(--risiko-field-h\),\s*var\(--risiko-field-min,\s*0px\)\)/);
+  // the lift is the room under the rule, less the circle's radius, less 4px of air
+  expect(stack, "the names' lift does not stop short of the circle")
+    .toMatch(/--risiko-caption-lift:\s*max\(0px,\s*calc\(\(var\(--risiko-field-live\) - var\(--risiko-face-size\) - 4px\) \/ 2 - var\(--risiko-marker-size\) \/ 2 - 4px\)\)/);
+
+  // the circle wears the same token the lift is read from, so the gap under the
+  // rule can never drift away from the dot's real size
+  expect(css, "the dot does not wear its own size token")
+    .toMatch(/\.risiko-expression-point \{[\s\S]*?width:\s*var\(--risiko-marker-size\)/);
+  expect(css, "the dot's token is not the 44px the scale draws").toMatch(/--risiko-marker-size:\s*44px/);
+
+  // and the row rides up by exactly that lift — on screen only
+  const liftRule = css.indexOf(".risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }");
+  expect(liftRule, "the names never rise on screen").toBeGreaterThan(-1);
+  const screenOpen = css.lastIndexOf("@media screen {", liftRule);
+  expect(screenOpen, "the lift does not sit in the screen block").toBeGreaterThan(-1);
+  expect(css.slice(screenOpen, liftRule).includes("\n}"), "the screen block closes before the lift").toBe(false);
+
+  // the printed sheet is left alone: its fields are stretched over the card and
+  // keep the names at their foot
+  const printOpen = css.indexOf("@media print {");
+  expect(printOpen, "there is no print block to check").toBeGreaterThan(-1);
+  expect(css.slice(printOpen).includes("--risiko-caption-lift"), "the printed sheet must keep its own placement").toBe(false);
 });
