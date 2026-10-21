@@ -29,6 +29,22 @@ test("every scale line is drawn with a solid stroke", () => {
   expect(track, "the Health Check track is not a solid line").toMatch(/border-top:\s*1px solid var\(--risiko-column-line\)/);
 });
 
+// The smileys' own guides no longer run up through the faces: they open where the
+// face row ends and run down through the rule from there.
+test("the smiley guides open under the faces, not through them", () => {
+  const field = slide.indexOf('className="risiko-scale-field');
+  const faces = slide.indexOf("<FaceLayer />");
+  const guides = slide.search(/className="risiko-scale-guides[\s\S]{0,200}top: "calc\(var\(--risiko-face-size\)/);
+  expect(guides, "the guides do not open under the face row").toBeGreaterThan(-1);
+  // they live inside the field, painted before the rule and the circle
+  expect(guides, "the guides no longer live inside the field").toBeGreaterThan(field);
+  expect(guides, "the guides are painted after the faces").toBeLessThan(faces);
+  // the line starts exactly where the field's own padding-top puts the face row's
+  // foot, and keeps running down to the field's own bottom edge
+  expect(slide).toMatch(/className="risiko-scale-guides[\s\S]{0,200}top: "calc\(var\(--risiko-face-size\) \+ 4px\)", bottom: 0/);
+  expect(slide, "the smileys' guides are gone").toMatch(/risiko-column-guide risiko-guide-full/);
+});
+
 test("the column names still stand under the field in their own row", () => {
   const stack = slide.indexOf('className="risiko-scale-stack"');
   const field = slide.indexOf('className="risiko-scale-field');
