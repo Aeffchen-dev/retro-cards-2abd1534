@@ -495,14 +495,13 @@ describe("smallest text size", () => {
       if (n === null) return true; // a computed size could drop under the floor
       return n < 12;
     });
-    // The three deliberate exceptions, all five column labels: they read one step
+    // The two deliberate exceptions, both the five column labels: they read one step
     // under the floor so a name fits its own column — the statement scale's names
-    // size themselves against their own equal column (two lines on a tablet, desktop
-    // or sheet, three on a phone), the work-split legend keeps its fixed small size.
+    // size themselves against their own equal column on a tablet, desktop or sheet,
+    // the work-split legend keeps its fixed small size.
     expect(below).toEqual([
       "calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px)",
       "11px",
-      "min(calc(100cqw / 5 / 4.35), 18px)",
     ]);
     expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 11px;[^}]*\}/);
   });
@@ -513,17 +512,14 @@ describe("smallest text size", () => {
     const media = css.match(/@media \(max-width: 1023px\) \{[\s\S]*?\n\}/)[0];
     expect(media).not.toMatch(/\.risiko-scale-caption/);
   });
-  test("gives the column labels as much size as three lines of their own column can hold", () => {
-    // On a phone a name may spend three lines on its column instead of two, so the
-    // largest safe size is the one at which the widest single word — "teilweise",
-    // 4.254em — still fits the column: 100cqw/5/4.35, capped at the 18px the bigger
-    // scales already use. Measured live: 13.3px on a 393px phone and 9.9px on a
-    // 320px one, every name on at most three lines with no word cut in half.
+  test("sets the column labels on a phone to the helper sentence's own size", () => {
+    // The names no longer size themselves against the column on a phone: they read
+    // exactly what the card's helper sentence reads there — 12px, the app's floor
+    // (user: "use info text font size"). A name then spends up to three lines on its
+    // column, breaking only at its own words.
     const phoneBlocks = [...css.matchAll(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g)].map((m) => m[0]);
     expect(
-      phoneBlocks.some((b) =>
-        /\.risiko-scale-stack \.risiko-scale-caption \{ font-size: min\(calc\(100cqw \/ 5 \/ 4\.35\), 18px\); \}/.test(b)
-      )
+      phoneBlocks.some((b) => /\.risiko-scale-stack \.risiko-scale-caption \{ font-size: 12px; \}/.test(b))
     ).toBe(true);
     // the wider layouts keep their two-line size untouched
     const stack = css.match(/\.risiko-scale-stack \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
