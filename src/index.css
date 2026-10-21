@@ -54,6 +54,9 @@
        colour its label bar wears */
     --retro-textarea-bg: #E4E6E8;
     --retro-info-rule: #C9CBD1;
+    /* the card's own padding, as a token: the info row keeps this much air
+       between its hairline and its sentence, and again under the sentence */
+    --retro-card-pad: 28px;
     --intimacy-accent: #FF6BEF;
 
     /* The scale's columns are drawn, not filled: a solid guide runs down each
@@ -939,10 +942,15 @@
   background: var(--risiko-label-bg);
   /* the buttons stand no further under the scale than the card's own padding */
   margin-top: var(--risiko-scale-pad);
-  /* the info sentence under the button ignores the card's padding at the foot:
-     the footer's own bottom edge lands on the card's very bottom edge (user:
-     "info Text ignore card padding ... bottom") */
+  /* the footer's own bottom edge lands on the card's very bottom edge; the
+     sentence inside keeps the card's padding as its margin-bottom, so the air
+     under it reads the card's own padding too (user: "card padding is also
+     applies as margin-bottom of info text") */
   margin-bottom: calc(-1 * var(--risiko-scale-pad));
+}
+/* the risiko helper sentence keeps a full card padding of air under itself */
+.risiko-footer .retro-info-row {
+  margin-bottom: var(--retro-card-pad);
 }
 /* The info sentence keeps the card's own padding at its left and right, and the
    hairline above it spans only that content width — the card's own edges stay
@@ -1127,10 +1135,13 @@ button {
 .retro-info-row {
   height: auto;
   /* the hairline runs the card's whole content width, so a short sentence does
-     not leave the line stopping half way across the card */
+      not leave the line stopping half way across the card */
   width: 100%;
   border-top: 1px solid var(--retro-info-rule);
-  padding-top: 8px;
+  /* the air between the hairline and the sentence reads the card's own padding,
+     not a token of its own (user: "the margin between info I text and border-top
+     must reflect card padding") */
+  padding-top: var(--retro-card-pad);
 }
 
 
