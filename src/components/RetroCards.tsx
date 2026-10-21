@@ -503,7 +503,7 @@ const RetroCards: React.FC = () => {
     (slideId: number) => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
       if (slideId === 4) return "#FF7A3D";              // rosa pill → warm orange label
-      if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.lime;   // olive pill → lime
+      if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.deepGreen;   // olive pill → the card's own dark olive
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_VORHABEN) return BRAND.babyBlue; // blue labels
@@ -2312,9 +2312,8 @@ const RetroCards: React.FC = () => {
                               {groups.map((g, gi) => (
                                 <div key={g.key} className="flex flex-col flex-1 min-h-0 gap-2">
                                   <h2
-                                    className="retro-body-copy shrink-0 pr-12"
+                                    className="retro-heading notes-question shrink-0 pr-12"
                                     lang="de"
-                                    style={{ fontSize: '16px', lineHeight: 1.4, color: '#201C1D' }}
                                   >
                                     {`\u201E${g.title}\u201C`}
                                   </h2>
@@ -2345,8 +2344,7 @@ const RetroCards: React.FC = () => {
                             <>
                               {/* Question text - animated to top left, smaller, with right padding for close icon */}
                               <h2
-                                className="retro-body mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
-                                style={{ fontSize: '16px', lineHeight: 1.4, color: '#201C1D' }}
+                                className="retro-heading notes-question mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
                               >
                                 {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
                               </h2>
