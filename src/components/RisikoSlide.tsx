@@ -341,18 +341,18 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
                 <span key={`ce${i}`} className="risiko-column-edge risiko-guide-full absolute" style={{ left: edgeX(i) }} />
               ))}
             </div>
-            {/* Each smiley's column carries its solid guide down the stack's whole
-                height — from the smiley's own top edge, straight behind its face, to
-                just past the last name. The face keeps a plate of the card's own
-                surface, so the line reads as threaded behind the smiley rather than
-                drawn through it. Painted before the faces and the circle, so both
-                simply stand in front of the line. */}
-            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-guide-full absolute" style={{ left: faceX(i) }} />)}
-            </div>
             {/* The smileys sit flush with the field's top edge, while the rule and
                 the circle centre in the room under them. */}
             <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: fieldMin ?? FIELD_MIN }}>
+              {/* Each smiley's column carries its solid guide, but the line opens
+                  where the face row ends — the field's own padding-top — and runs
+                  down through the rule from there, so it never crosses a smiley's
+                  face (user: "remove smiliey line from grey smilies"). Painted
+                  before the rule and the circle, so both stand in front of it. */}
+              <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none"
+                style={{ top: "calc(var(--risiko-face-size) + 4px)", bottom: 0 }} aria-hidden="true">
+                {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-guide-full absolute" style={{ left: faceX(i) }} />)}
+              </div>
               <FaceLayer />
               <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
                 onChange={(v) => onChange(String(v))} />

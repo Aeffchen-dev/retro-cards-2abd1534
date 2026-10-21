@@ -277,5 +277,5 @@
 - [x] Deck's ink stroke: 4px -> 2.2px (the rule, the work-split bar and the split line), so the dot's face draws at the smileys' own weight.
 
 - [x] Dot smiley: circle and face drawn 20% bigger (zoomed window inside the same 44px handle).
-- [ ] Grey scale smileys: thinner stroke than the rule's 2.2px.
-- [ ] Remove the smiley line from the grey smileys (confirm: the outline circle, or the guide line behind them).
+- [x] Grey scale smileys: thinner stroke than the rule's 2.2px.
+- [x] Remove the smiley line from the grey smileys: the vertical guide opens under the faces.
