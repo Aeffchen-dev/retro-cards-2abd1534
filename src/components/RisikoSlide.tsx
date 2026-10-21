@@ -302,7 +302,12 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
           {/* The field and the column names under it form one stack, and the dashed
               lines are drawn against that stack: they start at the smileys and end
               just past the last name. */}
-          <div className="risiko-scale-stack">
+          {/* The field's floor rides here as a token: the stack is what works the
+              rule's own height out of the taller of the floor and the field's own
+              basis — custom properties only travel downwards, so the field cannot
+              tell its parent — and that height is what tells the names how far up
+              they may rise. */}
+          <div className="risiko-scale-stack" style={{ "--risiko-field-min": `${fieldMin ?? FIELD_MIN}px` } as React.CSSProperties}>
             {/* Columns: no fill at all — the five fields are drawn only as dashed grey
                 lines, one between every pair of neighbouring columns, with the scale's
                 own left and right edge left bare. Each line runs the stack's whole
