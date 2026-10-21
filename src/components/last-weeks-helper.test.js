@@ -25,8 +25,9 @@ describe("last 4 weeks helper sentence", () => {
     expect(gap).toBe(padding);
   });
 
-  test("wraps instead of truncating and stays off the printed page", () => {
+  test("wraps instead of truncating and is not a button", () => {
     expect(card).toMatch(/className="hc-helper retro-body-copy"/);
-    expect(card).not.toMatch(/einzublenden[\s\S]*?onClick/);
+    const helper = card.slice(card.indexOf('icon="IconInfo"'));
+    expect(helper.slice(0, helper.indexOf("/>"))).not.toMatch(/onClick/);
   });
 });
