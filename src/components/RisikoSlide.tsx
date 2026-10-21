@@ -514,16 +514,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             // squeezed into an oval when the lane gets crowded.
             const slot = `min(${SLOT}px, calc(100cqw / ${partners.length}))`;
             // Every partner reserves exactly one band: its circle plus room for its
-            // centred name — adjacent circles sit exactly one band apart, touching
-            // with no margin between them. The band may never grow past the share
-            // of the lane each partner can actually use, or the circles would run
-            // out of room to move.
-            const band = workloadBand(SLOT, BAND, partners.length);
+            // centred name — adjacent circles sit exactly one band apart, and each
+            // circle steps 2px away from the boundary it marks, so neighbouring
+            // circles keep a 4px gap between them. The band may never grow past the
+            // share of the lane each partner can actually use, or the circles would
+            // run out of room to move.
             const li = `calc(${band} * ${i})`;
             const ri = `calc(${band} * ${partners.length - i - 1})`;
             const vars = {
               "--workload-li": li, "--workload-ri": ri, "--workload-slot": slot,
               "--workload-v": String(value), "--workload-band": band,
+              // The circle's 2px step away from its own boundary: every circle but
+              // the last sits just left of the boundary it rides, the last one just
+              // right of it — together they open the 4px gap the split line centres in.
+              "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
               // Names take alternating rows. With two partners each row holds a
               // single name, so it may use the whole lane; from three partners up
               // two names share a row, so each is kept within two bands.
