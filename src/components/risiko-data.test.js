@@ -306,10 +306,13 @@ describe("grey columns", () => {
     expect(block).not.toContain(".risiko-scale-caption");
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
-    // The columns carry no fill, so a name stands on the card's own ground: no
-    // grey plate behind it. The dashed lines simply stop above the names' band,
-    // so nothing ever draws through a name's letters.
-    expect(caption).not.toMatch(/background:/);
+    // The dotted lines run down through the names' band now, so each name keeps
+    // a plate of the card's own surface — never a grey fill: the line passes
+    // behind the word instead of drawing through its letters.
+    expect(/background:\s*var\(--risiko-surface\)/.test(caption), "the name does not keep a plate of the card's surface").toBe(true);
+    expect(caption).not.toMatch(/background:\s*(#|var\(--risiko-(guide|caption|column|helper)))/);
+    // and the plate repaints for paper, so it never shows as a pale patch
+    expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });
 
   test("the slider rule is exactly as thick as the work-split bar", () => {
