@@ -35,21 +35,24 @@ describe("info box appearance", () => {
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);
   });
 
-  test("the note keeps one 8px breath in all three of its places", () => {
-    // user: "gap top border info text to CTA same as info text top padding" and
-    // "info I gap to text 8px" — a single token sets the hairline's breath above
-    // the letters, the button's breath over the hairline and the ℹ mark's breath
-    // over its sentence, so the three can never drift apart.
+  test("the note hangs straight under the button, with a wider breath beside its mark", () => {
+    // user: "info text top padding only 8px", then "Notizen öffnen move closer to
+    // top border of info text (same value as top padding)" — the button no longer
+    // stands a breath of its own over the hairline, so the note reads as one
+    // block hung under it; and "info i icon smaller", "double gap to text" — the
+    // smaller mark steps twice that breath back from its sentence.
     expect(css, "the note's breath is not its own token").toMatch(/--retro-info-gap:\s*8px;/);
-    expect(css, "the mark does not stand the same breath from its sentence").toMatch(
-      /\.retro-info-row > span \+ span \{\s*padding-left:\s*var\(--retro-info-gap\);?\s*\}/,
+    expect(css, "the mark's breath is not twice the note's").toMatch(/--retro-info-mark-gap:\s*16px;/);
+    expect(css, "the mark does not stand its own breath from its sentence").toMatch(
+      /\.retro-info-row > span \+ span \{\s*padding-left:\s*var\(--retro-info-mark-gap\);?\s*\}/,
     );
     const stacks = [
       ["the Risikofaktoren footer", risiko],
       ["the Health Check stack", cards],
     ];
     for (const [where, src] of stacks) {
-      expect(src, `the button in ${where} does not stand the note's breath over the hairline`).toContain(
+      expect(src, `the button in ${where} does not sit straight on the hairline`).toContain("gap-0");
+      expect(src, `the button in ${where} still stands a breath over the hairline`).not.toContain(
         "gap-[var(--retro-info-gap)]",
       );
     }
@@ -65,13 +68,19 @@ describe("info box appearance", () => {
     const units = parseFloat(mark.match(/stroke-width:\s*([\d.]+)/)?.[1] ?? "0");
     expect(units, "the letter's pen is not declared").toBeGreaterThan(0);
     /* Both weights are stated in their own 24-unit box, so both are compared as
-       the pixels they actually paint: the mark draws at 16px, the smileys at 44. */
-    const letterPen = (units * 16) / 24;
+       the pixels they actually paint: the mark draws at the size ActionRow hands
+       it (14px since "info i icon smaller"), the smileys at 44. The ring's
+       strokePx is already a real on-screen pixel, so it paints as it is named. */
+    const markSize = parseFloat(
+      actionRow.match(/const resolvedIconSize = isInfo \? (\d+) : 16/)?.[1] ?? "0",
+    );
+    expect(markSize, "the mark does not draw smaller than the other CTA glyphs").toBeLessThan(16);
+    const letterPen = (units * markSize) / 24;
     const facePen =
       (parseFloat(risiko.match(/const FACE_PEN = ([\d.]+)/)?.[1] ?? "0") *
         parseFloat(risiko.match(/const FACE_SIZE = (\d+)/)?.[1] ?? "0")) /
       24;
-    const ringPen = (1.5 * 16) / 24; // the ℹ ring's own strokePx, painted at 16px
+    const ringPen = 1.5; // the ℹ ring's own strokePx, painted 1:1 on screen
     expect(letterPen, "the letter draws heavier than the grey smileys").toBeLessThanOrEqual(facePen + 0.01);
     expect(letterPen, "the letter draws no heavier than its own ring").toBeGreaterThan(ringPen);
     expect(actionRow, "the mark is not handed its own hook").toMatch(/className=\{isInfo \? "retro-info-mark"/);
