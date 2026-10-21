@@ -63,7 +63,7 @@
     --risiko-column-line: #C9CBD1;
     --risiko-caption: #9B9BA3;
     /* the scale's own grey: the column names and the printed intro sentence share
-       it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
+       it; the smileys wear the columns' paler grey (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners wear the Health Check's own green family: the card's deep

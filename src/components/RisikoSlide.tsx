@@ -28,9 +28,13 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
-// The faces wear the very grey the scale's own rule is drawn in, so smileys and
-// line read as one ink family instead of two greys standing next to each other.
-export const FACE_GREY = "#80828A";
+// The faces wear the very grey the scale's vertical column lines are drawn in
+// (--risiko-column-line), so the grid and the faces standing on it are one ink.
+export const FACE_GREY = "#C9CBD1";
+// The printed chapter sentence's average-mood face is the scale's one summary
+// mark: on paper it stands alone inside a line of running text, where the
+// columns' pale grey would not read — so it keeps the scale's older, darker grey.
+export const CHAPTER_MOOD_GREY = "#80828A";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 44;
@@ -810,7 +814,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     <div ref={pageRef} className={`risiko-page flex flex-col items-start w-full h-full min-h-0${page.statements.length === 0 ? " risiko-allocation-page" : ""}`} style={{ color: INK }}>
       {isChapterStart && (
         <div className="risiko-chapter shrink-0 w-full hidden print-only" lang="de">
-          <p className="risiko-chapter-info">{chapterIntro(chapterMood, FACE_GREY)}</p>
+          <p className="risiko-chapter-info">{chapterIntro(chapterMood, CHAPTER_MOOD_GREY)}</p>
         </div>
       )}
 
