@@ -310,12 +310,16 @@
 }
 .health-check-guide {
   position: absolute;
-  left: 0;
-  /* The tracks stop well short of the card's right edge — they hug the smiley
-     column the way the dotted guides do on the statement scales — and share
-     those guides' colour instead of the lighter caption grey. */
-  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px));
-  border-top: 1px dashed var(--risiko-line);
+  left: calc(var(--health-face-size) + 12px);
+  /* Match the other charts' open-ended inter-column dividers, with clear space
+     beside the faces and the existing short endpoint before the resting avatar. */
+  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px - var(--health-face-size) - 12px));
+  border-top: 1px dashed var(--risiko-column-line);
+}
+.health-check-face,
+.health-check-face svg {
+  width: var(--health-face-size);
+  height: var(--health-face-size);
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
