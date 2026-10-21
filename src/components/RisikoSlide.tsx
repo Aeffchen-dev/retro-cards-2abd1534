@@ -784,7 +784,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             It is the whole block — not the bare sentence — that stands the card's
             own padding under the button. */}
         <div className="risiko-footer-note w-full min-w-0 flex flex-col gap-1">
-          <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
+          <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du die Trennlinie nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
           {page.personKeys.length > 0 && <SplitCaptions />}
         </div>
       </div>

@@ -40,7 +40,7 @@ describe("statement card info sentence", () => {
 
   test("leaves the work-split card its own sentence", () => {
     const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
-    expect(footer).toContain("Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst");
+    expect(footer).toContain("Verändere die prozentuale Verteilung der Anteile indem du die Trennlinie nach links oder rechts ziehst");
   });
 
   test("leaves the Intimacy card alone", () => {
