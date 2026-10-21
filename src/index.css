@@ -368,6 +368,10 @@
    rides inside the intro sentence: the breath sits before it, so the sentence's
    own full stop can close directly behind the face instead of floating apart. */
 .risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin: 0 0 0 5px; }
+/* The chapter's info box rides straight under the scale, inside the scale's own
+   block, so it is centred and shifted together with the rule above it. */
+.risiko-scale-note { margin-top: 12px; }
+
 
 .risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 

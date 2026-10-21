@@ -343,7 +343,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const releaseField = () => { fieldDrag.current = null; };
 
   // Each statement is its own compact block: quote, smileys and a scale.
-  const scale = (key: string, text: string, readOnly: boolean) => (
+  const scale = (key: string, text: string, readOnly: boolean, below?: React.ReactNode) => (
     <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
       <h2 className="risiko-statement shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
@@ -394,7 +394,17 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               ))}</span>
             ))}
           </div>
+          {below && (
+            // The chapter's sentence rides straight under the scale that explains it.
+            // It stands inside the scale's own block, so it is centred and moved with
+            // the scale — and it keeps a press to itself, so a tap on the box never
+            // drags the circle the field underneath is listening for.
+            <div className="risiko-scale-note screen-only shrink-0" onPointerDown={(e) => e.stopPropagation()}>
+              {below}
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );
@@ -624,10 +634,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // Blocks share the free space evenly; the buttons sit below, never underneath.
   const body = (readOnly: boolean) => (
     <div className="risiko-body flex flex-col w-full flex-1 min-h-0 justify-evenly gap-6">
-      {page.statements.map(([k, t]) => scale(k, t, readOnly))}
+      {page.statements.map(([k, t], i) => scale(k, t, readOnly,
+        !readOnly && isChapterStart && i === 0 ? chapterBox : undefined))}
       {page.personKeys.length > 0 && allocation(readOnly)}
     </div>
   );
+
 
   // The chapter opens on the first card. It no longer stands as a big question
   // above the card — the user asked to "first test slide remove big question and
@@ -658,6 +670,13 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     </span>
   );
 
+  // The chapter's own sentence, in the card's info box, straight under the scale it
+  // belongs to — the user asked to "info box move below slider".
+  const chapterBox = (
+    <ActionRow className="risiko-helper" icon="IconInfo" label={chapterIntro(chapterMood, INK)} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+  );
+
+
 
 
   return (
@@ -683,9 +702,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           The info sentence comes first, straight under the slider, so it reads as
           the scale's own note and the notes button closes the card. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
-        {isChapterStart && (
-          <ActionRow className="risiko-helper" icon="IconInfo" label={chapterIntro(chapterMood, INK)} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
-        )}
         <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : "Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
 
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
