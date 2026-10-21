@@ -571,7 +571,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
                   className={`risiko-thumb cursor-ew-resize rounded-full pointer-events-auto workload-color-${i % 8}`}
-                  style={{ width: slot, height: slot, "--radix-slider-thumb-transform": "translateX(calc(-50% + var(--workload-shift, 0px)))" } as React.CSSProperties}>
+                  style={{ width: slot, height: slot, transform: "translateX(var(--workload-shift, 0px))" } as React.CSSProperties}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
