@@ -397,8 +397,10 @@
    own full stop can close directly behind the face instead of floating apart. */
 .risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin: 0 0 0 5px; }
 /* The chapter's info box rides straight under the scale, inside the scale's own
-   block, so it is centred and shifted together with the rule above it. */
-.risiko-scale-note { margin-top: 12px; }
+   block, so it is centred and shifted together with the rule above it. Its gap
+   to the scale reads the card's own padding, so the box breathes as wide as the
+   card's edge. */
+.risiko-scale-note { margin-top: var(--risiko-scale-pad); }
 
 
 .risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
