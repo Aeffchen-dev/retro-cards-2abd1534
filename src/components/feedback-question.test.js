@@ -40,12 +40,13 @@ describe("Feedback headline question", () => {
   test("keeps the saved answers of the three questions it asks", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
-    expect(fields).toContain('"plans"');
+    expect(fields).toContain('"unspoken"');
     expect(fields).toContain('"Danke für"');
     // The questions that moved away are no longer asked here.
     expect(fields).not.toContain('"idea"');
     expect(fields).not.toContain("Das wünsche ich mir");
-    expect(fields).not.toContain('"unspoken"');
+    expect(fields).not.toContain('"plans"');
+    expect(fields).not.toContain("Das wollen wir kommenden Monat machen");
     expect(fields).not.toContain("Gab es etwas");
   });
 
@@ -63,34 +64,34 @@ describe("Feedback headline question", () => {
 });
 
 describe("The two cards swapped their last and first question", () => {
-  test("asks \"Das wollen wir kommenden Monat machen\" on the Feedback card", () => {
-    expect(fields).toContain('["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""]');
+  test("asks \"Letzte Chance\" on the Feedback card", () => {
+    expect(fields).toContain('["unspoken", "Letzte Chance", "Deine Antwort", ""]');
     expect(slide).toContain("reflectionTexts[key]");
   });
 
-  test("asks the last-chance question on the Ideas card", () => {
+  test("asks for next month's plans on the Ideas card", () => {
     // Only the list of prompts counts here, not the comment above it.
     const list = vorhaben.slice(vorhaben.indexOf("export const VORHABEN_QUESTIONS"));
-    expect(list).toContain('["unspoken", "Letzte Chance"]');
-    expect(list, "Ideas still asks for next month's plans").not.toContain('"plans"');
-    expect(list).not.toContain("Das wollen wir kommenden Monat machen");
+    expect(list).toContain('["plans", "Das wollen wir kommenden Monat machen"]');
+    expect(list, "Ideas no longer asks the last-chance question").not.toContain('"unspoken"');
+    expect(list).not.toContain("Letzte Chance");
     // Ideas still asks three things: the moved question plus its own two.
     expect(list.match(/^\s+\["/gm)?.length).toBe(3);
   });
 
-  test("moves an answer written on Ideas over to Feedback, in storage", () => {
-    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
-    expect(mig, "the startup migration is gone").toBeTruthy();
-    // The saved answer is read from the Ideas notes when Feedback has none yet...
-    expect(mig).toContain('carry(ideas, "plans", here, "plans")');
-    // ...and the Ideas card drops its copy once Feedback holds it.
-    expect(mig).toContain('[ideas, "plans"]');
-  });
-
   test("moves an answer written on Feedback over to Ideas, in storage", () => {
     const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
-    expect(mig).toContain('carry(here, "unspoken", ideas, "unspoken")');
-    expect(mig).toContain('[here, "unspoken"]');
+    expect(mig, "the startup migration is gone").toBeTruthy();
+    // The saved answer is read from Feedback's texts when Ideas has none yet...
+    expect(mig).toContain('carry(here, "plans", ideas, "plans")');
+    // ...and Feedback drops its copy once Ideas holds it.
+    expect(mig).toContain('[here, "plans"]');
+  });
+
+  test("moves an answer written on Ideas over to Feedback, in storage", () => {
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig).toContain('carry(ideas, "unspoken", here, "unspoken")');
+    expect(mig).toContain('[ideas, "unspoken"]');
     // Both stores are written back straight away, so the answer is safe before any card
     // is opened: a card only saves its own copy once something is typed into it.
     expect(mig).toContain("saveToStorage(STORAGE_KEYS.REFLECTION_TEXTS, here)");
@@ -109,7 +110,7 @@ describe("The two cards swapped their last and first question", () => {
   });
 
   test("clearing all data clears the moved answer too", () => {
-    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', plans: '' })");
+    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', unspoken: '' })");
   });
 
   test("keeps the wish that moved to Ideas earlier", () => {
