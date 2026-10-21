@@ -98,13 +98,19 @@ const MARKER_PEN = RULE_W * (FACE_VIEW / MARKER_SIZE);
 const MOUTH_W = MARKER_PEN;
 const EYE_W = MARKER_PEN;
 
+// The scale's grey smileys draw lighter than the rule and the dot, so the ink
+// answer stays the heavy mark on the line (user: "grey smilies stroke width
+// less"). 0.9 of the 24 grid painted into the 44px face ≈ 1.65px, against the
+// rule's 2.2px.
+const FACE_PEN = 0.9;
+
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
   // only a shade off the card's white, so the smiley reads as being inside it.
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
   <span className="risiko-face flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={1.2} color={color} />
+    <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
   </span>
 );
 
