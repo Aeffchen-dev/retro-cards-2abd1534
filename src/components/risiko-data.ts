@@ -115,6 +115,16 @@ export const SCALE_CAPTIONS = [
   "Trifft immer zu",
 ] as const;
 
+/** The same five columns named for the Intimacy card, whose scale answers how
+ *  fulfilling its couple's physical intimacy is. The user's own wording. */
+export const INTIMACY_CAPTIONS = [
+  "Nicht erfüllend",
+  "Weniger erfüllend",
+  "Teils erfüllend",
+  "Eher erfüllend",
+  "Sehr erfüllend",
+] as const;
+
 /** On a narrow phone one column is only ~48px wide, so "teilweise" cannot fit on a
  *  line of its own. Without a break point the browser splits it mid-word without a
  *  hyphen ("Teilweis" / "e"). The correct German break point is offered as a soft

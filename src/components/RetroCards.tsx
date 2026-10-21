@@ -4,7 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES, StatementScale } from "@/components/RisikoSlide";
-import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
+import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, INTIMACY_CAPTIONS } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
@@ -1997,11 +1997,7 @@ const RetroCards: React.FC = () => {
                   value={editModeNotes[7]?.scale}
                   fieldMin={76}
                   onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
-                  below={
-                    <ActionRow className="risiko-helper" icon="IconInfo"
-                      label="Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"
-                      accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor="var(--retro-black)" labelColor="var(--retro-black)" />
-                  }
+                  captions={INTIMACY_CAPTIONS}
                 />
               </div>
               <PostItField

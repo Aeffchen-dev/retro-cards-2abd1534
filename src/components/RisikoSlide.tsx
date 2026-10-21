@@ -227,6 +227,9 @@ export interface StatementScaleProps {
   statement?: string;
   /** A note that rides inside the scale's own block, on screen only. */
   below?: React.ReactNode;
+  /** The five names the columns carry. A card that answers something other than
+   *  "trifft zu" — Intimacy asks how fulfilling things are — hands its own. */
+  captions?: readonly string[];
   /** How tall the grey field stands at least; cards that share their height pass a smaller floor. */
   fieldMin?: number;
   /** A scale that cannot be moved — the printed copy. */
@@ -240,7 +243,7 @@ export interface StatementScaleProps {
  * the scale leaves `statement` out. The field's own drag handlers live here, so a
  * press anywhere on the line picks the circle up however the scale is used.
  */
-export const StatementScale = ({ value, onChange, ariaLabel, statement, below, fieldMin, readOnly = false }: StatementScaleProps) => {
+export const StatementScale = ({ value, onChange, ariaLabel, statement, below, captions = SCALE_CAPTIONS, fieldMin, readOnly = false }: StatementScaleProps) => {
   // A press inside the field — anywhere above the rule — picks the circle up and
   // keeps dragging it, so the whole grey band is the handle and not only the
   // rule's own row. The value is read with the slider's own maths, so both ways of
@@ -321,7 +324,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, f
                 exactly the height the names need, and the dashed lines run down
                 through it — the names paint over them. */}
             <div className="risiko-scale-captions pointer-events-none" lang="de">
-              {SCALE_CAPTIONS.map((caption, i) => (
+              {captions.map((caption, i) => (
                 <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
                   <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
                 ))}</span>
