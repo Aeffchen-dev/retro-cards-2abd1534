@@ -116,11 +116,12 @@ const FACE_PEN = 0.9;
 const EYE_R = 0.68;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
-  // No plate behind the face: it sits straight on its column's fill, which is
-  // only a shade off the card's white, so the smiley reads as being inside it.
+  // No plate circle behind the face: the white fill sits inside the face's own
+  // outline, so the rule stops at the outline's edge without a pale ring showing
+  // around the smiley (user: "grey smilies remove white outline").
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
-  // The eyes are drawn over the icon as filled circles of their own: every face
+  // The eyes ride on that white fill as filled circles of their own: every face
   // in the set keeps its dot eyes on the same 24-grid pair (9,9 / 15,9), so one
   // overlay fits all five and the circles can grow without the pen thickening
   // the face's outline and mouth with them.
