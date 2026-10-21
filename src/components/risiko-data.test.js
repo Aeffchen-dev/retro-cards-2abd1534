@@ -310,7 +310,7 @@ describe("grey columns", () => {
     // a plate of the card's own surface — never a grey fill: the line passes
     // behind the word instead of drawing through its letters.
     expect(/background:\s*var\(--risiko-surface\)/.test(caption), "the name does not keep a plate of the card's surface").toBe(true);
-    expect(caption).not.toMatch(/background:\s*(#|var\(--risiko-(guide|caption|column|helper)))/);
+    expect(caption).not.toMatch(/background:\s*(#|var[(]--risiko-(guide|caption|column|helper))/);
     // and the plate repaints for paper, so it never shows as a pale patch
     expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });
