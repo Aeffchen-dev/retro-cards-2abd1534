@@ -2001,6 +2001,7 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Körperliche Intimität" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <p className="intimacy-question w-full">Wie zufrieden bist du mit unserem Sex?</p>
               <StarRating
                 value={editModeNotes[7]?.scale}
                 onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
