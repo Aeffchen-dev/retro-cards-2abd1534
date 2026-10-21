@@ -648,11 +648,9 @@
      — smileys, rule and names — instead of stopping under the rule. It still
      shrinks, and still scrolls, when a statement is too tall for the card. */
   .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
-  /* The names ride up to the rule instead of waiting at the field's foot: the
-     field keeps its height, but the empty room under the circle is handed back to
-     the scale, so the block — rule and names — ends just past the names and its
-     shorter self re-centres on the card. */
-  .risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }
+  /* The column names no longer ride up under the circle: they stand above the
+     smileys (the stack puts that row first), so the field keeps its height and the
+     rule stays centred in the room under the faces. */
   /* The interactive slider sits on the card's mid-line: the scale stops growing
      to fill the card and the free space around it is split evenly, so it lands in
      the middle of the room between the statement above and the buttons below.
@@ -731,6 +729,10 @@
    hang over the card's edge — while the three inside stand exactly on their face.
    The work-split lane's split figures keep the evenly divided grid above. */
 .risiko-scale-stack .risiko-scale-captions {
+  /* The names open the scale: they take the row above the smileys instead of the
+     foot of the field, so each name reads first and its own face sits under it. */
+  order: -1;
+  margin-bottom: 6px;
   gap: 0;
   grid-template-columns:
     calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8)
