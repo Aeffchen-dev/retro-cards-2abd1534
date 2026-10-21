@@ -632,7 +632,36 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     // The eye is a filled circle: its diameter in 24-grid units has to stand
     // clearly above the pen that draws the face's outline and mouth.
     expect(eyeR * 2, "the eyes did not grow past the pen's dot").toBeGreaterThan(pen);
-    expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(3);
+    // user: "eye dot bit bigger. for aLL" — the dot stands a step above the 0.8
+    // radius it wore before, without turning into a blob beside the answer mark.
+    expect(eyeR * 2 * (44 / 24), "the eyes are no bigger than the dot they grew from")
+      .toBeGreaterThan(0.8 * 2 * (44 / 24));
+    expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(4);
+  });
+  test("draws every smiley's mouth one pixel thick", () => {
+    // user: "mouth stroke width all smileys 1px" — the mouth carries its own pen
+    // on every face in the deck: the five grey scale smileys, the printed
+    // average-mood face, the five Health Check faces and the dragged dot alike.
+    const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const mouthPx = Number(src.match(/const MOUTH_PEN_PX = ([\d.]+);/)?.[1] ?? 0);
+    const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
+    expect(mouthPx, "the mouth's pixel pen is not a named value").toBe(1);
+    // One smiley drawing serves them all, traced from the very anchor mouths the
+    // dot morphs through — so the mouth's pen lands on every face at once.
+    expect(src, "the smileys are not drawn from the scale's own mouths")
+      .toContain("SCALE_MOUTHS.map");
+    expect(src, "the smiley's mouth does not take its own pen")
+      .toContain("strokeWidth={MOUTH_PEN_PX * (24 / size)}");
+    // That grid pen, painted back into the face's own box, is one pixel.
+    expect((mouthPx * (24 / face)) * (face / 24), "the mouth does not paint one pixel")
+      .toBeCloseTo(1, 5);
+    // The dot converts the same pixel through its zoomed window, and its outline
+    // keeps the face's own heavier pen.
+    expect(src, "the dot's mouth does not take the shared pixel pen")
+      .toContain("const MOUTH_W = MOUTH_PEN_PX * (FACE_VIEW / MARKER_SIZE);");
+    expect(src, "the dot's mouth is not drawn with that pen").toContain("<path d={path} strokeWidth={MOUTH_W} />");
+    expect(src, "the dot's outline no longer wears the face's pen")
+      .toContain("stroke={INK} strokeWidth={MARKER_PEN}");
   });
   test("the scale stays free of snapping", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");

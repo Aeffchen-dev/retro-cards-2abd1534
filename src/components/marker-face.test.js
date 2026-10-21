@@ -27,8 +27,8 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     // into the marker's own units.
     expect(slide).toContain("const FACE_RULE_W = FACE_PEN * (FACE_SIZE / 24);");
     expect(slide).toContain("const MARKER_PEN = FACE_RULE_W * (FACE_VIEW / MARKER_SIZE);");
-    expect(slide).toContain("const MOUTH_W = MARKER_PEN;");
-    expect(slide).toContain("const EYE_W = MARKER_PEN;");
+    expect(slide).toContain("const MOUTH_W = MOUTH_PEN_PX * (FACE_VIEW / MARKER_SIZE);");
+    expect(slide).toContain("const EYE_W = EYE_R * 2 * (FACE_SIZE / 24) * (FACE_VIEW / MARKER_SIZE);");
     expect(slide).toContain("const ARROW_W = 24 / ARROW_SIZE;");
   });
 

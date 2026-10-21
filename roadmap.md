@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Done
+- [x] Smileys, one drawing: every face in the deck (scale smileys, Health Check faces, printed average-mood face, answer dot) is built from the scale's own anchor mouths, so the **mouth now draws one pixel on all of them** and the **eyes are filled dots a step bigger** (0.8 → 1 grid unit, 3.67px at the 44px face) while each outline keeps its own weight (2.4px on the scale, 2.2px in Health Check).
 - [x] Scale pens: one shared 2.4px pen for the rule, the five grey smileys and the answer dot's own face (the 20% step between scale and answer is retired), and every vertical line — the column guides, the dividers between columns and the work-split's boundary — is a single pixel.
 - [x] Info row: the ℹ glyph is 12px and rides the sentence's first line; the sentence starts at exactly the same x as "Notizen öffnen"; 8px hairline gaps; the mark stands in an unfilled 32px column at the row's edge.
 - [x] Grey scale smileys: outline only, no fill, no plate; the guides keep their grey.
