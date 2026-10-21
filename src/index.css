@@ -316,8 +316,8 @@
   width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px - var(--health-face-size) - 12px));
   border-top: 1px dashed var(--risiko-column-line);
 }
-.health-check-face,
-.health-check-face svg {
+.health-check-page .health-check-face,
+.health-check-page .health-check-face svg {
   width: var(--health-face-size);
   height: var(--health-face-size);
 }
