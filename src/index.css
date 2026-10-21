@@ -12,7 +12,7 @@
   max-height: calc(100dvh - 32px);
   overflow-y: auto;
   color: var(--color-text-primary);
-  background: var(--background);
+  background: hsl(var(--background));
 }
 .font-preview-card {
   display: flex;
