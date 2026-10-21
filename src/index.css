@@ -223,7 +223,8 @@
    Small    : Figtree 500 / 12px             (.retro-small)                                     */
 
 .retro-title,
-.retro-heading {
+.retro-heading,
+.risiko-statement {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", "Stack Sans Text", "Figtree", Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -297,8 +298,6 @@
    set by the chapter's longest statement: at 16px that one still closes within
    three lines on the card, and every statement reads at that same size. */
 .risiko-statement {
-  font-size: 16px;
-  line-height: 1.12;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   /* The statement breaks between words only — never inside one, and never with a
@@ -307,13 +306,6 @@
   word-break: normal;
   hyphens: manual;
   -webkit-hyphens: manual;
-}
-/* A phone's card is a good deal narrower than the deck's, so there the statement
-   steps down to the smallest size the deck allows anywhere — 12px. That is as
-   close to three lines as the longest statement comes on a phone's width (it
-   needs four); any smaller and it would read below the deck's readable floor. */
-@media (max-width: 767px) {
-  .risiko-statement { font-size: 12px; }
 }
 /* The smallest phones have no room to spare: the work-split card carries its long
    question, the fixed sentence of examples and the lane, so there the examples
@@ -750,10 +742,6 @@
 }
 @media print {
   .risiko-expression-point { animation: none !important; }
-  /* The printed card is a good deal narrower than the deck's own, so on paper the
-     statement reads at the deck's smallest allowed size — the closest the longest
-     statement comes to three lines there. */
-  .risiko-statement { font-size: 12px; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);
@@ -1245,7 +1233,8 @@ textarea.bg-retro-post-it:focus,
   }
 
   /* Match frontend font sizes and spacing */
-  .retro-heading {
+  .retro-heading,
+  .risiko-statement {
     font-size: 2rem !important;
     line-height: 1.05 !important;
   }
@@ -1390,7 +1379,7 @@ textarea.bg-retro-post-it:focus,
 }
 
 /* Must follow the global typography rule above. The Risikofaktoren statement reads
-   in this same voice — only its size, set further down, is its own. */
+   in this same voice, at the same size the card questions use. */
 #root .question-font,
 #root .question-font *,
 #root .retro-heading,
