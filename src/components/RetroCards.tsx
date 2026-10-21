@@ -1522,12 +1522,13 @@ const RetroCards: React.FC = () => {
                 icon="IconInfo"
                 className="hc-helper"
                 label="Zieht euer Emoji neben den passenden Smilie"
-                accent="#F1F2F4"
-                fieldBg="#F1F2F4"
-                iconColor="#201C1D"
-                labelColor="#201C1D"
+                accent="transparent"
+                fieldBg="transparent"
+                iconColor="var(--retro-info-text)"
+                labelColor="var(--retro-info-text)"
                 onClick={() => toggleEditMode(cardId)}
               />
+
             </div>
 
           </div>
