@@ -352,6 +352,11 @@ describe("work-split split line", () => {
     expect(slide).toContain("{at}% / {100 - at}%");
     expect(slide).not.toContain("{at}:{100 - at}%");
   });
+  test("lets the longest word break only at its own soft hyphen", () => {
+    expect(softHyphenate(RISIKO_ALLOCATION_HEADING)).toContain("Beziehungs\u00ADarbeit");
+    const head = css.match(/\.risiko-allocation-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(head, "the headline can still be cut open at any character").not.toContain("overflow-wrap: anywhere");
+  });
 });
 
 describe("smiley scale spans its container", () => {
