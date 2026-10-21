@@ -61,10 +61,6 @@
        (user: "Notizen öffnen move closer to top border of info text (same value
        as top padding)") */
     --retro-info-gap: 8px;
-    /* the ℹ mark stands twice that breath from its sentence, so the smaller
-       glyph never crowds the words (user: "info i icon smaller", "double gap
-       to text") */
-    --retro-info-mark-gap: 16px;
     /* the "i" inside the ℹ mark reads darker than its ring, and is drawn with a
        heavier pen, so the letter stays legible at 16px (user: "i in info I
        darker if thicker") */
@@ -537,10 +533,12 @@
    dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
-/* The halo is back behind the smileys (user: "restore grey smilies ... the
-   halo"): a plate circle of the card's own surface stands a step outside each
-   face's outline and stops the rule there. */
-.risiko-face { background: var(--risiko-field-bg); border-radius: 50%; }
+/* The grey smileys draw as an outline only — no fill, no plate of their own
+   (user: "grey full = grey outline no fill"), superseding the white halo they
+   wore earlier. The rule and the column guides therefore run straight behind
+   them; only the answer dot keeps a white plate, so the answer is the one face
+   that reads clear of the grid. */
+.risiko-face { border-radius: 50%; }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces
@@ -896,17 +894,22 @@
   align-items: stretch;
 }
 .risiko-helper > span:first-child {
-  /* the ℹ mark keeps no tile of its own — it rides the sentence's own height
-     instead of a 32px plate (user: "info i icon remove padding") */
+  /* the ℹ mark keeps no filled plate of its own — it rides the sentence's own
+     height instead of a 32px field (user: "info i icon remove padding") — and it
+     rides the sentence's first line, not the middle of a wrapped note (user:
+     "info i icon smaller and aligned with 1 line of text"): the glyph is 12px
+     against a 22px line, so it drops 5px from the row's own top. */
   height: auto;
-  align-self: center;
+  align-self: flex-start;
+  margin-top: 5px;
 }
 .risiko-helper > span:last-child {
   min-width: 0;
   flex: 1 1 auto;
   overflow-wrap: anywhere;
   height: auto;
-  min-height: 32px;
+  /* no 32px floor: the note hugs its own text, so its first line really does
+     start at the row's top and the mark can sit on that line */
   /* no top padding: the row's own 8px is the whole breath under the hairline,
      so it reads the same as the 8px the button keeps above it (user: "gap top
      border info text to CTA same as info text top padding") */
@@ -925,17 +928,22 @@
   align-items: stretch;
 }
 .hc-helper > span:first-child {
-  /* the ℹ mark keeps no tile of its own — it rides the sentence's own height
-     instead of a 32px plate (user: "info i icon remove padding") */
+  /* the ℹ mark keeps no filled plate of its own — it rides the sentence's own
+     height instead of a 32px field (user: "info i icon remove padding") — and it
+     rides the sentence's first line, not the middle of a wrapped note (user:
+     "info i icon smaller and aligned with 1 line of text"): the glyph is 12px
+     against a 22px line, so it drops 5px from the row's own top. */
   height: auto;
-  align-self: center;
+  align-self: flex-start;
+  margin-top: 5px;
 }
 .hc-helper > span:last-child {
   min-width: 0;
   max-width: 100%;
   overflow-wrap: anywhere;
   height: auto;
-  min-height: 32px;
+  /* no 32px floor: the note hugs its own text, so its first line really does
+     start at the row's top and the mark can sit on that line */
   /* no top padding: the row's own 8px is the whole breath under the hairline,
      so it reads the same as the 8px the button keeps above it (user: "gap top
      border info text to CTA same as info text top padding") */
@@ -979,13 +987,10 @@
    hairline above it spans only that content width — the card's own edges stay
    bare (user: "info text left and right padding same as from card", "border-top
    only container not fullwidth"). Only its foot reaches the card's own edge. */
-/* Every ℹ row keeps twice the note's own breath between the mark and its
-   sentence: the mark shrank, so the words step back further and the two read as
-   a marker and a line rather than one crowded run (user: "info i icon smaller",
-   "double gap to text"). */
-.retro-info-row > span + span {
-  padding-left: var(--retro-info-mark-gap);
-}
+/* The sentence needs no indent of its own: the mark stands in the icon tile's
+   32px column and the sentence keeps the field's own 12px padding, so the note's
+   words start at the very same x as the button's label above them (user: "info I
+   text move to same x position as Notizen öffnen text"). */
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
    edge, behind each face (whose plate keeps the face readable), down past the last
@@ -1058,6 +1063,11 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--risiko-face-fill);
+  /* a subtle white outline just outside the answer's own circle (user:
+     "sliderdot add a subtle white outline"): the grey smileys draw without a
+     fill now, so this is what keeps the answer clear of the rule and of any
+     face it rests on */
+  box-shadow: 0 0 0 2px var(--risiko-face-fill);
 }
 
 /* The draggable dot never shows a focus outline. */
@@ -1172,13 +1182,14 @@ button {
 /* The "i" inside the ℹ mark reads darker than its ring so the letter holds up
    beside the sentence (user: "i in info I darker if thicker"), but its pen goes
    no heavier than the scale smileys' own: those draw 0.9 units in a 24-unit box
-   at 44px, i.e. 1.65px on screen. The mark now draws at 14px, so the letter
-   takes 2.75 units — 1.60px on screen, still heavier than the ring's own 1.5px
-   and still under the smileys' 1.65px (user: "stroke width max like grey
-   smiley", "info i icon smaller"). The ring keeps the footnote's lighter pen. */
+   at 44px, i.e. 1.65px on screen. The mark draws at 12px (user: "info i icon
+   smaller and aligned with 1 line of text"), so the letter takes 3.2 units —
+   1.60px on screen, still heavier than the ring's own 1.5px and still under the
+   smileys' 1.65px (user: "stroke width max like grey smiley"). The ring keeps
+   the footnote's lighter pen. */
 .retro-info-mark path {
   stroke: var(--retro-info-ink);
-  stroke-width: 2.75;
+  stroke-width: 3.2;
 }
 
 
@@ -1194,6 +1205,11 @@ button {
   .risiko-allocation-examples {
     font-size: 12px;
     line-height: 16px;
+  }
+  /* the sentence's line is 16px here, so the 12px mark drops only 2px onto it */
+  .risiko-helper > span:first-child,
+  .hc-helper > span:first-child {
+    margin-top: 2px;
   }
 }
 
