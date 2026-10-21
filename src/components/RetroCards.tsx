@@ -1526,18 +1526,6 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            {/* Helper sentence straight under the headline, one card padding away from it. */}
-            <div className="w-full shrink-0" style={{ marginTop: '28px' }}>
-              <ActionRow
-                icon="IconInfo"
-                label="Klicke auf eine Frage um deine Notizen einzublenden"
-                accent="#F1F2F4"
-                fieldBg="#F1F2F4"
-                iconColor="#201C1D"
-                labelColor="#201C1D"
-                className="hc-helper retro-body-copy"
-              />
-            </div>
             <div className="flex flex-col flex-1 justify-between w-full" style={{ gap: '16px', marginTop: '28px' }}>
               {([
                 ["IconTrendingUp", "Ein voller Erfolg"],
