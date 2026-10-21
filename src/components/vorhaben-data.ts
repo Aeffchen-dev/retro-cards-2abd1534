@@ -6,7 +6,7 @@
  * sits on Feedback with its "plans" key.
  */
 export const VORHABEN_QUESTIONS = [
-  ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?"],
+  ["unspoken", "Letzte Chance"],
   ["experiment", "Das könnten wir (neues) ausprobieren"],
   ["idea", "Das wünsche ich mir"],
 ] as const;

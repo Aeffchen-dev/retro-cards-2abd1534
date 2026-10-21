@@ -23,15 +23,15 @@ describe("Feedback card is titled Monthly review for you, my love", () => {
 });
 
 describe("Feedback headline question", () => {
-  test("asks \"Du in meinen Augen\" with the remembering sentence", () => {
-    expect(fields).toContain('["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
+  test("asks \"Perspektivwechsel\" with the remembering sentence", () => {
+    expect(fields).toContain('["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
   });
 
   test("keeps the saved answers of the three questions it asks", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
     expect(fields).toContain('"plans"');
-    expect(fields).toContain('"Dafür möchte ich Danke sagen"');
+    expect(fields).toContain('"Danke für"');
     // The questions that moved away are no longer asked here.
     expect(fields).not.toContain('"idea"');
     expect(fields).not.toContain("Das wünsche ich mir");

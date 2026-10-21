@@ -85,8 +85,8 @@ interface SetupData {
 }
 
 const REFLECTION_FIELDS = [
-  ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
-  ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
+  ["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
+  ["thanks", "Danke für", "Deine Antwort", ""],
   ["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""],
 ] as const;
 
