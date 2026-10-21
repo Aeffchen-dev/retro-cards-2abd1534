@@ -1240,11 +1240,6 @@ textarea.bg-retro-post-it:focus,
   .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
   /* Paper always shows the whole sentence of examples: the phone's short reading
      window must never follow a print onto the sheet. */
-  .print-slide-page .risiko-allocation-examples {
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-  }
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
   .print-slide-page .risiko-scale-area { overflow: visible; }

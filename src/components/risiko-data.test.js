@@ -476,6 +476,24 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*4px/);
     expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-2px\)/);
   });
+  test("reads at the same size as the deck's other questions, also on a phone", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const phone = (css.match(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g) ?? [])
+      .find((b) => /font-size/.test(b) && /risiko-allocation-statement/.test(b)) ?? "";
+    expect(phone, "the phone size of the work-split headline is gone").toBeTruthy();
+    expect(phone, "the work-split headline no longer reads at the question's own size on a phone").toMatch(/\.risiko-allocation-statement \{ font-size: 38\.4px; \}/);
+  });
+  test("on a phone keeps just the question and the split bar, dropping the examples and the note", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const phone = (css.match(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g) ?? [])
+      .find((b) => /risiko-allocation-page/.test(b)) ?? "";
+    expect(phone, "the phone rule for the work-split card is gone").toBeTruthy();
+    expect(phone, "the examples are back on a phone").toMatch(/\.risiko-allocation-page \.risiko-allocation-examples,[\s\S]*?display: none;/);
+    expect(phone, "the scale's note line is back on a phone").toMatch(/\.risiko-allocation-page \.risiko-helper/);
+    expect(phone, "the question lost its gap to the split bar").toMatch(/\.risiko-allocation-page \.risiko-allocation-statement \{ margin-bottom: var\(--risiko-scale-pad\); \}/);
+    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    expect(tsx, "the work-split card no longer marks itself for the phone rule").toMatch(/risiko-allocation-page/);
+  });
 });
 
 describe("mood test chapter", () => {
