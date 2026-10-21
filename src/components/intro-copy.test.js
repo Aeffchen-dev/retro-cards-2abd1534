@@ -89,3 +89,22 @@ describe("intro card on short windows", () => {
     expect(shortWide.match(/#root \.intro-copy \{[^}]*gap: (\d+)px/)?.[1], "short-wide paragraph gap").toBe("10");
   });
 });
+
+describe("intro card on desktop", () => {
+  const desktop =
+    [...css.matchAll(/@media \(min-width: 1024px\) and \(min-height: 860px\) \{[\s\S]*?\n\}/g)]
+      .map((m) => m[0])
+      .find((b) => b.includes(".intro-lede")) ?? "";
+
+  test("caps the lede and the paragraphs at a narrow column", () => {
+    expect(desktop, "the desktop width cap is gone").toContain(".intro-copy");
+    expect(desktop.match(/#root \.intro-lede, #root \.intro-copy \{ max-width: (\d+)px/)?.[1], "desktop cap width").toBe("320");
+  });
+
+  test("only caps the column where the card is tall enough to hold it", () => {
+    const heights = [...desktop.matchAll(/min-height: (\d+)px/g)].map((m) => +m[1]);
+    expect(heights.length, "the cap no longer waits for a tall window").toBe(1);
+    // 320px needs ~661px of text; the card only holds that from a ~847px window up.
+    expect(heights[0], "the cap would overflow a window this short").toBeGreaterThanOrEqual(847);
+  });
+});
