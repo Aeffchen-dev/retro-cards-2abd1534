@@ -1,4 +1,5 @@
 # Project rules
+- The deck's cards and scales live in `src/components`, which carries its own `AGENTS.md` to read before changing files there.
 - Trigger slider navigation hints only when the untouched marker enters view, animating the whole marker (disc and arrow) but never the saved answer; the deck keeps offscreen cards mounted, so mount-time animations would finish unseen.
 - Keep additional reflection-style slides in focused components using the existing notes persistence and print flow; reuse the Health Check scale by rendering its exported `StatementScale` inside a `.risiko-page` host, and lower the field's floor when a card shares its height.
 - Migrate moved answers against storage at startup and save at once; card state only persists after an edit, so the card opened first would erase what the other needs.
