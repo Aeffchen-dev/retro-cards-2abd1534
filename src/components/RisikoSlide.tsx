@@ -130,14 +130,14 @@ const FACE_VIEW_OFF = (24 - FACE_VIEW) / 2;
 // window makes each of its grid units wider than the 24 grid's, so the face's
 // pixel width is converted back against that window.
 const MARKER_PEN = FACE_RULE_W * (FACE_VIEW / MARKER_SIZE);
-const MOUTH_W = MARKER_PEN;
-const EYE_W = MARKER_PEN;
+// The mouth is one pixel on the dot too, converted through the zoomed window the
+// same way the outline's pen is (user: "mouth stroke width all smileys 1px").
+const MOUTH_W = MOUTH_PEN_PX * (FACE_VIEW / MARKER_SIZE);
+// The dot's eyes are the same filled dots as the scale faces' eyes — the same
+// radius of the same 24-grid face — so both land the same width on screen and on
+// paper: that diameter, in pixels, is converted back into the marker's units.
+const EYE_W = EYE_R * 2 * (FACE_SIZE / 24) * (FACE_VIEW / MARKER_SIZE);
 
-// The smileys' eyes draw as filled circles a step larger than the hairline pen
-// of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
-// eyes land about 2.5px wide — a step above the pen every outline on the scale
-// now draws with.
-const EYE_R = 0.8;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // The plate behind the face is back (user: "restore grey smilies ... the
