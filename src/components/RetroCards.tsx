@@ -1490,10 +1490,16 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            {/* The helper keeps its own breath above the notes button: the button
-                sits at the card's padding (28px) and is ~30px tall, so the row
-                starts one button-height plus a small gap above the card's edge. */}
-            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '80px' }}>
+            {/* The notes button comes first and the helper sentence reads under it.
+                The stack is anchored to the card's own padding, so it grows upward
+                when the helper wraps to another line on a narrow card. */}
+            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-2" style={{ left: '28px', right: '28px', bottom: '28px' }}>
+              <ActionRow
+                icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
+                label={editModeSlides[cardId] ? "Fertig" : "Macht Notizen"}
+                accent={pillColorOf(cardId)}
+                onClick={() => toggleEditMode(cardId)}
+              />
               <ActionRow
                 icon="IconInfo"
                 className="hc-helper"
@@ -2376,8 +2382,10 @@ const RetroCards: React.FC = () => {
                       })()
                     ) : renderCard(slideId)}
 
-                    {/* Edit/Close action row - bottom left */}
-                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
+                    {/* Edit/Close action row - bottom left. The two smiley cards
+                        draw their own button above their helper sentence, so the
+                        shared overlay would paint a second one there. */}
+                    {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
