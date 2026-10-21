@@ -226,6 +226,8 @@ export interface StatementScaleProps {
   statement?: string;
   /** A note that rides inside the scale's own block, on screen only. */
   below?: React.ReactNode;
+  /** How tall the grey field stands at least; cards that share their height pass a smaller floor. */
+  fieldMin?: number;
   /** A scale that cannot be moved — the printed copy. */
   readOnly?: boolean;
 }
@@ -237,7 +239,7 @@ export interface StatementScaleProps {
  * the scale leaves `statement` out. The field's own drag handlers live here, so a
  * press anywhere on the line picks the circle up however the scale is used.
  */
-export const StatementScale = ({ value, onChange, ariaLabel, statement, below, readOnly = false }: StatementScaleProps) => {
+export const StatementScale = ({ value, onChange, ariaLabel, statement, below, fieldMin, readOnly = false }: StatementScaleProps) => {
   // A press inside the field — anywhere above the rule — picks the circle up and
   // keeps dragging it, so the whole grey band is the handle and not only the
   // rule's own row. The value is read with the slider's own maths, so both ways of
@@ -308,7 +310,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, r
             </div>
             {/* The smileys sit flush with the field's top edge, while the rule
                 and the circle centre on the long dashed line under them. */}
-            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
+            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: fieldMin ?? FIELD_MIN }}>
               <FaceLayer />
               <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
                 onChange={(v) => onChange(String(v))} />

@@ -278,7 +278,7 @@
 /* The Intimacy card carries the scale between its question and its two answer
    fields, so the scale stands a head shorter here than on the Health Check cards,
    where it has the whole card to itself. */
-.risiko-page--intimacy { --risiko-field-h: 92px; }
+.risiko-page--intimacy { --risiko-field-h: 80px; }
 /* Flex children must shrink to the actual content box, including when the
    statement area has a vertical scrollbar or a long helper sentence. */
 .risiko-page :is(.risiko-scale-area, .risiko-body, .risiko-block, .risiko-footer),

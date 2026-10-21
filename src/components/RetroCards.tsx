@@ -1992,6 +1992,7 @@ const RetroCards: React.FC = () => {
                 <StatementScale
                   ariaLabel="Sind wir uns körperlich nah?"
                   value={editModeNotes[7]?.scale}
+                  fieldMin={76}
                   onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
                   below={
                     <ActionRow className="risiko-helper" icon="IconInfo"
