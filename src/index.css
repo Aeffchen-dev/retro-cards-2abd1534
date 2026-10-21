@@ -1905,14 +1905,15 @@ textarea.bg-retro-post-it:focus,
 }
 /* Desktop: the opening reads as a narrow column instead of spanning the card.
    Only on windows tall enough to hold the extra lines — the card clips rather
-   than scrolls, so a shorter window keeps the full width. */
-@media (min-width: 1024px) and (min-height: 860px) {
+   than scrolls, so a shorter window keeps the full width. The 320px column needs
+   786px of card, which the card only reaches from a window about 926px tall up. */
+@media (min-width: 1024px) and (min-height: 930px) {
   #root .intro-lede, #root .intro-copy { max-width: 320px; }
 }
-/* The 288px column needs about 711px of text, which the card only holds from a
-   window about 902px tall up — so it waits for a taller window than the 320px
-   column does, and is declared after it so it wins there. */
-@media (min-width: 1024px) and (min-height: 905px) {
+/* The 288px column needs about 808px of card, which it only finds from a window
+   about 951px tall up — so it waits for a taller window than the 320px column
+   does, and is declared after it so it wins there. */
+@media (min-width: 1024px) and (min-height: 955px) {
   #root .intro-lede, #root .intro-copy { max-width: 288px; }
 }
 /* Short windows: the card's own height runs out before its width does, so the

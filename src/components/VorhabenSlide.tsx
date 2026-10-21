@@ -1,6 +1,7 @@
 import React from "react";
 import PostItField from "@/components/PostItField";
 import RevealText from "@/components/RevealText";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { VORHABEN_QUESTIONS } from "./vorhaben-data";
 import "./VorhabenSlide.css";
 
@@ -15,9 +16,14 @@ interface VorhabenSlideProps {
 }
 
 const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange }: VorhabenSlideProps) => {
+  // Three fields have to stand inside a card that is a share shorter than the
+  // slide (user: "each card in slider should have same measurements"), so on a
+  // phone the writing areas stop a step earlier and the card never scrolls.
+  const fieldFloor = useIsMobile() ? 84 : 96;
+
   const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label]) => (
     <PostItField key={key} label={label} placeholder="Deine Antwort" accent={labelColor} barColor={labelColor}
-      readOnly={readOnly} minHeight={96} value={values[key] || ""} onChange={(value) => onChange(key, value)} />
+      readOnly={readOnly} minHeight={fieldFloor} value={values[key] || ""} onChange={(value) => onChange(key, value)} />
   ));
 
   return (
