@@ -4,6 +4,8 @@ import { readFileSync } from "node:fs";
 const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
 
+const FACES_COUNT = 5;
+
 // The dotted guides no longer stop at the field's foot: they are drawn against a
 // stack that holds the field *and* the column names, so a line runs from the
 // smileys down past the last name. The names themselves paint over the line.
