@@ -74,15 +74,16 @@ const FACE_FILL = "var(--risiko-face-fill)";
 const MOUTH_W = 1;
 const EYE_W = 2.4;
 
-const Face = ({ Icon }: { Icon: (typeof FACES)[number] }) => (
+const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
   // only a shade off the card's white, so the smiley reads as being inside it.
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
   <span className="risiko-face flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={1.5} color={FACE_GREY} />
+    <Icon size={FACE_SIZE} strokeWidth={1.5} color={color} />
   </span>
 );
+
 
 const FaceLayer = () => (
   <div className="risiko-face-header absolute left-0 right-0 pointer-events-none flex items-center justify-between box-border" aria-hidden="true">
@@ -636,22 +637,33 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const isChapterStart = page.statements[0]?.[0] === RISIKO_STATEMENTS[0][0];
   const chapterMood = averageMood(values);
 
+  // The chapter's own words. On screen they stand inside the card's info box (the
+  // user asked for "Testet euer Beziehungsgefühl text add to info box text"); on
+  // paper the same sentence keeps its place straight under the card's top. The
+  // smiley the average of all the statements points at rides inside the sentence
+  // once every slider has been dragged.
+  const chapterIntro = (mood: number | null, moodColour: string) => (
+    <>
+      {RISIKO_CHAPTER_OPEN}
+      {mood !== null && (
+        <span className="risiko-chapter-mood" aria-label={`Durchschnittliche Stimmung ${Math.round(mood)} von 100`}>
+          <Face Icon={FACES[moodFaceIndex(mood)]} color={moodColour} />
+        </span>
+      )}
+      {". "}
+      {RISIKO_CHAPTER_INFO}
+    </>
+  );
+
+
   return (
     <div ref={pageRef} className={`risiko-page flex flex-col items-start w-full h-full min-h-0${page.statements.length === 0 ? " risiko-allocation-page" : ""}`} style={{ color: INK }}>
       {isChapterStart && (
-        <div className="risiko-chapter shrink-0 w-full" lang="de">
-          <p className="risiko-chapter-info">
-            {RISIKO_CHAPTER_OPEN}
-            {chapterMood !== null && (
-              <span className="risiko-chapter-mood" aria-label={`Durchschnittliche Stimmung ${Math.round(chapterMood)} von 100`}>
-                <Face Icon={FACES[moodFaceIndex(chapterMood)]} />
-              </span>
-            )}
-            {". "}
-            {RISIKO_CHAPTER_INFO}
-          </p>
+        <div className="risiko-chapter shrink-0 w-full hidden print-only" lang="de">
+          <p className="risiko-chapter-info">{chapterIntro(chapterMood, FACE_GREY)}</p>
         </div>
       )}
+
       {page.statements.length === 0 && (
         <>
           <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
@@ -667,7 +679,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           The info sentence comes first, straight under the slider, so it reads as
           the scale's own note and the notes button closes the card. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
+        {isChapterStart && (
+          <ActionRow className="risiko-helper" icon="IconInfo" label={chapterIntro(chapterMood, INK)} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        )}
         <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : "Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
       </div>
     </div>
