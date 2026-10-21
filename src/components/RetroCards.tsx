@@ -363,9 +363,10 @@ const RetroCards: React.FC = () => {
   // Edit-mode notes keyed by slideId -> { [personKey]: text } (migrates from legacy {note1, note2})
   const [editModeNotes, setEditModeNotes] = useState<Record<number, Record<string, string>>>(() => {
     const saved = loadFromStorage<Record<number, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
-    if (!saved) return {};
     const migrated: Record<number, Record<string, string>> = {};
-    for (const k of Object.keys(saved)) {
+    // No early return when nothing was stored yet: the question moves below still have
+    // to run, or an answer written before a question changed cards would never follow it.
+    for (const k of Object.keys(saved || {})) {
       const v = saved[k as any] || {};
       if ('note1' in v || 'note2' in v) {
         migrated[k as any] = { p0: v.note1 || '', p1: v.note2 || '' };
