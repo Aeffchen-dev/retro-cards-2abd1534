@@ -589,3 +589,20 @@ describe("the statement's one size", () => {
 });
 
 
+
+describe("the statement's line breaks", () => {
+  const css = readFileSync(join(root, "src/index.css"), "utf8");
+  const rule = css.match(/\.risiko-statement \{([^}]*)\}/)[1];
+
+  test("breaks between words only, never inside one", () => {
+    expect(rule).not.toMatch(/overflow-wrap:\s*(anywhere|break-word)/);
+    expect(rule).toMatch(/overflow-wrap:\s*normal/);
+    expect(rule).toMatch(/word-break:\s*normal/);
+  });
+
+  test("never hyphenates a word", () => {
+    expect(rule).not.toMatch(/hyphens:\s*auto/);
+    expect(rule).toMatch(/hyphens:\s*manual/);
+    expect(rule).toMatch(/-webkit-hyphens:\s*manual/);
+  });
+});
