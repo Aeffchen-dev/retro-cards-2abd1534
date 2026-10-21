@@ -1438,7 +1438,14 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="relative w-full flex-1 my-10 print-memoji-container" style={{
               '--health-face-size': `${HC_FACE}px`,
+              '--health-guide-end': `${defaultX}px`,
+              '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
+              <div className="health-check-guides" aria-hidden="true">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <span key={i} className="health-check-guide" style={{ top: hcSpanPoint((i - 0.5) / 4) }} />
+                ))}
+              </div>
               <div className="relative h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (

@@ -93,7 +93,7 @@ export const columnBands = (faces: number): [number, number][] => {
   return Array.from({ length: faces }, (_, i) => [i * width, (i + 1) * width] as [number, number]);
 };
 
-/** Dashed divider positions for a scale with `faces` smileys: the line between
+/** Solid divider positions for a scale with `faces` smileys: the line between
  *  every pair of neighbouring columns only — the scale's own left and right edge
  *  are left bare, so the row of fields ends open instead of reading as a box.
  *  Positions are container %, so with five columns the dividers sit at 20, 40,

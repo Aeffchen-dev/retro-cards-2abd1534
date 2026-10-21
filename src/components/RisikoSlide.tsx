@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -69,6 +69,11 @@ const SPAN = `(100% - ${2 * END_INSET}px)`;
 const faceX = (i: number) => `calc(${END_INSET}px + ${i} * ${SPAN} / ${FACES.length - 1})`;
 /** CSS left for the circle at a slider value: 0 under the first smiley, 100 under the last. */
 const markerLeft = (value: number) => `calc(${END_INSET}px + ${value} * ${SPAN} / 100)`;
+/** CSS left for the line between face `i` and the face to its right. */
+const edgeX = (i: number) => `calc(${END_INSET}px + ${i + 0.5} * ${SPAN} / ${FACES.length - 1})`;
+/** The work-split lane keeps its own evenly divided grid: its circles ride the share
+ *  each partner holds, so its guides and split figures stay on the even columns. */
+const lanePos = (i: number) => `${(i + 0.5) * (100 / FACES.length)}%`;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -298,6 +303,26 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
               tell its parent — and that height is what tells the names how far up
               they may rise. */}
           <div className="risiko-scale-stack" style={{ "--risiko-field-min": `${fieldMin ?? FIELD_MIN}px` } as React.CSSProperties}>
+            {/* The five fields are drawn, not filled: a solid guide runs straight down
+                each smiley's own column and a lighter one between every pair of
+                neighbouring columns, the scale's own left and right edge left bare.
+                Each line runs the stack's whole height, from the smileys' top edge
+                down past the last name. Painted before everything else, so a line
+                never covers a smiley, a guide or the handle. */}
+            <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
+              {FACES.slice(0, -1).map((_, i) => (
+                <span key={`ce${i}`} className="risiko-column-edge risiko-guide-full absolute" style={{ left: edgeX(i) }} />
+              ))}
+            </div>
+            {/* Each smiley's column carries its solid guide down the stack's whole
+                height — from the smiley's own top edge, straight behind its face, to
+                just past the last name. The face keeps a plate of the card's own
+                surface, so the line reads as threaded behind the smiley rather than
+                drawn through it. Painted before the faces and the circle, so both
+                simply stand in front of the line. */}
+            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
+              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-guide-full absolute" style={{ left: faceX(i) }} />)}
+            </div>
             {/* The smileys sit flush with the field's top edge, while the rule and
                 the circle centre in the room under them. */}
             <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: fieldMin ?? FIELD_MIN }}>
@@ -566,6 +591,24 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
+          {/* The lane keeps the drawn columns the statement scales have: solid grey
+              guides down each smiley's column and lighter dividers between every pair
+              of neighbouring ones, the lane's own edges left bare. They stop above the
+              quiet strip at the lane's foot, and the bar, the circles and the names and
+              share figures printed on it all paint on top. */}
+          <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
+            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {columnEdges(FACES.length).map((at) => (
+              <span key={`c${at}`} className="risiko-column-edge absolute top-0 bottom-0"
+                style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />
+            ))}
+          </div>
+          <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none"
+            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {FACES.map((_, i) => (
+              <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: lanePos(i), top: 0, bottom: 0 }} />
+            ))}
+          </div>
           {/* The colour runs carry nothing themselves: every name and every share
               is printed in its own row, above and below the rule. */}
           <div className="workload-bar" aria-hidden="true">
