@@ -250,7 +250,7 @@ describe("grey columns", () => {
     expect(slide, "the lane still carries a fixed height").not.toMatch(/workload-lane[^"]*h-\[\d+px\]/);
     // The bar rides the fields' middle, so both scales read the same way.
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 1\.5px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
+    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
   test("each partner is named above the rule and its share printed below, on that partner's own colour", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
