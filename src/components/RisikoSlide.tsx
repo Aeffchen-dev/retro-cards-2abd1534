@@ -81,8 +81,13 @@ const SLOT = 32, BAND = SLOT;
 // The marker's features are drawn in the very language of the scale's smileys:
 // the same fine outline, the same round-dot eyes at the same 1.2 stroke, so the
 // dragged face and a scale face are one and the same drawing — only the morphs.
-const MOUTH_W = 1.2;
-const EYE_W = 1.2;
+// The dot is drawn with the very pen the rule uses: its outline, eyes and mouth
+// render exactly as thick as the line it rides (user: "dot like range slider line
+// stroke width"). The marker's SVG is a 24 grid painted into MARKER_SIZE pixels,
+// so the rule's pixel width is converted back into the grid's own units.
+const MARKER_PEN = RULE_W * (24 / MARKER_SIZE);
+const MOUTH_W = MARKER_PEN;
+const EYE_W = MARKER_PEN;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
@@ -122,7 +127,8 @@ const INK = "var(--retro-black)";
 const ARROW_SIZE = 26;
 
 
-const ARROW_W = 1.15;
+// The untouched dot's hint wears the same pen as the rule and the smiley.
+const ARROW_W = RULE_W * (24 / ARROW_SIZE);
 
 // Morph the features through all five header expressions, keeping the disc fixed.
 const MorphFace = ({ value }: { value: number }) => {
