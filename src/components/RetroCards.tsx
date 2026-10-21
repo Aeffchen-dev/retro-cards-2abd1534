@@ -37,12 +37,11 @@ const SLIDE_RISIKO = 105;
 const RISIKO_CONTINUATION = 200;
 const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTINUATION;
 
-// The first two Health Check cards are one compact part: five smileys and their
-// dashed guides. Both shrank by 30% — the faces are 24px where they were 34px,
-// and the column they span covers only 70% of the field instead of all of it.
+// The first two Health Check cards share a centred face column with open-ended
+// dashed dividers. A taller span leaves the larger faces breathing room.
 // Faces, guides and the Memoji that anchors to a face all read this one geometry.
-const HC_FACE = 29;
-const HC_SPAN_PCT = 70;
+const HC_FACE = 34;
+const HC_SPAN_PCT = 80;
 const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
 /** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
 const hcSpanPoint = (f: number) =>
@@ -1416,13 +1415,14 @@ const RetroCards: React.FC = () => {
               <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="relative w-full flex-1 my-10 print-memoji-container" style={{
+              '--health-face-size': `${HC_FACE}px`,
               '--health-guide-end': `${defaultX}px`,
               '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
               <div className="health-check-guides" aria-hidden="true">
-                {Array.from({ length: 6 }, (_, i) => (
+                {Array.from({ length: 4 }, (_, i) => (
                   <span key={i} className="health-check-guide" style={{
-                    top: hcSpanPoint((i - 0.5) / 4),
+                    top: hcSpanPoint((i + 0.5) / 4),
                   }} />
 
                 ))}
@@ -1435,7 +1435,7 @@ const RetroCards: React.FC = () => {
                     variant="ghost"
                     aria-label={["Lachend", "Glücklich", "Neutral", "Traurig", "Weinend"][i]}
                     style={{ top: `calc(${hcSpanPoint(i / 4)} - ${HC_FACE / 2}px)`, left: 0 }}
-                    className="swiper-no-swiping absolute h-[29px] w-[29px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[29px]"
+                    className="health-check-face swiper-no-swiping absolute shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
 
                     onClick={(event) => {
                       event.stopPropagation();
