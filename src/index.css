@@ -1397,10 +1397,14 @@ textarea.bg-retro-post-it:focus,
     background: #E4E6E8 !important;
   }
 
-  /* Match frontend font sizes and spacing */
-  .retro-heading,
-  .risiko-statement {
+  /* Match frontend font sizes and spacing: the printed question keeps its own
+     size, the statement a step below it — the same 85% the screen reads. */
+  .retro-heading {
     font-size: 2rem !important;
+    line-height: 1.05 !important;
+  }
+  .risiko-statement {
+    font-size: 1.7rem !important;
     line-height: 1.05 !important;
   }
 
