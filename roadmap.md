@@ -276,3 +276,5 @@
 - [x] Dot smiley: drawn with the range slider line2019s own stroke width (4px).
 - [x] Deck's ink stroke: 4px -> 2.2px (the rule, the work-split bar and the split line), so the dot's face draws at the smileys' own weight.
 
+- [x] Dot smiley: circle and face drawn 20% bigger (zoomed window inside the same 44px handle).
+- [ ] Grey scale smileys: thinner stroke than the rule's 2.2px.
