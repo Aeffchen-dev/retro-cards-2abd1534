@@ -77,6 +77,7 @@ const REFLECTION_FIELDS = [
   ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
   ["idea", "Das wünsche ich mir", "Deine Antwort", ""],
+  ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?", "Deine Antwort", ""],
 ] as const;
 
 
@@ -122,6 +123,7 @@ interface ReflectionTexts {
   nice: string;
   thanks: string;
   idea: string;
+  unspoken: string;
 }
 
 interface MemojisPosition {
@@ -341,7 +343,15 @@ const RetroCards: React.FC = () => {
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
-    return saved || { nice: '', thanks: '', idea: '' };
+    const texts: ReflectionTexts = { nice: '', thanks: '', idea: '', unspoken: '', ...(saved || {}) };
+    // This question used to sit on the Vorhaben card. Anything written there while
+    // it lived there moves over with it, so nobody has to type it again.
+    if (!texts.unspoken.trim()) {
+      const notes = loadFromStorage<Record<string, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
+      const written = notes?.[String(SLIDE_VORHABEN)]?.unspoken;
+      if (typeof written === "string" && written.trim()) texts.unspoken = written;
+    }
+    return texts;
   });
 
   // State for edit mode on slides — keyed by slide id (case number)
@@ -378,6 +388,10 @@ const RetroCards: React.FC = () => {
         }
       }
     }
+    // The moved question's old home: its answer now belongs to Feedback (copied
+    // there above), so the Vorhaben card does not keep a second copy of it.
+    const oldVorhaben = migrated[SLIDE_VORHABEN as any];
+    if (oldVorhaben && "unspoken" in oldVorhaben) delete oldVorhaben.unspoken;
     return migrated;
   });
 
@@ -1260,7 +1274,7 @@ const RetroCards: React.FC = () => {
       setPostItTexts({});
       setTakeawayTexts({});
       setEditModeNotes({});
-      setReflectionTexts({ nice: '', thanks: '', idea: '' });
+      setReflectionTexts({ nice: '', thanks: '', idea: '', unspoken: '' });
       setCapturedPhotos([]);
       setCurrentQuestion("");
       
