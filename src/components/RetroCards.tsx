@@ -174,6 +174,7 @@ const BRAND = {
   lightBrown: "#575757",
   darkOrange: "#371318",
   mediumOrange: "#FF7A00",
+  lightOrange: "#FFA24D",
   darkPurple: "#5343A8",
   midPurple: "#A85BA8",
   darkPink: "#492049",
