@@ -279,3 +279,12 @@
 - [x] Dot smiley: circle and face drawn 20% bigger (zoomed window inside the same 44px handle).
 - [x] Grey scale smileys: thinner stroke than the rule's 2.2px.
 - [x] Remove the smiley line from the grey smileys: the vertical guide opens under the faces.
+
+## 2026-10-21 (fifth batch)
+- [x] Scale column names: as big as possible, max two lines inside their own column, in black.
+- [x] Remove the line running down each smiley's own centre on the statement scales.
+- [ ] Info text: let it ignore the card's padding on the left, right and bottom.
+- [ ] Question text: raise its line height globally to a similar value.
+- [ ] Grey smileys: move them 40px down.
+- [ ] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.
+- [ ] Adjust the smileys' grey so it sits with the deck's other greys.
