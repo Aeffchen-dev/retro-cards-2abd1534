@@ -1577,6 +1577,7 @@ const RetroCards: React.FC = () => {
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
+                  bullets
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
@@ -1591,6 +1592,7 @@ const RetroCards: React.FC = () => {
                 <PostItField
                   key={person.key}
                   readOnly
+                  bullets
                   minHeight={160}
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
