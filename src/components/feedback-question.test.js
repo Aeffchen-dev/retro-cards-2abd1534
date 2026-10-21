@@ -10,10 +10,11 @@ describe("Feedback headline question", () => {
     expect(fields).toContain('["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
   });
 
-  test("keeps the saved answers of all three questions", () => {
+  test("keeps the saved answers of all four questions", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
     expect(fields).toContain('"idea"');
+    expect(fields).toContain('"unspoken"');
     expect(fields).toContain('"Dafür möchte ich Danke sagen"');
     expect(fields).toContain('"Das wünsche ich mir"');
   });
