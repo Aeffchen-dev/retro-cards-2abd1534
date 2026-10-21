@@ -267,9 +267,7 @@ describe("grey columns", () => {
     }
     // The names stand straight on the rule's head: the row keeps only a few pixels of
     // air, never the room an avatar circle used to need.
-    const nameGap = Number(above.match(/bottom:\s*calc\(\(100cqh \+ var\(--risiko-name-strip\) \+ (\d+)px\)/)?.[1]
-      ?? above.match(/bottom:\s*calc\(\(100cqh \+ var\(--risiko-name-strip\) \+ (\d+)px\)/)?.[1]
-      ?? above.match(/\/ 2 \+ (\d+)px/)?.[1]);
+    const nameGap = Number(above.match(/\/ 2 \+ (\d+)px/)?.[1]);
     expect(nameGap, "the names do not stand on the rule's head").toBeLessThanOrEqual(6);
     // No avatar is drawn on the lane any more — the user asked to remove the Memojis.
     expect(css, "an avatar circle is still styled on the lane").not.toContain("workload-avatar");
