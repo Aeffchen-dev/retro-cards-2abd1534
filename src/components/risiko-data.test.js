@@ -221,7 +221,7 @@ describe("grey columns", () => {
     expect(/const Face = \(\{ Icon, color = FACE_GREY \}/.test(slide), "the scale faces no longer default to FACE_GREY").toBe(true);
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
 
-    expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
+    expect(lightness(line)).toBeLessThan(lightness(token("risiko-caption")));
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
