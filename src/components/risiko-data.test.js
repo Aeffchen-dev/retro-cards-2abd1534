@@ -738,20 +738,18 @@ describe("the statement's line breaks", () => {
   );
   const question = css.match(/\.question-word \{[^}]*\}/)[0];
 
-  // The same three declarations decide where a line may end, so comparing them
-  // compares the two headlines' line breaks.
-  const breaks = (block) => ({
-    hyphens: block.match(/\n\s*hyphens:\s*([\w-]+)/)[1],
-    webkitHyphens: block.match(/-webkit-hyphens:\s*([\w-]+)/)[1],
-    overflowWrap: block.match(/overflow-wrap:\s*([\w-]+)/)[1],
+  test("keeps every word whole", () => {
+    expect(rule, "the statement hyphenates its words again").toMatch(/\n\s*hyphens:\s*manual/);
+    expect(rule, "the statement hyphenates its words again").toMatch(/-webkit-hyphens:\s*manual/);
+    expect(rule).not.toMatch(/\n\s*hyphens:\s*auto/);
   });
 
-  test("breaks its lines exactly like the big question", () => {
-    expect(breaks(rule)).toEqual(breaks(question));
+  test("still breaks a word when nothing else fits", () => {
+    expect(rule).toMatch(/overflow-wrap:\s*break-word/);
+    expect(rule).toMatch(/word-break:\s*normal/);
   });
 
-  test("hyphenates instead of breaking only at spaces", () => {
-    expect(rule).toMatch(/\n\s*hyphens:\s*auto/);
-    expect(rule).not.toMatch(/\n\s*hyphens:\s*manual/);
+  test("leaves the big question hyphenating on its own", () => {
+    expect(question, "the big question stopped hyphenating").toMatch(/\n\s*hyphens:\s*auto/);
   });
 });

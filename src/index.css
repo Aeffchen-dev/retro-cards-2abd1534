@@ -332,14 +332,13 @@
 .risiko-statement {
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
-  /* The statement breaks its lines exactly like the deck's big question: the
-     question's own words hyphenate (hyphens: auto on .question-word) and take a
-     hard break only when nothing else fits, so both read with the same even
-     lines. */
+  /* The statement keeps every word whole: it breaks only between words, and a
+     word takes a hard break only when it alone does not fit the line. (The
+     deck's big question still hyphenates — .question-word keeps hyphens: auto.) */
   overflow-wrap: break-word;
   word-break: normal;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  hyphens: manual;
+  -webkit-hyphens: manual;
 }
 @media (max-width: 767px) {
   .risiko-statement { font-size: 28px; }
