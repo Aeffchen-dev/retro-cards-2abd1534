@@ -13,12 +13,12 @@ describe("last 4 weeks card", () => {
     expect(card, "the card lost its headline").toContain("Was war die letzten 4 Wochen so los?");
   });
 
-  test("shows the notes button in the card's bottom left corner", () => {
-    // The shared corner overlay is no longer switched off for this card...
-    expect(overlay, "the corner button is still hidden on this card").not.toMatch(/slideId !== 3/);
-    // ...and the card keeps its bottom padding free for the button.
-    expect(padding, "the card no longer reserves room for the corner button").not.toMatch(/slideId !== 3/);
-    expect(padding, "the corner button has no room under the questions").toMatch(/paddingBottom:.*'72px'/);
+  test("has no notes button in normal view — the corner belongs to the last question", () => {
+    // The shared corner overlay is switched off for this card until its notes are open...
+    expect(overlay, "the notes CTA is back on the card").toMatch(/!\(slideId === 3 && !editModeSlides\[slideId\]\)/);
+    // ...and the card stops reserving room for it, so the six rows run down to the corner.
+    expect(padding, "the card still holds 72px free for a button that is not there").toMatch(/!\(slideId === 3 && !editModeSlides\[slideId\]\)/);
+    expect(padding, "the corner button's padding rule is gone from the other cards").toMatch(/paddingBottom:.*'72px'/);
   });
 
   test("keeps all six questions clickable", () => {
