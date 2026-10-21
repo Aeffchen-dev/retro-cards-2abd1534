@@ -2,32 +2,45 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
-import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, SCALE_MOUTHS, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
+// One face, drawn once: the round outline, two filled dot eyes and the mouth
+// traced from the very anchor curve the dragged dot morphs through. The five grey
+// scale faces, the printed average-mood face and the five Health Check faces are
+// all this one drawing, so a single feature can carry its own pen everywhere at
+// once. The mouth draws one pixel on every smiley, whatever weight its own
+// outline wears (user: "mouth stroke width all smileys 1px"); the icon paints its
+// 24-unit view into `size` pixels, so that pixel pen is stated back in grid units.
+const MOUTH_PEN_PX = 1;
+// The eyes are filled circles a step above the pen of their outline and mouth:
+// this radius lands a 3.7px dot on the deck's 44px faces — the step the user
+// asked for on every face ("eye dot bit bigger. for aLL") — and the answer dot's
+// own eyes grow to the very same width.
+const EYE_R = 1;
 
-// The saddest face on the scale, drawn in the same language as the faces next to
-// it: the same round-dot eyes, no brows and the laughing mouth flipped into an
-// open downturn — its downturn alone carries the sadness.
-export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke={color ?? "currentColor"}
-    strokeWidth={strokeWidth}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <circle cx="12" cy="12" r="10" />
-    <path d="M9 9h.01 M15 9h.01" />
-    <path d={mouthPath(CRYING_MOUTH)} />
-  </svg>
-);
-export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
+const smiley = (mouth: number[]) =>
+  ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color ?? "currentColor"}
+      strokeWidth={strokeWidth}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <circle cx="9" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
+      <circle cx="15" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
+      <path d={mouthPath(mouth)} strokeWidth={MOUTH_PEN_PX * (24 / size)} />
+    </svg>
+  );
+
+/** The five scale faces in order: crying, frowning, neutral, smiling, laughing. */
+export const FACES = SCALE_MOUTHS.map((mouth) => smiley(mouth));
 // The faces wear the very grey the scale's vertical column lines are drawn in
 // (--risiko-column-line), so the grid and the faces standing on it are one ink.
 export const FACE_GREY = "#C9CBD1";

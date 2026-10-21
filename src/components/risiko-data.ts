@@ -268,6 +268,11 @@ const FACE_ANCHORS = [
   { eye: [9, 9, 9.01, 9, 15, 9, 15.01, 9], eyeW: 1.5, brow: 0, mouth: [6,13, 6,13,9,13,12,13, 15,13,18,13,18,13, 17.51,15.9,14.94,18,12,18, 9.06,18,6.49,15.9,6,13] },
 ];
 
+/** The five header mouths in scale order: crying, frowning, neutral, smiling,
+ *  laughing. The scale's smiley icons are drawn from these very traces, so the
+ *  faces a reader rests on and the face the dot morphs through are one drawing. */
+export const SCALE_MOUTHS = FACE_ANCHORS.map((anchor) => anchor.mouth);
+
 /** Every partner reserves one band on the work-split line: its own circle and
  *  room for its centred name. Adjacent circles always sit exactly one band
  *  apart, touching with no margin between them. The band may never
