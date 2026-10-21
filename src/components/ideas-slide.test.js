@@ -37,7 +37,10 @@ describe("Ideas card wears the Questions combo", () => {
     expect(pill).toContain("if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;");
     expect(pill).not.toContain("SLIDE_REFLECTION || slideId === SLIDE_VORHABEN");
 
-    const label = src.slice(src.indexOf("const labelColorOf"), src.indexOf("}, [questionComboIdx]"));
+    // The helper's own block only — its closing sits on two lines, so a plain
+    // indexOf would run the slice on through the rest of the component.
+    const label = src.match(/const labelColorOf = useCallback\([\s\S]*?\n  \);/)?.[0] ?? "";
+    expect(label, "the label helper is gone").toBeTruthy();
     // Ideas no longer follows the combo here: its bars carry a fixed neon, so the
     // helper keeps only the cards whose labels still ride the random draw.
     expect(label).not.toContain("slideId === SLIDE_VORHABEN");
