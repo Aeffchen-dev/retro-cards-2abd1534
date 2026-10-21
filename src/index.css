@@ -901,7 +901,9 @@
   overflow-wrap: anywhere;
   height: auto;
   min-height: 32px;
-  padding-top: 4px;
+  /* no top padding: the row's own 8px is the whole breath under the hairline,
+     so it reads the same as the 8px the button keeps above it (user: "gap top
+     border info text to CTA same as info text top padding") */
   padding-bottom: 4px;
   white-space: normal;
   overflow: visible;
@@ -928,7 +930,9 @@
   overflow-wrap: anywhere;
   height: auto;
   min-height: 32px;
-  padding-top: 4px;
+  /* no top padding: the row's own 8px is the whole breath under the hairline,
+     so it reads the same as the 8px the button keeps above it (user: "gap top
+     border info text to CTA same as info text top padding") */
   padding-bottom: 4px;
   white-space: normal;
   overflow: visible;
