@@ -39,7 +39,7 @@ describe("Health Check smiley scale", () => {
   });
 
   test("the notes button closes the card and the helper sits above it", () => {
-    expect(card).toContain("bottom: '68px'"); // the helper row, clear of the button
+    expect(card).toContain("bottom: '80px'"); // the helper row, clear of the button
     expect(chrome).toContain("bottom: '28px'"); // the "Macht Notizen" button, at the card's own padding
     expect(chrome).not.toContain("slideId === 1"); // no per-slide lift for these two cards any more
   });

@@ -1490,7 +1490,10 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '68px' }}>
+            {/* The helper keeps its own breath above the notes button: the button
+                sits at the card's padding (28px) and is ~30px tall, so the row
+                starts one button-height plus a small gap above the card's edge. */}
+            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '80px' }}>
               <ActionRow
                 icon="IconInfo"
                 className="hc-helper"
