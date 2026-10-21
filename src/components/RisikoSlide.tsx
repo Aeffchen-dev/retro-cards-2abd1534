@@ -578,11 +578,13 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             );
           })}
         </div>
-        {/* The split each dashed guide stands for, read left partner / the rest. */}
-        <div className="workload-splits relative w-full h-[14px] shrink-0 pointer-events-none" aria-hidden="true">
+        {/* The split each column stands for, labelled in the same row, type and
+            grey the statement scales name their columns with — one label per
+            column, centred on it, in the couple's ratio with a colon and %. */}
+        <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
           {FACES.map((_, i) => {
             const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-            return <span key={`sp${i}`} className="workload-split absolute" style={{ left: facePos(i) }}>{at}/{100 - at}</span>;
+            return <span key={`sp${i}`} className="risiko-scale-caption">{at}:{100 - at}%</span>;
           })}
         </div>
       </div>
