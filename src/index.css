@@ -311,6 +311,19 @@
 @media (max-width: 767px) {
   .risiko-statement { font-size: 28px; }
 }
+/* A phone's card cannot hold the work-split question at the question's own size,
+   the whole sentence of examples and the split bar all at once — the bar would be
+   pushed clean out of the card. So on a phone the examples keep every word but
+   read in a short window of their own, and the bar gets the room it needs. */
+@media screen and (max-width: 767px) {
+  .risiko-allocation-examples {
+    max-height: 96px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+    margin-bottom: 12px;
+  }
+}
 /* The smallest phones have no room to spare: the work-split card carries its long
    question, the fixed sentence of examples and the lane, so there the examples
    sit a touch closer together. */
