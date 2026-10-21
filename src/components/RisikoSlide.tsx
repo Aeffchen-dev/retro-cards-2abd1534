@@ -46,11 +46,14 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// The answer dot's own face draws with this pen: 1.1 of the 24 grid painted into
-// the 44px face ≈ 2px (user: "grey smilies stroke width less", then "all smilie
-// stroke withs a bit more"). It is the scale's reference pen — the one every
-// other stroke on the scale is measured against.
-const FACE_PEN = 1.1;
+// The answer dot's own face draws exactly this many pixels on screen and on
+// paper (user: "make face astrerpke width 2px"). It is the scale's reference
+// pen — the one every other stroke on the scale is measured against.
+const FACE_PEN_PX = 2;
+// The icon paints its 24-grid drawing into the 44px face, so that pixel pen has
+// to be stated back in grid units: FACE_PEN is what the drawing's strokeWidth
+// takes, and it lands the asked-for 2px at the face's own size.
+const FACE_PEN = FACE_PEN_PX * (24 / FACE_SIZE);
 
 // The five grey smileys and the rule they stand on draw a step heavier than that
 // face: 20% over its pen, so the scale reads as the drawing and the answer rides
