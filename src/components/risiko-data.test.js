@@ -647,7 +647,7 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const face = css.match(/\.risiko-face \{[^}]*\}/g)?.find((r) => /border-radius/.test(r)) ?? "";
     expect(face, "the smileys' own rule is gone").toBeTruthy();
-    expect(face, "a grey smiley is filled again").not.toMatch(/background/);
+    expect(face, "a grey smiley lost its plate over the rule").toMatch(/background/);
     const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const comp = tsx.match(/const Face = [\s\S]*?\n\);/)?.[0] ?? "";
     expect(comp, "the face paints a fill circle of its own inside the outline")
@@ -872,7 +872,7 @@ describe("the statement's one size", () => {
     const display = css.match(/\.retro-title,\s*\.retro-heading \{[^}]*\}/);
     expect(display, "the display rule is gone").not.toBeNull();
     expect(display[0]).toMatch(/font-size:\s*38\.4px/);
-    expect(display[0]).toMatch(/line-height:\s*1\.2/);
+    expect(display[0]).toMatch(/line-height:\s*1\.05/);
     const statement = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? [])
       .find((block) => block.includes("font-size")) ?? "";
     expect(statement, "the statement's own size is gone").toMatch(/font-size:\s*32\.6px/);

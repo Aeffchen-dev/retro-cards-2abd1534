@@ -113,7 +113,7 @@ const EYE_W = MARKER_PEN;
 // of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
 // eyes land about 2.5px wide — a step above the pen every outline on the scale
 // now draws with.
-const EYE_R = 0.68;
+const EYE_R = 0.8;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // The plate behind the face is back (user: "restore grey smilies ... the
@@ -843,7 +843,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-0">
-        <ActionRow icon="IconPencil" label="Notizen öffnen" accent="#E4E6E8" tileBorder="1px solid #C9CBD1" iconColor="#201C1D" iconStrokeWidth={1} onClick={onEdit} />
+        <ActionRow icon="IconPencil" label="Notizen öffnen" fieldBg="transparent" labelColor="#201C1D" accent="#E4E6E8" tileBorder="1px solid #C9CBD1" iconColor="#201C1D" iconStrokeWidth={1} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
             It is the whole block — not the bare sentence — that stands the card's

@@ -266,7 +266,7 @@
   /* The deck's questions and headlines breathe like its other display text (the
      notes header 1.15, the statement 1.25) instead of standing shoulder to
      shoulder: one value, on screen and on paper alike. */
-  line-height: 1.2;
+  line-height: 1.05;
   letter-spacing: -0.02em;
 }
 
@@ -305,7 +305,7 @@
    it are already outside it. */
 @media screen and (min-width: 1024px) {
   .retro-card-container {
-    max-height: min(88%, 940px);
+    max-height: min(72%, 760px);
   }
 }
 
@@ -569,7 +569,7 @@
    wore earlier. The rule and the column guides therefore run straight behind
    them; only the answer dot keeps a white plate, so the answer is the one face
    that reads clear of the grid. */
-.risiko-face { border-radius: 50%; }
+.risiko-face { border-radius: 50%; background: var(--risiko-face-fill); position: relative; z-index: 30; }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces

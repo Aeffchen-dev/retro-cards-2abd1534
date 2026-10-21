@@ -101,7 +101,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
      text"); index.css gives it that small top offset. Every other CTA still
      draws its coloured 32px tile. */
   const tileClass = isInfo
-    ? "shrink-0 w-8 flex items-start justify-start leading-none"
+    ? "shrink-0 w-8 flex items-start justify-center leading-none"
     : "shrink-0 w-8 h-8 flex items-center justify-center";
   const fieldClass = isInfo
     ? "flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
