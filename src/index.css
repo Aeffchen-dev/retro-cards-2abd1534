@@ -36,9 +36,9 @@
   :root {
     --retro-black: #201C1D;
     --risiko-face-fill: #FFFFFF;
-    /* the scale's grey smileys: a size smaller on tablet and desktop, full size
-       on phones and on the printed sheet (see .risiko-face) */
-    --risiko-face-size: 30px;
+    /* the scale's grey smileys: one shared size everywhere — the very 44px the
+       answer dot fills — so a dragged face and a scale face are the same thing */
+    --risiko-face-size: 44px;
     /* the answer dot's own 1px ring: the Health Check's own light green
        (BRAND.neonGreen), so the handle belongs to the chapter's colour story */
     --risiko-marker-ring: #63E82B;
@@ -236,8 +236,7 @@
    Small    : Figtree 500 / 12px             (.retro-small)                                     */
 
 .retro-title,
-.retro-heading,
-.risiko-statement {
+.retro-heading {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", "Stack Sans Text", "Figtree", Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -332,15 +331,16 @@
   width: var(--health-face-size);
   height: var(--health-face-size);
 }
-/* The statement is plain body copy: no coloured plate and no word reveal, at the user's
-   request. It still grows with its text and never gets squeezed or cut off. */
-/* A statement reads in the same voice and at the same size as the deck's big
-   question: the display face and the 38.4px come from the shared question rule
-   above. Only a phone's card is too narrow for that — there the chapter's longest
-   statement would push the smileys, the scale and the notes past the card's lower
-   edge — so a phone steps down to 28px, the largest size at which every statement
+/* A statement reads in the same voice as the deck's big question — the display
+   face comes from the shared question rule above — but a step below its size:
+   85% of the question's 38.4px, so the sentence yields the stage to the scale.
+   Only a phone's card is narrower still: there the chapter's longest statement
+   would push the smileys, the scale and the notes past the card's lower edge —
+   so a phone steps down to 23.8px, the largest size at which every statement
    still closes above the scale and the notes with room to spare. */
 .risiko-statement {
+  font-size: 32.6px;
+  line-height: 1.05;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   /* The statement keeps every word whole: it breaks only between words, and a
@@ -352,7 +352,7 @@
   -webkit-hyphens: manual;
 }
 @media (max-width: 767px) {
-  .risiko-statement { font-size: 28px; }
+  .risiko-statement { font-size: 23.8px; }
   /* The work-split card's headline is a question, not a statement, so it keeps the
      size every other question on the deck reads — even on a phone. */
   .risiko-allocation-statement { font-size: 38.4px; }
@@ -439,10 +439,8 @@
 .risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 
 /* The scale's grey smileys: the box and the drawing inside it follow
-   --risiko-face-size, so the face can step down without the guides, the names or
-   the circle's travel moving. Phones (max-width: 767px) and the printed sheet —
-   a fixed A4 layout, not a device — keep the full 28px the print pages were
-   tuned with; tablet and desktop use the smaller token above. */
+   --risiko-face-size — one shared 44px everywhere, the very size the answer
+   dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 /* The dashed guide runs the line's whole height now and passes straight behind each
@@ -450,13 +448,13 @@
    behind the disc and reappears under it, exactly like a name's plate below. */
 .risiko-face { background: var(--risiko-surface); border-radius: 50%; }
 
-/* The printed copy is a fixed A4 layout, not a device, so it keeps the full 28px
-   the print pages were tuned with — the token is set on its container, which the
-   faces inside inherit. */
-.print-only { --risiko-face-size: 32px; }
+/* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
+   same shared 44px everywhere — the token is set on its container, which the faces
+   inside inherit. */
+.print-only { --risiko-face-size: 44px; }
 /* The printed cards are not inside .print-only, so the sheet carries its own copy
-   of the token: the smileys on paper match the phone's full size (32px). */
-.print-slide-page { --risiko-face-size: 32px; }
+   of the token: the smileys on paper match the dot's 44px too. */
+.print-slide-page { --risiko-face-size: 44px; }
 
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
@@ -849,13 +847,16 @@
 
   border-radius: 50%;
   background: var(--retro-black);
+  /* the ring is the dot's own border, not an outline: an outline is painted
+     just outside the box and, on the marker's fractional position, smears into
+     a soft glow — a border shares the disc's own edge and reads as one crisp
+     hairline in every state: the plain dot, the dragged face and the saved
+     answer all wear it */
+  border: 1px solid var(--risiko-marker-ring);
   /* the thumb is as narrow as a scale face, so the marker must not be squeezed
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;
   color: var(--retro-black);
-  /* one hairline ring in the chapter's light green, in every state: the plain
-     dot, the dragged face and the saved answer all wear it */
-  outline: 1px solid var(--risiko-marker-ring);
 }
 
 /* The draggable dot never shows a focus outline. */
@@ -1397,10 +1398,14 @@ textarea.bg-retro-post-it:focus,
     background: #E4E6E8 !important;
   }
 
-  /* Match frontend font sizes and spacing */
-  .retro-heading,
-  .risiko-statement {
+  /* Match frontend font sizes and spacing: the printed question keeps its own
+     size, the statement a step below it — the same 85% the screen reads. */
+  .retro-heading {
     font-size: 2rem !important;
+    line-height: 1.05 !important;
+  }
+  .risiko-statement {
+    font-size: 1.7rem !important;
     line-height: 1.05 !important;
   }
 
@@ -1610,10 +1615,10 @@ textarea.bg-retro-post-it:focus,
 /* Questions slide: same headline size as all other slides */
 
 /* Phones: the column names keep their own column-scaled size (captionLines splits
-   every name into two lines); a half too wide for the narrow column wraps inside it. */
+   every name into two lines); a half too wide for the narrow column wraps inside it.
+   The smileys need no phone copy of their token any more — one shared 44px
+   everywhere, the size the answer dot fills. */
 @media (max-width: 767px) {
-  /* phones keep the smileys at their full size */
-  :root { --risiko-face-size: 32px; }
   .risiko-scale-captions { container-type: inline-size; }
   .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { white-space: normal; }

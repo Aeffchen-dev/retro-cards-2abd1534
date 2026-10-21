@@ -33,14 +33,13 @@ export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
 export const FACE_GREY = "#8A8C94";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
-const FACE_SIZE = 28;
-// The face's own box is the --risiko-face-size token in index.css: phones and the
-// printed sheet draw it at 32px, tablet and desktop a size smaller at 30px.
-// FACE_SIZE itself stays as the icon's intrinsic size and as the height of the row
-// the faces are centred in, so the guides and the circle's travel never move.
-// The draggable marker keeps its own, larger size: it has to read as the handle
-// among the smaller scale faces and stay a comfortable thing to grab, and it wears
-// a 1px ring in the Health Check's light green (see --risiko-marker-ring).
+const FACE_SIZE = 44;
+// The face's own box is the --risiko-face-size token in index.css: one shared
+// 44px on screen and on paper — the very size the answer dot fills, so a dragged
+// face and a scale face are the same thing and the morph between them matches.
+// FACE_SIZE is the icon's intrinsic size, drawn one-to-one at the token's size.
+// The draggable marker shares the dot's 44px box and wears a 1px ring in the
+// Health Check's light green (see --risiko-marker-ring).
 const MARKER_SIZE = 44;
 
 
