@@ -38,9 +38,14 @@ describe("Health Check smiley scale", () => {
     expect(guide).toMatch(/width: max\(0px, calc\(min\(var\(--health-guide-end\), calc\(100% - 56px\)\) \* 0\.75 - 16px\)\);/);
   });
 
-  test("the notes button closes the card and the helper sits above it", () => {
-    expect(card).toContain("bottom: '80px'"); // the helper row, clear of the button
-    expect(chrome).toContain("bottom: '28px'"); // the "Macht Notizen" button, at the card's own padding
-    expect(chrome).not.toContain("slideId === 1"); // no per-slide lift for these two cards any more
+  test("the notes button comes first and the helper sentence reads under it", () => {
+    // One stack at the card's own padding: button on top, info box below it.
+    const stack = card.slice(card.indexOf("bottom: '28px'"), card.indexOf("Zieht euer Emoji"));
+    expect(stack, "the notes button is not the first row of the stack").toContain("Macht Notizen");
+    expect(card, "the helper row still stands above the button").not.toContain("bottom: '80px'");
+    // The shared overlay no longer paints a second button on these two cards.
+    expect(chrome).toContain("slideId !== 1");
+    expect(chrome).toContain("slideId !== 2");
+    expect(chrome).toContain("bottom: '28px'"); // still the card's own padding on the other cards
   });
 });

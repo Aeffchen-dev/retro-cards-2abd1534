@@ -14,16 +14,25 @@ describe("statement card info sentence", () => {
   });
 
   test("replaces the old helper on the statement cards, screen and paper alike", () => {
-    const footer = slide.slice(slide.indexOf("risiko-footer"), slide.indexOf("Macht Notizen"));
+    const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
     expect(footer).toContain("RISIKO_STATEMENT_INFO");
     expect(slide).not.toContain("Schiebt den schwarzen Kreis nach links und rechts");
     // The chapter's own intro keeps its words, so the card that opens the chapter
-    // shows both rows: the intro under the scale, this sentence above the button.
+    // shows both rows: the intro under the scale, this sentence under the button.
     expect(slide).toContain("RISIKO_CHAPTER_INFO");
   });
 
+  test("puts the notes button before the info box on every Health Check page", () => {
+    const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
+    const cta = footer.indexOf("Macht Notizen");
+    const info = footer.indexOf("RISIKO_STATEMENT_INFO");
+    expect(cta, "the notes button is missing from the footer").toBeGreaterThan(-1);
+    expect(info, "the info sentence is missing from the footer").toBeGreaterThan(-1);
+    expect(cta, "the info box still reads before the notes button").toBeLessThan(info);
+  });
+
   test("leaves the work-split card its own sentence", () => {
-    const footer = slide.slice(slide.indexOf("risiko-footer"), slide.indexOf("Macht Notizen"));
+    const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
     expect(footer).toContain("Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst");
   });
 
