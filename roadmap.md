@@ -259,3 +259,10 @@
 - [ ] Scale spacing: the vertical space around the slider on the card never exceeds the card's own padding (28px).
 - [ ] Grey background behind the scale with the smileys (Health Check cards 1+2 and the statement scales), screen only.
 - [ ] Intimacy: textareas fill the card's vertical space (check the phone, where each field measured only 118px).
+
+## 2026-10-21 (second batch)
+- [ ] Smiley guide lines: start them below the smileys (Health Check cards 1+2).
+- [ ] Vertical gaps: let the content's gaps fill the card's height.
+- [ ] Notes CTA label: "Macht Notizen" -> "Notizen öffnen".
+- [ ] Health Check cards 1+2: the gap between the notes CTA and the info text must match the rest of the deck.
+- [ ] Intro card: make the headline font as big as possible.
