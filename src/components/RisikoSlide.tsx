@@ -332,6 +332,21 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
   );
 };
 
+/** The split each column stands for: one label per column, centred on it, in the
+ *  same row, type and grey the statement scales name their columns with — each
+ *  share carrying its own % and a slash between them, so a column reads
+ *  "10% / 90%". On paper it keeps its place straight under the work-split lane;
+ *  on screen the very same row reads as the footnote's second line, under the
+ *  helper sentence, so nothing hangs under the circles any more. */
+const SplitCaptions = () => (
+  <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
+    {FACES.map((_, i) => {
+      const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
+      return <span key={`sp${i}`} className="risiko-scale-caption">{at}% / {100 - at}%</span>;
+    })}
+  </div>
+);
+
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, onOverflow }: RisikoSlideProps) => {
   // A card whose statements are taller than the card itself asks the deck for
   // fewer statements per card, so nothing is cut off at the card's lower edge.
@@ -649,16 +664,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             );
           })}
         </div>
-        {/* The split each column stands for, labelled in the same row, type and
-            grey the statement scales name their columns with — one label per
-            column, centred on it, with each share carrying its own % and a slash
-            between them, so a column reads "10% / 90%". */}
-        <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
-          {FACES.map((_, i) => {
-            const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-            return <span key={`sp${i}`} className="risiko-scale-caption">{at}% / {100 - at}%</span>;
-          })}
-        </div>
+        {/* On paper the column ratios still read straight under the lane. On screen
+            the same row stands under the helper sentence instead, so under the
+            circles nothing is left but the two live shares. */}
+        {readOnly && <SplitCaptions />}
       </div>
     );
   };
@@ -736,8 +745,14 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           padding (28px) standing between the two. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[28px]">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
-
-        <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
+        {/* The note is one block: the sentence reads first and, on the work-split
+            card, the row of column ratios follows it as the note's second line.
+            It is the whole block — not the bare sentence — that stands the card's
+            own padding under the button. */}
+        <div className="risiko-footer-note w-full min-w-0 flex flex-col gap-1">
+          <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
+          {page.personKeys.length > 0 && <SplitCaptions />}
+        </div>
       </div>
     </div>
   );
