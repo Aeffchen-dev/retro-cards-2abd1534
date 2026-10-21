@@ -132,9 +132,10 @@ const MorphFace = ({ value }: { value: number }) => {
   const path = mouthPath(mouth);
   return (
     <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
-      stroke={FACE_GREY} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
-      {/* The face is drawn in the very language of the header smileys: the same
-          round outline, the same fine mouth, the same round-dot eyes. */}
+      stroke={INK} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
+      {/* The same drawing as the header smileys — the round outline, the fine
+          mouth, the round-dot eyes — only in the ink of the rule it rides, not
+          in their grey (user: "color back instead of grey"). */}
       <circle cx="12" cy="12" r="10" />
       <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
       {/* The brows only rise between the anchors, where no header face stands. */}
@@ -165,7 +166,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
     <span ref={pointRef} className={`risiko-expression-point ${shown ? "is-shown" : ""} ${active ? "is-dragging" : ""} ${hintReady ? "has-navigation-hint" : ""}`} data-expression={expression} aria-hidden="true">
       <span className="risiko-plain-dot">
         <svg width={ARROW_SIZE} height={ARROW_SIZE} viewBox="0 0 24 24" fill="none"
-          stroke={FACE_GREY} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
+          stroke={INK} strokeWidth={ARROW_W} strokeLinecap="round" strokeLinejoin="round">
           <path d="M10 8 L6 12 L10 16 M14 8 L18 12 L14 16 M8 12 L16 12" />
         </svg>
       </span>

@@ -937,11 +937,11 @@
   aspect-ratio: 1;
 
   border-radius: 50%;
-  /* The marker is drawn like a scale face, not painted over one: it carries the
-     card's own surface behind it, so the rule under it stays hidden, and it wears
-     no ring at all (user: "slider dot face same as from grey smilies" and "no
-     green outline"). */
-  background: var(--risiko-field-bg);
+  /* The dot's smiley is painted straight onto the card: nothing white sits behind
+     it, so no pale ring cuts the rule it rides (user: "dot smiley no white outline"),
+     and its features wear the same ink as that rule instead of the smileys' grey
+     ("color back instead of grey"). */
+  background: none;
   /* The thumb is as narrow as a scale face, so the marker must not be squeezed
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;

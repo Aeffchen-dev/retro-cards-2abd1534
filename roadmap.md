@@ -271,4 +271,4 @@
 - [x] Setup card: back to its old measures (88% of the slide); every other card still fills the height.
 
 ## 2026-10-21 (fourth batch)
-- [ ] Dot smiley: no white outline behind it, and its own colour back instead of the smileys\u2019 grey.
+- [ ] Dot smiley: no white outline behind it, and its own colour back instead of the smileys' grey.
