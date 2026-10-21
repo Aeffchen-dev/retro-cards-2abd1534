@@ -574,7 +574,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               // the last sits just left of the boundary it rides, the last one just
               // right of it — together they open the 4px gap the split line centres in.
               "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
-              "--workload-band": band,
             } as React.CSSProperties;
             const memojiEl = (
               <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
