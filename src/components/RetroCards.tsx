@@ -1980,7 +1980,7 @@ const RetroCards: React.FC = () => {
       case 7: {
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
-            <div className="flex flex-col items-start gap-4 w-full">
+            <div className="flex flex-col items-start gap-3 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
