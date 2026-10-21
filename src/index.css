@@ -741,6 +741,10 @@
   order: -1;
   margin-bottom: 6px;
   gap: 0;
+  /* the row is what the names measure themselves against — every column is a
+     share of this row's own width, so the size that just fits two lines can be
+     written as a share of it (see .risiko-scale-stack .risiko-scale-caption) */
+  container-type: inline-size;
   grid-template-columns:
     calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8)
     repeat(3, calc((100% - 2 * var(--risiko-scale-inset)) / 4))
@@ -758,13 +762,26 @@
   justify-self: start;
 }
 .risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
-/* They read in the scale's own grey, while the faces above sit a shade lighter —
-   one step under the info rows' 12px floor.
-   At that size the longest half of a name ("teilweise zu", 12 letters) still
-   fits a column's width (~61px), and every name breaks at its own words into
-   exactly two lines of even length, so the row reads as one even block instead
-   of a mix of one-, two- and three-line labels. Phones keep their own
-   column-scaled size and let a half that cannot fit wrap inside its column. */
+/* The column names are as big as their own column can hold. Every name breaks at
+   its own words into exactly two lines (captionLines), so the largest size is the
+   one at which the longest line of every name still fits inside its column: the
+   outer columns run from the card's own edge to the first divider (100cqw/8 +
+   16.5px wide), the three inside are a quarter of the travel (100cqw/4 - 11px),
+   and the binding lines measured on the live card are "Trifft noch"
+   (4.86em + 2.9px of plate) and "teilweise zu" (5.66em + 0.9px). That reads about
+   14px on a tablet card, about 10px on a phone and about 11px on paper — always
+   the very largest size that still needs only two lines. The names wear the
+   deck's own ink black, one step above the scale's greys. */
+.risiko-scale-stack .risiko-scale-caption {
+  font-size: min(
+    calc((100cqw / 8 + 13.6px) / 4.86),
+    calc((100cqw / 4 - 11.9px) / 5.66),
+    18px
+  );
+  color: var(--retro-black);
+}
+/* The grey and size the work-split card's ratio legend falls back to: it names
+   no column, it only repeats each column's own split, so it stays a footnote. */
 .risiko-scale-caption {
   font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
   font-weight: 500;
@@ -892,6 +909,18 @@
   background: var(--risiko-label-bg);
   /* the buttons stand no further under the scale than the card's own padding */
   margin-top: var(--risiko-scale-pad);
+  /* the info sentence under the button ignores the card's padding at the foot:
+     the footer's own bottom edge lands on the card's very bottom edge (user:
+     "info Text ignore card padding ... bottom") */
+  margin-bottom: calc(-1 * var(--risiko-scale-pad));
+}
+/* The info sentence runs past the card's side padding too — its hairline, its
+   icon and its words span the card from edge to edge, instead of stopping at the
+   content box the notes button still stands inside. */
+.risiko-footer-note {
+  width: auto;
+  align-self: stretch;
+  margin-inline: calc(-1 * var(--risiko-scale-pad));
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
@@ -1743,13 +1772,13 @@ textarea.bg-retro-post-it:focus,
 
 /* Questions slide: same headline size as all other slides */
 
-/* Phones: the column names keep their own column-scaled size (captionLines splits
-   every name into two lines); a half too wide for the narrow column wraps inside it.
+/* Phones: the column names take the same column-scaled size as everywhere else
+   (see .risiko-scale-stack .risiko-scale-caption); a half that still cannot fit
+   its column wraps inside it rather than breaking a word in half.
    The smileys need no phone copy of their token any more — one shared 44px
    everywhere, the size the answer dot fills. */
 @media (max-width: 767px) {
-  .risiko-scale-captions { container-type: inline-size; }
-  .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
+  .risiko-scale-caption { line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { white-space: normal; }
 }
 
