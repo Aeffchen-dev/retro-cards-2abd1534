@@ -1529,7 +1529,7 @@ const RetroCards: React.FC = () => {
                 className="hc-helper retro-body-copy"
               />
             </div>
-            <div className="flex flex-col flex-1 justify-center w-full" style={{ gap: '16px' }}>
+            <div className="flex flex-col flex-1 justify-between w-full" style={{ gap: '16px', marginTop: '28px' }}>
               {([
                 ["IconTrendingUp", "Ein voller Erfolg"],
                 ["IconFaceJoy", "Ein schöner Moment"],
