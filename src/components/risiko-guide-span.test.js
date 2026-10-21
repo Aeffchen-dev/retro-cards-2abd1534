@@ -38,8 +38,6 @@ test("the dotted guides run from the smileys down past the column names", () => 
   expect(/\.risiko-scale-stack \{[^}]*position: relative;/.test(css), "the stack is not a positioning parent").toBe(true);
 });
 
-const FACES_COUNT = 5;
-
 test("the column names paint above the dotted lines that run through them", () => {
   expect(/\.risiko-scale-captions \{[^}]*position: relative;/.test(css), "the names do not paint above the lines").toBe(true);
   // the names are the last thing in the stack, so they draw over the lines
