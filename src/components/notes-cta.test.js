@@ -66,4 +66,18 @@ describe("notes CTA colours", () => {
       /slideId === 7 && !editModeSlides\[slideId\] \? "var\(--intimacy-accent\)"/,
     );
   });
+
+  test("the camera CTA's camera reads light orange on the Memory slide", () => {
+    // user: "Kamera öffnen CTA color camera icon light orabge" — the tile keeps the
+    // slide's own purple, only the camera inside it wears the deck's light orange.
+    const row = cards.slice(
+      cards.indexOf('label="Kamera öffnen"'),
+      cards.indexOf("/>", cards.indexOf('label="Kamera öffnen"')),
+    );
+    expect(row, "the camera CTA is missing").toBeTruthy();
+    expect(row, "the camera does not read light orange").toContain('iconColor={BRAND.lightOrange}');
+    const brand = cards.slice(cards.indexOf("const BRAND = {"), cards.indexOf("} as const"));
+    expect(brand, "the palette lost its light orange").toMatch(/lightOrange:\s*"#FFA24D"/);
+    expect(row, "the tile no longer wears the slide's purple").toContain("accent={pillColorOf(0)}");
+  });
 });

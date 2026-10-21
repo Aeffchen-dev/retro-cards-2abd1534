@@ -174,6 +174,7 @@ const BRAND = {
   lightBrown: "#575757",
   darkOrange: "#371318",
   mediumOrange: "#FF7A00",
+  lightOrange: "#FFA24D",
   darkPurple: "#5343A8",
   midPurple: "#A85BA8",
   darkPink: "#492049",
@@ -1410,6 +1411,7 @@ const RetroCards: React.FC = () => {
                 iconNode={<Camera size={16} />}
                 label="Kamera öffnen"
                 accent={pillColorOf(0)}
+                iconColor={BRAND.lightOrange}
                 onClick={() => openCamera()}
               />
             </div>
@@ -2314,12 +2316,15 @@ const RetroCards: React.FC = () => {
                       </div>
                     </div>
                   )}
-                  {/* The Setup card went back to the height it had before the deck's cards
-                      grew to fill the slide (user: "on setup card slider got higher and
-                      wider wanna have old measures"); every other card still takes the
+                  {/* The Setup card keeps the measures it had before the deck's cards
+                      grew to fill the slide: at most 500px wide and 720px tall, and
+                      always in that proportion (user: "make sure the card slider itself
+                      has the same max width and height applied as it used to have
+                      yesterday also keep the ratio of width to height" — see
+                      .retro-setup-card in index.css). Every other card still takes the
                       full height the slide offers. */}
                   <div
-                    className={`retro-card-container relative w-full max-w-[500px] ${slideId === SLIDE_SETUP ? "h-[88%] max-h-[88%]" : "flex-1"} min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+                    className={`retro-card-container relative w-full max-w-[500px] ${slideId === SLIDE_SETUP ? "retro-setup-card" : "flex-1"} min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
 
                     style={{
                       ...cardStyle,

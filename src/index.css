@@ -305,6 +305,33 @@
   }
 }
 
+/* The Setup card keeps the measures it had before the deck's cards grew: at most
+   500px wide and at most 720px tall, and always in that very proportion — 25 wide
+   to 36 tall (user: "make sure the card slider itself has the same max width and
+   height applied as it used to have yesterday also keep the ratio of width to
+   height"). The room the stage leaves is the window less the 32px of deck chrome
+   above it and the pill's own 40px row (measured: a 755px window gives 683px); the
+   sideways room is the window less the slide's 48px of padding. Whichever cap
+   binds — the room, 720px or 500px — the other axis is derived from it through
+   25/36 and 36/25, so the card is never wider or squatter than yesterday's
+   measures and never spills past the slide. On a desktop window the 88vh/940px
+   ceiling above joins the same min() through --setup-cap, so the two rules can
+   never pull the card in different directions. */
+@media screen {
+  .retro-setup-card {
+    --setup-cap: 100vh;
+    --setup-h: min(100vh - 72px, 720px, var(--setup-cap));
+    --setup-w: min(100vw - 48px, 500px, calc(var(--setup-h) * 25 / 36));
+    height: min(var(--setup-h), calc(var(--setup-w) * 36 / 25));
+    width: var(--setup-w);
+  }
+}
+@media screen and (min-width: 1024px) {
+  .retro-setup-card {
+    --setup-cap: min(88vh, 940px);
+  }
+}
+
 .risiko-card { overflow: hidden; }
 /* The scale keeps the same breathing room above and below as the card's own padding. */
 .risiko-page {
