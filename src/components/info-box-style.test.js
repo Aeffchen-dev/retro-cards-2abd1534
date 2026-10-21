@@ -23,10 +23,23 @@ describe("info box appearance", () => {
       /border-top:\s*1px solid var\(--retro-info-rule\);/,
     );
     expect(rule, "the line runs the card's whole content width").toMatch(/width:\s*100%;/);
-    expect(rule, "the line keeps its distance from the letters").toMatch(/padding-top:\s*8px;/);
+    // user: "the margin between info I text and border-top must reflect card padding"
+    expect(rule, "the hairline keeps the card's padding above the letters").toMatch(
+      /padding-top:\s*var\(--retro-card-pad\);/,
+    );
+    expect(css, "the card's padding token holds 28px").toMatch(/--retro-card-pad:\s*28px;/);
 
     expect(rule, "the border never squeezes the label").toMatch(/height:\s*auto;/);
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);
+  });
+
+  test("the sentence keeps the card's padding under itself", () => {
+    // user: "card padding is also applies as margin-bottom of info text" — the
+    // risiko footer reaches the card's very edge, so its info row carries the
+    // margin; the Health Check stack is already anchored one padding above.
+    expect(css).toMatch(
+      /\.risiko-footer \.retro-info-row \{\s*margin-bottom:\s*var\(--retro-card-pad\);\s*\}/,
+    );
   });
 
   test("both info rows hand transparent fills and the grey text token", () => {
