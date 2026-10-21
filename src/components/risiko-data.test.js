@@ -348,6 +348,10 @@ describe("work-split split line", () => {
     expect(slide).toContain('{shares[segment.key]}%');
     expect(slide).toContain('{shares[segments[i + 1].key]}%');
   });
+  test("names each column's ratio as 10% / 90%, not 10:90%", () => {
+    expect(slide).toContain("{at}% / {100 - at}%");
+    expect(slide).not.toContain("{at}:{100 - at}%");
+  });
 });
 
 describe("smiley scale spans its container", () => {
