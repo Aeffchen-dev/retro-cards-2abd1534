@@ -229,7 +229,7 @@ describe("grey columns", () => {
     // printed card is sized to the sheet and keeps filling its whole page.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const rule = slide.match(/background: (?:INK|FACE_GREY),[^\n]*/)?.[0] ?? "";
+    const rule = slide.match(/background: (?:INK|FACE_GREY|"var\(--risiko-guide\)"),[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.slice(css.indexOf("@media screen {"));
@@ -602,11 +602,14 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(eyeR * 2, "the eyes did not grow past the pen's dot").toBeGreaterThan(pen);
     expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(3);
   });
-  test("the scale snaps to the five face anchors", () => {
+  test("the scale stays free of snapping", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    expect(src, "the slider's step is not the face anchor spacing").toMatch(/step=\{SNAP\}/);
-    expect(src, "the snap is not one anchor per face").toMatch(/const SNAP = 25;/);
-    expect(src, "a press in the field does not snap to the anchors").toMatch(/onChange\(String\(snapValue\(v\)\)\)/);
+    expect(src, "the statement slider snapped to the face anchors again")
+      .toMatch(/min=\{0\} max=\{100\} step=\{1\}/);
+    expect(src, "the field's press no longer rounds to whole values")
+      .toMatch(/onChange\(String\(Math\.round\(v\)\)\)/);
+    expect(src, "a snap constant is still on the statement scale")
+      .not.toMatch(/const SNAP = /);
   });
   test("the answer dot rides on top of the smiley row", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
@@ -614,14 +617,14 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(zs.length, "the drawn markers are gone").toBeGreaterThanOrEqual(2);
     expect(zs.every((z) => z > 30), "a marker still hides under the smiley row's z-30").toBe(true);
   });
-  test("the grey smileys wear no white ring: the fill sits inside their own outline", () => {
-    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const face = tsx.match(/const Face = [\s\S]*?\n\);/)?.[0] ?? "";
-    expect(face, "the face's white fill is not painted inside its own outline")
-      .toMatch(/<circle cx="12" cy="12" r="10" stroke="none"/);
+  test("the grey smileys wear their white halo again", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    expect(css, "the smileys still draw a plate circle behind them")
-      .not.toMatch(/\.risiko-face \{[^}]*background/);
+    const face = css.match(/\.risiko-face \{[^}]*\}/g)?.find((r) => /background/.test(r)) ?? "";
+    expect(face, "the smileys' halo plate is gone").toMatch(/background: var\(--risiko-field-bg\)/);
+    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const comp = tsx.match(/const Face = [\s\S]*?\n\);/)?.[0] ?? "";
+    expect(comp, "the face paints a fill circle of its own inside the outline")
+      .not.toMatch(/<circle cx="12" cy="12" r="10"/);
   });
   test("the info row's ℹ mark draws with the answer circle's own 3px stroke", () => {
     const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
