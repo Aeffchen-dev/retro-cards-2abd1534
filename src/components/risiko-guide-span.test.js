@@ -42,12 +42,10 @@ test("the column names still stand under the field in their own row", () => {
   expect(/\.risiko-scale-stack \{[^}]*position: relative;/.test(css), "the stack is not a positioning parent").toBe(true);
 });
 
-// The column names no longer wait at the field's foot: on screen they rise to
-// stand just under the circle that rides the rule. The stack works that place out
-// of the field's own live height — the taller of its basis and the floor the card
-// hands it — less the circle's own radius and 4px of air. The printed sheet keeps
-// the names where they have always stood.
-test("the column names rise to just under the circle on screen", () => {
+// The column names no longer wait at the field's foot or under the circle: they
+// open the scale, standing above the smileys on screen and on paper alike. The
+// stack puts that row first, so each name reads before the face it belongs to.
+test("the column names stand above the smileys", () => {
   // the field's floor rides on the stack as a token: custom properties only
   // travel downwards, so the field cannot tell its own parent how tall it stands
   expect(slide, "the field's floor never reaches the stack")
@@ -68,12 +66,10 @@ test("the column names rise to just under the circle on screen", () => {
     .toMatch(/\.risiko-expression-point \{[\s\S]*?width:\s*var\(--risiko-marker-size\)/);
   expect(css, "the dot's token is not the 44px the scale draws").toMatch(/--risiko-marker-size:\s*44px/);
 
-  // and the row rides up by exactly that lift — on screen only
-  const liftRule = css.indexOf(".risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }");
-  expect(liftRule, "the names never rise on screen").toBeGreaterThan(-1);
-  const screenOpen = css.lastIndexOf("@media screen {", liftRule);
-  expect(screenOpen, "the lift does not sit in the screen block").toBeGreaterThan(-1);
-  expect(css.slice(screenOpen, liftRule).includes("\n}"), "the screen block closes before the lift").toBe(false);
+  // and the row opens the stack — above the smileys, on screen and on paper
+  const orderRule = css.match(/\.risiko-scale-stack \.risiko-scale-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  expect(orderRule, "the names no longer open the scale").toMatch(/order:\s*-1/);
+  expect(orderRule, "the names no longer keep a gap above the smileys").toMatch(/margin-bottom:/);
 
   // the printed sheet is left alone: its fields are stretched over the card and
   // keep the names at their foot

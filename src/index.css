@@ -50,6 +50,9 @@
 
        own grey and a hairline above it separates it from the button above. */
     --retro-info-text: #6E7078;
+    /* the writing fields' own fill: every text area sits on this grey, whatever
+       colour its label bar wears */
+    --retro-textarea-bg: #E4E6E8;
     --retro-info-rule: #C9CBD1;
     --intimacy-accent: #FF6BEF;
 
@@ -63,22 +66,18 @@
        it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
-    /* Workload partners follow this slide's own scheme: its neon-green accent,
-       then a deep blue, the spiral's blue and the brand's warm accents. Every
-       partner wears its own colour — no two may share one, and each has to be
-       dark enough to read as text on white (a test reads these). */
-    --workload-partner-0: #2A8A10;
-    /* the orange the first Health Check card already wears — a warm partner, so the
-       second one never reads as a second green */
-    --workload-partner-1: #FF4D00;
-    --workload-partner-2: #00A9FF;
-    /* the deep royal blue moves down the list, where it only shows from the fourth
-       partner up */
-    --workload-partner-3: #0B5CD8;
-    --workload-partner-4: #B026FF;
-    --workload-partner-5: #FF6BEF;
-    --workload-partner-6: #4E6BEE;
-    --workload-partner-7: #5C1524;
+    /* Workload partners wear the Health Check's own green family: the card's deep
+       green and its olive lead, and every further partner takes a neighbouring
+       green, dark enough to read as text on white (a test reads these). No two may
+       share one. */
+    --workload-partner-0: #0B7A35;
+    --workload-partner-1: #4E7A0F;
+    --workload-partner-2: #054C45;
+    --workload-partner-3: #24800D;
+    --workload-partner-4: #166D5C;
+    --workload-partner-5: #3F6B1F;
+    --workload-partner-6: #0F5132;
+    --workload-partner-7: #6E5E00;
     --retro-card-bg: #F0EFEE;
     /* rgb triplet so tailwind opacity modifiers work */
     --retro-white-rgb: 238 238 238; /* light on dark app shell */
@@ -371,11 +370,11 @@
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
 }
-/* The first two Health Check cards draw their own track: six solid grey lines
-   across the face column — one above the first smiley, one below the last and
-   one between every neighbouring pair — so the column reads as five stacked
-   fields an answer can rest in. Each starts at the column's own left edge and
-   stops short of the resting Memoji's spot; the faces draw on top of them. */
+/* The first two Health Check cards draw their own track: five solid grey lines
+   across the face column — the line under every smiley's own field, so the track
+   starts below the first face and closes below the last one. Each starts at the
+   column's own left edge and stops short of the resting Memoji's spot; the faces
+   draw on top of them. */
 .health-check-guides {
   position: absolute;
   inset: 0;
@@ -465,7 +464,8 @@
    grey info text — the same colour and the same size — but it carries no hairline
    above it, so it stays a plain line under the question instead of a second info box. */
 .risiko-allocation-examples {
-  margin: 0 0 var(--risiko-scale-pad);
+  /* the grey example sentence keeps its own breath under the card's headline */
+  margin: 16px 0 var(--risiko-scale-pad);
   font-size: 16px;
   line-height: 22px;
   color: var(--retro-info-text);
@@ -652,11 +652,9 @@
      — smileys, rule and names — instead of stopping under the rule. It still
      shrinks, and still scrolls, when a statement is too tall for the card. */
   .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
-  /* The names ride up to the rule instead of waiting at the field's foot: the
-     field keeps its height, but the empty room under the circle is handed back to
-     the scale, so the block — rule and names — ends just past the names and its
-     shorter self re-centres on the card. */
-  .risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }
+  /* The column names no longer ride up under the circle: they stand above the
+     smileys (the stack puts that row first), so the field keeps its height and the
+     rule stays centred in the room under the faces. */
   /* The interactive slider sits on the card's mid-line: the scale stops growing
      to fill the card and the free space around it is split evenly, so it lands in
      the middle of the room between the statement above and the buttons below.
@@ -681,30 +679,13 @@
      still shrinks, and still scrolls, when a statement grows too tall for the
      card, so the deck's "fewer statements per card" signal keeps working. */
   .risiko-page { justify-content: center; }
-  .risiko-page .risiko-scale-area { flex: 0 1 auto; }
-  /* The scale stands in its own grey panel on screen: the field — smileys, rule
-     and column names — is painted with the field colour, so the slider reads as
-     one control rather than marks loose on the card. The faces and names keep
-     plates of the same colour, so nothing shows through as a white tile. */
-  .risiko-page { --risiko-field-bg: #F1F2F4; }
-  /* The panel is drawn behind the whole control — smileys, rule and the names at
-     its foot — as a layer of the scale's own stack, so it never pushes the scale's
-     geometry: the guides' span, the rule's centring and the names' columns are
-     untouched, and the panel simply breathes past the stack's box (a little more
-     under the names than over the faces, where the statement already leans in). */
-  .risiko-scale-stack::before {
-    content: "";
-    position: absolute;
-    inset: -8px 0 -14px;
-    background: var(--risiko-field-bg);
-    border-radius: 14px;
-    z-index: 0;
-  }
-  /* Everything the reader answers with stands in front of that layer. */
-  .risiko-scale-stack :is(.risiko-scale-field, .risiko-scale-captions, .risiko-scale-guides) { z-index: 1; }
-  /* The first two Health Check cards draw their own scale; theirs is the same
-     panel, and the guides and faces inside it keep their own ink colours. */
-  .health-check-page .print-memoji-container { background: var(--risiko-field-bg, #F1F2F4); border-radius: 14px; }
+  /* The area takes the card's whole height: the free room goes into the gaps
+     between the statement, the scale and the buttons, so nothing stands as an
+     empty band at the card's foot. */
+  .risiko-page .risiko-scale-area { flex: 1 1 auto; }
+  /* The scale carries no panel any more: smileys, rule and names stand straight
+     on the card's own surface, so the field colour falls back to that surface and
+     nothing is painted behind the control. */
 }
 /* The smiley row sits flush with the field's top edge: no padding above the
    faces, so their stubs vanish and the field's own drawing starts right under
@@ -755,6 +736,10 @@
    hang over the card's edge — while the three inside stand exactly on their face.
    The work-split lane's split figures keep the evenly divided grid above. */
 .risiko-scale-stack .risiko-scale-captions {
+  /* The names open the scale: they take the row above the smileys instead of the
+     foot of the field, so each name reads first and its own face sits under it. */
+  order: -1;
+  margin-bottom: 6px;
   gap: 0;
   grid-template-columns:
     calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8)
@@ -1760,8 +1745,18 @@ textarea.bg-retro-post-it:focus,
    card's whole opening, so it reads a step under the card questions (38.4px) and
    the paragraphs a step under the body default — the card must hold both without
    scrolling. Phones step both down again. */
-#root .intro-lede { font-size: 24px; line-height: 1.15; }
+#root .intro-lede { font-size: 28px; line-height: 1.15; }
 #root .intro-copy { font-size: 16px; line-height: 22px; }
+/* The opening fills the card: the block takes the card's whole height and the
+   four paragraphs spread their gaps through the room that is left. */
+#root .intro-block { flex: 1 1 auto; }
+#root .intro-copy { flex: 1 1 auto; justify-content: space-between; }
+/* Where the card keeps its full width and stands tall enough, the headline grows
+   to the largest size the card still holds without the paragraphs spilling over
+   its lower edge (measured: 32px needs 616px of the 627px content box). */
+@media (min-width: 768px) and (max-width: 1023px) and (min-height: 750px) {
+  #root .intro-lede { font-size: 32px; }
+}
 @media (max-width: 767px) {
   #root .intro-lede { font-size: 20px; line-height: 1.15; }
   #root .intro-copy { font-size: 14px; line-height: 20px; }
@@ -1814,9 +1809,9 @@ textarea.bg-retro-post-it:focus,
    wears the same solid ink outline the lane's own boundary is drawn with, so the
    bar and its ratios read as one diagram rather than two separate tables. */
 .risiko-scale-captions.risiko-split-captions {
-  border: 1px solid var(--retro-black);
-  padding: 6px 0;
-  margin-top: 8px;
+  /* the legend reads without an outline, hugging the foot of the lines above it */
+  padding: 0;
+  margin-top: 6px;
 }
 .risiko-split-captions .risiko-scale-caption {
   display: flex;

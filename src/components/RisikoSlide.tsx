@@ -643,7 +643,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               cut off, not even when one partner carries almost all of the work. */}
           <div className="workload-labels" aria-hidden="true">
             {segments.map((segment, i) => (
-              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)}</span>
+              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)} <span className="workload-label-share">{shares[segment.key]}%</span></span>
             ))}
           </div>
           {/* Each split's figures stand right under the foot of its boundary line —
@@ -789,7 +789,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[28px]">
-        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
+        <ActionRow icon="IconPencil" label="Notizen öffnen" accent={pill} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
             It is the whole block — not the bare sentence — that stands the card's

@@ -339,11 +339,13 @@ describe("work-split partner colours", () => {
   const colors = Array.from({ length: 8 }, (_, i) =>
     css.match(new RegExp(`--workload-partner-${i}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
   );
-  test("the second partner wears the Health Check card's own orange, not a second green", () => {
-    // the warm orange the first Health Check card's pill dot already wears
-    expect(colors[1]).toBe("#FF4D00");
-    // the deep royal blue it used to wear now only shows from the fourth partner up
-    expect(colors[3]).toBe("#0B5CD8");
+  test("the partners wear the Health Check's own green family", () => {
+    // the card's deep green leads and its olive follows — the two greens the Health
+    // Check cards already wear
+    expect(colors[0]).toBe("#0B7A35");
+    expect(colors[1]).toBe("#4E7A0F");
+    // every further partner stays inside that same family
+    expect(colors.slice(2)).toEqual(["#054C45", "#24800D", "#166D5C", "#3F6B1F", "#0F5132", "#6E5E00"]);
   });
   test("no two partners share a colour", () => {
     expect(colors).toHaveLength(8);
@@ -369,7 +371,7 @@ describe("work-split split line", () => {
     expect(slide).toContain("{at}% / {100 - at}%");
     expect(slide).not.toContain("{at}:{100 - at}%");
   });
-  test("stands under the lane on screen and on paper, in the lane's own outline", () => {
+  test("stands under the lane on screen and on paper, as a plain legend", () => {
     // The row of column ratios follows the lane it explains on both paths: the
     // printed copy and the screen copy render the same element in the same place,
     // straight under the bar rather than down in the footnote.
@@ -386,11 +388,11 @@ describe("work-split split line", () => {
     const foot = slide.slice(footAt, noteAt);
     expect(foot, "the note no longer stands a card padding under the button").toContain("gap-[28px]");
     // The row names each column's own split on two lines — the shares over the
-    // word "Split" — and wears the same solid ink outline the lane's boundary
-    // is drawn with, so bar and ratios read as one diagram.
+    // word "Split" — and stands as a plain legend under the lines: no outline
+    // around it, so it reads as labels rather than a boxed table.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const row = css.match(/\.risiko-scale-captions\.risiko-split-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(row, "the ratio row has no solid outline").toMatch(/border:\s*1px solid var\(--retro-black\)/);
+    expect(row, "the legend still wears an outline").not.toMatch(/border:/);
     const cell = css.match(/\.risiko-split-captions \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(cell, "the ratio cells no longer stack their two lines").toMatch(/flex-direction:\s*column/);
     expect(slide, "the row no longer names the split").toContain("risiko-split-word");
