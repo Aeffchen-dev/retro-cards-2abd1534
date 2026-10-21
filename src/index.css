@@ -296,8 +296,8 @@
    question: the display face and the 38.4px come from the shared question rule
    above. Only a phone's card is too narrow for that — there the chapter's longest
    statement would push the smileys, the scale and the notes past the card's lower
-   edge — so a phone steps down to 30px, the largest size at which every statement
-   still closes above the scale with room to spare. */
+   edge — so a phone steps down to 28px, the largest size at which every statement
+   still closes above the scale and the notes with room to spare. */
 .risiko-statement {
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
@@ -309,7 +309,7 @@
   -webkit-hyphens: manual;
 }
 @media (max-width: 767px) {
-  .risiko-statement { font-size: 30px; }
+  .risiko-statement { font-size: 28px; }
 }
 /* The smallest phones have no room to spare: the work-split card carries its long
    question, the fixed sentence of examples and the lane, so there the examples
