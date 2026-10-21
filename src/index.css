@@ -764,18 +764,19 @@
 .risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
 /* The column names are as big as their own column can hold. Every name breaks at
    its own words into exactly two lines (captionLines), so the largest size is the
-   one at which the longest line of every name still fits inside its column: the
-   outer columns run from the card's own edge to the first divider (100cqw/8 +
-   16.5px wide), the three inside are a quarter of the travel (100cqw/4 - 11px),
-   and the binding lines measured on the live card are "Trifft noch"
-   (4.86em + 2.9px of plate) and "teilweise zu" (5.66em + 0.9px). That reads about
-   14px on a tablet card, about 10px on a phone and about 11px on paper — always
-   the very largest size that still needs only two lines. The names wear the
-   deck's own ink black, one step above the scale's greys. */
+   one at which the longest line of every name still fits inside its column. Both
+   terms are read off the live card, size by size, until a line touched its
+   divider: the outer columns run from the card's own edge to the first divider
+   (100cqw/8 + 16.5px) and the binding line there, "Trifft noch", measures
+   4.5em + 7px; the three inside are a quarter of the travel (100cqw/4 - 11px)
+   and their binding line, "teilweise zu", measures 5.66em + 1.5px. That reads
+   14.4px on a tablet or desktop card, 10.1px on a phone and about 11px on paper —
+   always the very largest size that still needs only two lines. The names wear
+   the deck's own ink black, one step above the scale's greys. */
 .risiko-scale-stack .risiko-scale-caption {
   font-size: min(
-    calc((100cqw / 8 + 13.6px) / 4.86),
-    calc((100cqw / 4 - 11.9px) / 5.66),
+    calc((100cqw / 8 + 9.5px) / 4.5),
+    calc((100cqw / 4 - 12.5px) / 5.66),
     18px
   );
   color: var(--retro-black);
