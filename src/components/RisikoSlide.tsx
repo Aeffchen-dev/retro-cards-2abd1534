@@ -162,11 +162,13 @@ const INK = "var(--retro-black)";
 const ARROW_SIZE = 26;
 
 
-// The untouched dot's hint wears the same pen as the rule and the smiley.
-const ARROW_W = RULE_W * (24 / ARROW_SIZE);
+// The untouched dot's hint draws at a real 1px on screen (user: "arrow icon
+// stroke 1px"): its own 26px box maps a 24-unit viewBox, so the units that paint
+// exactly one pixel are 24 / ARROW_SIZE.
+const ARROW_W = 24 / ARROW_SIZE;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
-const MorphFace = ({ value }: { value: number }) => {
+const MorphFace = ({ value, features = true }: { value: number; features?: boolean }) => {
   const { eye, eyeW, brow, mouth } = scaleFaceGeometry(value);
   // Open stroke, no fill: the mouth is the very same curve the happy faces
   // draw, only flipped — one clean trace, exactly like the header smileys.
@@ -182,11 +184,19 @@ const MorphFace = ({ value }: { value: number }) => {
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not
           in their grey (user: "color back instead of grey"). */}
+      {/* The circle stands whether or not the answer has been touched: the
+          resting dot wears the very same circle as the dragged one (user:
+          "default slier circle same styling as after dra"), and only the
+          features wait for the first touch. */}
       <circle cx="12" cy="12" r="10" />
-      <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      {/* The brows only rise between the anchors, where no header face stands. */}
-      <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
-      <path d={path} />
+      {features ? (
+        <>
+          <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
+          {/* The brows only rise between the anchors, where no header face stands. */}
+          <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
+          <path d={path} />
+        </>
+      ) : null}
     </svg>
   );
 };
