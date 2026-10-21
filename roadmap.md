@@ -290,3 +290,12 @@
 - [ ] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.
 - [ ] Adjust the smileys' grey so it sits with the deck's other greys.
 - [ ] Desktop: give the card a max height below the one it reaches now.
+
+## Sixth batch (19:10 UTC)
+- [ ] Scale columns: all five equally wide.
+- [ ] Column names: centred, 2px smaller, in a font that looks less italic — offer the loaded faces.
+- [ ] Grey column lines: wear the same colour as the column names' text.
+- [ ] Smiley row: much more gap from the statement text above.
+- [ ] Field: the rule and the grey smileys sit vertically centred together.
+- [ ] Rule: its own z-index fixed so it never covers the dot.
+- [ ] Grey smileys: white fill, painted above the slider dot.
