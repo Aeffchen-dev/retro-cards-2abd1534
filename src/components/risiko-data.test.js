@@ -831,7 +831,7 @@ describe("the chapter card's own text", () => {
       /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
     );
     expect(slide, "the intro still reaches the card's info box").not.toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
-    expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, FACE_GREY\)\}<\/p>/);
+    expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, CHAPTER_MOOD_GREY\)\}<\/p>/);
   });
 
 
