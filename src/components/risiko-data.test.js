@@ -426,6 +426,14 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(sentence.endsWith(".")).toBe(true);
     expect(sentence.split(", ").length).toBe(15);
     expect(new Set(sentence.replace("Unter Beziehungsarbeit fällt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(15);
+  test("reads in the card's own ink at the smallest readable size, with every example kept", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const examples = css.match(/\.risiko-allocation-examples \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(examples, "the examples rule is gone").toBeTruthy();
+    expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
+    expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
+    expect(examples, "the examples no longer read at 12px").toMatch(/font-size:\s*12px/);
+    expect(RISIKO_ALLOCATION_EXAMPLES.length, "an example was dropped").toBe(15);
   });
 });
 
