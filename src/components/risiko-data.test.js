@@ -550,8 +550,9 @@ describe("chapter card pagination", () => {
 describe("the statement's own type", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
   const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-  test("reads in the big question's display face, one step under the question", () => {
-    const statement = css.match(/\.risiko-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  test("reads in the big question's display face, at the question's own size", () => {
+    const statement = (css.match(/\.risiko-statement \{[\s\S]*?\n\}/g) ?? [])
+      .find((block) => block.includes("overflow-wrap")) ?? "";
     expect(statement, ".risiko-statement missing from index.css").toBeTruthy();
     // The display face comes from the rule that already dresses the big question,
     // so the statement cannot drift away from it; the global `#root *` rule would
@@ -560,11 +561,11 @@ describe("the statement's own type", () => {
     expect(questionRule, "the shared question rule is missing").toBeTruthy();
     expect(questionRule, "the statement does not stand in the question's own rule")
       .toMatch(/#root \.risiko-statement/);
-    const size = Number(statement.match(/font-size:\s*(\d+(?:\.\d+)?)px/)?.[1]);
-    const heading = Number((css.match(/\.retro-title,\s*\.retro-heading \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [])[1]);
-    expect(size, "the statement has no size of its own").toBeGreaterThan(0);
-    expect(heading, "the big question's size is gone").toBeGreaterThan(0);
-    expect(size, "the statement does not read smaller than the big question").toBeLessThan(heading);
+    // The size comes from that same display rule: the statement stands in it
+    // beside the question, so neither can ever drift away from the other again.
+    const display = css.match(/\.retro-title,\s*\.retro-heading,\s*\.risiko-statement \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [];
+    expect(Number(display[1]), "the big question's size is gone").toBeGreaterThan(0);
+    expect(statement, "the statement sets a size of its own again").not.toMatch(/font-size:/);
   });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")
@@ -624,13 +625,25 @@ describe("the chapter card's own text", () => {
 
 describe("the statement's one size", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-  test("every statement reads at one size, kept small enough for the longest to close in three lines", () => {
-    const sizes = (css.match(/\.risiko-statement \{[^}]*?font-size:\s*(\d+(?:\.\d+)?)px/g) ?? [])
-      .map((m) => Number(m.match(/(\d+(?:\.\d+)?)px/)[1]));
-    expect(sizes.length, "the statement is sized in more than its three expected places").toBe(3);
-    expect(sizes[0], "the statement no longer reads at the size the longest one needs").toBe(16);
-    expect(sizes.slice(1), "a narrower layout reads the statement under the deck's smallest allowed size")
-      .toEqual([12, 12]);
+
+  test("the statement reads as big as the deck's question", () => {
+    const display = css.match(/\.retro-title,\s*\.retro-heading,\s*\.risiko-statement \{[^}]*\}/);
+    expect(display, "the statement no longer shares the question's display rule").not.toBeNull();
+    expect(display[0]).toMatch(/font-size:\s*38\.4px/);
+    expect(display[0]).toMatch(/line-height:\s*1\.05/);
+  });
+
+  test("a phone steps the statement down, but not under the deck's floor", () => {
+    const phone = css.match(/@media \(max-width: 767px\) \{\s*\.risiko-statement \{ font-size: (\d+)px; \}/);
+    expect(phone, "a phone no longer sizes the statement").not.toBeNull();
+    const size = Number(phone[1]);
+    expect(size, "the phone size reads under the deck's smallest allowed size").toBeGreaterThanOrEqual(12);
+    expect(size, "the phone size no longer fits the chapter's longest statement").toBeLessThan(38.4);
+  });
+
+  test("paper reads the statement together with the printed question", () => {
+    const print = css.match(/\.retro-heading,\s*\.risiko-statement \{[^}]*font-size:\s*2rem/);
+    expect(print, "the printed statement no longer shares the printed question's size").not.toBeNull();
   });
 });
 
@@ -638,7 +651,9 @@ describe("the statement's one size", () => {
 
 describe("the statement's line breaks", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-  const rule = css.match(/\.risiko-statement \{([^}]*)\}/)[1];
+  const rule = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? []).find((block) =>
+    block.includes("overflow-wrap"),
+  );
 
   test("breaks between words only, never inside one", () => {
     expect(rule).not.toMatch(/overflow-wrap:\s*(anywhere|break-word)/);

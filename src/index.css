@@ -223,7 +223,8 @@
    Small    : Figtree 500 / 12px             (.retro-small)                                     */
 
 .retro-title,
-.retro-heading {
+.retro-heading,
+.risiko-statement {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", "Stack Sans Text", "Figtree", Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -291,14 +292,13 @@
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
-/* A statement reads in the same voice as the deck's big question — the display face
-   is handed to it by the shared question rule above — but one step under its 38.4px,
-   because under a statement sit the smileys, the scale and the notes. The size is
-   set by the chapter's longest statement: at 16px that one still closes within
-   three lines on the card, and every statement reads at that same size. */
+/* A statement reads in the same voice and at the same size as the deck's big
+   question: the display face and the 38.4px come from the shared question rule
+   above. Only a phone's card is too narrow for that — there the chapter's longest
+   statement would push the smileys, the scale and the notes past the card's lower
+   edge — so a phone steps down to 28px, the largest size at which every statement
+   still closes above the scale and the notes with room to spare. */
 .risiko-statement {
-  font-size: 16px;
-  line-height: 1.12;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   /* The statement breaks between words only — never inside one, and never with a
@@ -308,12 +308,21 @@
   hyphens: manual;
   -webkit-hyphens: manual;
 }
-/* A phone's card is a good deal narrower than the deck's, so there the statement
-   steps down to the smallest size the deck allows anywhere — 12px. That is as
-   close to three lines as the longest statement comes on a phone's width (it
-   needs four); any smaller and it would read below the deck's readable floor. */
 @media (max-width: 767px) {
-  .risiko-statement { font-size: 12px; }
+  .risiko-statement { font-size: 28px; }
+}
+/* A phone's card cannot hold the work-split question at the question's own size,
+   the whole sentence of examples and the split bar all at once — the bar would be
+   pushed clean out of the card. So on a phone the examples keep every word but
+   read in a short window of their own, and the bar gets the room it needs. */
+@media (max-width: 767px) {
+  .risiko-allocation-examples {
+    max-height: 96px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 4px;
+    margin-bottom: 12px;
+  }
 }
 /* The smallest phones have no room to spare: the work-split card carries its long
    question, the fixed sentence of examples and the lane, so there the examples
@@ -750,10 +759,6 @@
 }
 @media print {
   .risiko-expression-point { animation: none !important; }
-  /* The printed card is a good deal narrower than the deck's own, so on paper the
-     statement reads at the deck's smallest allowed size — the closest the longest
-     statement comes to three lines there. */
-  .risiko-statement { font-size: 12px; }
 }
 .risiko-memoji {
   background: var(--risiko-face-fill);
@@ -1230,6 +1235,13 @@ textarea.bg-retro-post-it:focus,
 
   /* The printed card is padded by 40px, so the scale keeps the same rhythm there. */
   .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
+  /* Paper always shows the whole sentence of examples: the phone's short reading
+     window must never follow a print onto the sheet. */
+  .print-slide-page .risiko-allocation-examples {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
   .print-slide-page .risiko-scale-area { overflow: visible; }
@@ -1245,7 +1257,8 @@ textarea.bg-retro-post-it:focus,
   }
 
   /* Match frontend font sizes and spacing */
-  .retro-heading {
+  .retro-heading,
+  .risiko-statement {
     font-size: 2rem !important;
     line-height: 1.05 !important;
   }
@@ -1390,7 +1403,7 @@ textarea.bg-retro-post-it:focus,
 }
 
 /* Must follow the global typography rule above. The Risikofaktoren statement reads
-   in this same voice — only its size, set further down, is its own. */
+   in this same voice, at the same size the card questions use. */
 #root .question-font,
 #root .question-font *,
 #root .retro-heading,
