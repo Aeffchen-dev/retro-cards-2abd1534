@@ -643,7 +643,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               cut off, not even when one partner carries almost all of the work. */}
           <div className="workload-labels" aria-hidden="true">
             {segments.map((segment, i) => (
-              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)}</span>
+              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)} <span className="workload-label-share">{shares[segment.key]}%</span></span>
             ))}
           </div>
           {/* Each split's figures stand right under the foot of its boundary line —
