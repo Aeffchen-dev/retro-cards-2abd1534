@@ -602,10 +602,10 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(eyeR * 2, "the eyes did not grow past the pen's dot").toBeGreaterThan(pen);
     expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(3);
   });
-  test("the info row's ℹ mark draws at 1.5px in the text's own colour", () => {
+  test("the info row's ℹ mark draws with the answer circle's own 3px stroke", () => {
     const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
-    expect(src, "the ℹ mark's stroke is not the asked 1.5px")
-      .toMatch(/icon === "IconInfo" \? 1\.5 : undefined/);
+    expect(src, "the ℹ mark's stroke is not the answer circle's 3px")
+      .toMatch(/icon === "IconInfo" \? 3 : undefined/);
     expect(src, "the ℹ mark does not take the row's own icon colour")
       .toMatch(/color: resolvedIconColor/);
   });
