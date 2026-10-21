@@ -14,14 +14,14 @@ describe("notes CTA colours", () => {
   const GREY_TILE = "#E4E6E8";
   const INK = "#201C1D";
 
-  test("the Risikofaktoren notes button reads a grey tile with a grey ring", () => {
+  test("the Risikofaktoren notes button reads a plain grey tile", () => {
     const row = risiko.slice(
       risiko.indexOf('<ActionRow icon="IconPencil"'),
       risiko.indexOf("/>", risiko.indexOf('<ActionRow icon="IconPencil"')),
     );
     expect(row, "the label is Notizen öffnen").toContain('label="Notizen öffnen"');
     expect(row, "the left tile is not field grey").toContain(`accent="${GREY_TILE}"`);
-    expect(row, "the left tile wears no grey ring").toContain(`tileBorder="${GREY_RING}"`);
+    expect(row, "the tile wears no outline").not.toContain("tileBorder");
     expect(row, "the pencil does not read black").toContain(`iconColor="${INK}"`);
     expect(row, "the pencil's pen changed").toContain("iconStrokeWidth={1}");
     expect(row, "the tile still reads ink").not.toContain('accent="#201C1D"');
