@@ -49,7 +49,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   3: "The last 4 weeks",
   102: "Feedback",
   104: "Vorhaben",
-  105: "Beziehungsgefühl Test",
+  105: "Health Check",
   4: "To talk about",
   5: "Nicht monogam",
   7: "Intimacy",
@@ -622,7 +622,7 @@ const RetroCards: React.FC = () => {
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
-    if (isRisikoSlide(slideId)) return "Beziehungsgefühl Test";
+    if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
   }, [isMobile]);
 
@@ -2220,7 +2220,7 @@ const RetroCards: React.FC = () => {
                   {(SLIDE_PILLS[slideId] || isRisikoSlide(slideId)) && (
                     <div className="w-full max-w-[500px] mx-auto flex" style={{ marginBottom: '8px', ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot } as React.CSSProperties}>
                       <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{isRisikoSlide(slideId) ? "Beziehungsgefühl Test" : SLIDE_PILLS[slideId]}</span>
+                        <span className="retro-label" style={slideId === SLIDE_LOGO ? { color: '#FF5E00' } : undefined}>{isRisikoSlide(slideId) ? "Health Check" : SLIDE_PILLS[slideId]}</span>
                       </div>
                     </div>
                   )}
