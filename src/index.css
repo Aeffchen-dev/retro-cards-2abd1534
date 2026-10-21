@@ -1853,7 +1853,7 @@ textarea.bg-retro-post-it:focus,
 #root .retro-title *,
 #root .risiko-statement {
   font-family: "Stack Sans Notch", "Stack Sans Notch Local", sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   font-feature-settings: normal;
   letter-spacing: -0.02em;
 }

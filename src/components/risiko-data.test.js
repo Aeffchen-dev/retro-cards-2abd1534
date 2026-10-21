@@ -827,6 +827,15 @@ describe("the statement's own type", () => {
     expect(Number(display[1]), "the big question's size is gone").toBe(38.4);
     expect(statement, "the statement has lost its own size").toMatch(/font-size:\s*32\.6px/);
   });
+  test("paints the display face at its regular weight", () => {
+    const questionRule = css.match(/#root \.question-font,[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(questionRule, "the shared question rule is missing").toBeTruthy();
+    // "Stack Sans Notch" ships as a variable face (200–700), so the weight the
+    // rule asks for is the weight that actually paints — and the deck's display
+    // token is the regular 400, one step below the medium the rule once wore.
+    expect(questionRule.match(/font-weight:\s*(\d+)/)?.[1], "the big question's weight moved")
+      .toBe("400");
+  });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")
       .not.toMatch(/className="risiko-statement[^"]*retro-body-copy/);
