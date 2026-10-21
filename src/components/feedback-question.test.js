@@ -68,24 +68,34 @@ describe("The two cards swapped their last and first question", () => {
     expect(list.match(/^\s+\["/gm)?.length).toBe(3);
   });
 
-  test("carries an answer already written on Ideas over to Feedback", () => {
-    const init = src.slice(src.indexOf("const [reflectionTexts"), src.indexOf("const [editModeNotes"));
+  test("moves an answer written on Ideas over to Feedback, in storage", () => {
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig, "the startup migration is gone").toBeTruthy();
     // The saved answer is read from the Ideas notes when Feedback has none yet...
-    expect(init).toContain("STORAGE_KEYS.EDIT_MODE_NOTES");
-    expect(init).toContain("SLIDE_VORHABEN");
-    expect(init).toContain("?.plans");
-    // ...and Feedback stops holding a copy of the question that moved away.
-    expect(init).toContain("delete (texts as any).unspoken");
+    expect(mig).toContain('carry(ideas, "plans", here, "plans")');
+    // ...and the Ideas card drops its copy once Feedback holds it.
+    expect(mig).toContain('[ideas, "plans"]');
   });
 
-  test("carries an answer already written on Feedback over to Ideas", () => {
+  test("moves an answer written on Feedback over to Ideas, in storage", () => {
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig).toContain('carry(here, "unspoken", ideas, "unspoken")');
+    expect(mig).toContain('[here, "unspoken"]');
+    // Both stores are written back straight away, so the answer is safe before any card
+    // is opened: a card only saves its own copy once something is typed into it.
+    expect(mig).toContain("saveToStorage(STORAGE_KEYS.REFLECTION_TEXTS, here)");
+    expect(mig).toContain("saveToStorage(STORAGE_KEYS.EDIT_MODE_NOTES");
+  });
+
+  test("runs before any card reads its saved answers", () => {
+    const called = src.indexOf("migrateMovedAnswers();");
+    expect(called, "the startup migration is never called").toBeGreaterThan(-1);
+    expect(called, "a card reads its answers before the moves have run").toBeLessThan(src.indexOf("const [currentCard"));
+    // The moves no longer live inside a card's own state, where the answer could be lost.
+    const init = src.slice(src.indexOf("const [reflectionTexts"), src.indexOf("const [editModeNotes"));
+    expect(init).not.toContain("loadFromStorage<Record<string, any>>(STORAGE_KEYS.EDIT_MODE_NOTES)");
     const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
-    // The old Feedback answer is copied into the Ideas notes...
-    expect(notesInit).toContain("STORAGE_KEYS.REFLECTION_TEXTS");
-    expect(notesInit).toContain("?.unspoken");
-    expect(notesInit).toContain("here.unspoken = savedUnspoken");
-    // ...and Ideas stops holding a copy of the question that moved to Feedback.
-    expect(notesInit).toContain("delete migrated[SLIDE_VORHABEN as any].plans");
+    expect(notesInit).not.toContain("STORAGE_KEYS.REFLECTION_TEXTS");
   });
 
   test("clearing all data clears the moved answer too", () => {
@@ -95,7 +105,8 @@ describe("The two cards swapped their last and first question", () => {
   test("keeps the wish that moved to Ideas earlier", () => {
     expect(vorhaben).toContain('["idea", "Das wünsche ich mir"]');
     expect(vorhaben).toContain('"experiment"');
-    const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
-    expect(notesInit).toContain("here.idea = savedWish");
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig).toContain('carry(here, "idea", ideas, "idea")');
+    expect(mig).toContain('[here, "idea"]');
   });
 });
