@@ -254,7 +254,7 @@ describe("grey columns", () => {
     // measured from the rule's own middle, so neither of them ever sits on the rule.
     expect(/bottom:\s*calc\(\(100cqh \+ var\(--risiko-name-strip\)\) \/ 2 \+ \d+px\)/.test(above),
       "the names do not stand above the rule").toBe(true);
-    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 \+ \d+px\)/.test(below),
+    expect(/top:\s*calc\(100cqh - var\(--risiko-name-strip\) \+ \d+px\)/.test(below),
       "the shares do not stand below the rule").toBe(true);
     // The name, the number and the circle's ring all wear the partner's plain colour.
     expect(/color:\s*var\(--workload-color\)/.test(label), "the name does not use the partner's colour").toBe(true);
@@ -482,8 +482,8 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
     expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
     expect(subheading, "the headline's second half rule is gone").toBeTruthy();
-    expect(subheading, "the headline's second half no longer reads as body text").toMatch(/font-size:\s*16px/);
-    expect(examples, "the examples no longer match the headline's second half").toMatch(/font-size:\s*16px/);
+    expect(subheading, "the headline's second half no longer reads as body text").toMatch(/font-size:\s*14px/);
+    expect(examples, "the examples no longer match the headline's second half").toMatch(/font-size:\s*14px/);
     expect(tsx, "the headline's second half wears the question's display face again")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
