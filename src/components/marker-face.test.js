@@ -20,7 +20,7 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     expect(slide).toContain("stroke={INK} strokeWidth={ARROW_W}");
   });
 
-  test("no white disc and no ring is painted behind the face", () => {
+  test("no white disc and no ring is painted around the face", () => {
     const point = block(".risiko-expression-point {");
     expect(point).toContain("background: none;");
     expect(point).not.toContain("--risiko-field-bg");
@@ -28,9 +28,11 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     expect(css).not.toContain("--risiko-marker-ring");
   });
 
-  test("the rule stops at the face's own edge, so nothing pale rings the smiley", () => {
+  test("the smiley is white-filled and the rule stops at its edge", () => {
     const plate = block(".risiko-expression-point::before");
-    expect(plate).toContain("background: var(--risiko-field-bg);");
+    // The face's own white, the same fill the Memojis wear — on screen and on paper.
+    expect(plate).toContain("background: var(--risiko-face-fill);");
+    expect(css).toContain("--risiko-face-fill: #FFFFFF;");
     // A plate the size of the drawn circle (r=10 of 24 plus its stroke), not the
     // whole 44px dot — otherwise a pale ring shows around the outline.
     expect(plate).toContain("calc(var(--risiko-marker-size) * 0.87)");

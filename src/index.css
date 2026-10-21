@@ -948,7 +948,9 @@
 }
 /* The rule stops exactly where the face's own outline starts: a plate the size of
    the drawn circle (r=10 of a 24 grid → 18.3px of a 44px dot, plus its stroke) so
-   no pale ring shows around the smiley — the line simply meets its edge. */
+   no pale ring shows around the smiley — the line simply meets its edge. The plate
+   carries the face's own white fill (`--risiko-face-fill`), the same white the
+   Memojis wear, so the smiley reads white-filled on screen and on paper alike. */
 .risiko-expression-point::before {
   content: "";
   position: absolute;
@@ -958,7 +960,7 @@
   height: calc(var(--risiko-marker-size) * 0.87);
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: var(--risiko-field-bg);
+  background: var(--risiko-face-fill);
 }
 
 /* The draggable dot never shows a focus outline. */
