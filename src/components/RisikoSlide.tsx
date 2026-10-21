@@ -276,7 +276,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
 
   return (
     <div className="risiko-block relative flex flex-col w-full grow shrink-0">
-      {statement && <h2 className="risiko-statement shrink-0" lang="de">{`\u201E${statement}\u201C`}</h2>}
+      {statement && <h2 className="risiko-statement shrink-0" lang="de">{statement}</h2>}
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
 
         {/* The field carries the drawn scale — columns, smileys, rule and circle —
