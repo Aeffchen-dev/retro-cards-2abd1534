@@ -1980,7 +1980,7 @@ const RetroCards: React.FC = () => {
       case 7: {
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
-            <div className="flex flex-col items-start gap-4 w-full">
+            <div className="flex flex-col items-start gap-3 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
@@ -2005,7 +2005,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Das war so hot"
                 placeholder="Deine Antwort"
-                minHeight={120}
+                minHeight={112}
                 value={editModeNotes[7]?.hot || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
@@ -2018,7 +2018,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
-                minHeight={120}
+                minHeight={112}
                 value={editModeNotes[7]?.idea || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
