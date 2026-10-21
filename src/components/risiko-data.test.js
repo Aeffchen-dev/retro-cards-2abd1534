@@ -249,6 +249,29 @@ describe("grey columns", () => {
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
+  test("each partner is named above the rule and its share printed below, on that partner's own colour", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const label = css.match(/\.workload-label \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    const share = css.match(/\.workload-percentage \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(label, ".workload-label missing from index.css").toBeTruthy();
+    // The name stands above the rule, the number below it — neither of them on it.
+    expect(/bottom:\s*calc\(100% \+ \d+px\)/.test(label), "the name does not stand above the rule").toBe(true);
+    expect(/top:\s*calc\(100% \+ \d+px\)/.test(share), "the share does not stand below the rule").toBe(true);
+    expect(label).not.toMatch(/top:/);
+    expect(share).not.toMatch(/bottom:/);
+    // The name is the couple's own wording, the number keeps the partner's plain colour.
+    expect(/color:\s*var\(--workload-ink\)/.test(label), "the name does not use the partner's readable ink").toBe(true);
+    expect(/color:\s*var\(--workload-color\)/.test(share), "the share does not use the partner's colour").toBe(true);
+    // Both are printed inside one colour run, so a name and its number always agree.
+    const run = slide.match(/<div className="workload-bar"[\s\S]*?\n {10}<\/div>/)?.[0] ?? "";
+    expect(run, "the colour runs no longer carry their own labels").toBeTruthy();
+    expect(run, "the name is not worded as an share label").toContain("&rsquo;s Anteil:");
+    expect(/className="workload-label"/.test(run), "a colour run has no name above the rule").toBe(true);
+    expect(/className="workload-percentage"/.test(run), "a colour run has no share below the rule").toBe(true);
+    // Nothing hangs under the circles any more — the names moved above the rule.
+    expect(slide, "a name still hangs under a circle").not.toContain("workload-name");
+  });
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
