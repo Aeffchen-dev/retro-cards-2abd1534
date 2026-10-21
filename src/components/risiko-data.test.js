@@ -190,21 +190,18 @@ describe("grey columns", () => {
     expect(slide, "the statement scale draws no column lines").toMatch(/risiko-column-edge risiko-guide-full/);
     expect(slide, "the work-split lane draws no column lines").toMatch(/columnEdges\(FACES\.length\)/);
   });
-  test("the scale smileys sit a shade lighter than the column names", () => {
-    // The five names under the rule read in the scale's darker grey
-    // (--risiko-guide), and the faces themselves a step lighter — the softest
-    // thing on the scale, but still dark enough to stand out from the pale grey
-    // around them.
+  test("the scale smileys wear the vertical columns' own grey", () => {
+    // The five faces are drawn in the very grey the column lines are drawn in
+    // (--risiko-column-line), so the grid and the faces standing on it read as
+    // one ink rather than two greys next to each other.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const token = (name) => css.match(new RegExp(`--${name}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
-    const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
-    const names = token("risiko-guide");
+    const columns = token("risiko-column-line");
     const face = slide.match(/export const FACE_GREY = "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
-    expect(names, "--risiko-guide missing from index.css").toBeTruthy();
+    expect(columns, "--risiko-column-line missing from index.css").toBeTruthy();
     expect(face, "FACE_GREY missing from RisikoSlide.tsx").toBeTruthy();
-    expect(lightness(face), "the smileys are not lighter than the column names").toBeGreaterThan(lightness(names));
-    expect(lightness(face), "the smileys are not darker than the pale caption grey").toBeLessThan(lightness(token("risiko-caption")));
+    expect(face, "the smileys do not wear the column lines' grey").toBe(columns);
     expect(/const Face = \(\{ Icon, color = FACE_GREY \}/.test(slide), "the scale faces no longer default to FACE_GREY").toBe(true);
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
@@ -713,7 +710,7 @@ describe("mood test chapter", () => {
     // asked to "remove the upper info text box from that slide". They reach the
     // printed card only.
     expect(slide).not.toContain("label={chapterIntro(chapterMood, INK)}");
-    expect(slide).toContain('<p className="risiko-chapter-info">{chapterIntro(chapterMood, FACE_GREY)}</p>');
+    expect(slide).toContain('<p className="risiko-chapter-info">{chapterIntro(chapterMood, CHAPTER_MOOD_GREY)}</p>');
   });
 
 });
@@ -834,7 +831,7 @@ describe("the chapter card's own text", () => {
       /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
     );
     expect(slide, "the intro still reaches the card's info box").not.toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
-    expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, FACE_GREY\)\}<\/p>/);
+    expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, CHAPTER_MOOD_GREY\)\}<\/p>/);
   });
 
 

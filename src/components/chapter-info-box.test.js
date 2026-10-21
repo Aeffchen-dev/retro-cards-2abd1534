@@ -20,7 +20,7 @@ describe("chapter intro sentence", () => {
   test("is left to the printed sheet only", () => {
     expect(chapter).toMatch(/risiko-chapter shrink-0 w-full hidden print-only/);
     expect(chapter).toMatch(
-      /<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, FACE_GREY\)\}<\/p>/,
+      /<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, CHAPTER_MOOD_GREY\)\}<\/p>/,
     );
   });
 
