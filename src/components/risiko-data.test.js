@@ -114,11 +114,12 @@ describe("Risikofaktoren scale", () => {
   test("workload shares keep the exact dragged value", () => {
     expect(scaleValue("73")).toBe(73);
   });
-  test("has the six statements, being yourself first", () => {
-    expect(RISIKO_STATEMENTS.length).toBe(6);
+  test("has the seven statements, being yourself first", () => {
+    expect(RISIKO_STATEMENTS.length).toBe(7);
     expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann in deiner Gegenwart so sein wie ich bin und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
-    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
+    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir planen genug gemeinsame Erlebnisse im Alltag ein, die uns in Verbindung bringen"]);
+    expect(RISIKO_STATEMENTS[6]).toEqual(["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt?");
@@ -127,13 +128,13 @@ describe("Risikofaktoren scale", () => {
   test("shows one statement per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);
     expect(pages.map(p => p.statements.map(([key]) => key))).toEqual([
-      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["hot"], [],
+      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["curious"], ["hot"], [],
     ]);
     expect(pages[pages.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(pages.slice(0, -1).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("skips the work-split card when nobody is named", () => {
-    expect(risikoPages([]).length).toBe(7);
+    expect(risikoPages([]).length).toBe(8);
     expect(risikoPages([]).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("keeps every partner on one shared allocation line", () => {
@@ -415,8 +416,8 @@ describe("scale columns and page split", () => {
   test("splits the statements over cards of the asked size without losing one", () => {
     const two = risikoPages([], 2);
     const one = risikoPages([], 1);
-    expect(two.map((p) => p.statements.length)).toEqual([2, 2, 2, 1]);
-    expect(one.map((p) => p.statements.length)).toEqual([1, 1, 1, 1, 1, 1, 1]);
+    expect(two.map((p) => p.statements.length)).toEqual([2, 2, 2, 2]);
+    expect(one.map((p) => p.statements.length)).toEqual([1, 1, 1, 1, 1, 1, 1, 1]);
     const keys = (pages) => pages.flatMap((p) => p.statements.map((s) => s[0]));
     expect(keys(one)).toEqual(keys(two));
     expect(keys(one).length).toBe(RISIKO_STATEMENTS.length + 1);
@@ -521,9 +522,9 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
 });
 
 describe("mood test chapter", () => {
-  const full = Object.fromEntries(["self", "love", "appreciation", "conflicts", "metime", "quality", "hot"].map((key) => [key, "50"]));
-  test("covers exactly the seven statement sliders, in card order", () => {
-    expect([...RISIKO_MOOD_KEYS]).toEqual(["self", "love", "appreciation", "conflicts", "metime", "quality", "hot"]);
+  const full = Object.fromEntries(["self", "love", "appreciation", "conflicts", "metime", "quality", "curious", "hot"].map((key) => [key, "50"]));
+  test("covers exactly the eight statement sliders, in card order", () => {
+    expect([...RISIKO_MOOD_KEYS]).toEqual(["self", "love", "appreciation", "conflicts", "metime", "quality", "curious", "hot"]);
   });
   test("shows no mood until every statement slider has been dragged", () => {
     expect(averageMood({})).toBeNull();
@@ -535,11 +536,11 @@ describe("mood test chapter", () => {
     // an answer left blank counts as not dragged
     expect(averageMood({ ...full, quality: "  " })).toBeNull();
   });
-  test("is the mean of all seven statement values once all are dragged", () => {
+  test("is the mean of all eight statement values once all are dragged", () => {
     expect(averageMood(full)).toBe(50);
-    expect(averageMood({ self: "0", love: "100", appreciation: "0", conflicts: "100", metime: "0", quality: "100", hot: "20" })).toBeCloseTo(320 / 7);
+    expect(averageMood({ self: "0", love: "100", appreciation: "0", conflicts: "100", metime: "0", quality: "100", curious: "0", hot: "20" })).toBeCloseTo(320 / 8);
     // every slider of the chapter counts, including the hot one
-    expect(averageMood({ ...full, hot: "100" })).toBeCloseTo((50 * 6 + 100) / 7);
+    expect(averageMood({ ...full, hot: "100" })).toBeCloseTo((50 * 7 + 100) / 8);
   });
   test("rounds the average to the nearest of the five scale faces", () => {
     expect(moodFaceIndex(0)).toBe(0);
@@ -579,13 +580,13 @@ describe("mood test chapter", () => {
 describe("chapter card pagination", () => {
   test("gives the chapter card its own smaller size without touching the rest", () => {
     expect(risikoPages([], 2, 1).map((p) => p.statements.map(([k]) => k))).toEqual([
-      ["self"], ["love", "appreciation"], ["conflicts", "metime"], ["quality", "hot"],
+      ["self"], ["love", "appreciation"], ["conflicts", "metime"], ["quality", "curious"], ["hot"],
     ]);
   });
   test("keeps the work-split card last and loses no statement", () => {
     const pages = risikoPages(["a", "b"], 2, 1);
     expect(pages.flatMap((p) => p.statements.map(([k]) => k)).sort()).toEqual(
-      ["appreciation", "conflicts", "hot", "love", "metime", "quality", "self"]);
+      ["appreciation", "conflicts", "curious", "hot", "love", "metime", "quality", "self"]);
     expect(pages[pages.length - 1]).toEqual({ statements: [], personKeys: ["a", "b"] });
   });
   test("without a chapter size every card keeps the asked size", () => {
