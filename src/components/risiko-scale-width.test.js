@@ -27,10 +27,11 @@ test("the smileys fill the whole width the handle travels", () => {
   expect(markerLeft, "the circle is not placed by the same inset and span").toBeTruthy();
   expect(markerLeft).toContain("${END_INSET}px");
   expect(markerLeft).toContain("* ${SPAN} / 100");
-  // the field no longer insets its own content to make room for the handle
-  const field = css.match(/\.risiko-scale-field \{([\s\S]*?)\n\}/)?.[1] ?? "";
-  expect(/padding:\s*0;/.test(field), "the field still insets its own content").toBe(true);
-  expect(field).not.toMatch(/padding-(inline|left|right)/);
+  // the field no longer insets its own content to make room for the handle: the
+  // smileys reach the card's own edges, and the field keeps only the room its own
+  // smiley row needs at the top
+  expect(css, "the field still insets its content horizontally").not.toMatch(/\.risiko-scale-field \{[^}]*padding-(inline|left|right)/);
+  expect(/\.risiko-scale-field \{[^}]*padding-top/.test(css), "the field no longer keeps room for its smiley row").toBe(true);
 });
 
 test("a press anywhere on the field places the circle by the same ends", () => {
