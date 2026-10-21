@@ -424,6 +424,27 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
     return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
   };
+  // A name or a share is never allowed to grow past these widths: a longer name
+  // takes a second line instead, so a one-sided split can neither squeeze a
+  // partner's name into a sliver nor push a number off the card's edge.
+  const LABEL_W = 96;
+  const SHARE_W = 60;
+  // The middle of one colour run, measured exactly the way the run itself is
+  // drawn, and held inside the lane's own edges by half of its row's fixed width.
+  const centreAt = (i: number, half: number) => {
+    const a = i ? splitAt(i - 1) : "0px";
+    const b = i < segments.length - 1 ? splitAt(i) : "100cqw";
+    return `clamp(${half}px, calc((${a} + ${b}) / 2), calc(100% - ${half}px))`;
+  };
+  // A colour run belongs to exactly one partner, so the name printed above the
+  // rule and the share printed below it can both be read off that one colour.
+  // A name that already ends in an s takes only the apostrophe — German never
+  // doubles it ("Max’ Anteil") — so a name like "Name deines Partners" or "Niklas"
+  // is never printed with a stutter.
+  const shareLabel = (key: string) => {
+    const name = partners.find(p => p.key === key)?.name ?? "";
+    return /s$/i.test(name.trim()) ? `${name}’ Anteil:` : `${name}’s Anteil:`;
+  };
   // Where the pointer sits on one partner's scale, and how far that partner's
   // circle is from it — the same maths picks who gets grabbed and how far the
   // grab has travelled since.
@@ -481,8 +502,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
           {/* The work split is read on the same grid as the statements: no fill,
               only the dashed grey lines between every pair of neighbouring
-              columns, the scale's own edges left bare. They stop above the names'
-              strip, and the bar, the circles and the share figures all paint on top. */}
+              columns, the scale's own edges left bare. They stop above the quiet
+              strip at the lane's foot, and the bar, the circles and the names and
+              share figures printed on it all paint on top. */}
           <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
             style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {columnEdges(FACES.length).map((at) => (
@@ -496,11 +518,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />
             ))}
           </div>
+          {/* The colour runs carry nothing themselves: every name and every share
+              is printed in its own row, above and below the rule. */}
           <div className="workload-bar" aria-hidden="true">
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
-                <span className="workload-percentage">{shares[segment.key]}%</span>
-              </span>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8}${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }} />
             ))}
           </div>
           {/* Each boundary carries its own solid ink line: not dashed like the grey
@@ -511,6 +533,21 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {segments.slice(0, -1).map((segment, i) => (
               <span key={`bl${i}`} className="workload-boundary absolute" style={{ left: splitAt(i) }} />
+            ))}
+          </div>
+          {/* Each partner is named just above the rule and its share printed just
+              below it, both centred on that partner's own colour run. A name never
+              grows past the row's fixed width — a longer one takes a second line —
+              and both rows are held inside the lane's own edges, so nothing is ever
+              cut off, not even when one partner carries almost all of the work. */}
+          <div className="workload-labels" aria-hidden="true">
+            {segments.map((segment, i) => (
+              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)}</span>
+            ))}
+          </div>
+          <div className="workload-shares" aria-hidden="true">
+            {segments.map((segment, i) => (
+              <span key={`sh${i}`} className={`workload-percentage workload-color-${i % 8}`} style={{ left: centreAt(i, SHARE_W / 2) }}>{shares[segment.key]}%</span>
             ))}
           </div>
           {partners.map((p, i) => {
@@ -537,17 +574,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               // the last sits just left of the boundary it rides, the last one just
               // right of it — together they open the 4px gap the split line centres in.
               "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
-              // Names take alternating rows. With two partners each row holds a
-              // single name, so it may use the whole lane; from three partners up
-              // two names share a row, so each is kept within two bands.
-              "--workload-name-row": String(i % 2),
-              "--workload-name-cap": partners.length <= 2 ? "calc(100cqw / 2)" : "var(--workload-band, 32px)",
             } as React.CSSProperties;
             const memojiEl = (
-              <>
-                <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-                <span className="workload-name" aria-hidden="true">{p.name}</span>
-              </>
+              <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
             );
             if (readOnly) {
               return (

@@ -249,6 +249,42 @@ describe("grey columns", () => {
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
+  test("each partner is named above the rule and its share printed below, on that partner's own colour", () => {
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const row = (cls) => css.match(new RegExp(`\\.${cls} \\{([\\s\\S]*?)\\n\\}`))?.[1] ?? "";
+    const label = row("workload-label");
+    const share = row("workload-percentage");
+    const above = row("workload-labels");
+    const below = row("workload-shares");
+    expect(label, ".workload-label missing from index.css").toBeTruthy();
+    expect(above, ".workload-labels missing from index.css").toBeTruthy();
+    expect(below, ".workload-shares missing from index.css").toBeTruthy();
+    // The names' row stands on the rule's head, the shares' row on its foot — both
+    // measured from the rule's own middle, so neither of them ever sits on the rule.
+    expect(/bottom:\s*calc\(\(100cqh \+ var\(--risiko-name-strip\)\) \/ 2 \+ \d+px\)/.test(above),
+      "the names do not stand above the rule").toBe(true);
+    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 \+ \d+px\)/.test(below),
+      "the shares do not stand below the rule").toBe(true);
+    // The name is the couple's own wording, the number keeps the partner's plain colour.
+    expect(/color:\s*var\(--workload-ink\)/.test(label), "the name does not use the partner's readable ink").toBe(true);
+    expect(/color:\s*var\(--workload-color\)/.test(share), "the share does not use the partner's colour").toBe(true);
+    // A name longer than the row's fixed width breaks at its own words onto a second
+    // line; a number never has to, because "100%" is already the widest it gets.
+    expect(label).not.toMatch(/white-space:\s*nowrap/);
+    expect(/max-width:/.test(label), "a name may grow without end").toBe(true);
+    expect(/white-space:\s*nowrap/.test(share), "the share may wrap").toBe(true);
+    // Both rows are centred on their own colour run and held inside the lane's edges,
+    // so a one-sided split can never cut a name or a number off.
+    expect(slide, "the rows are not centred on their colour runs").toContain("centreAt(");
+    expect(slide, "the rows are not held inside the lane").toMatch(/calc\(100% - \$\{half\}px\)/);
+    expect(slide, "the name is not worded as an share label").toContain("shareLabel(");
+    // A name ending in an s keeps just the apostrophe, so it never doubles.
+    expect(/\/s\$\//.test(slide), "the s-ending rule is gone").toBe(true);
+    expect(slide, "the plain name label is gone").toContain("’s Anteil:");
+    // Nothing hangs under the circles any more — the names moved above the rule.
+    expect(slide, "a name still hangs under a circle").not.toContain("workload-name");
+  });
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
