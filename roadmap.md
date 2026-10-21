@@ -323,3 +323,4 @@
 - [x] slider rule in the vertical column lines' grey (#C9CBD1)
 - [x] answer: grey smileys wear a white fill disc reaching ~2.8px past the grey outline
 - [x] Risikofaktoren-Skala: die fünf grauen Smilies ziehen sich jetzt in demselben Grau wie die senkrechten Spaltenlinien (#C9CBD1, FACE_GREY = --risiko-column-line); der Durchschnitts-Smiley im gedruckten Kapitel-Satz behält das dunklere #80828A (CHAPTER_MOOD_GREY), damit er auf Papier lesbar bleibt. Auf allen acht Skalen gemessen (face/edge/rule je rgb(201,203,209)), 162 Tests grün, Build OK.
+- [x] Info note spacing and mark: the button stands the note's own 8px breath over its hairline (one `--retro-info-gap` token for CTA→hairline, hairline→letters and ℹ→sentence), the ℹ mark keeps no tile of its own, and its "i" reads darker (#3F4147) with a pen capped at the grey smileys' 1.65px; verified on the Health Check and Risikofaktoren cards, 169 tests pass, build OK.

@@ -1163,14 +1163,15 @@ button {
   padding-top: var(--retro-info-gap);
 }
 
-/* The "i" inside the ℹ mark reads darker and a shade thicker than its ring: the
-   letter is only a few pixels tall, so it needs more weight than the circle to
-   hold up beside the sentence (user: "i in info I darker if thicker"). The pen
-   is given in the icon's own 24-unit box, so 3 units at a 16px glyph is a 2px
-   stroke on screen; the ring itself keeps the footnote's 1.5px pen. */
+/* The "i" inside the ℹ mark reads darker than its ring so the letter holds up
+   beside the sentence (user: "i in info I darker if thicker"), but its pen goes
+   no heavier than the scale smileys' own: those draw 0.9 units in a 24-unit box
+   at 44px, i.e. 1.65px on screen, so the letter takes the same 1.65px — which is
+   2.475 units in the icon's own 24-unit box at 16px (user: "stroke width max
+   like grey smiley"). The ring keeps the footnote's lighter pen. */
 .retro-info-mark path {
   stroke: var(--retro-info-ink);
-  stroke-width: 3;
+  stroke-width: 2.475;
 }
 
 
