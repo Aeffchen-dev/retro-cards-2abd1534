@@ -578,8 +578,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             ))}
           </div>
           {/* Each split's figures stand right under the foot of its boundary line —
-              the share on either side in that partner's colour — with "Split"
-              in the same line. */}
+              the share on either side, each carrying its own % and wearing that
+              partner's colour, with room around the slash so the pair reads
+              "10% / 90%" rather than one run of digits. */}
           <div className="workload-shares" aria-hidden="true">
             {segments.slice(0, -1).map((segment, i) => (
               <span key={`sh${i}`} className="workload-split" style={{ left: splitAt(i) }}>
@@ -587,7 +588,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                   <span className={`workload-percentage workload-color-${i % 8}`}>{shares[segment.key]}%</span>
                   <span className="workload-split-sep">/</span>
                   <span className={`workload-percentage workload-color-${(i + 1) % 8}`}>{shares[segments[i + 1].key]}%</span>
-                  <span className="workload-split-word">Split</span>
                 </span>
               </span>
             ))}
@@ -731,8 +731,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {/* The buttons keep the card's own padding below the rule; being outside the
           area, they leave its lower edge exactly on the rule for the guidelines.
           The notes button comes first and the info sentence reads after it, so
-          every Health Check page ends answer → button → note. */}
-      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
+          every Health Check page ends answer → button → note, with the card's own
+          padding (28px) standing between the two. */}
+      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[28px]">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
 
         <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
