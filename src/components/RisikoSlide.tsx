@@ -227,7 +227,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
         </svg>
       </span>
       <span className="risiko-drag-face">
-        <MorphFace value={value} />
+        <MorphFace value={value} features={shown} />
       </span>
     </span>
   );

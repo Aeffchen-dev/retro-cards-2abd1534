@@ -1088,7 +1088,10 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  transform: scale(0);
+  /* the circle is drawn from the first look, not only after a drag (user:
+     "default slier circle same styling as after dra") — the features inside it
+     are what wait for the first touch */
+  transform: scale(1);
   transition: transform 180ms ease;
 }
 /* Only the features morph; the shared 32px disc never changes size. */
