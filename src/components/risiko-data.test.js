@@ -114,11 +114,12 @@ describe("Risikofaktoren scale", () => {
   test("workload shares keep the exact dragged value", () => {
     expect(scaleValue("73")).toBe(73);
   });
-  test("has the six statements, being yourself first", () => {
-    expect(RISIKO_STATEMENTS.length).toBe(6);
+  test("has the seven statements, being yourself first", () => {
+    expect(RISIKO_STATEMENTS.length).toBe(7);
     expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann in deiner Gegenwart so sein wie ich bin und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
-    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
+    expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir planen genug gemeinsame Erlebnisse im Alltag ein, die uns in Verbindung bringen"]);
+    expect(RISIKO_STATEMENTS[6]).toEqual(["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt?");
@@ -127,13 +128,13 @@ describe("Risikofaktoren scale", () => {
   test("shows one statement per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);
     expect(pages.map(p => p.statements.map(([key]) => key))).toEqual([
-      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["hot"], [],
+      ["self"], ["love"], ["appreciation"], ["conflicts"], ["metime"], ["quality"], ["curious"], ["hot"], [],
     ]);
     expect(pages[pages.length - 1].personKeys).toEqual(["p0", "p1"]);
     expect(pages.slice(0, -1).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("skips the work-split card when nobody is named", () => {
-    expect(risikoPages([]).length).toBe(7);
+    expect(risikoPages([]).length).toBe(8);
     expect(risikoPages([]).every(p => p.personKeys.length === 0)).toBe(true);
   });
   test("keeps every partner on one shared allocation line", () => {
