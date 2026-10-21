@@ -41,7 +41,8 @@ const FACE_SIZE = 28;
 // The draggable marker keeps its own, larger size: it has to read as the handle
 // among the smaller scale faces and stay a comfortable thing to grab, and it wears
 // a 1px ring in the Health Check's light green (see --risiko-marker-ring).
-const MARKER_SIZE = 40;
+const MARKER_SIZE = 44;
+
 
 // The rule is exactly as thick as the work-split bar (h-1), so both scales read
 // as the same line — clearly stronger than the fine dashed guides, and it never
@@ -117,9 +118,10 @@ interface RisikoSlideProps {
 
 const INK = "var(--retro-black)";
 // White drag hints inside the untouched dot: it can be pulled left or right.
-// Drawn at about two thirds of the 40px dot so the circle, not the hint, reads as
+// Drawn at about two thirds of the 44px dot so the circle, not the hint, reads as
 // the handle, and so the arrow stays legible on a phone.
 const ARROW_SIZE = 26;
+
 
 const ARROW_W = 1.15;
 
