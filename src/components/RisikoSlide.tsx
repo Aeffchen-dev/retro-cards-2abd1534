@@ -72,7 +72,6 @@ const faceX = (i: number) => `${TRAVEL_INSET + i * COLUMN}%`;
 /** CSS left for the circle at a slider value: 0 in the first column's middle, 100 in the last. */
 const markerLeft = (value: number) => `calc(${TRAVEL_INSET}% + ${value} * ${TRAVEL / 100}%)`;
 /** CSS left for the line between face `i` and the face to its right: their columns' border. */
-/** CSS left for the line between face `i` and the face to its right: their columns' border. */
 const edgeX = (i: number) => `${(i + 1) * COLUMN}%`;
 /** The work-split lane keeps its own evenly divided grid: its circles ride the share
  *  each partner holds, so its guides and split figures stay on the even columns. */
@@ -245,7 +244,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
           style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
-          value={[value]} min={0} max={100} step={SNAP}
+          value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
           onPointerCancel={() => setDragging(false)}
@@ -324,12 +323,12 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
     e.currentTarget.setPointerCapture(e.pointerId);
-    onChange(String(snapValue(v)));
+    onChange(String(Math.round(v)));
   };
   const dragField = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!fieldDrag.current) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v !== null) onChange(String(snapValue(v)));
+    if (v !== null) onChange(String(Math.round(v)));
   };
   const releaseField = () => { fieldDrag.current = null; };
 
