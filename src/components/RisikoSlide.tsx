@@ -113,7 +113,7 @@ const EYE_W = MARKER_PEN;
 // of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
 // eyes land about 2.5px wide — a step above the pen every outline on the scale
 // now draws with.
-const EYE_R = 0.9;
+const EYE_R = 0.8;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // The plate behind the face is back (user: "restore grey smilies ... the
