@@ -311,7 +311,11 @@ describe("grey columns", () => {
     // wider than them.
     const plate = css.match(/\.risiko-caption-plate \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(plate, "the name has no plate of its own").toBeTruthy();
-    expect(/background:\s*var\(--risiko-surface\)/.test(plate), "the plate is not the card's own surface").toBe(true);
+    // The plate wears the scale field's own colour — the card's surface on paper,
+    // the grey panel on screen — so the guide reads as threaded behind the word
+    // rather than drawn through its letters, whatever the field is painted with.
+    expect(/background:\s*var\(--risiko-field-bg\)/.test(plate), "the plate is not the scale field's own colour").toBe(true);
+    expect(/--risiko-field-bg:\s*var\(--risiko-surface\)/.test(css), "the field colour does not fall back to the card's surface").toBe(true);
     expect(/padding-inline/.test(plate), "the plate does not keep a little breath around the word").toBe(true);
     expect(caption, "the name itself no longer needs a background").not.toMatch(/background/);
     // and the plate repaints for paper, so it never shows as a pale patch
