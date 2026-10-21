@@ -229,8 +229,10 @@ describe("grey columns", () => {
     // printed card is sized to the sheet and keeps filling its whole page.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const rule = slide.match(/background: (?:INK|FACE_GREY|"var\(--risiko-guide\)"),[^\n]*/)?.[0] ?? "";
+    const rule = slide.match(/background: "var\(--risiko-column-line\)",[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
+    expect(rule, "the rule does not wear the vertical column lines' grey")
+      .toContain('background: "var(--risiko-column-line)"');
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.slice(css.indexOf("@media screen {"));
     expect(/\.risiko-scale-field \{ flex: 0 0 var\(--risiko-field-h\); \}/.test(screen), "the fields do not stand at their own height on screen").toBe(true);
@@ -626,10 +628,10 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(comp, "the face paints a fill circle of its own inside the outline")
       .not.toMatch(/<circle cx="12" cy="12" r="10"/);
   });
-  test("the info row's ℹ mark draws with the answer circle's own 3px stroke", () => {
+  test("the info row's ℹ mark draws with a light 1.5px pen", () => {
     const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
-    expect(src, "the ℹ mark's stroke is not the answer circle's 3px")
-      .toMatch(/icon === "IconInfo" \? 3 : undefined/);
+    expect(src, "the ℹ mark's stroke is not the light 1.5px pen")
+      .toMatch(/icon === "IconInfo" \? 1\.5 : undefined/);
     expect(src, "the ℹ mark does not take the row's own icon colour")
       .toMatch(/color: resolvedIconColor/);
   });
