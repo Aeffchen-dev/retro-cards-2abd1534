@@ -6,6 +6,22 @@ const fields = src.slice(src.indexOf("const REFLECTION_FIELDS"), src.indexOf("] 
 const slide = src.slice(src.indexOf("case SLIDE_REFLECTION:"), src.indexOf("case 7:"));
 const vorhaben = readFileSync(new URL("./vorhaben-data.ts", import.meta.url), "utf8");
 
+describe("Feedback card is titled Monthly review for you, my love", () => {
+  test("shows the new name as the pill above the card", () => {
+    const pills = src.slice(src.indexOf("const SLIDE_PILLS"), src.indexOf("};", src.indexOf("const SLIDE_PILLS")));
+    expect(pills).toContain('102: "Monthly review for you, my love"');
+    expect(pills, "the card still carries the old name above it").not.toContain('102: "Feedback"');
+  });
+
+  test("shows the new name inside the card and in the notes header", () => {
+    expect(slide).toContain('<span className="retro-label">Monthly review for you, my love</span>');
+    expect(slide, "the card's own heading still reads Feedback").not.toContain('<span className="retro-label">Feedback</span>');
+    expect(slide).toContain('text="Monthly review for you, my love"');
+    const header = src.slice(src.indexOf("const getSlideQuestion"), src.indexOf("return questions[slideId]"));
+    expect(header).toContain('[SLIDE_REFLECTION]: "Monthly review for you, my love"');
+  });
+});
+
 describe("Feedback headline question", () => {
   test("asks \"Du in meinen Augen\" with the remembering sentence", () => {
     expect(fields).toContain('["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
@@ -14,11 +30,13 @@ describe("Feedback headline question", () => {
   test("keeps the saved answers of the three questions it asks", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
-    expect(fields).toContain('"unspoken"');
+    expect(fields).toContain('"plans"');
     expect(fields).toContain('"Dafür möchte ich Danke sagen"');
-    // "Das wünsche ich mir" moved to the Vorhaben card and is no longer asked here.
+    // The questions that moved away are no longer asked here.
     expect(fields).not.toContain('"idea"');
     expect(fields).not.toContain("Das wünsche ich mir");
+    expect(fields).not.toContain('"unspoken"');
+    expect(fields).not.toContain("Gab es etwas");
   });
 
   test("shows the sentence as grey placeholder on screen and as a line on the printed page", () => {
@@ -34,47 +52,61 @@ describe("Feedback headline question", () => {
   });
 });
 
-describe("Question moved from Vorhaben to Feedback", () => {
-  test("asks the unspoken-thoughts question on the Feedback card", () => {
-    expect(fields).toContain('["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?", "Deine Antwort", ""]');
+describe("The two cards swapped their last and first question", () => {
+  test("asks \"Das wollen wir kommenden Monat machen\" on the Feedback card", () => {
+    expect(fields).toContain('["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""]');
     expect(slide).toContain("reflectionTexts[key]");
   });
 
-  test("no longer asks it on the Vorhaben card", () => {
-    expect(vorhaben).not.toContain("unspoken");
-    expect(vorhaben).not.toContain("Gab es etwas");
+  test("asks the unspoken-thoughts question on the Ideas card", () => {
+    // Only the list of prompts counts here, not the comment above it.
+    const list = vorhaben.slice(vorhaben.indexOf("export const VORHABEN_QUESTIONS"));
+    expect(list).toContain('["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?"]');
+    expect(list, "Ideas still asks for next month's plans").not.toContain('"plans"');
+    expect(list).not.toContain("Das wollen wir kommenden Monat machen");
+    // Ideas still asks three things: the moved question plus its own two.
+    expect(list.match(/^\s+\["/gm)?.length).toBe(3);
   });
 
-  test("carries an answer already written on Vorhaben over to Feedback", () => {
+  test("moves an answer written on Ideas over to Feedback, in storage", () => {
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig, "the startup migration is gone").toBeTruthy();
+    // The saved answer is read from the Ideas notes when Feedback has none yet...
+    expect(mig).toContain('carry(ideas, "plans", here, "plans")');
+    // ...and the Ideas card drops its copy once Feedback holds it.
+    expect(mig).toContain('[ideas, "plans"]');
+  });
+
+  test("moves an answer written on Feedback over to Ideas, in storage", () => {
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig).toContain('carry(here, "unspoken", ideas, "unspoken")');
+    expect(mig).toContain('[here, "unspoken"]');
+    // Both stores are written back straight away, so the answer is safe before any card
+    // is opened: a card only saves its own copy once something is typed into it.
+    expect(mig).toContain("saveToStorage(STORAGE_KEYS.REFLECTION_TEXTS, here)");
+    expect(mig).toContain("saveToStorage(STORAGE_KEYS.EDIT_MODE_NOTES");
+  });
+
+  test("runs before any card reads its saved answers", () => {
+    const called = src.indexOf("migrateMovedAnswers();");
+    expect(called, "the startup migration is never called").toBeGreaterThan(-1);
+    expect(called, "a card reads its answers before the moves have run").toBeLessThan(src.indexOf("const [currentCard"));
+    // The moves no longer live inside a card's own state, where the answer could be lost.
     const init = src.slice(src.indexOf("const [reflectionTexts"), src.indexOf("const [editModeNotes"));
-    // The saved answer is read from the old Vorhaben notes when Feedback has none yet.
-    expect(init).toContain("STORAGE_KEYS.EDIT_MODE_NOTES");
-    expect(init).toContain("SLIDE_VORHABEN");
-    expect(init).toContain("?.unspoken");
-    // ...and the old copy is dropped so the same text is not kept twice.
+    expect(init).not.toContain("loadFromStorage<Record<string, any>>(STORAGE_KEYS.EDIT_MODE_NOTES)");
     const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
-    expect(notesInit).toContain("delete oldVorhaben.unspoken");
+    expect(notesInit).not.toContain("STORAGE_KEYS.REFLECTION_TEXTS");
   });
-});
 
-describe("Question moved from Feedback to Vorhaben", () => {
-  test("asks \"Das wünsche ich mir\" on the Vorhaben card", () => {
+  test("clearing all data clears the moved answer too", () => {
+    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', plans: '' })");
+  });
+
+  test("keeps the wish that moved to Ideas earlier", () => {
     expect(vorhaben).toContain('["idea", "Das wünsche ich mir"]');
-    expect(vorhaben).toContain('"plans"');
     expect(vorhaben).toContain('"experiment"');
-    expect(vorhaben.match(/^\s+\["/gm)?.length).toBe(3);
-  });
-
-  test("carries an answer already written on Feedback over to Vorhaben", () => {
-    const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
-    // The old Feedback answer is copied into the Vorhaben notes...
-    expect(notesInit).toContain("STORAGE_KEYS.REFLECTION_TEXTS");
-    expect(notesInit).toContain("?.idea");
-    expect(notesInit).toContain("here.idea = savedWish");
-    // ...and Feedback stops holding its own copy of it.
-    const init = src.slice(src.indexOf("const [reflectionTexts"), src.indexOf("const [editModeNotes"));
-    expect(init).toContain("delete (texts as any).idea");
-    // Clearing all data clears the moved answer too.
-    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', unspoken: '' })");
+    const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
+    expect(mig).toContain('carry(here, "idea", ideas, "idea")');
+    expect(mig).toContain('[here, "idea"]');
   });
 });

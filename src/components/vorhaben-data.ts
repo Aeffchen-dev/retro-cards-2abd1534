@@ -1,11 +1,12 @@
 /**
  * The "Ideas" card (internally still Vorhaben) asks three things, each a post-it field:
- * what the couple wants to do next month, what they could try out, and what one of them
- * wishes for. The last one used to sit on the Feedback card and moved here with its
- * "idea" answer key.
+ * whether something stayed unsaid, what the couple could try out, and what one of them
+ * wishes for. The first one used to sit on the Feedback card and moved here with its
+ * "unspoken" answer key; the next-months plans prompt swapped places with it and now
+ * sits on Feedback with its "plans" key.
  */
 export const VORHABEN_QUESTIONS = [
-  ["plans", "Das wollen wir kommenden Monat machen"],
+  ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?"],
   ["experiment", "Das könnten wir (neues) ausprobieren"],
   ["idea", "Das wünsche ich mir"],
 ] as const;

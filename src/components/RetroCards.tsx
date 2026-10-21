@@ -47,7 +47,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   1: "Health Check",
   2: "Health Check",
   3: "The last 4 weeks",
-  102: "Feedback",
+  102: "Monthly review for you, my love",
   104: "Ideas",
   105: "Health Check",
   4: "To talk about",
@@ -76,7 +76,7 @@ interface SetupData {
 const REFLECTION_FIELDS = [
   ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
-  ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?", "Deine Antwort", ""],
+  ["plans", "Das wollen wir kommenden Monat machen", "Deine Antwort", ""],
 ] as const;
 
 
@@ -121,7 +121,7 @@ const sanitizeEmoji = (input: string): string => {
 interface ReflectionTexts {
   nice: string;
   thanks: string;
-  unspoken: string;
+  plans: string;
 }
 
 interface MemojisPosition {
@@ -228,7 +228,49 @@ const CARD_THEMES: { bg: string; text: string; accent: string; pill: string; pil
 
 
 
+// Questions have moved between cards over time, and an answer has to move with its
+// question. Both moves below run against storage itself, once, straight at startup: a
+// card only writes its own copy back once something on it is typed into, so a move that
+// lived inside a card's own state would let the card edited first erase the source
+// before the question's new home had saved anything.
+let movedAnswersMigrated = false;
+const migrateMovedAnswers = () => {
+  if (movedAnswersMigrated) return;
+  movedAnswersMigrated = true;
+  const texts = loadFromStorage<Record<string, any>>(STORAGE_KEYS.REFLECTION_TEXTS);
+  const notes = loadFromStorage<Record<number, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
+  if (!texts && !notes) return;
+  const here: Record<string, any> = { ...(texts || {}) };
+  const ideas: Record<string, any> = { ...((notes?.[SLIDE_VORHABEN as any] || {}) as Record<string, any>) };
+  let changed = false;
+  // An answer only ever moves into a field that is still empty, so a text written after
+  // the question changed cards is never overwritten by the older one.
+  const carry = (from: Record<string, any>, fromKey: string, to: Record<string, any>, toKey: string) => {
+    const v = from[fromKey];
+    if (typeof v === "string" && v.trim() && !(to[toKey] || "").trim()) { to[toKey] = v; changed = true; }
+  };
+  // "Das wollen wir kommenden Monat machen" moved from Ideas to Feedback...
+  carry(ideas, "plans", here, "plans");
+  // ...and "Gab es etwas, dass du gedacht aber nicht angesprochen hast?" the other way round.
+  carry(here, "unspoken", ideas, "unspoken");
+  // "Das wünsche ich mir" moved from Feedback to Ideas earlier.
+  carry(here, "idea", ideas, "idea");
+  // The old homes drop their copies now that the new ones hold the text.
+  for (const [box, key] of [[here, "unspoken"], [here, "idea"], [ideas, "plans"]] as const) {
+    if (key in box) { delete box[key]; changed = true; }
+  }
+  if (!changed) return;
+  saveToStorage(STORAGE_KEYS.REFLECTION_TEXTS, here);
+  if (notes) {
+    saveToStorage(STORAGE_KEYS.EDIT_MODE_NOTES, { ...notes, [SLIDE_VORHABEN]: ideas });
+  } else if (Object.keys(ideas).length) {
+    saveToStorage(STORAGE_KEYS.EDIT_MODE_NOTES, { [SLIDE_VORHABEN]: ideas });
+  }
+};
+
 const RetroCards: React.FC = () => {
+  // The moved questions' answers are put where they belong before any card reads them.
+  migrateMovedAnswers();
   // Initialize currentCard from localStorage synchronously for initialSlide
   const [currentCard, setCurrentCard] = useState(() => {
     const saved = loadFromStorage<number>(STORAGE_KEYS.CURRENT_CARD);
@@ -341,17 +383,11 @@ const RetroCards: React.FC = () => {
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
-    const texts: ReflectionTexts = { nice: '', thanks: '', unspoken: '', ...(saved || {}) };
-    // This question used to sit on the Vorhaben card. Anything written there while
-    // it lived there moves over with it, so nobody has to type it again.
-    if (!texts.unspoken.trim()) {
-      const notes = loadFromStorage<Record<string, any>>(STORAGE_KEYS.EDIT_MODE_NOTES);
-      const written = notes?.[String(SLIDE_VORHABEN)]?.unspoken;
-      if (typeof written === "string" && written.trim()) texts.unspoken = written;
-    }
-    // "Das wünsche ich mir" moved the other way round, onto the Vorhaben card. Its old
-    // answer is dropped from here — the copy Vorhaben needs is made below — so the same
-    // text is never kept in two places.
+    const texts: ReflectionTexts = { nice: '', thanks: '', plans: '', ...(saved || {}) };
+    // The answers of the questions that changed cards are already in place: the moves run
+    // against storage at startup (migrateMovedAnswers). Only the keys this card no longer
+    // asks are dropped here, so a stale copy can never turn up in a field.
+    delete (texts as any).unspoken;
     delete (texts as any).idea;
     return texts;
   });
@@ -391,18 +427,8 @@ const RetroCards: React.FC = () => {
         }
       }
     }
-    // The moved question's old home: its answer now belongs to Feedback (copied
-    // there above), so the Vorhaben card does not keep a second copy of it.
-    const oldVorhaben = migrated[SLIDE_VORHABEN as any];
-    if (oldVorhaben && "unspoken" in oldVorhaben) delete oldVorhaben.unspoken;
-    // "Das wünsche ich mir" now lives on the Vorhaben card: an answer written while it
-    // still sat on Feedback moves over with it, so nobody has to type it again.
-    const savedWish = loadFromStorage<Record<string, any>>(STORAGE_KEYS.REFLECTION_TEXTS)?.idea;
-    if (typeof savedWish === "string" && savedWish.trim()) {
-      if (!migrated[SLIDE_VORHABEN as any]) migrated[SLIDE_VORHABEN as any] = {};
-      const here = migrated[SLIDE_VORHABEN as any];
-      if (!(here.idea || "").trim()) here.idea = savedWish;
-    }
+    // The questions that changed cards carry their answers here already: the moves run
+    // against storage at startup (migrateMovedAnswers), before this state is ever read.
     return migrated;
   });
 
@@ -644,7 +670,7 @@ const RetroCards: React.FC = () => {
       1: "Wie geht's mir persönlich?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
-      [SLIDE_REFLECTION]: "Feedback",
+      [SLIDE_REFLECTION]: "Monthly review for you, my love",
       5: "Wie stehts mit Dates?",
       7: "Sind wir uns körperlich nah?",
     };
@@ -1286,7 +1312,7 @@ const RetroCards: React.FC = () => {
       setPostItTexts({});
       setTakeawayTexts({});
       setEditModeNotes({});
-      setReflectionTexts({ nice: '', thanks: '', unspoken: '' });
+      setReflectionTexts({ nice: '', thanks: '', plans: '' });
       setCapturedPhotos([]);
       setCurrentQuestion("");
       
@@ -1905,9 +1931,9 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">Feedback</span>
+                <span className="retro-label">Monthly review for you, my love</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="Feedback" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="Monthly review for you, my love" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
