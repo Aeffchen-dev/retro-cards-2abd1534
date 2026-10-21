@@ -119,7 +119,7 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[0]).toEqual(["self", "Ich kann in deiner Gegenwart so sein wie ich bin und fühle mich gesehen und respektiert"]);
     expect(RISIKO_STATEMENTS[1]).toEqual(["love", "Wir zeigen uns aktiv, dass wir uns lieben"]);
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir planen genug gemeinsame Erlebnisse im Alltag ein, die uns in Verbindung bringen"]);
-    expect(RISIKO_STATEMENTS[6]).toEqual(["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten einander dabei zu wachsen"]);
+    expect(RISIKO_STATEMENTS[6]).toEqual(["curious", "Wir bleiben neugierig auf das was uns jeweils bewegt und supporten uns dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
     expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt?");
