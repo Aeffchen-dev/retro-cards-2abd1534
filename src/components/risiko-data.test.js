@@ -618,10 +618,20 @@ describe("the slider sits on the card's middle", () => {
     expect(screen, "the scale no longer centres itself between the text and the buttons")
       .toMatch(/\.risiko-scale-core \{ flex: 0 1 auto; margin-block: auto; \}/);
   });
-  test("the measured shift moves the scale and the work-split lane, on screen only", () => {
+  test("the measured shift moves the scale and the work-split card's own area, on screen only", () => {
     expect(screen, "the scale no longer takes the measured shift").toMatch(
-      /\.screen-only :is\(\.risiko-scale-core, \.risiko-allocation\)[^;]*transform: translateY\(var\(--risiko-centre-shift/,
+      /\.screen-only :is\(\.risiko-scale-core\)[^;]*transform: translateY\(var\(--risiko-centre-shift/,
     );
+    // The work-split block fills its scroll area exactly, so moving the block would
+    // slide it out of the area's own clip and slice the partners' names: the area
+    // carries the shift instead, so its clip edge travels with the block inside it.
+    expect(screen, "the work-split card no longer takes the measured shift").toMatch(
+      /\.risiko-scale-area--work[^;]*transform: translateY\(var\(--risiko-centre-shift/,
+    );
+    expect(screen, "the block inside the clip is moved again — that is what sliced the names")
+      .not.toMatch(/\.risiko-allocation\)[^;]*risiko-centre-shift/);
+    expect(slide, "the area carries the shift class on a card that has no work split")
+      .toMatch(/page\.statements\.length === 0 \? " risiko-scale-area--work"/);
     expect(css, "the shift reaches the printed sheet").not.toMatch(/\.print-only[^;]*risiko-centre-shift/);
   });
   test("the shift closes the gap to the card's middle without ever covering the text or the buttons", () => {
