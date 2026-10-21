@@ -2005,7 +2005,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Das war so hot"
                 placeholder="Deine Antwort"
-                minHeight={120}
+                minHeight={112}
                 value={editModeNotes[7]?.hot || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
@@ -2018,7 +2018,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
-                minHeight={120}
+                minHeight={112}
                 value={editModeNotes[7]?.idea || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
