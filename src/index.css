@@ -1445,8 +1445,3 @@ textarea.bg-retro-post-it:focus,
 
 /* A 2px white gap between neighbouring shares of the work-split bar. */
 .workload-segment-gap { border-left: 2px solid #FFFFFF; background-clip: padding-box; }
-.workload-split {
-  top: 0; transform: translateX(-50%);
-  font-size: 12px; line-height: 14px; white-space: nowrap;
-  color: var(--risiko-guide);
-}
