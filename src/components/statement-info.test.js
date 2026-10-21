@@ -33,9 +33,9 @@ describe("statement card info sentence", () => {
     expect(cta, "the info box still reads before the notes button").toBeLessThan(info);
   });
 
-  test("keeps the card's own padding between the button and the info box", () => {
+  test("keeps the note's own breath between the button and the info box", () => {
     const footer = slide.slice(FOOT_AT, slide.indexOf(">", FOOT_AT));
-    expect(footer, "the info box does not stand a card padding under the button").toContain("gap-[28px]");
+    expect(footer, "the button does not stand the note's 8px breath over the hairline").toContain("gap-[var(--retro-info-gap)]");
   });
 
   test("leaves the work-split card its own sentence", () => {
