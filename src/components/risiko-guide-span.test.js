@@ -11,9 +11,10 @@ const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
 test("every scale line is drawn with a solid stroke", () => {
   // no dashed border anywhere in the deck's own stylesheet
   expect(css, "the stylesheet draws a dashed line again").not.toMatch(/border[^;]*dashed/);
-  // the statement scales draw one guide per smiley column and one divider between
-  // every pair of neighbouring columns, each stretching the stack's whole height
-  expect(slide, "the statement scale draws no guides").toMatch(/risiko-column-guide risiko-guide-full/);
+  // the statement scale draws its columns only by the dividers between neighbouring
+  // columns — no line runs down a smiley's own centre any more — each divider
+  // stretching the stack's whole height
+  expect(slide, "the statement scale still draws a line through a smiley's centre").not.toMatch(/risiko-column-guide/);
   expect(slide, "the statement scale draws no dividers").toMatch(/risiko-column-edge risiko-guide-full/);
   // the work-split lane keeps the same drawn columns, on its own even grid
   expect(slide, "the work-split lane draws no dividers").toMatch(/columnEdges\(FACES\.length\)/);
@@ -29,20 +30,21 @@ test("every scale line is drawn with a solid stroke", () => {
   expect(track, "the Health Check track is not a solid line").toMatch(/border-top:\s*1px solid var\(--risiko-column-line\)/);
 });
 
-// The smileys' own guides no longer run up through the faces: they open where the
-// face row ends and run down through the rule from there.
-test("the smiley guides open under the faces, not through them", () => {
-  const field = slide.indexOf('className="risiko-scale-field');
-  const faces = slide.indexOf("<FaceLayer />");
-  const guides = slide.search(/className="risiko-scale-guides[\s\S]{0,200}top: "calc\(var\(--risiko-face-size\)/);
-  expect(guides, "the guides do not open under the face row").toBeGreaterThan(-1);
-  // they live inside the field, painted before the rule and the circle
-  expect(guides, "the guides no longer live inside the field").toBeGreaterThan(field);
-  expect(guides, "the guides are painted after the faces").toBeLessThan(faces);
-  // the line starts exactly where the field's own padding-top puts the face row's
-  // foot, and keeps running down to the field's own bottom edge
-  expect(slide).toMatch(/className="risiko-scale-guides[\s\S]{0,200}top: "calc\(var\(--risiko-face-size\) \+ 4px\)", bottom: 0/);
-  expect(slide, "the smileys' guides are gone").toMatch(/risiko-column-guide risiko-guide-full/);
+// No line runs down a smiley's own centre: the statement scale's columns are drawn
+// purely by the dividers between neighbouring columns, while the work-split lane —
+// whose circles ride shares, not fixed columns — keeps its own guides.
+test("no guide runs through a smiley's own centre", () => {
+  const stack = slide.indexOf('className="risiko-scale-stack"');
+  const captions = slide.indexOf('className="risiko-scale-captions');
+  expect(stack, "the scale has no stack").toBeGreaterThan(-1);
+  // the statement scale carries no centre guide at all…
+  expect(slide.slice(stack, captions), "a guide still runs down a smiley's column").not.toContain("risiko-column-guide");
+  // …only the lighter dividers between neighbouring columns
+  expect(slide.slice(stack, captions), "the columns lost their dividers").toContain("risiko-column-edge");
+  // the work-split lane keeps its own guides, on its own even grid
+  expect(slide, "the work-split lane lost its guides").toMatch(/left: lanePos\(i\)/);
+  // every line stretches the stack's whole height
+  expect(css, "the lines no longer stretch the stack").toMatch(/\.risiko-guide-full \{ top: 0; bottom: 0; \}/);
 });
 
 test("the column names still stand under the field in their own row", () => {
@@ -72,9 +74,10 @@ test("the column names stand above the smileys", () => {
   const stack = css.match(/\.risiko-scale-stack \{([\s\S]*?)\n\}/)?.[1] ?? "";
   expect(stack, "the stack does not know the field's live height")
     .toMatch(/--risiko-field-live:\s*max\(var\(--risiko-field-h\),\s*var\(--risiko-field-min,\s*0px\)\)/);
-  // the lift is the room under the rule, less the circle's radius, less 4px of air
+  // the lift is the room under the rule, less the smiley row's own rise, less the
+  // circle's radius, less 4px of air
   expect(stack, "the names' lift does not stop short of the circle")
-    .toMatch(/--risiko-caption-lift:\s*max\(0px,\s*calc\(\(var\(--risiko-field-live\) - var\(--risiko-face-size\) - 4px\) \/ 2 - var\(--risiko-marker-size\) \/ 2 - 4px\)\)/);
+    .toMatch(/--risiko-caption-lift:\s*max\(0px,\s*calc\(\(var\(--risiko-field-live\) - var\(--risiko-face-rise\) - var\(--risiko-face-size\) - 4px\) \/ 2 - var\(--risiko-marker-size\) \/ 2 - 4px\)\)/);
 
   // the circle wears the same token the lift is read from, so the gap under the
   // rule can never drift away from the dot's real size
