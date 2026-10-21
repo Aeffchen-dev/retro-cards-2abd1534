@@ -1514,7 +1514,9 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
-                accent={pillColorOf(cardId)}
+                /* user: "left side color black" — the Notizen öffnen tile reads
+                   ink; edit mode keeps the card's own pill colour. */
+                accent={editModeSlides[cardId] ? pillColorOf(cardId) : "#201C1D"}
                 iconColor="#FFFFFF"
                 iconStrokeWidth={1}
                 onClick={() => toggleEditMode(cardId)}
@@ -2417,7 +2419,9 @@ const RetroCards: React.FC = () => {
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
-                          accent={pillColorOf(slideId)}
+                          /* user: "left side color black" — Notizen öffnen reads
+                             ink; edit mode keeps the card's own pill colour. */
+                          accent={editModeSlides[slideId] ? pillColorOf(slideId) : "#201C1D"}
                           iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : "#FFFFFF"}
                           iconStrokeWidth={1}
                           onClick={() => toggleEditMode(slideId)}
