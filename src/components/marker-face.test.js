@@ -27,7 +27,27 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     expect(slide).toContain("const MARKER_PEN = RULE_W * (FACE_VIEW / MARKER_SIZE);");
     expect(slide).toContain("const MOUTH_W = MARKER_PEN;");
     expect(slide).toContain("const EYE_W = MARKER_PEN;");
-    expect(slide).toContain("const ARROW_W = RULE_W * (24 / ARROW_SIZE);");
+    expect(slide).toContain("const ARROW_W = 24 / ARROW_SIZE;");
+  });
+
+  test("the resting circle is drawn and the arrow hint paints 1px", () => {
+    // user: "default slier circle same styling as after dra" — the resting dot
+    // wears the very circle the dragged one does and only the features wait for
+    // the first touch; user: "arrow icon stroke 1px" — the hint's pen is a real
+    // pixel, derived from the arrow's own box (26px painted from a 24-unit view).
+    const arrowSize = Number(slide.match(/const ARROW_SIZE = (\d+);/)?.[1] ?? 0);
+    expect(arrowSize, "the arrow's own size is not declared").toBe(26);
+    expect(slide, "the arrow's svg does not map a 24-unit view into that box")
+      .toContain('<svg width={ARROW_SIZE} height={ARROW_SIZE} viewBox="0 0 24 24"');
+    expect(slide, "the arrow's pen is not one pixel of that box")
+      .toContain("const ARROW_W = 24 / ARROW_SIZE;");
+    expect((24 / arrowSize) * (arrowSize / 24), "the arrow does not paint a 1px pen").toBeCloseTo(1, 5);
+    expect(slide, "the resting dot draws no circle").toContain('<circle cx="12" cy="12" r="10" />');
+    expect(slide, "the features do not wait for the first touch").toContain("{features ? (");
+    expect(slide, "the resting dot is not handed the plain circle")
+      .toContain("<MorphFace value={value} features={shown} />");
+    expect(css.match(/\.risiko-drag-face \{[\s\S]*?\n\}/)?.[0] ?? "", "the face is still hidden at rest")
+      .toContain("transform: scale(1);");
   });
 
   test("no white disc and no ring is painted around the face", () => {
@@ -47,6 +67,12 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     // plus the rule's own pen — not a pale ring around the outline.
     expect(plate).toContain("calc(var(--risiko-marker-size) * 1.05)");
     expect(plate).toContain("border-radius: 50%;");
+    // a subtle white outline just outside the answer's own circle (user:
+    // "sliderdot add a subtle white outline") — the grey smileys draw without a
+    // fill now, so this is what keeps the answer clear of the rule behind it
+    expect(plate, "the answer wears no white outline").toContain(
+      "box-shadow: 0 0 0 2px var(--risiko-face-fill);",
+    );
   });
 
   test("the circle and face are drawn 20% bigger than the scale's smileys", () => {

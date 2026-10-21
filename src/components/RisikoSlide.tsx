@@ -46,9 +46,10 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// The scale's grey smileys draw with this pen: 0.9 of the 24 grid painted into
-// the 44px face ≈ 1.65px (user: "grey smilies stroke width less").
-const FACE_PEN = 0.9;
+// The scale's grey smileys draw with this pen: 1.1 of the 24 grid painted into
+// the 44px face ≈ 2px (user: "grey smilies stroke width less", then "all smilie
+// stroke withs a bit more"). The rule and the answer's face take this pen too.
+const FACE_PEN = 1.1;
 
 // One pen for the whole scale: the rule and the answer dot's face draw exactly
 // as thick as the grey smileys standing above them (user: "outline range slider
@@ -161,11 +162,13 @@ const INK = "var(--retro-black)";
 const ARROW_SIZE = 26;
 
 
-// The untouched dot's hint wears the same pen as the rule and the smiley.
-const ARROW_W = RULE_W * (24 / ARROW_SIZE);
+// The untouched dot's hint draws at a real 1px on screen (user: "arrow icon
+// stroke 1px"): its own 26px box maps a 24-unit viewBox, so the units that paint
+// exactly one pixel are 24 / ARROW_SIZE.
+const ARROW_W = 24 / ARROW_SIZE;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
-const MorphFace = ({ value }: { value: number }) => {
+const MorphFace = ({ value, features = true }: { value: number; features?: boolean }) => {
   const { eye, eyeW, brow, mouth } = scaleFaceGeometry(value);
   // Open stroke, no fill: the mouth is the very same curve the happy faces
   // draw, only flipped — one clean trace, exactly like the header smileys.
@@ -181,11 +184,19 @@ const MorphFace = ({ value }: { value: number }) => {
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not
           in their grey (user: "color back instead of grey"). */}
+      {/* The circle stands whether or not the answer has been touched: the
+          resting dot wears the very same circle as the dragged one (user:
+          "default slier circle same styling as after dra"), and only the
+          features wait for the first touch. */}
       <circle cx="12" cy="12" r="10" />
-      <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
-      {/* The brows only rise between the anchors, where no header face stands. */}
-      <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
-      <path d={path} />
+      {features ? (
+        <>
+          <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
+          {/* The brows only rise between the anchors, where no header face stands. */}
+          <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
+          <path d={path} />
+        </>
+      ) : null}
     </svg>
   );
 };
@@ -216,7 +227,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
         </svg>
       </span>
       <span className="risiko-drag-face">
-        <MorphFace value={value} />
+        <MorphFace value={value} features={shown} />
       </span>
     </span>
   );
@@ -235,10 +246,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the circle's travel is inset. Its
         ends are rounded off, so the line finishes soft instead of cut square. It
-        wears the very grey the vertical column lines are drawn in
-        (--risiko-column-line), so the scale's grid and its ground line read as
-        one set — and the ink answer dot stays the heavy mark on it. */}
-    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: "var(--risiko-column-line)", left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
+        draws in the card's own ink (user: "slider range black"), while the
+        vertical column guides keep the lighter grey behind it. */}
+    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: "var(--retro-black)", left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}
@@ -833,7 +843,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-0">
-        <ActionRow icon="IconPencil" label="Notizen öffnen" accent="#201C1D" iconColor="#FFFFFF" iconStrokeWidth={1} onClick={onEdit} />
+        <ActionRow icon="IconPencil" label="Notizen öffnen" accent="#E4E6E8" tileBorder="1px solid #C9CBD1" iconColor="#201C1D" iconStrokeWidth={1} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
             It is the whole block — not the bare sentence — that stands the card's

@@ -1514,10 +1514,12 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
-                /* user: "left side color black" — the Notizen öffnen tile reads
-                   ink; edit mode keeps the card's own pill colour. */
-                accent={editModeSlides[cardId] ? pillColorOf(cardId) : "#201C1D"}
-                iconColor="#FFFFFF"
+                /* the Notizen öffnen tile reads grey with a grey ring and a black
+                   pencil (user: "left side grey fill+outline", "icon blaclk"); edit
+                   mode keeps the card's own pill colour and its white pencil. */
+                accent={editModeSlides[cardId] ? pillColorOf(cardId) : "#E4E6E8"}
+                tileBorder={editModeSlides[cardId] ? undefined : "1px solid #C9CBD1"}
+                iconColor={editModeSlides[cardId] ? "#FFFFFF" : "#201C1D"}
                 iconStrokeWidth={1}
                 onClick={() => toggleEditMode(cardId)}
               />
@@ -2419,10 +2421,13 @@ const RetroCards: React.FC = () => {
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
-                          /* user: "left side color black" — Notizen öffnen reads
-                             ink; edit mode keeps the card's own pill colour. */
-                          accent={editModeSlides[slideId] ? pillColorOf(slideId) : "#201C1D"}
-                          iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : "#FFFFFF"}
+                          /* Notizen öffnen reads a grey tile with a grey ring and a
+                             black pencil (user: "left side grey fill+outline", "icon
+                             blaclk"); edit mode keeps the card's own pill colour, the
+                             last-4-weeks card its pink X and Intimacy its pink pencil. */
+                          accent={editModeSlides[slideId] ? pillColorOf(slideId) : "#E4E6E8"}
+                          tileBorder={editModeSlides[slideId] ? undefined : "1px solid #C9CBD1"}
+                          iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : editModeSlides[slideId] ? "#FFFFFF" : "#201C1D"}
                           iconStrokeWidth={1}
                           onClick={() => toggleEditMode(slideId)}
                         />
