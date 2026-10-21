@@ -651,7 +651,7 @@
      names at its foot, so the grey panel behind the scale wraps the whole control
      — smileys, rule and names — instead of stopping under the rule. It still
      shrinks, and still scrolls, when a statement is too tall for the card. */
-  .risiko-scale-field { flex: 0 1 auto; min-height: var(--risiko-field-h); }
+  .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
   /* The names ride up to the rule instead of waiting at the field's foot: the
      field keeps its height, but the empty room under the circle is handed back to
      the scale, so the block — rule and names — ends just past the names and its
@@ -687,7 +687,21 @@
      one control rather than marks loose on the card. The faces and names keep
      plates of the same colour, so nothing shows through as a white tile. */
   .risiko-page { --risiko-field-bg: #F1F2F4; }
-  .risiko-scale-field { background: var(--risiko-field-bg); border-radius: 14px; padding-bottom: 12px; }
+  /* The panel is drawn behind the whole control — smileys, rule and the names at
+     its foot — as a layer of the scale's own stack, so it never pushes the scale's
+     geometry: the guides' span, the rule's centring and the names' columns are
+     untouched, and the panel simply breathes past the stack's box (a little more
+     under the names than over the faces, where the statement already leans in). */
+  .risiko-scale-stack::before {
+    content: "";
+    position: absolute;
+    inset: -8px 0 -14px;
+    background: var(--risiko-field-bg);
+    border-radius: 14px;
+    z-index: 0;
+  }
+  /* Everything the reader answers with stands in front of that layer. */
+  .risiko-scale-stack :is(.risiko-scale-field, .risiko-scale-captions, .risiko-scale-guides) { z-index: 1; }
   /* The first two Health Check cards draw their own scale; theirs is the same
      panel, and the guides and faces inside it keep their own ink colours. */
   .health-check-page .print-memoji-container { background: var(--risiko-field-bg, #F1F2F4); border-radius: 14px; }
