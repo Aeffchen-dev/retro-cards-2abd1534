@@ -2312,9 +2312,8 @@ const RetroCards: React.FC = () => {
                               {groups.map((g, gi) => (
                                 <div key={g.key} className="flex flex-col flex-1 min-h-0 gap-2">
                                   <h2
-                                    className="retro-heading shrink-0 pr-12"
+                                    className="retro-heading notes-question shrink-0 pr-12"
                                     lang="de"
-                                    style={{ fontSize: '20px', lineHeight: 1.15, color: '#201C1D' }}
                                   >
                                     {`\u201E${g.title}\u201C`}
                                   </h2>
@@ -2345,8 +2344,7 @@ const RetroCards: React.FC = () => {
                             <>
                               {/* Question text - animated to top left, smaller, with right padding for close icon */}
                               <h2
-                                className="retro-heading mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
-                                style={{ fontSize: '20px', lineHeight: 1.15, color: '#201C1D' }}
+                                className="retro-heading notes-question mb-6 pr-12 animate-[slideUp_0.15s_ease-in-out_forwards]"
                               >
                                 {activeQuestion[slideId]?.label || getSlideQuestion(slideId)}
                               </h2>

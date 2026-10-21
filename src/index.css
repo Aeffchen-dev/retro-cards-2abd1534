@@ -198,7 +198,9 @@
     100% {
       opacity: 1;
       transform: translateY(0);
-      font-size: inherit;
+      /* The headline settles on its own size, not the parent's — the notes header
+         carries --notes-head-size, so the reveal lands exactly on that size. */
+      font-size: var(--notes-head-size, 16px);
     }
   }
 
@@ -243,6 +245,17 @@
 }
 
 .retro-heading {
+  color: #201C1D;
+}
+
+/* The question at the top of notes mode: the big question's own face (it keeps
+   .retro-heading for that), one step under the card's headline — 20px is the
+   largest step up from the 16px it used to read. Both notes headers share it so
+   the size lives in one place. */
+.notes-question {
+  --notes-head-size: 20px;
+  font-size: var(--notes-head-size);
+  line-height: 1.15;
   color: #201C1D;
 }
 
