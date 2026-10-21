@@ -415,15 +415,17 @@
 .workload-label, .workload-percentage, .workload-avatar {
   --workload-ink: color-mix(in srgb, var(--workload-color) 55%, #101010);
 }
-/* The shares ride in their own row just below the rule. The row is a line rather
-   than a box: every number stands on it and grows downwards, so a taller number
-   never crowds the rule it belongs to. It never catches a pointer — the bar below
-   is what a press grabs. */
+/* The shares ride in their own row below the circles. The row is a line rather than
+   a box: every number stands on it and grows downwards, so a taller number never
+   crowds the rule it belongs to. It starts below the circles' own foot, so a number
+   can never cover a Memoji, and it never catches a pointer — the bar is what a
+   press grabs. */
 .workload-shares {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((100cqh - var(--risiko-name-strip)) / 2 + 7px); /* the rule's foot, plus 5px */
+  /* the rule's foot, plus the circle's reach below it, plus 5px */
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 + 21px);
   height: 0;
   z-index: 5;
   pointer-events: none;
@@ -445,14 +447,16 @@
   width: max-content;
   max-width: 60px;
 }
-/* The names ride in their own row just above the rule, standing on it and growing
+/* The names ride in their own row above the circles, standing on it and growing
    upwards, so the row never has to be measured to make room for a longer name.
-   Like the shares' row it never catches a pointer. */
+   It ends above the circles' own head, so a name can never cover a Memoji, and like
+   the shares' row it never catches a pointer. */
 .workload-labels {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc((100cqh + var(--risiko-name-strip)) / 2 + 7px); /* the rule's head, plus 5px */
+  /* the rule's head, plus the circle's reach above it, plus 5px */
+  bottom: calc((100cqh + var(--risiko-name-strip)) / 2 + 21px);
   height: 0;
   z-index: 5;
   pointer-events: none;
