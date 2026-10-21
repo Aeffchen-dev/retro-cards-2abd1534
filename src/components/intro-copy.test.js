@@ -47,7 +47,12 @@ describe("intro card copy", () => {
     expect(lede, "the lede's size moved off its token").toBe("24");
     expect(copy, "the paragraphs' size moved off the body default").toBe("16");
     // Phones: both step down again, and nothing reads smaller than the 12px floor.
-    const phone = css.match(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/)?.[0] ?? "";
+    // Several 767px blocks exist — take the one that carries the Intro card's rules.
+    const phone =
+      [...css.matchAll(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g)]
+        .map((m) => m[0])
+        .find((b) => b.includes(".intro-lede")) ?? "";
+
     expect(phone.match(/#root \.intro-lede \{ font-size: (\d+)px/)?.[1], "phone lede size").toBe("20");
     expect(phone.match(/#root \.intro-copy \{ font-size: (\d+)px/)?.[1], "phone copy size").toBe("14");
   });
