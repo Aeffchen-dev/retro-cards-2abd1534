@@ -593,12 +593,16 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(tsx, "the removed subheadline is back on the card")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
-  test("draws the line between the two Memojis as thick as the slider's rule", () => {
+  test("draws the line between the two Memojis at its own 3px", () => {
+    // the boundary keeps the weight the scale's rule once carried: the rule and
+    // the answer dot now draw with the grey smileys' pen (user: "outline range
+    // slider and dot smiley face same as grey smileys"), while the share bar and
+    // its boundary stay the work-split card's own heavier ink.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*3px/);
+    expect(boundary, "the line between the Memojis changed weight").toMatch(/width:\s*3px/);
     expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
   });
   test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
