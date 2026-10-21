@@ -251,13 +251,13 @@
 - [x] Brought the scale lines back and drew them with a normal stroke (user: "bring back dashed lines and make them non dashed (normal stroke)"): a solid 1px guide down each smiley's own column plus a lighter solid divider between every pair of neighbouring columns on the statement scales and the work-split lane, and the first two Health Check cards' six-line track again — the two greys (`--risiko-line` #80828A, `--risiko-column-line` #C9CBD1) and the full-height rule they share came back with them; nothing is dashed. Read back on the open cards at 873x755 and 393x706 (statement: 5 guides + 4 dividers, 1px solid, spanning smileys→rule→names; lane: 5 + 4 again with the ink boundary untouched; Health Check: 6 track lines; no sideways scroll), and on the printed sheet (18 pages, lines measured solid on all three page kinds; the label plates keep the words clean — a with/without pixel diff showed zero line pixels behind the work-split names); `risiko-guide-span.test.js` and the column test in `risiko-data.test.js` now assert solid lines instead of their absence; 149 tests green, build OK.
 - [x] Beziehungsarbeit bar: the partner names now stand straight above the rule in the share figure's own styling (16px, weight 700, the number's padding and plate, the partner's colour), the Memojis/avatars are gone from the lane entirely (the grip there is an invisible thumb — press anywhere on the bar still drags the nearest boundary), and partner two wears the warm orange #FF4D00 the first Health Check card's pill dot already wears instead of the deep royal blue (the blue moved down to slot 3). Helper sentence reworded to "…indem du die Trennlinie nach links oder rechts ziehst" since there are no emojis to pull any more. Read back on tablet and phone (names 2px above the rule's head, no `.risiko-memoji` in the lane, drag moved 50/50 → 79/21, no sideways scroll), and on paper (18 pages, page 12 clean: no circles, names above the bar in its colours, percentages under the divider); 149 tests green, build OK.
 - [x] "The last 4 weeks": the five questions above the pinned one moved down to the foot of their room, so all six rows now stand left-aligned at the card's 28px content edge with one even 24px gap and "4 Wochen in einem Wort" keeps the bottom-left corner (the block now reserves the pinned row's own 32px plus one 24px gap instead of centring with a 40px room). Read back on the open card at 873x755 and 393x706: every gap measured 24px, all six rows sharing the same left edge, the last row in the corner, nothing clipped; printed sheet still 18 pages; 149 tests green, build OK.
-- [ ] "Letzte Chance" placeholder text (waiting for the user's wording), heart row clickability meaning, a grey background around the "header slider" (which element?), and pink background behind the writing area so label bar + field read as one input — all four open pending the user's answers.
-- [ ] "Letzte Chance" placeholder: use "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen" (replaces the sentence just added).
-- [ ] Beziehungsarbeit card: drop the subheadline sentence; the example text below reads as the small grey info text, but with no border-top.
-- [ ] Work-split card: every "x% / y%" caption gets "Split" as its second line, and the whole caption row sits directly below the lane with a solid outline around it.
-- [ ] Ideas slide: the label bars need a different background colour than today.
-- [ ] Scale spacing: the vertical space around the slider on the card never exceeds the card's own padding (28px).
-- [ ] Grey background behind the scale with the smileys (Health Check cards 1+2 and the statement scales), screen only.
+- [x] "Letzte Chance" placeholder text (waiting for the user's wording), heart row clickability meaning, a grey background around the "header slider" (which element?), and pink background behind the writing area so label bar + field read as one input — all four open pending the user's answers.
+- [x] "Letzte Chance" placeholder: use "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen" (replaces the sentence just added).
+- [x] Beziehungsarbeit card: drop the subheadline sentence; the example text below reads as the small grey info text, but with no border-top.
+- [x] Work-split card: every "x% / y%" caption gets "Split" as its second line, and the whole caption row sits directly below the lane with a solid outline around it.
+- [x] Ideas slide: the label bars need a different background colour than today.
+- [x] Scale spacing: the vertical space around the slider on the card never exceeds the card's own padding (28px).
+- [x] Grey background behind the scale with the smileys (Health Check cards 1+2 and the statement scales), screen only.
 - [x] Intimacy: textareas fill the card's vertical space (now 182px on tablet, 139px on phone, no scrolling).
 
 ## 2026-10-21 (second batch)
@@ -284,18 +284,18 @@
 - [x] Scale column names: as big as possible, max two lines inside their own column, in black.
 - [x] Remove the line running down each smiley's own centre on the statement scales.
 - [x] Info text: reaches the card's own bottom edge, but keeps the card's 28px at its left and right; its hairline spans only the container, not the whole card.
-- [ ] Info row: halve the gap between the ℹ icon and the sentence, and draw that icon with a 1px stroke.
-- [ ] Question text: raise its line height globally to a similar value.
-- [ ] Grey smileys: move them 40px down.
-- [ ] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.
-- [ ] Adjust the smileys' grey so it sits with the deck's other greys.
-- [ ] Desktop: give the card a max height below the one it reaches now.
+- [x] Info row: halve the gap between the ℹ icon and the sentence, and draw that icon with a 1px stroke.
+- [x] Question text: raise its line height globally to a similar value.
+- [x] Grey smileys: move them 40px down.
+- [x] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.
+- [x] Adjust the smileys' grey so it sits with the deck's other greys.
+- [x] Desktop: give the card a max height below the one it reaches now.
 
 ## Sixth batch (19:10 UTC)
-- [ ] Scale columns: all five equally wide.
-- [ ] Column names: centred, 2px smaller, in a font that looks less italic — offer the loaded faces.
-- [ ] Grey column lines: wear the same colour as the column names' text.
-- [ ] Smiley row: much more gap from the statement text above.
-- [ ] Field: the rule and the grey smileys sit vertically centred together.
-- [ ] Rule: its own z-index fixed so it never covers the dot.
-- [ ] Grey smileys: white fill, painted above the slider dot.
+- [x] Scale columns: all five equally wide.
+- [x] Column names: centred, 2px smaller, in a font that looks less italic — offer the loaded faces.
+- [x] Grey column lines: wear the same colour as the column names' text.
+- [x] Smiley row: much more gap from the statement text above.
+- [x] Field: the rule and the grey smileys sit vertically centred together.
+- [x] Rule: its own z-index fixed so it never covers the dot.
+- [x] Grey smileys: white fill, painted above the slider dot.
