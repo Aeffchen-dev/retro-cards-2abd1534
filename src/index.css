@@ -1761,6 +1761,13 @@ textarea.bg-retro-post-it:focus,
   letter-spacing: -0.02em;
 }
 
+/* The scale's column names read in the headline family's own upright companion:
+   the smallest text on the card, so it keeps a square-cut face of its own against
+   the global #root typography — a plain class rule loses to #root *. */
+#root .risiko-scale-caption {
+  font-family: "Stack Sans Text", "Hanken Grotesk", "Figtree", Arial, sans-serif;
+}
+
 
 /* Word-by-word reveal for the random question headline */
 @keyframes question-word-enter {
