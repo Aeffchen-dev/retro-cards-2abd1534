@@ -8,7 +8,7 @@ const card = src.slice(src.indexOf("case SLIDE_INTRO:"), src.indexOf("case SLIDE
 // Supplied verbatim by the user on 2026-10-21; only "machts" -> "macht's" and the
 // doubled full stop after "erzählt habt" were tidied.
 const LEDE =
-  "Eure monatliche Date Night, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern";
+  "Eure monatliche Beziehungsweise Check-in Routine, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern";
 const PARAGRAPHS = [
   "Macht daraus eure Date Night, schnappt euch euer Lieblingsgetränk und macht's euch gemütlich.",
   "Nehmt euch Zeit füreinander und connected euch bei Deep Talks über das, was euch am anderen fasziniert und euch verbindet. Bleibt neugierig dafür, was euch jeweils wirklich bewegt, stärkt, Angst macht und was ihr euch vielleicht noch nie erzählt habt.",
@@ -110,5 +110,20 @@ describe("intro card on desktop", () => {
     expect(wide.match(/min-height: (\d+)px/)?.[1], "the 320px cap waits for a shorter window than it fits").toBe("860");
     expect(narrow.match(/min-height: (\d+)px/)?.[1], "the 288px cap waits for a shorter window than it fits").toBe("905");
     expect(css.indexOf(narrow), "the narrower cap must be declared after the wider one").toBeGreaterThan(css.indexOf(wide));
+  });
+});
+
+describe("intro card on a full-height phone", () => {
+  const tall =
+    [...css.matchAll(/@media \(max-width: 767px\) and \(min-height: (\d+)px\) \{[\s\S]*?\n\}/g)]
+      .map((m) => m[0])
+      .find((b) => b.includes(".intro-block")) ?? "";
+
+  test("tightens the gaps so the longest opening still ends inside the card", () => {
+    expect(tall, "the full-height-phone gap block is gone").toContain(".intro-copy");
+    expect(tall.match(/min-height: (\d+)px/)?.[1], "the gap block starts below the short-window ceiling").toBe("691");
+    expect(tall.match(/#root \.intro-block \{ gap: (\d+)px/)?.[1], "block gap").toBe("16");
+    expect(tall.match(/#root \.intro-copy \{ gap: (\d+)px/)?.[1], "paragraph gap").toBe("10");
+    expect(tall.match(/font-size: (\d+)px/)?.[1], "the gap block must not shrink any text").toBeFalsy();
   });
 });

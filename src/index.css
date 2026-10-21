@@ -1592,4 +1592,11 @@ textarea.bg-retro-post-it:focus,
   #root .intro-lede { font-size: 20px; line-height: 1.12; }
   #root .intro-copy { font-size: 14px; line-height: 19px; gap: 10px; }
 }
+/* Full-height phones: the opening's longest wording needs about 553px while the
+   card's content box holds about 537px, so the gaps tighten here too — the
+   short-window rules above cover windows under 691px, this one the rest. */
+@media (max-width: 767px) and (min-height: 691px) {
+  #root .intro-block { gap: 16px; }
+  #root .intro-copy { gap: 10px; }
+}
 
