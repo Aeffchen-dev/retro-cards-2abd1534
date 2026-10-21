@@ -1675,10 +1675,12 @@ const RetroCards: React.FC = () => {
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
-              <h2 className="retro-heading w-full max-w-[320px]"><RevealText text="This monthly date night makes you click, feel heard and loved upgrades your relationship" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full max-w-[320px]"><RevealText text="Stärkt eure Connection" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
               <div className="flex flex-col gap-4 w-full max-w-[320px] retro-body-copy">
 
-                <p>Eine monatliche Date Night, die eure Connection stärkt, Deep Talk der euch verbunden fühlen lässt und ganz nebenbei ein Upgrade für eure Beziehungsqualität.</p>
+                <p>Retro Cards ist euer monatlicher Check-in für eure Beziehung. Nehmt euch Zeit füreinander, sprecht ehrlich über das, was euch bewegt, und stärkt, was euch verbindet.</p>
+                <p>Macht daraus euren Date-Abend. Schnappt euch euer Lieblingsgetränk, macht’s euch gemütlich und genießt ein gutes Gespräch.</p>
+                <p>Hört einander zu, bleibt neugierig und denkt immer daran: Ihr seid ein Team.</p>
               </div>
             </div>
           </div>
