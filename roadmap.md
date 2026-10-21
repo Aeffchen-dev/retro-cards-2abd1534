@@ -266,3 +266,6 @@
 - [x] Notes CTA label: "Macht Notizen" -> "Notizen öffnen".
 - [x] Health Check cards 1+2: the gap between the notes CTA and the info text must match the rest of the deck.
 - [x] Intro card: make the headline font as big as possible.
+
+## 2026-10-21 (third batch)
+- [x] Setup card: back to its old measures (88% of the slide); every other card still fills the height.
