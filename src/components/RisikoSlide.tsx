@@ -720,7 +720,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
       {page.statements.length === 0 && (
         <>
-          <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
+          <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{softHyphenate(RISIKO_ALLOCATION_HEADING)}</h2>
           <p className="risiko-allocation-subheading shrink-0" lang="de">{RISIKO_ALLOCATION_SUBHEADING}</p>
           <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
         </>
