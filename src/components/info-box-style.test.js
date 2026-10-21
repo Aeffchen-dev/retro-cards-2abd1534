@@ -18,7 +18,7 @@ describe("info box appearance", () => {
   });
 
   test("the row draws a grey border above its own text and no fill", () => {
-    const rule = css.slice(css.indexOf(".retro-info-row {"), css.indexOf("}", css.indexOf(".retro-info-row {")));
+    const rule = css.slice(css.lastIndexOf(".retro-info-row {"), css.indexOf("}", css.lastIndexOf(".retro-info-row {")));
     expect(rule, "a grey hairline sits above the sentence").toMatch(
       /border-top:\s*1px solid var\(--retro-info-rule\);/,
     );
