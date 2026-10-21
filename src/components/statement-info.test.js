@@ -26,7 +26,7 @@ describe("statement card info sentence", () => {
 
   test("puts the notes button before the info box on every Health Check page", () => {
     const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
-    const cta = footer.indexOf("Macht Notizen");
+    const cta = footer.indexOf("Notizen öffnen");
     const info = footer.indexOf("RISIKO_STATEMENT_INFO");
     expect(cta, "the notes button is missing from the footer").toBeGreaterThan(-1);
     expect(info, "the info sentence is missing from the footer").toBeGreaterThan(-1);

@@ -1440,8 +1440,8 @@ const RetroCards: React.FC = () => {
               '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
               <div className="health-check-guides" aria-hidden="true">
-                {Array.from({ length: 6 }, (_, i) => (
-                  <span key={i} className="health-check-guide" style={{ top: hcSpanPoint((i - 0.5) / 4) }} />
+                {Array.from({ length: 5 }, (_, i) => (
+                  <span key={i} className="health-check-guide" style={{ top: hcSpanPoint((i + 0.5) / 4) }} />
                 ))}
               </div>
               <div className="relative h-full print-emoji-scale">
@@ -1510,10 +1510,10 @@ const RetroCards: React.FC = () => {
             {/* The notes button comes first and the helper sentence reads under it.
                 The stack is anchored to the card's own padding, so it grows upward
                 when the helper wraps to another line on a narrow card. */}
-            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-2" style={{ left: '28px', right: '28px', bottom: '28px' }}>
+            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-[28px]" style={{ left: '28px', right: '28px', bottom: '28px' }}>
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
-                label={editModeSlides[cardId] ? "Fertig" : "Macht Notizen"}
+                label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
                 accent={pillColorOf(cardId)}
                 onClick={() => toggleEditMode(cardId)}
               />
@@ -2410,7 +2410,7 @@ const RetroCards: React.FC = () => {
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
-                          label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
+                          label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
                           accent={pillColorOf(slideId)}
                           iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : undefined}
                           onClick={() => toggleEditMode(slideId)}
