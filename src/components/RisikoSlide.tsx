@@ -755,7 +755,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           The info sentence comes first, straight under the slider, so it reads as
           the scale's own note and the notes button closes the card. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
-        <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : "Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
 
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
       </div>
