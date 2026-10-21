@@ -55,4 +55,16 @@ describe("Setup card keeps yesterday's measures and proportion", () => {
     const block = css.match(/\.retro-setup-card \{([\s\S]*?)\n  \}/)?.[1] ?? "";
     expect(block, "the ceiling is not part of the height's min()").toContain("var(--setup-cap)");
   });
+
+  test("on a desktop window every card stops at 88% of the stage, as it did before it grew", () => {
+    const desktop = css.slice(css.indexOf("@media screen and (min-width: 1024px)"));
+    const block = desktop.match(/\.retro-card-container \{([\s\S]*?)\n  \}/)?.[1] ?? "";
+    expect(block, "the desktop ceiling for the cards is missing").toBeTruthy();
+    /* The card is measured against the stage the slide hands it, not against the
+       window (user: "on desktop the card is way bigger on then background than
+       yeasterday" — and the answer to "how much smaller?" was "Wie gestern:
+       88 % der Bühne"). */
+    expect(block, "the card no longer stops at 88% of the stage").toMatch(/max-height:\s*min\(\s*88%/);
+    expect(block, "the card is measured off the window again").not.toMatch(/88vh/);
+  });
 });

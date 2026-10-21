@@ -296,12 +296,16 @@
      scrolls sideways rather than growing, so clip the sideways direction. */
   overflow-x: hidden;
 }
-/* On a desktop window the card no longer stretches over the whole height of the
-   slide: it stops at 88% of the window, and at 940px at the latest, so a tall
-   monitor shows a card of a sane proportion instead of a banner. */
+/* On a desktop window the card stops where it did before it grew to fill the
+   slide: at 88% of the stage the slide gives it (user: "on desktop the card is
+   way bigger on then background than yeasterday", then "Wie gestern: 88 % der
+   Bühne"), and at 940px at the latest so a very tall monitor still shows a card
+   of a sane proportion instead of a banner. The stage, not the window, is what
+   the card is measured against — the deck's own chrome and the pill's row above
+   it are already outside it. */
 @media screen and (min-width: 1024px) {
   .retro-card-container {
-    max-height: min(88vh, 940px);
+    max-height: min(88%, 940px);
   }
 }
 
