@@ -4,6 +4,8 @@ import { readFileSync } from "node:fs";
 const data = readFileSync(new URL("./risiko-data.ts", import.meta.url), "utf8");
 const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
 const deck = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
+// The footer's own div: the first "risiko-footer" in the file is a querySelector string.
+const FOOT_AT = slide.indexOf("risiko-footer screen-only");
 
 /** The sentence the user wrote for every Health Check statement card's info box. */
 const INFO = "Die Aussage beschreibt, was eine glückliche Beziehung ausmacht. Gleich sie mit deiner aktuellen Beziehung ab: Trifft die Aussage da auch zu? Schiebe den schwarzen Kreis nach links oder rechts zur passenden Antwort. Welches Gefühl im Slider dominiert am Ende als Durchschnitt deiner Antworten?";
