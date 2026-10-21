@@ -338,7 +338,16 @@
    one column. The question keeps only a small gap to the sentence; the sentence
    carries the card's usual gap down to the work-split lane, so the fields still
    start where the statement cards' do. */
-.risiko-allocation-statement { margin-bottom: 10px; }
+.risiko-allocation-statement {
+  margin-bottom: 10px;
+  /* This headline is a question, so it may hyphenate like the deck's other
+     questions: "Beziehungsarbeit" is the longest word in the deck and at the
+     question's own size it is wider than a phone card's text column, where the
+     statement rule (never break inside a word) would push it past the card edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
 .risiko-allocation-examples {
   margin: 0 0 var(--risiko-scale-pad);
   font-size: 12px;
