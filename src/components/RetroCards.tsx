@@ -42,7 +42,7 @@ const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTIN
 // The first two Health Check cards share a centred face column. A taller span
 // leaves the larger faces breathing room. Faces and the Memoji that anchors to a
 // face all read this one geometry.
-const HC_FACE = 34;
+const HC_FACE = 44;
 const HC_SPAN_PCT = 84;
 const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
 /** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
