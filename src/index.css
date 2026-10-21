@@ -355,7 +355,7 @@
      carries the card's gap down to the split bar. */
   .risiko-allocation-page .risiko-allocation-statement { margin-bottom: 6px; }
   .risiko-allocation-page .risiko-allocation-subheading {
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: var(--risiko-scale-pad);
   }
 }
@@ -374,21 +374,22 @@
   hyphens: auto;
   -webkit-hyphens: auto;
 }
-/* The question's second half rides under the first as a smaller headline in the
-   same display face: it carries .risiko-statement, so only its size and gaps are
-   its own, and — like the question above it — it may hyphenate. */
+/* The question's second half rides under the first as plain body text — the
+   deck's reading voice, not the question's display face — and the fixed
+   sentence of examples below it reads at that very same size. */
 .risiko-allocation-subheading {
-  font-size: 22px;
-  line-height: 1.1;
+  font-size: 16px;
+  line-height: 22px;
   margin: 0 0 10px;
+  color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
 }
 .risiko-allocation-examples {
   margin: 0 0 var(--risiko-scale-pad);
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 16px;
+  line-height: 22px;
   color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
@@ -1334,10 +1335,12 @@ textarea.bg-retro-post-it:focus,
     line-height: 1.05 !important;
   }
 
-  /* The work-split card's smaller headline keeps its step down on paper too. */
-  .risiko-allocation-subheading {
-    font-size: 1.15rem !important;
-    line-height: 1.1 !important;
+  /* The work-split card's second half and its examples read as body text on
+     paper too, at the size the deck's other body copy uses. */
+  .risiko-allocation-subheading,
+  .risiko-allocation-examples {
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
   }
 
   .retro-label {
