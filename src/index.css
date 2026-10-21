@@ -946,6 +946,20 @@
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;
 }
+/* The rule stops exactly where the face's own outline starts: a plate the size of
+   the drawn circle (r=10 of a 24 grid → 18.3px of a 44px dot, plus its stroke) so
+   no pale ring shows around the smiley — the line simply meets its edge. */
+.risiko-expression-point::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--risiko-marker-size) * 0.87);
+  height: calc(var(--risiko-marker-size) * 0.87);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--risiko-field-bg);
+}
 
 /* The draggable dot never shows a focus outline. */
 .risiko-thumb:focus,
