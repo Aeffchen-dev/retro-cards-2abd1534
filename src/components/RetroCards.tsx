@@ -41,7 +41,7 @@ const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTIN
 // dashed dividers. A taller span leaves the larger faces breathing room.
 // Faces, guides and the Memoji that anchors to a face all read this one geometry.
 const HC_FACE = 34;
-const HC_SPAN_PCT = 80;
+const HC_SPAN_PCT = 84;
 const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
 /** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
 const hcSpanPoint = (f: number) =>
@@ -1438,9 +1438,9 @@ const RetroCards: React.FC = () => {
               '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
               <div className="health-check-guides" aria-hidden="true">
-                {Array.from({ length: 4 }, (_, i) => (
+                {Array.from({ length: 6 }, (_, i) => (
                   <span key={i} className="health-check-guide" style={{
-                    top: hcSpanPoint((i + 0.5) / 4),
+                    top: hcSpanPoint((i - 0.5) / 4),
                   }} />
 
                 ))}
