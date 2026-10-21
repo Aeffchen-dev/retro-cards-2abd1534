@@ -536,19 +536,24 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(sentence.split(", ").length).toBe(8);
     expect(new Set(sentence.replace("Beziehungsarbeit heißt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(8);
   });
-  test("reads in the card's own ink at the same size as the headline's second half", () => {
+  test("reads as the deck's small grey info text, with no hairline above it", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const blocks = [...css.matchAll(/\.risiko-allocation-examples \{[^}]*\}/g)].map((m) => m[0]);
     const examples = blocks.find((b) => /color:/.test(b)) ?? "";
-    const subheading = css.match(/^\.risiko-allocation-subheading \{[^}]*\}/m)?.[0] ?? "";
-    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     expect(examples, "the examples rule is gone").toBeTruthy();
-    expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
-    expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
-    expect(subheading, "the headline's second half rule is gone").toBeTruthy();
-    expect(subheading, "the headline's second half no longer reads as body text").toMatch(/font-size:\s*14px/);
-    expect(examples, "the examples no longer match the headline's second half").toMatch(/font-size:\s*14px/);
-    expect(tsx, "the headline's second half wears the question's display face again")
+    // The sentence wears the same grey and the same size as the deck's ℹ helper
+    // rows, so it reads as a plain line under the question rather than a second
+    // info box — which is why it carries no hairline above it either.
+    expect(examples, "the examples do not read in the info text's grey").toMatch(/color:\s*var\(--retro-info-text\)/);
+    expect(examples, "the examples do not read at the info text's size").toMatch(/font-size:\s*16px/);
+    expect(examples, "the examples wear a hairline above them again").not.toMatch(/border-top/);
+    // On a phone or a tablet the same sentence drops to the deck's smallest size.
+    const small = css.match(/@media \(max-width: 1023px\) \{[\s\S]*?\.risiko-allocation-examples \{[^}]*\}/)?.[0] ?? "";
+    expect(small, "the examples no longer step down on small windows").toMatch(/font-size:\s*12px/);
+    // The subheadline the user took away stays away: the card carries its question
+    // and this one sentence, nothing in between.
+    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    expect(tsx, "the removed subheadline is back on the card")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
   test("draws the line between the two Memojis as thick as the slider's rule", () => {
