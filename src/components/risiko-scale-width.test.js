@@ -13,7 +13,7 @@ const MARKER_SIZE = Number(slide.match(/const MARKER_SIZE = (\d+);/)?.[1] ?? 0);
 // exactly one handle-radius from the container's own edges, so the handle still
 // lands fully visible on them.
 test("the smileys fill the whole width the handle travels", () => {
-  expect(MARKER_SIZE, "the handle's size is not where the scale expects it").toBe(32);
+  expect(MARKER_SIZE, "the handle's size is not where the scale expects it").toBe(40);
   const inset = scaleEndInset(MARKER_SIZE);
   expect(inset, "the handle would hang off the card's edge").toBe(MARKER_SIZE / 2);
   // one radius at each end, and everything between the two is the scale's own span
