@@ -11,13 +11,14 @@ describe("Feedback headline question", () => {
     expect(fields).toContain('["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
   });
 
-  test("keeps the saved answers of all four questions", () => {
+  test("keeps the saved answers of the three questions it asks", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
-    expect(fields).toContain('"idea"');
     expect(fields).toContain('"unspoken"');
     expect(fields).toContain('"Dafür möchte ich Danke sagen"');
-    expect(fields).toContain('"Das wünsche ich mir"');
+    // "Das wünsche ich mir" moved to the Vorhaben card and is no longer asked here.
+    expect(fields).not.toContain('"idea"');
+    expect(fields).not.toContain("Das wünsche ich mir");
   });
 
   test("shows the sentence as grey placeholder on screen and as a line on the printed page", () => {
@@ -39,12 +40,9 @@ describe("Question moved from Vorhaben to Feedback", () => {
     expect(slide).toContain("reflectionTexts[key]");
   });
 
-  test("no longer asks it on the Vorhaben card, which keeps its two prompts", () => {
+  test("no longer asks it on the Vorhaben card", () => {
     expect(vorhaben).not.toContain("unspoken");
     expect(vorhaben).not.toContain("Gab es etwas");
-    expect(vorhaben.match(/^\s+\["/gm)?.length).toBe(2);
-    expect(vorhaben).toContain('"plans"');
-    expect(vorhaben).toContain('"experiment"');
   });
 
   test("carries an answer already written on Vorhaben over to Feedback", () => {
@@ -56,7 +54,27 @@ describe("Question moved from Vorhaben to Feedback", () => {
     // ...and the old copy is dropped so the same text is not kept twice.
     const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
     expect(notesInit).toContain("delete oldVorhaben.unspoken");
+  });
+});
+
+describe("Question moved from Feedback to Vorhaben", () => {
+  test("asks \"Das wünsche ich mir\" on the Vorhaben card", () => {
+    expect(vorhaben).toContain('["idea", "Das wünsche ich mir"]');
+    expect(vorhaben).toContain('"plans"');
+    expect(vorhaben).toContain('"experiment"');
+    expect(vorhaben.match(/^\s+\["/gm)?.length).toBe(3);
+  });
+
+  test("carries an answer already written on Feedback over to Vorhaben", () => {
+    const notesInit = src.slice(src.indexOf("const [editModeNotes"), src.indexOf("const personPlaceholder"));
+    // The old Feedback answer is copied into the Vorhaben notes...
+    expect(notesInit).toContain("STORAGE_KEYS.REFLECTION_TEXTS");
+    expect(notesInit).toContain("?.idea");
+    expect(notesInit).toContain("here.idea = savedWish");
+    // ...and Feedback stops holding its own copy of it.
+    const init = src.slice(src.indexOf("const [reflectionTexts"), src.indexOf("const [editModeNotes"));
+    expect(init).toContain("delete (texts as any).idea");
     // Clearing all data clears the moved answer too.
-    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', idea: '', unspoken: '' })");
+    expect(src).toContain("setReflectionTexts({ nice: '', thanks: '', unspoken: '' })");
   });
 });
