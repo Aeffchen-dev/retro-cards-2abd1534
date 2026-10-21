@@ -21,3 +21,4 @@
 - [x] Setup card back to yesterday's caps: at most 500px wide and 720px tall, always in that 500:720 proportion (measured 469×674 on an 873×755 window).
 - [x] "Kamera öffnen": the camera glyph reads light orange (#FFE0B5) on the slide's purple tile — pale enough to clear 3.5:1 there.
 - [x] Phones: the scale column names are as big as their column can hold in three lines — `min(calc(100cqw / 5 / 4.35), 18px)` (13.3px on a 393px phone, 9.9px on a 320px one, every name ≤3 lines, no word cut); tablet/desktop/paper keep their two-line size. 176 checks pass, print 18 pages.
+- [x] Phones: the scale column names now read the helper sentence's size (12px, the app's floor) instead of the column-scaled three-line size; tablet/desktop/paper untouched. 176 checks pass, print 18 pages.
