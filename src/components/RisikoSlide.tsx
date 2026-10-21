@@ -146,7 +146,12 @@ const MorphFace = ({ value }: { value: number }) => {
   // draw, only flipped — one clean trace, exactly like the header smileys.
   const path = mouthPath(mouth);
   return (
-    <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
+    // The zoomed window: the same 24-grid drawing seen through a 20-unit square
+    // centred on the face, so the circle and every feature land 20% bigger. Its
+    // own stroke spills about a pixel past the 44px box, so the box must not clip it.
+    <svg width={MARKER_SIZE} height={MARKER_SIZE} fill="none"
+      viewBox={`${FACE_VIEW_OFF} ${FACE_VIEW_OFF} ${FACE_VIEW} ${FACE_VIEW}`}
+      style={{ overflow: "visible" }}
       stroke={INK} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not
