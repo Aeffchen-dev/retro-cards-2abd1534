@@ -261,8 +261,8 @@
 - [ ] Intimacy: textareas fill the card's vertical space (check the phone, where each field measured only 118px).
 
 ## 2026-10-21 (second batch)
-- [ ] Smiley guide lines: start them below the smileys (Health Check cards 1+2).
-- [ ] Vertical gaps: let the content's gaps fill the card's height.
-- [ ] Notes CTA label: "Macht Notizen" -> "Notizen öffnen".
-- [ ] Health Check cards 1+2: the gap between the notes CTA and the info text must match the rest of the deck.
-- [ ] Intro card: make the headline font as big as possible.
+- [x] Smiley guide lines: start them below the smileys (Health Check cards 1+2).
+- [x] Vertical gaps: let the content's gaps fill the card's height.
+- [x] Notes CTA label: "Macht Notizen" -> "Notizen öffnen".
+- [x] Health Check cards 1+2: the gap between the notes CTA and the info text must match the rest of the deck.
+- [x] Intro card: make the headline font as big as possible.
