@@ -316,3 +316,6 @@
 - [x] answer dot (range slider) z-index to top of the faces
 - [x] range slider snaps (to the five face anchors)
 - [x] info ℹ icon stroke matches the answer dot circle's stroke (3px)
+- [x] no snapping on the statement scale (user reverted the snap)
+- [x] slider rule in the text's grey (#6E7078)
+- [x] grey smileys' white halo restored
