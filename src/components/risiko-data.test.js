@@ -846,19 +846,18 @@ describe("the statement's own type", () => {
   test("paints the display face at its regular weight", () => {
     const questionRule = css.match(/#root \.question-font,[\s\S]*?\n\}/)?.[0] ?? "";
     expect(questionRule, "the shared question rule is missing").toBeTruthy();
-    // The big question wears the one face the deck ships itself — the self-hosted
-    // "Stack Sans Notch Local" file — and no family a reader's device might happen to
-    // have installed, so the headline can never fall back to a different typeface
-    // (user: "restore the font family from 2 days ago", answered "pin it to the
-    // bundled face"). Its own weight token stays the regular 400.
+    // The big question paints the display face the device provides first —
+    // "Stack Sans Notch" — and falls back to the bundled "Stack Sans Notch
+    // Local" file only where no such face is installed (user: "headline nicht
+    // die mitgelieferte Schrift"). Its own weight token stays the regular 400.
     expect(questionRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the big question's family moved")
-      .toBe('"Stack Sans Notch Local", sans-serif');
+      .toBe('"Stack Sans Notch", "Stack Sans Notch Local", sans-serif');
     expect(questionRule.match(/font-weight:\s*(\d+)/)?.[1], "the big question's weight moved")
       .toBe("400");
     // the plain headline rule agrees, so nothing above it can pull a system face back in
     const headingRule = css.match(/\.retro-title,\n\.retro-heading \{[\s\S]*?\n\}/)?.[0] ?? "";
     expect(headingRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the headline rule's family moved")
-      .toBe('"Stack Sans Notch Local", sans-serif');
+      .toBe('"Stack Sans Notch", "Stack Sans Notch Local", sans-serif');
   });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")
