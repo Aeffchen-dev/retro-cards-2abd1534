@@ -594,8 +594,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           {/* The lane keeps the drawn columns the statement scales have: solid grey
               guides down each smiley's column and lighter dividers between every pair
               of neighbouring ones, the lane's own edges left bare. They stop above the
-              quiet strip at the lane's foot, and the bar, the circles and the names and
-              share figures printed on it all paint on top. */}
+              quiet strip at the lane's foot, and the bar, the names and the share
+              figures printed on it all paint on top. */}
           <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
             style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {columnEdges(FACES.length).map((at) => (
@@ -618,8 +618,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           </div>
           {/* Each boundary carries its own solid ink line, standing from the lane's
               top edge down to the names' strip and centred in the 4px gap the two
-              circles part to either side of it. Painted after the bar, so the line
-              reads over the colours; the circles draw above it. */}
+              colour runs part to either side of it. Painted after the bar, so the
+              line reads over the colours. */}
           <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {segments.slice(0, -1).map((segment, i) => (
               <span key={`bl${i}`} className="workload-boundary absolute" style={{ left: splitAt(i) }} />
@@ -656,36 +656,29 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             const value = segment?.end ?? 100;
             const min = segment?.start ?? 0;
             const max = segments[boundaryIndex + 1]?.end ?? 100;
-            // One number for width and height, so the avatar circle can never be
+            // One number for width and height, so the invisible grip can never be
             // squeezed into an oval when the lane gets crowded.
             const slot = `min(${SLOT}px, calc(100cqw / ${partners.length}))`;
-            // Every partner reserves exactly one band: its circle plus room for its
-            // centred name — adjacent circles sit exactly one band apart, and each
-            // circle steps 2px away from the boundary it marks, so neighbouring
-            // circles keep a 4px gap between them. The band may never grow past the
-            // share of the lane each partner can actually use, or the circles would
+            // Every partner reserves exactly one band: its grip plus room for its
+            // centred name — adjacent grips sit exactly one band apart, and each
+            // grip steps 2px away from the boundary it marks, so neighbouring
+            // grips keep a 4px gap between them. The band may never grow past the
+            // share of the lane each partner can actually use, or the grips would
             // run out of room to move.
             const li = `calc(${band} * ${i})`;
             const ri = `calc(${band} * ${partners.length - i - 1})`;
             const vars = {
               "--workload-li": li, "--workload-ri": ri, "--workload-slot": slot,
               "--workload-v": String(value), "--workload-band": band,
-              // The circle's 2px step away from its own boundary: every circle but
+              // The grip's 2px step away from its own boundary: every grip but
               // the last sits just left of the boundary it rides, the last one just
               // right of it — together they open the 4px gap the split line centres in.
               "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
             } as React.CSSProperties;
-            const memojiEl = (
-              <span className="risiko-memoji workload-avatar flex items-center justify-center w-full h-full overflow-hidden rounded-full text-lg leading-none" aria-hidden="true">{p.emoji}</span>
-            );
-            if (readOnly) {
-              return (
-                <div key={p.key} className={`absolute z-10 workload-color-${i % 8}`}
-                  style={{ ...vars, width: slot, height: slot, top: "calc((100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100 + var(--workload-shift, 0px))` }}>
-                  {memojiEl}
-                </div>
-              );
-            }
+            // The lane wears no avatar any more: on paper the split reads from the
+            // rule, the names standing above it and the shares standing below, so
+            // the print path has nothing left to draw here.
+            if (readOnly) return null;
             return (
               <SliderPrimitive.Root key={p.key}
                 className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 pointer-events-none"
@@ -699,10 +692,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 }}>
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
-                  className={`risiko-thumb cursor-ew-resize rounded-full pointer-events-auto workload-color-${i % 8}`}
-                  style={{ width: slot, height: slot, transform: "translateX(var(--workload-shift, 0px))" } as React.CSSProperties}>
-                  {memojiEl}
-                </SliderPrimitive.Thumb>
+                  className="risiko-thumb cursor-ew-resize rounded-full pointer-events-auto"
+                  style={{ width: slot, height: slot, transform: "translateX(var(--workload-shift, 0px))" } as React.CSSProperties} />
               </SliderPrimitive.Root>
             );
           })}
@@ -793,7 +784,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             It is the whole block — not the bare sentence — that stands the card's
             own padding under the button. */}
         <div className="risiko-footer-note w-full min-w-0 flex flex-col gap-1">
-          <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
+          <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du die Trennlinie nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
           {page.personKeys.length > 0 && <SplitCaptions />}
         </div>
       </div>

@@ -256,11 +256,22 @@ describe("grey columns", () => {
       "the names do not stand above the rule").toBe(true);
     expect(/top:\s*calc\(100cqh - var\(--risiko-name-strip\) \+ \d+px\)/.test(below),
       "the shares do not stand below the rule").toBe(true);
-    // The name, the number and the circle's ring all wear the partner's plain colour.
+    // The name and the number both wear the partner's plain colour, and the name
+    // wears the number's own styling too — the same size, weight and plate — so the
+    // two rows read as one pair.
     expect(/color:\s*var\(--workload-color\)/.test(label), "the name does not use the partner's colour").toBe(true);
     expect(/color:\s*var\(--workload-color\)/.test(share), "the share does not use the partner's colour").toBe(true);
-    const avatar = row("risiko-memoji\\.workload-avatar");
-    expect(/box-shadow:\s*0 0 0 1px var\(--workload-color\)/.test(avatar), "the circle's ring is not the partner's colour at 1px").toBe(true);
+    for (const prop of ["font-size: 16px", "line-height: 17px", "font-weight: 700", "padding: 0 3px"]) {
+      expect(label, `the name does not read like the number (${prop})`).toContain(prop);
+      expect(share, `the number lost its own styling (${prop})`).toContain(prop);
+    }
+    // The names stand straight on the rule's head: the row keeps only a few pixels of
+    // air, never the room an avatar circle used to need.
+    const nameGap = Number(above.match(/\/ 2 \+ (\d+)px/)?.[1]);
+    expect(nameGap, "the names do not stand on the rule's head").toBeLessThanOrEqual(6);
+    // No avatar is drawn on the lane any more — the user asked to remove the Memojis.
+    expect(css, "an avatar circle is still styled on the lane").not.toContain("workload-avatar");
+    expect(slide, "an avatar is still rendered on the lane").not.toContain("workload-avatar");
     // A name longer than the row's fixed width breaks at its own words onto a second
     // line; a number never has to, because "100%" is already the widest it gets.
     expect(label).not.toMatch(/white-space:\s*nowrap/);
@@ -325,8 +336,11 @@ describe("work-split partner colours", () => {
   const colors = Array.from({ length: 8 }, (_, i) =>
     css.match(new RegExp(`--workload-partner-${i}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
   );
-  test("the second partner wears a deep blue, not a second green", () => {
-    expect(colors[1]).toBe("#0B5CD8");
+  test("the second partner wears the Health Check card's own orange, not a second green", () => {
+    // the warm orange the first Health Check card's pill dot already wears
+    expect(colors[1]).toBe("#FF4D00");
+    // the deep royal blue it used to wear now only shows from the fourth partner up
+    expect(colors[3]).toBe("#0B5CD8");
   });
   test("no two partners share a colour", () => {
     expect(colors).toHaveLength(8);
