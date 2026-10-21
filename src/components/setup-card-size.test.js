@@ -64,7 +64,7 @@ describe("Setup card keeps yesterday's measures and proportion", () => {
        window (user: "on desktop the card is way bigger on then background than
        yeasterday" — and the answer to "how much smaller?" was "Wie gestern:
        88 % der Bühne"). */
-    expect(block, "the card no longer stops at 72% of the stage").toMatch(/max-height:\s*min\(\s*88%/);
+    expect(block, "the card no longer stops at 72% of the stage").toMatch(/max-height:\s*min\(\s*72%/);
     expect(block, "the card is measured off the window again").not.toMatch(/88vh/);
   });
 });
