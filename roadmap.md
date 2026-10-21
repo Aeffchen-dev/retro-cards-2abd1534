@@ -312,3 +312,7 @@
 - [ ] grey smileys: remove the white outline/plate — IN PROGRESS
 - [ ] answer dot (range slider) z-index to top of the faces — IN PROGRESS
 - [ ] range slider snaps (to the five face anchors) — IN PROGRESS
+- [x] grey smileys: remove the white outline/plate
+- [x] answer dot (range slider) z-index to top of the faces
+- [x] range slider snaps (to the five face anchors)
+- [ ] info ℹ icon stroke matches the answer dot circle's stroke (3px) — IN PROGRESS
