@@ -206,18 +206,23 @@ describe("grey columns", () => {
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
 
-  test("the grey smileys draw lighter than the rule they stand on", () => {
+  test("the rule and the answer dot draw with the grey smileys' own pen", () => {
+    // user: "grey smilies stroke width less", then "outline range slider and dot
+    // smiley face same as grey smileys" — the line under the faces, and the face
+    // riding it, are no longer heavier than the faces themselves.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
-    const rule = Number(src.match(/const RULE_W = ([\d.]+);/)?.[1] ?? 0);
     expect(pen, "the smileys' pen is not a named value").toBeGreaterThan(0);
     expect(src, "the scale faces no longer wear that pen").toContain("strokeWidth={FACE_PEN}");
-    // The pen is converted to pixels: lighter than the rule's own stroke, but
-    // still a visible line at the face's size.
+    expect(src, "the rule does not take the smileys' pen").toContain(
+      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+    );
+    // The pen is converted to pixels: a real line at the face's size, but no
+    // heavier than the outline it now shares with the rule and the dot.
     const drawn = pen * (face / 24);
-    expect(drawn, "the smileys do not draw lighter than the rule").toBeLessThan(rule);
-    expect(drawn, "the smileys are too faint to read").toBeGreaterThan(1.2);
+    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(1.2);
+    expect(drawn, "the shared pen is heavier than the faces it copies").toBeLessThan(2);
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -341,15 +346,19 @@ describe("grey columns", () => {
     expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });
 
-  test("the slider rule is exactly as thick as the work-split bar", () => {
+  test("the work-split bar keeps its own weight while the scale's rule follows the smileys", () => {
+    // the work-split bar is 3px tall, however it is drawn: it carries the shares,
+    // so it stays heavier than the scale's own line — the rule and the answer dot
+    // now draw with the grey smileys' pen instead (user: "outline range slider
+    // and dot smiley face same as grey smileys")
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    // the work-split bar is 3px tall, however it is drawn
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
     expect(thick, "the work-split bar's thickness is gone").toBe(3);
-    const rule = Number(slide.match(/const RULE_W = ([\d.]+)/)?.[1]);
-    expect(rule, "the slider rule does not match the work-split bar's 3px").toBe(thick);
+    expect(slide, "the rule no longer follows the smileys' pen").toContain(
+      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+    );
   });
 });
 
