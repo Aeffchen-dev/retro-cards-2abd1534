@@ -148,6 +148,11 @@ export const softHyphenate = (caption: string) => caption.replace("eilweise", "e
 export const RISIKO_CHAPTER_OPEN = "Testet euer Beziehungsgefühl";
 export const RISIKO_CHAPTER_INFO = "Die Statements beschreiben, was eine glückliche Beziehung ausmacht. Vergleicht sie mit eurer eigenen Beziehung: Welches Gefühl dominiert am Ende?";
 
+/** The note under every statement scale: what the card's statement is, how to
+ *  read it against your own relationship, how to move the circle, and the
+ *  question the chapter's average answers at the end. Verbatim from the user. */
+export const RISIKO_STATEMENT_INFO = "Die Aussage beschreibt, was eine glückliche Beziehung ausmacht. Gleich sie mit deiner aktuellen Beziehung ab: Trifft die Aussage da auch zu? Schiebe den schwarzen Kreis nach links oder rechts zur passenden Antwort. Welches Gefühl im Slider dominiert am Ende als Durchschnitt deiner Antworten?";
+
 /** Every statement slider of the chapter, in card order. */
 export const RISIKO_MOOD_KEYS = [...RISIKO_STATEMENTS.map(([key]) => key), RISIKO_HOT[0]] as const;
 
