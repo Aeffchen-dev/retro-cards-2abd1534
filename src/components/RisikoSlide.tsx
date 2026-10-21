@@ -424,6 +424,18 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
     return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
   };
+  // A name may only use the room its own colour run really has: that run's width
+  // less the two circles marking its ends, and never more than the lane's edges
+  // leave on either side. A longer name takes a second line rather than running
+  // over a neighbour's circle or off the card.
+  const labelCap = (i: number) => {
+    const f = segments[i].width / 100;
+    const cf = (segments[i].start + segments[i].end) / 200;
+    const room = `calc(100cqw * ${f.toFixed(4)} - 32px)`;
+    const left = `calc(100cqw * ${(cf * 2).toFixed(4)})`;
+    const right = `calc(100cqw * ${((1 - cf) * 2).toFixed(4)})`;
+    return `min(max(60px, ${room}), ${left}, ${right})`;
+  };
   // A colour run belongs to exactly one partner, so the name printed above the
   // rule and the share printed below it can both be read off that one colour.
   // A name that already ends in an s takes only the apostrophe — German never
@@ -511,7 +523,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               stand on the same colour and never drift onto a neighbour's run. */}
           <div className="workload-bar" aria-hidden="true">
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i), "--workload-label-cap": labelCap(i) } as React.CSSProperties}>
                 <span className="workload-label">{shareLabel(segment.key)}</span>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>

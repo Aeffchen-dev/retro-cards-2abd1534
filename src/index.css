@@ -448,7 +448,12 @@
   line-height: 13px;
   font-weight: 700;
   padding: 0 2px;
-  white-space: nowrap;
+  text-align: center;
+  /* A name longer than its colour run breaks at its own words onto a second line
+     instead of running over a neighbour's circle or off the card's edge. */
+  max-width: var(--workload-label-cap, 100cqw);
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 /* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — stand in
