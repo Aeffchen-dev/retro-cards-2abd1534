@@ -33,7 +33,8 @@
   font-size: 38.4px;
   line-height: 1.05;
   letter-spacing: 0;
-  overflow-wrap: anywhere;
+  hyphens: auto;
+  overflow-wrap: break-word;
 }
 .font-preview-round .font-preview-question { font-family: "Nunito", sans-serif; }
 .font-preview-technical .font-preview-question { font-family: "JetBrains Mono", monospace; }
