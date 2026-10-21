@@ -278,3 +278,4 @@
 
 - [x] Dot smiley: circle and face drawn 20% bigger (zoomed window inside the same 44px handle).
 - [ ] Grey scale smileys: thinner stroke than the rule's 2.2px.
+- [ ] Remove the smiley line from the grey smileys (confirm: the outline circle, or the guide line behind them).
