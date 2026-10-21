@@ -1536,7 +1536,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col flex-1 w-full" style={{ gap: '20px', marginTop: '28px' }}>
+            <div className="flex flex-col flex-1 justify-center w-full" style={{ gap: '24px', marginTop: '28px' }}>
               {([
                 ["IconTrendingUp", "Ein voller Erfolg"],
                 ["IconFaceJoy", "Ein schöner Moment"],
