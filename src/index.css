@@ -711,10 +711,10 @@
 .risiko-scale-field {
   padding-top: 0;
 }
-/* The smiley row hangs over the rule: its own centre sits --risiko-face-rise above
-   the field's middle — where the rule centres — and the row is painted over the
-   circle, so a face never disappears behind the dot (user: "grey smileies ... ON
-   TOP SLIDER DOT"). Its white plate (.risiko-face) keeps each face readable. */
+/* The smiley row shares the rule's centre line: its own centre sits on the field's
+   middle — where the rule centres — and the row is painted over the circle, so a
+   face never disappears behind the dot (user: "grey smileies ... ON TOP SLIDER
+   DOT"). Its white plate (.risiko-face) keeps each face readable. */
 .risiko-face-header {
   top: calc(50% - var(--risiko-face-rise));
   height: var(--risiko-face-size);
@@ -726,10 +726,10 @@
    position lives here too, so anything placed against the stack reads it from its
    own parent. */
 .risiko-scale-stack {
-  /* How far the smiley row's own centre stands above the rule's centre: the field
-     centres the two together, and its floor, the row's placement and the names' own
-     lift all read the step from here so the scale keeps one source of truth. */
-  --risiko-face-rise: 56px;
+  /* How far the smiley row's own centre stands above the rule's centre: the faces
+     ride the rule itself, so the step is 0 — the token stays as the one source of
+     truth the field's floor, the row's placement and the names' lift all read. */
+  --risiko-face-rise: 0px;
   /* On screen the field stands at the taller of its own basis and the floor the
      card hands it (see --risiko-field-min), and it centres the rule in the room
      that is left under the smileys — so half of that room is the rule's own drop

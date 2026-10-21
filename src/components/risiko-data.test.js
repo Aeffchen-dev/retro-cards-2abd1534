@@ -229,7 +229,7 @@ describe("grey columns", () => {
     // printed card is sized to the sheet and keeps filling its whole page.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const rule = slide.match(/background: INK,[^\n]*/)?.[0] ?? "";
+    const rule = slide.match(/background: (?:INK|FACE_GREY),[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.slice(css.indexOf("@media screen {"));

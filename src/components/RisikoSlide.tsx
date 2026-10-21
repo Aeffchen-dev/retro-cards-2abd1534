@@ -51,10 +51,10 @@ const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
 // the smiley row centres itself on it (see .risiko-face-header in index.css), so
 // the row's own height has to be counted in when the fields are given a floor.
-// How far the smiley row's own centre stands above the rule's centre: the two are
-// centred together in the field (--risiko-face-rise in index.css), so the row's
-// height plus this rise is what the field has to hold, mirrored about its middle.
-const FACE_RISE = 56;
+// The smiley row rides the rule's own centre line: the field centres the row and
+// the rule together (--risiko-face-rise in index.css is 0), so the row's height
+// alone is what the field's floor has to hold, mirrored about its middle.
+const FACE_RISE = 0;
 const FIELD_MIN = 2 * (FACE_RISE + FACE_SIZE / 2);
 
 // The five columns are equal shares of the scale (user: "graph columns make even
@@ -229,8 +229,10 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   return (
   <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the circle's travel is inset. Its
-        ends are rounded off, so the line finishes soft instead of cut square. */}
-    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
+        ends are rounded off, so the line finishes soft instead of cut square. It
+        draws in the smileys' own grey, so faces and line read as one family and
+        the ink answer dot stays the heavy mark on it. */}
+    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: FACE_GREY, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
         {marker}
