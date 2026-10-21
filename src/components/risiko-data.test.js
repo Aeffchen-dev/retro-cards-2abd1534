@@ -400,13 +400,14 @@ describe("work-split split line", () => {
     expect(splitAt, "the ratios no longer stand under the lane").toBeGreaterThan(laneAt);
     expect(splitAt, "the ratios moved out of the card's own area").toBeLessThan(footAt);
     // Nothing is left hanging under the circles: the note block carries only the
-    // helper sentence now, and the notes button stands the note's own 8px breath
-    // over its hairline.
+    // helper sentence now, and the notes button sits straight on its hairline
+    // (user: "Notizen öffnen move closer to top border of info text").
     const noteAt = slide.indexOf("risiko-footer-note");
     const note = slide.slice(noteAt, slide.indexOf("</div>", noteAt));
     expect(note, "the ratios still read under the helper sentence").not.toContain("SplitCaptions");
     const foot = slide.slice(footAt, noteAt);
-    expect(foot, "the button does not stand the note's own breath over the hairline").toContain("gap-[var(--retro-info-gap)]");
+    expect(foot, "the button does not sit straight on the hairline").toContain("gap-0");
+    expect(foot, "the button's old breath over the hairline came back").not.toContain("gap-[var(--retro-info-gap)]");
     // The row names each column's own split on two lines — the shares over the
     // word "Split" — and stands as a plain legend under the lines: no outline
     // around it, so it reads as labels rather than a boxed table.
