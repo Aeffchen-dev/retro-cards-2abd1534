@@ -508,8 +508,6 @@ const RetroCards: React.FC = () => {
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // blue labels
-      // Ideas: the Questions combo's own companion colour
-      if (slideId === SLIDE_VORHABEN) return QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon;
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
