@@ -46,24 +46,27 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// The answer dot's own face draws exactly this many pixels on screen and on
-// paper (user: "make face astrerpke width 2px"). It is the scale's reference
-// pen — the one every other stroke on the scale is measured against.
-const FACE_PEN_PX = 2;
+// One pen for the whole scale: the answer dot's own face, the five grey smileys
+// and the rule they stand on all draw this many pixels, on screen and on paper.
+// The dot used to ride the line a step finer (user: "smiley outlines and the
+// slider line +20% stroke width compared to face") and its face was set to a
+// round 2px (user: "make face astrerpke width 2px") — until "range slider dot
+// stroke with vs slider line stroke with" was answered "Kreis wie die Linie",
+// which lifted the dot's pen to the very weight of the line it rides.
+const FACE_PEN_PX = 2.4;
 // The icon paints its 24-grid drawing into the 44px face, so that pixel pen has
 // to be stated back in grid units: FACE_PEN is what the drawing's strokeWidth
-// takes, and it lands the asked-for 2px at the face's own size.
+// takes, and it lands the asked-for 2.4px at the face's own size.
 const FACE_PEN = FACE_PEN_PX * (24 / FACE_SIZE);
 
-// The five grey smileys and the rule they stand on draw a step heavier than that
-// face: 20% over its pen, so the scale reads as the drawing and the answer rides
-// it as the finer mark (user: "smiley outlines and the slider line +20% stroke
-// width compared to face"). The work-split bar keeps its own heavier 3px — it
-// carries the shares, it is not a track.
-const SCALE_PEN = FACE_PEN * 1.2;
+// The scale's smileys and rule wear exactly that pen — the step the rule once
+// stood over the answer is retired. The work-split bar keeps its own heavier
+// 3px: it carries the shares, it is not a track.
+const SCALE_PEN = FACE_PEN;
 const RULE_W = SCALE_PEN * (FACE_SIZE / 24);
-// The dot's face keeps the reference pen, so its own pixel width is stated apart
-// from the rule's: the two no longer draw with one and the same number.
+// The dot states its own pixel width next to the rule's even though both land on
+// the same number: the marker draws through a zoomed window, so its pen is
+// converted separately (see MARKER_PEN).
 const FACE_RULE_W = FACE_PEN * (FACE_SIZE / 24);
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
