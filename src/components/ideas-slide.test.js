@@ -49,9 +49,11 @@ describe("Ideas card wears the Questions combo", () => {
 
   test("the slide takes both colours as props so dark labels stay readable", () => {
     expect(src).toContain("pillColor={pillColorOf(SLIDE_VORHABEN)}");
-    // The bars wear the deck's neon violet rather than the random combo's lime,
-    // so the card's own labels read as a neon of their own.
-    expect(src).toContain('labelColor="#AF25FF"');
+    // The bars wear the deck's neon pink rather than the random combo's lime, and
+    // wear it unpale: the card passes it as the bar's own colour so the neon
+    // survives, while the writing field underneath keeps the lightened tint.
+    expect(src).toContain('labelColor="#FF47D1"');
+    expect(slide).toContain("barColor={labelColor}");
     // Passed to the writing fields as a real colour, not a CSS var, so the
     // label bar's contrast lightening can still see it.
     expect(slide).toContain("accent={labelColor}");

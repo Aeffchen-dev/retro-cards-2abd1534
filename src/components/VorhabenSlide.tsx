@@ -16,7 +16,7 @@ interface VorhabenSlideProps {
 
 const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange }: VorhabenSlideProps) => {
   const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label]) => (
-    <PostItField key={key} label={label} placeholder="Deine Antwort" accent={labelColor}
+    <PostItField key={key} label={label} placeholder="Deine Antwort" accent={labelColor} barColor={labelColor}
       readOnly={readOnly} minHeight={96} value={values[key] || ""} onChange={(value) => onChange(key, value)} />
   ));
 
