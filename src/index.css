@@ -1676,3 +1676,12 @@ textarea.bg-retro-post-it:focus,
   #root .intro-copy { gap: 10px; }
 }
 
+
+/* Takeaways "Auf einen Blick" summary */
+.retro-summary { border-top: 1px solid #C9CBD1; border-bottom: 1px solid #C9CBD1; padding: 8px 0; }
+#root .retro-summary-title { font-size: 14px; font-weight: 700; margin: 0 0 4px; color: var(--retro-black); }
+.retro-summary-list { display: grid; gap: 2px; margin: 0; }
+.retro-summary-row { display: grid; grid-template-columns: 130px 1fr; gap: 8px; font-size: 13px; line-height: 18px; color: var(--retro-black); }
+.retro-summary-row dt { color: #6E7078; }
+.retro-summary-row dd { margin: 0; }
+@media (max-width: 767px) { .retro-summary-row { grid-template-columns: 110px 1fr; font-size: 12px; line-height: 16px; } }
