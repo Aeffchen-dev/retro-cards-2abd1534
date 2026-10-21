@@ -451,6 +451,10 @@
    the print pages were tuned with — the token is set on its container, which the
    faces inside inherit. */
 .print-only { --risiko-face-size: 32px; }
+/* The printed cards are not inside .print-only, so the sheet carries its own copy
+   of the token: the smileys on paper match the phone's full size (32px). */
+.print-slide-page { --risiko-face-size: 32px; }
+
 
 /* The names take the strip at the lane's foot; the grey fields and dashed guides stop
    just above it — a quiet band 26px tall, so no guide runs right up to the split
