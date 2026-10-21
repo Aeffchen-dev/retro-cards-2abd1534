@@ -3,13 +3,12 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
-import RisikoSlide, { FACES } from "@/components/RisikoSlide";
+import RisikoSlide, { FACES, StatementScale } from "@/components/RisikoSlide";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
-import StarRating from "@/components/StarRating";
 import { Camera } from "lucide-react";
 import BgVector from "@/components/BgVector";
 
@@ -332,8 +331,6 @@ const RetroCards: React.FC = () => {
 
   // State for takeaway post-it notes (Erkenntnisse) — keyed by person key
   const [takeawayTexts, setTakeawayTexts] = useState<Record<string, string>>({});
-  // Star ratings for the Intimacy slide — keyed by person key
-  const [intimacyRatings, setIntimacyRatings] = useState<Record<string, number>>({});
   // Random label color combo for the Questions slide (changes with each question)
   const [questionComboIdx, setQuestionComboIdx] = useState(() => Math.floor(Math.random() * QUESTION_COMBOS.length));
 
@@ -537,8 +534,6 @@ const RetroCards: React.FC = () => {
     const savedPostItTexts = loadFromStorage<any>(STORAGE_KEYS.POST_IT_TEXTS);
     const savedTakeawayTexts = loadFromStorage<any>(STORAGE_KEYS.TAKEAWAY_TEXTS);
     const savedQuestion = loadFromStorage<string>(STORAGE_KEYS.CURRENT_QUESTION);
-    const savedIntimacyRatings = loadFromStorage<Record<string, number>>(STORAGE_KEYS.INTIMACY_RATINGS);
-    if (savedIntimacyRatings) setIntimacyRatings(savedIntimacyRatings);
 
     // Migrate legacy {niklas, jana} shape to keyed record
     const migratePostIts = (v: any): Record<string, string> => {
@@ -581,11 +576,6 @@ const RetroCards: React.FC = () => {
     if (isInitialMount.current) return;
     saveToStorage(STORAGE_KEYS.TAKEAWAY_TEXTS, takeawayTexts);
   }, [takeawayTexts]);
-
-  useEffect(() => {
-    if (isInitialMount.current) return;
-    saveToStorage(STORAGE_KEYS.INTIMACY_RATINGS, intimacyRatings);
-  }, [intimacyRatings]);
 
   useEffect(() => {
     if (isInitialMount.current) return;
@@ -1988,7 +1978,6 @@ const RetroCards: React.FC = () => {
         );
 
       case 7: {
-        const INTIMACY_LABEL_BG = BRAND.pink; // brand pink label bars against the maroon pill
         return (
           <div className="flex flex-col items-start gap-14 w-full justify-center">
             <div className="flex flex-col items-start gap-6 w-full">
@@ -1996,22 +1985,20 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Sind wir uns körperlich nah?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
-              <div className="flex flex-col w-full">
-                <div
-                  className="inline-flex self-start items-center h-8 px-3 retro-body-copy text-[#201C1D]"
-                  style={{ backgroundColor: INTIMACY_LABEL_BG }}
-                >
-                  Bewerte
-                </div>
-                <div className="inline-flex self-start items-center h-10 px-2 bg-retro-post-it border-none" style={{ borderRadius: 0 }}>
-
-                  <StarRating
-                    value={intimacyRatings.shared || 0}
-                    starSize={28}
-                    starColor="#201C1D"
-                    onChange={(v) => setIntimacyRatings({ ...intimacyRatings, shared: v })}
-                  />
-                </div>
+              {/* The same scale the Health Check statements ride: five smileys over
+                  their dashed columns and a circle that can be pulled along the rule.
+                  The answer is kept with this card's own notes, under its own key. */}
+              <div className="risiko-page w-full">
+                <StatementScale
+                  ariaLabel="Sind wir uns körperlich nah?"
+                  value={editModeNotes[7]?.scale}
+                  onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
+                  below={
+                    <ActionRow className="risiko-helper" icon="IconInfo"
+                      label="Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"
+                      accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor="var(--retro-black)" labelColor="var(--retro-black)" />
+                  }
+                />
               </div>
               <PostItField
                 accent={labelColorOf(7)}
