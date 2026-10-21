@@ -1874,7 +1874,7 @@ textarea.bg-retro-post-it:focus,
      phone, 9.9px on a 320px one, and three lines on both. Capped at
      the 18px the bigger scales already use, so a wide phone's long columns don't run
      away. */
-  .risiko-scale-stack .risiko-scale-caption { font-size: min(calc(100cqw / 5 / 4.3), 18px); }
+  .risiko-scale-stack .risiko-scale-caption { font-size: min(calc(100cqw / 5 / 4.35), 18px); }
 }
 
 /* A 2px white gap between neighbouring shares of the work-split bar. */
