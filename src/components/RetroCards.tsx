@@ -2281,7 +2281,7 @@ const RetroCards: React.FC = () => {
 
                     style={{
                       ...cardStyle,
-                      ...(hasEditButton(slideId) && !isRisikoSlide(slideId)
+                      ...(hasEditButton(slideId) && !isRisikoSlide(slideId) && !(slideId === 3 && !editModeSlides[slideId])
                         ? { paddingBottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '112px' : '72px' }
                         : {}),
                     }}
@@ -2374,7 +2374,7 @@ const RetroCards: React.FC = () => {
                         draw their own button above their helper sentence, so the
                         shared overlay would paint a second one there. The last-4-weeks
                         card has no info box: its button stands in the corner alone. */}
-                    {hasEditButton(slideId) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
+                    {hasEditButton(slideId) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && !(slideId === 3 && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
