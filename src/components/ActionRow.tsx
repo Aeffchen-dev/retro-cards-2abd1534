@@ -78,21 +78,32 @@ const ActionRow: React.FC<ActionRowProps> = ({
     : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
   const border = outlined ? "1px solid #201C1D" : undefined;
   // Info rows (ℹ) get their own hook so phones and tablets can shrink the sentence.
-  const classes = `${BASE_CLASS}${icon === "IconInfo" ? " retro-info-row" : ""} ${className}`;
+  const isInfo = icon === "IconInfo";
+  const classes = `${BASE_CLASS}${isInfo ? " retro-info-row" : ""} ${className}`;
   /* The ℹ mark draws with a light pen of its own — 1.5px is enough (user:
      "info icon stroke width 1,5px enough") — so the helper sentence stays a
      footnote beside the heavy answer circle on the scales. */
-  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 1.5 : undefined);
+  const resolvedStrokePx = iconStrokeWidth ?? (isInfo ? 1.5 : undefined);
+  /* The helper sentence has no tile: the ℹ glyph sits flush at the row's own
+     content edge instead of inside a 32px plate with 8px of empty space around
+     it (user: "info i icon remove padding"), and the sentence keeps its height
+     instead of a 32px field's. Every other CTA still draws its coloured tile. */
+  const tileClass = isInfo
+    ? "shrink-0 flex items-center justify-center leading-none"
+    : "shrink-0 w-8 h-8 flex items-center justify-center";
+  const fieldClass = isInfo
+    ? "flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
+    : "h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis";
   const content = (
     <>
       <span
-        className="shrink-0 w-8 h-8 flex items-center justify-center"
+        className={tileClass}
         style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
         {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={resolvedStrokePx} /> : null)}
       </span>
       <span
-        className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
+        className={fieldClass}
         style={{
           background: outlined ? "transparent" : (fieldBg ?? "#E4E6E8"),
           color: resolvedLabelColor,

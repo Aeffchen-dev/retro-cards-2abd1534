@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
 const risiko = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
 const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
+const actionRow = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
 
 /**
  * The info box (ℹ + helper sentence) is a footnote, not a tile: grey text, no
@@ -62,5 +63,20 @@ describe("info box appearance", () => {
     for (const [row] of infoRows) {
       expect(row).not.toMatch(/#F1F2F4|--risiko-helper-bg/);
     }
+  });
+
+  test("the ℹ mark keeps no tile of its own", () => {
+    // user: "info i icon remove padding" — the helper sentence's mark sits flush
+    // at the row's content edge, so it must not be handed the 32px tile the
+    // filled CTAs use, and its sentence must not be held at that tile's height.
+    expect(actionRow, "the info tile sizes to the glyph, not to a 32px plate").toMatch(
+      /isInfo\s*\?\s*"shrink-0 flex items-center justify-center leading-none"/,
+    );
+    expect(actionRow, "the info sentence keeps its own height").toMatch(
+      /isInfo\s*\?\s*"flex items-center px-3/,
+    );
+    expect(actionRow, "only the filled CTAs keep the 32px tile").toMatch(
+      /:\s*"shrink-0 w-8 h-8 flex items-center justify-center"/,
+    );
   });
 });
