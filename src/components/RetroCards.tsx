@@ -2308,8 +2308,12 @@ const RetroCards: React.FC = () => {
                       </div>
                     </div>
                   )}
+                  {/* The Setup card went back to the height it had before the deck's cards
+                      grew to fill the slide (user: "on setup card slider got higher and
+                      wider wanna have old measures"); every other card still takes the
+                      full height the slide offers. */}
                   <div
-                    className={`retro-card-container relative w-full max-w-[500px] flex-1 min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+                    className={`retro-card-container relative w-full max-w-[500px] ${slideId === SLIDE_SETUP ? "h-[88%] max-h-[88%]" : "flex-1"} min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
 
                     style={{
                       ...cardStyle,
