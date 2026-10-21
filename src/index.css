@@ -519,9 +519,17 @@
    dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
-/* Each smiley keeps a plate of the card's own surface behind it, so the face always
-   stands on clean paper — exactly like a name's plate below. */
-.risiko-face { background: var(--risiko-field-bg); border-radius: 50%; }
+/* The smiley's plate hugs the drawn face circle (the circle spans 20 of the
+   icon's 24 grid, so the inset is one twelfth of the shared size) instead of
+   the whole 44px box: a box-sized plate left a white halo around every face on
+   the grey rule and stopped the rule a ring short of the face's own edge. */
+.risiko-face::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--risiko-face-size) / 12);
+  border-radius: 50%;
+  background: var(--risiko-field-bg);
+}
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces

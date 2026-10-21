@@ -235,13 +235,13 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         the ink answer dot stays the heavy mark on it. */}
     <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: FACE_GREY, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
-    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
-          className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
+          className="swiper-no-swiping absolute flex items-center touch-none select-none z-40 cursor-ew-resize"
           style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
@@ -263,7 +263,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
           {marker}
         </div>
       </>
