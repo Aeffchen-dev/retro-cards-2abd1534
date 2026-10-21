@@ -79,10 +79,10 @@ const ActionRow: React.FC<ActionRowProps> = ({
   const border = outlined ? "1px solid #201C1D" : undefined;
   // Info rows (ℹ) get their own hook so phones and tablets can shrink the sentence.
   const classes = `${BASE_CLASS}${icon === "IconInfo" ? " retro-info-row" : ""} ${className}`;
-  /* The ℹ mark draws with the same pen as the answer circle on the scales — the
-     circle's 3px (user: "info icon match the stroke of the circle") — so the
-     info rows keep the deck's one stroke weight. */
-  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 3 : undefined);
+  /* The ℹ mark draws with a light pen of its own — 1.5px is enough (user:
+     "info icon stroke width 1,5px enough") — so the helper sentence stays a
+     footnote beside the heavy answer circle on the scales. */
+  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 1.5 : undefined);
   const content = (
     <>
       <span
