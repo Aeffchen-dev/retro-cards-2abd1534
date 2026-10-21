@@ -643,7 +643,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // smiley the average of all the statements points at rides inside the sentence
   // once every slider has been dragged.
   const chapterIntro = (mood: number | null, moodColour: string) => (
-    <>
+    // One span, so the sentence stays one block of flowing text: the info row's
+    // label field lays its children out side by side, which would otherwise
+    // squeeze the opening words into a narrow column of their own.
+    <span className="risiko-chapter-sentence">
       {RISIKO_CHAPTER_OPEN}
       {mood !== null && (
         <span className="risiko-chapter-mood" aria-label={`Durchschnittliche Stimmung ${Math.round(mood)} von 100`}>
@@ -652,8 +655,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       )}
       {". "}
       {RISIKO_CHAPTER_INFO}
-    </>
+    </span>
   );
+
 
 
   return (
