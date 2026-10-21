@@ -81,13 +81,28 @@ const SLOT = 32, BAND = SLOT;
 // The marker's features are drawn in the very language of the scale's smileys:
 // the same fine outline, the same round-dot eyes at the same 1.2 stroke, so the
 // dragged face and a scale face are one and the same drawing — only the morphs.
+// The dot's drawing is zoomed: the very same 24-grid face the header smileys
+// draw, seen through a window 1.2× narrower (20 grid units wide, centred on the
+// face), so the circle and every feature land 20% bigger than theirs while the
+// 44px handle box — and with it the scale's travel and the field's floor — stays
+// exactly where it was (user: "dot smiley circle + face scale +20%").
+const FACE_ZOOM = 1.2;
+const FACE_VIEW = 24 / FACE_ZOOM;
+const FACE_VIEW_OFF = (24 - FACE_VIEW) / 2;
+
 // The dot is drawn with the very pen the rule uses: its outline, eyes and mouth
 // render exactly as thick as the line it rides (user: "dot like range slider line
-// stroke width"). The marker's SVG is a 24 grid painted into MARKER_SIZE pixels,
-// so the rule's pixel width is converted back into the grid's own units.
-const MARKER_PEN = RULE_W * (24 / MARKER_SIZE);
+// stroke width"). The zoomed window makes each of its grid units wider than the
+// 24 grid's, so the rule's pixel width is converted back against that window.
+const MARKER_PEN = RULE_W * (FACE_VIEW / MARKER_SIZE);
 const MOUTH_W = MARKER_PEN;
 const EYE_W = MARKER_PEN;
+
+// The scale's grey smileys draw lighter than the rule and the dot, so the ink
+// answer stays the heavy mark on the line (user: "grey smilies stroke width
+// less"). 0.9 of the 24 grid painted into the 44px face ≈ 1.65px, against the
+// rule's 2.2px.
+const FACE_PEN = 0.9;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
@@ -95,7 +110,7 @@ const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
   <span className="risiko-face flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={1.2} color={color} />
+    <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
   </span>
 );
 
@@ -137,7 +152,12 @@ const MorphFace = ({ value }: { value: number }) => {
   // draw, only flipped — one clean trace, exactly like the header smileys.
   const path = mouthPath(mouth);
   return (
-    <svg width={MARKER_SIZE} height={MARKER_SIZE} viewBox="0 0 24 24" fill="none"
+    // The zoomed window: the same 24-grid drawing seen through a 20-unit square
+    // centred on the face, so the circle and every feature land 20% bigger. Its
+    // own stroke spills about a pixel past the 44px box, so the box must not clip it.
+    <svg width={MARKER_SIZE} height={MARKER_SIZE} fill="none"
+      viewBox={`${FACE_VIEW_OFF} ${FACE_VIEW_OFF} ${FACE_VIEW} ${FACE_VIEW}`}
+      style={{ overflow: "visible" }}
       stroke={INK} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not

@@ -208,6 +208,20 @@ describe("grey columns", () => {
     expect(/const Face = \(\{ Icon, color = FACE_GREY \}/.test(slide), "the scale faces no longer default to FACE_GREY").toBe(true);
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
+
+  test("the grey smileys draw lighter than the rule they stand on", () => {
+    const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
+    const rule = Number(src.match(/const RULE_W = ([\d.]+);/)?.[1] ?? 0);
+    expect(pen, "the smileys' pen is not a named value").toBeGreaterThan(0);
+    expect(src, "the scale faces no longer wear that pen").toContain("strokeWidth={FACE_PEN}");
+    // The pen is converted to pixels: lighter than the rule's own stroke, but
+    // still a visible line at the face's size.
+    const drawn = pen * (face / 24);
+    expect(drawn, "the smileys do not draw lighter than the rule").toBeLessThan(rule);
+    expect(drawn, "the smileys are too faint to read").toBeGreaterThan(1.2);
+  });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
     // half-circle rather than a square cut. On screen the fields stand at one
