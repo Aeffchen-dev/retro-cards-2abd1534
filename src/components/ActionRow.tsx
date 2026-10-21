@@ -79,13 +79,17 @@ const ActionRow: React.FC<ActionRowProps> = ({
   const border = outlined ? "1px solid #201C1D" : undefined;
   // Info rows (ℹ) get their own hook so phones and tablets can shrink the sentence.
   const classes = `${BASE_CLASS}${icon === "IconInfo" ? " retro-info-row" : ""} ${className}`;
+  /* The ℹ mark is a small glyph inside a 32px tile, so it draws with a hairline
+     pen unless the call site asks for another weight; every other icon keeps the
+     set's own weight. */
+  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 1 : undefined);
   const content = (
     <>
       <span
         className="shrink-0 w-8 h-8 flex items-center justify-center"
         style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
-        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={iconStrokeWidth} /> : null)}
+        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={resolvedStrokePx} /> : null)}
       </span>
       <span
         className="h-8 flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
