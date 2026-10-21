@@ -637,9 +637,17 @@
     calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8);
 }
 /* The two end names line up with the card's own edges rather than their smiley's
-   centre, so a name wider than its stretch still stays inside the card. */
+   centre, and they take their own width instead of their narrow stretch: the first
+   stands at the card's left edge and grows inwards, the last at its right edge. That
+   keeps both inside the card without ever forcing a name to break. */
 .risiko-scale-stack .risiko-scale-caption:first-child { text-align: left; }
 .risiko-scale-stack .risiko-scale-caption:last-child { text-align: right; }
+.risiko-scale-stack .risiko-scale-caption:first-child,
+.risiko-scale-stack .risiko-scale-caption:last-child {
+  width: max-content;
+  justify-self: start;
+}
+.risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
 /* They read in the scale's own grey — the tone of the dashed guides, while the
    faces above sit a shade lighter — one step under the info rows' 12px floor.
    At that size the longest half of a name ("teilweise zu", 12 letters) still
