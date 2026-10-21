@@ -833,7 +833,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           The notes button comes first and the info sentence reads after it, so
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
-      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[var(--retro-info-gap)]">
+      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-0">
         <ActionRow icon="IconPencil" label="Notizen öffnen" accent="#201C1D" iconColor="#FFFFFF" iconStrokeWidth={1} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
