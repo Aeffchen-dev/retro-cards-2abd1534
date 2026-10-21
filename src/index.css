@@ -464,7 +464,8 @@
    grey info text — the same colour and the same size — but it carries no hairline
    above it, so it stays a plain line under the question instead of a second info box. */
 .risiko-allocation-examples {
-  margin: 0 0 var(--risiko-scale-pad);
+  /* the grey example sentence keeps its own breath under the card's headline */
+  margin: 16px 0 var(--risiko-scale-pad);
   font-size: 16px;
   line-height: 22px;
   color: var(--retro-info-text);
