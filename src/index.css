@@ -315,7 +315,7 @@
    the whole sentence of examples and the split bar all at once — the bar would be
    pushed clean out of the card. So on a phone the examples keep every word but
    read in a short window of their own, and the bar gets the room it needs. */
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .risiko-allocation-examples {
     max-height: 96px;
     overflow-y: auto;
@@ -1235,6 +1235,13 @@ textarea.bg-retro-post-it:focus,
 
   /* The printed card is padded by 40px, so the scale keeps the same rhythm there. */
   .print-slide-page .risiko-page { --risiko-scale-pad: 40px; }
+  /* Paper always shows the whole sentence of examples: the phone's short reading
+     window must never follow a print onto the sheet. */
+  .print-slide-page .risiko-allocation-examples {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
   /* The buttons are not printed, so the print copy carries the scale's lower margin
      itself; the guidelines stop on the rule. */
   .print-slide-page .risiko-scale-area { overflow: visible; }
