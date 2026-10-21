@@ -18,7 +18,7 @@ const VorhabenSlide = ({ slideId, values, onChange }: VorhabenSlideProps) => {
 
   return (
     <div className="vorhaben-slide flex flex-col items-start w-full min-h-full">
-      <h2 className="retro-heading w-full"><RevealText text="Vorhaben" color="var(--vorhaben-pill)" slideIndex={slideId} /></h2>
+      <h2 className="retro-heading w-full"><RevealText text="Ideas" color="var(--vorhaben-pill)" slideIndex={slideId} /></h2>
       <div className="screen-only flex flex-col flex-1 w-full gap-4 mt-6">{fields(false)}</div>
       <div className="hidden print-only flex-col flex-1 w-full gap-4 mt-6">{fields(true)}</div>
     </div>
