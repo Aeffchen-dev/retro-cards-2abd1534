@@ -19,6 +19,8 @@ export interface ActionRowProps {
   labelColor?: string;
   /** Background of the label field, defaults to the accent (slide pill) colour */
   fieldBg?: string;
+  /** Border drawn on the icon tile only, e.g. a grey ring around a grey tile */
+  tileBorder?: string;
   /** Outlined style: no fills, black borders */
   outlined?: boolean;
   /** Click handler (ignored when `href` is set and no handler is needed) */
@@ -65,6 +67,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   iconStrokeWidth,
   labelColor,
   fieldBg,
+  tileBorder,
   outlined = false,
   onClick,
   href,
@@ -85,15 +88,20 @@ const ActionRow: React.FC<ActionRowProps> = ({
      footnote beside the heavy answer circle on the scales. */
   const resolvedStrokePx = iconStrokeWidth ?? (isInfo ? 1.5 : undefined);
   /* The helper sentence's mark reads one step smaller than the sentence it
-     introduces, so it points at the words instead of competing with them
-     (user: "info i icon smaller"); every other CTA keeps the full 16px glyph. */
-  const resolvedIconSize = isInfo ? 14 : 16;
-  /* The helper sentence has no tile: the ℹ glyph sits flush at the row's own
-     content edge instead of inside a 32px plate with 8px of empty space around
-     it (user: "info i icon remove padding"), and the sentence keeps its height
-     instead of a 32px field's. Every other CTA still draws its coloured tile. */
+     introduces, so it points at the words instead of competing with them (user:
+     "info i icon smaller", then smaller still: "info i icon smaller and aligned
+     with 1 line of text"); every other CTA keeps the full 16px glyph. */
+  const resolvedIconSize = isInfo ? 12 : 16;
+  /* The helper sentence has no filled plate of its own — the glyph stands flush
+     at the row's content edge (user: "info i icon remove padding") — but it does
+     stand in the icon tile's own 32px column, so the sentence starts at exactly
+     the x the button's label starts at (user: "info I text move to same x
+     position as Notizen öffnen text"). The glyph rides the sentence's first line
+     rather than the middle of a wrapped note (user: "aligned with 1 line of
+     text"); index.css gives it that small top offset. Every other CTA still
+     draws its coloured 32px tile. */
   const tileClass = isInfo
-    ? "shrink-0 flex items-center justify-center leading-none"
+    ? "shrink-0 w-8 flex items-start justify-start leading-none"
     : "shrink-0 w-8 h-8 flex items-center justify-center";
   const fieldClass = isInfo
     ? "flex items-center px-3 text-left whitespace-nowrap overflow-hidden text-ellipsis"
@@ -102,7 +110,11 @@ const ActionRow: React.FC<ActionRowProps> = ({
     <>
       <span
         className={tileClass}
-        style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
+        style={{
+          background: outlined ? "transparent" : accent,
+          color: resolvedIconColor,
+          border: tileBorder ?? border,
+        }}
       >
         {iconNode ?? (icon ? <StackIcon name={icon} size={resolvedIconSize} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
       </span>
