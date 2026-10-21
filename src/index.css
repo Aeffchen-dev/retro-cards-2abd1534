@@ -1745,12 +1745,18 @@ textarea.bg-retro-post-it:focus,
    card's whole opening, so it reads a step under the card questions (38.4px) and
    the paragraphs a step under the body default — the card must hold both without
    scrolling. Phones step both down again. */
-#root .intro-lede { font-size: 24px; line-height: 1.15; }
+#root .intro-lede { font-size: 28px; line-height: 1.15; }
 #root .intro-copy { font-size: 16px; line-height: 22px; }
 /* The opening fills the card: the block takes the card's whole height and the
    four paragraphs spread their gaps through the room that is left. */
 #root .intro-block { flex: 1 1 auto; }
 #root .intro-copy { flex: 1 1 auto; justify-content: space-between; }
+/* Where the card keeps its full width and stands tall enough, the headline grows
+   to the largest size the card still holds without the paragraphs spilling over
+   its lower edge (measured: 32px needs 616px of the 627px content box). */
+@media (min-width: 768px) and (max-width: 1023px) and (min-height: 750px) {
+  #root .intro-lede { font-size: 32px; }
+}
 @media (max-width: 767px) {
   #root .intro-lede { font-size: 20px; line-height: 1.15; }
   #root .intro-copy { font-size: 14px; line-height: 20px; }
