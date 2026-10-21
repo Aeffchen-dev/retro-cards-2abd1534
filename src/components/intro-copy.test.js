@@ -57,3 +57,35 @@ describe("intro card copy", () => {
     expect(phone.match(/#root \.intro-copy \{ font-size: (\d+)px/)?.[1], "phone copy size").toBe("14");
   });
 });
+
+describe("intro card on short windows", () => {
+  const block = (q) =>
+    [...css.matchAll(new RegExp(`@media ${q} \\{[\\s\\S]*?\\n\\}`, "g"))]
+      .map((m) => m[0])
+      .find((b) => b.includes(".intro-lede")) ?? "";
+  const shortPhone = block("\\(max-height: 690px\\) and \\(max-width: 767px\\)");
+  const shortWide = block("\\(max-height: 690px\\) and \\(min-width: 768px\\)");
+
+  test("steps both sizes down so the opening fits a short card", () => {
+    expect(card, "the wrapper the short-window rule tightens is gone").toContain("intro-block");
+    expect(shortPhone, "the short-phone block is gone").toContain(".intro-lede");
+    expect(shortPhone.match(/#root \.intro-lede \{ font-size: (\d+)px/)?.[1], "short-phone lede size").toBe("16");
+    expect(shortPhone.match(/#root \.intro-copy \{ font-size: (\d+)px/)?.[1], "short-phone copy size").toBe("12");
+  });
+
+  test("keeps every short-window size at or above the 12px floor", () => {
+    for (const [name, b] of [["short phone", shortPhone], ["short wide", shortWide]]) {
+      expect(b, `${name} block is gone`).toContain(".intro-copy");
+      for (const size of [...b.matchAll(/font-size: (\d+)px/g)].map((m) => +m[1])) {
+        expect(size, `${name} block reads under the 12px floor`).toBeGreaterThanOrEqual(12);
+      }
+    }
+  });
+
+  test("tightens the gaps on short windows", () => {
+    expect(shortPhone.match(/#root \.intro-block \{ gap: (\d+)px/)?.[1], "short-phone block gap").toBe("12");
+    expect(shortPhone.match(/#root \.intro-copy \{[^}]*gap: (\d+)px/)?.[1], "short-phone paragraph gap").toBe("8");
+    expect(shortWide.match(/#root \.intro-block \{ gap: (\d+)px/)?.[1], "short-wide block gap").toBe("16");
+    expect(shortWide.match(/#root \.intro-copy \{[^}]*gap: (\d+)px/)?.[1], "short-wide paragraph gap").toBe("10");
+  });
+});
