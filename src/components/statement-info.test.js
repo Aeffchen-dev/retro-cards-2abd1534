@@ -33,6 +33,11 @@ describe("statement card info sentence", () => {
     expect(cta, "the info box still reads before the notes button").toBeLessThan(info);
   });
 
+  test("keeps the card's own padding between the button and the info box", () => {
+    const footer = slide.slice(FOOT_AT, slide.indexOf(">", FOOT_AT));
+    expect(footer, "the info box does not stand a card padding under the button").toContain("gap-[28px]");
+  });
+
   test("leaves the work-split card its own sentence", () => {
     const footer = slide.slice(FOOT_AT, slide.indexOf("</div>", FOOT_AT));
     expect(footer).toContain("Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst");

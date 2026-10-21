@@ -325,12 +325,37 @@ describe("work-split partner colours", () => {
   const colors = Array.from({ length: 8 }, (_, i) =>
     css.match(new RegExp(`--workload-partner-${i}:\\s*(#[0-9A-Fa-f]{6})`))?.[1]?.toUpperCase()
   );
-  test("the second partner carries the Health Check's own deep green", () => {
-    expect(colors[1]).toBe("#0B7A35");
+  test("the second partner wears a deep blue, not a second green", () => {
+    expect(colors[1]).toBe("#0B5CD8");
   });
   test("no two partners share a colour", () => {
     expect(colors).toHaveLength(8);
     expect(new Set(colors).size).toBe(8);
+  });
+});
+
+describe("work-split split line", () => {
+  const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+  test("carries no 'Split' word on screen or in the sheet", () => {
+    expect(slide).not.toContain("workload-split-word");
+    expect(css).not.toContain(".workload-split-word");
+  });
+  test("stands the two shares apart so they read as 10% / 90%", () => {
+    const figures = css.match(/\.workload-split-figures \{([^}]*)\}/)?.[1] ?? "";
+    const gap = Number(figures.match(/gap:\s*(\d+)px/)?.[1]);
+    expect(gap, "the two shares sit too tight to read as a pair").toBeGreaterThanOrEqual(6);
+    expect(slide).toContain('{shares[segment.key]}%');
+    expect(slide).toContain('{shares[segments[i + 1].key]}%');
+  });
+  test("names each column's ratio as 10% / 90%, not 10:90%", () => {
+    expect(slide).toContain("{at}% / {100 - at}%");
+    expect(slide).not.toContain("{at}:{100 - at}%");
+  });
+  test("lets the longest word break only at its own soft hyphen", () => {
+    expect(softHyphenate(RISIKO_ALLOCATION_HEADING)).toContain("Beziehungs\u00ADarbeit");
+    const head = css.match(/\.risiko-allocation-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(head, "the headline can still be cut open at any character").not.toContain("overflow-wrap: anywhere");
   });
 });
 

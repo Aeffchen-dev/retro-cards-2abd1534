@@ -578,8 +578,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             ))}
           </div>
           {/* Each split's figures stand right under the foot of its boundary line —
-              the share on either side in that partner's colour — with "Split"
-              in the same line. */}
+              the share on either side, each carrying its own % and wearing that
+              partner's colour, with room around the slash so the pair reads
+              "10% / 90%" rather than one run of digits. */}
           <div className="workload-shares" aria-hidden="true">
             {segments.slice(0, -1).map((segment, i) => (
               <span key={`sh${i}`} className="workload-split" style={{ left: splitAt(i) }}>
@@ -587,7 +588,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                   <span className={`workload-percentage workload-color-${i % 8}`}>{shares[segment.key]}%</span>
                   <span className="workload-split-sep">/</span>
                   <span className={`workload-percentage workload-color-${(i + 1) % 8}`}>{shares[segments[i + 1].key]}%</span>
-                  <span className="workload-split-word">Split</span>
                 </span>
               </span>
             ))}
@@ -651,11 +651,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         </div>
         {/* The split each column stands for, labelled in the same row, type and
             grey the statement scales name their columns with — one label per
-            column, centred on it, in the couple's ratio with a colon and %. */}
+            column, centred on it, with each share carrying its own % and a slash
+            between them, so a column reads "10% / 90%". */}
         <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
           {FACES.map((_, i) => {
             const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-            return <span key={`sp${i}`} className="risiko-scale-caption">{at}:{100 - at}%</span>;
+            return <span key={`sp${i}`} className="risiko-scale-caption">{at}% / {100 - at}%</span>;
           })}
         </div>
       </div>
@@ -719,7 +720,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
       {page.statements.length === 0 && (
         <>
-          <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{RISIKO_ALLOCATION_HEADING}</h2>
+          <h2 className="risiko-statement risiko-allocation-statement shrink-0" lang="de">{softHyphenate(RISIKO_ALLOCATION_HEADING)}</h2>
           <p className="risiko-allocation-subheading shrink-0" lang="de">{RISIKO_ALLOCATION_SUBHEADING}</p>
           <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
         </>
@@ -731,8 +732,9 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       {/* The buttons keep the card's own padding below the rule; being outside the
           area, they leave its lower edge exactly on the rule for the guidelines.
           The notes button comes first and the info sentence reads after it, so
-          every Health Check page ends answer → button → note. */}
-      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
+          every Health Check page ends answer → button → note, with the card's own
+          padding (28px) standing between the two. */}
+      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[28px]">
         <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
 
         <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : RISIKO_STATEMENT_INFO} accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />

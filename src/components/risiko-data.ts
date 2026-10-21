@@ -149,7 +149,12 @@ export const captionLines = (caption: string): string[] => {
   return [words.slice(0, splitAt).join(" "), words.slice(splitAt).join(" ")];
 };
 
-export const softHyphenate = (caption: string) => caption.replace("eilweise", "eil\u00ADweise");
+/* Manual break points: the deck can't rely on the browser carrying a German
+   hyphenation dictionary, so the words that have to break in a narrow card carry
+   their own soft hyphen — the reader then sees a real hyphen, never a word cut
+   in half. */
+export const softHyphenate = (caption: string) =>
+  caption.replace("eilweise", "eil\u00ADweise").replace("Beziehungsarbeit", "Beziehungs\u00ADarbeit");
 
 /** The chapter the Mood Test opens with. The chapter no longer stands as a big
  *  question above the card (the user asked to "first test slide remove big

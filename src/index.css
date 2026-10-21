@@ -58,13 +58,13 @@
        it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
-    /* Workload partners follow this slide's own scheme: its neon-green accent and
-       the Health Check's own deep green, then the spiral's blue and the brand's
-       warm accents. No two partners may share a colour (a test reads these). */
+    /* Workload partners follow this slide's own scheme: its neon-green accent,
+       then a deep blue, the spiral's blue and the brand's warm accents. Every
+       partner wears its own colour — no two may share one, and each has to be
+       dark enough to read as text on white (a test reads these). */
     --workload-partner-0: #2A8A10;
-    /* the Health Check's own deep green — same family as the neon one, so the
-       split reads as one green story and matches the card's accent */
-    --workload-partner-1: #0B7A35;
+    /* a deep royal blue, so the second partner never reads as a second green */
+    --workload-partner-1: #0B5CD8;
     --workload-partner-2: #00A9FF;
     --workload-partner-3: #FF4D00;
     --workload-partner-4: #B026FF;
@@ -412,9 +412,9 @@
   margin-bottom: 6px;
   /* This headline is a question, so it may hyphenate like the deck's other
      questions: "Beziehungsarbeit" is the longest word in the deck and at the
-     question's own size it is wider than a phone card's text column, where the
-     statement rule (never break inside a word) would push it past the card edge. */
-  overflow-wrap: anywhere;
+     question's own size it is wider than a phone card's text column. It breaks
+     at its own soft hyphen ("Beziehungs-" / "arbeit") rather than being cut
+     open mid-word, so no arbitrary break is offered here. */
   hyphens: auto;
   -webkit-hyphens: auto;
 }
@@ -553,9 +553,8 @@
   align-items: center;
   width: max-content;
 }
-.workload-split-figures { display: flex; align-items: baseline; gap: 2px; }
+.workload-split-figures { display: flex; align-items: baseline; gap: 6px; }
 .workload-split-sep { color: var(--retro-black); font-weight: 700; font-size: 14px; }
-.workload-split-word { font-size: 14px; color: var(--retro-black); margin-left: 4px; }
 .workload-percentage {
   position: relative;
   background: var(--risiko-label-bg);
