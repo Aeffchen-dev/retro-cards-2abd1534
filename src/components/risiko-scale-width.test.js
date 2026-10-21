@@ -32,7 +32,8 @@ test("the smileys stand in the middle of five equal columns", () => {
   // the drawn columns are the fifths' borders, and the names' row is a five-column
   // grid of the same fifths, so grid, faces, circle and labels all agree
   expect(slide).toContain("const edgeX = (i: number) => `${(i + 1) * COLUMN}%`;");
-  const captions = css.match(/\.risiko-scale-stack \.risiko-scale-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  const captions = (css.match(/\.risiko-scale-stack \.risiko-scale-captions \{([\s\S]*?)\n\}/g) ?? [])
+    .find((block) => block.includes("grid-template-columns")) ?? "";
   expect(captions, "the names no longer stand in five equal columns").toMatch(/grid-template-columns:\s*repeat\(5, minmax\(0, 1fr\)\)/);
   // the field neither insets its content sideways nor pads its head: the rule is
   // centred in the field's own box and the smiley row hangs above it

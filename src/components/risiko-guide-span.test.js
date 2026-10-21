@@ -14,7 +14,8 @@ test("every scale line is drawn with a solid stroke", () => {
   // the statement scale draws its columns only by the dividers between neighbouring
   // columns — no line runs down a smiley's own centre any more — each divider
   // stretching the stack's whole height
-  expect(slide, "the statement scale still draws a line through a smiley's centre").not.toMatch(/risiko-column-guide/);
+  const statementScale = slide.slice(slide.indexOf('className="risiko-scale-stack"'), slide.indexOf('className="risiko-scale-captions'));
+  expect(statementScale, "the statement scale still draws a line through a smiley's centre").not.toContain("risiko-column-guide");
   expect(slide, "the statement scale draws no dividers").toMatch(/risiko-column-edge risiko-guide-full/);
   // the work-split lane keeps the same drawn columns, on its own even grid
   expect(slide, "the work-split lane draws no dividers").toMatch(/columnEdges\(FACES\.length\)/);
@@ -86,7 +87,8 @@ test("the column names stand above the smileys", () => {
   expect(css, "the dot's token is not the 44px the scale draws").toMatch(/--risiko-marker-size:\s*44px/);
 
   // and the row opens the stack — above the smileys, on screen and on paper
-  const orderRule = css.match(/\.risiko-scale-stack \.risiko-scale-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  const orderRule = (css.match(/\.risiko-scale-stack \.risiko-scale-captions \{([\s\S]*?)\n\}/g) ?? [])
+    .find((block) => block.includes("order:")) ?? "";
   expect(orderRule, "the names no longer open the scale").toMatch(/order:\s*-1/);
   expect(orderRule, "the names no longer keep a gap above the smileys").toMatch(/margin-bottom:/);
 
