@@ -1,4 +1,58 @@
 @import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&family=Stack+Sans+Text:wght@400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
+/* The font comparison is isolated from the deck's shared headline rules. */
+.font-preview-trigger {
+  position: fixed;
+  top: max(8px, env(safe-area-inset-top));
+  right: 16px;
+  z-index: 45;
+}
+.font-preview-dialog {
+  width: calc(100% - 32px);
+  max-width: 556px;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  color: var(--color-text-primary);
+  background: hsl(var(--background));
+}
+.font-preview-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+  padding: var(--retro-card-pad);
+  background: hsl(var(--card));
+  color: var(--color-text-primary);
+  border: 1px solid var(--retro-info-rule);
+}
+.font-preview-chapter {
+  font-size: 12px;
+  color: var(--retro-info-text);
+  margin-bottom: 24px;
+}
+.font-preview-dialog .font-preview-question {
+  font-weight: 400;
+  font-size: 38.4px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+.font-preview-round .font-preview-question { font-family: "Nunito", sans-serif; }
+.font-preview-technical .font-preview-question { font-family: "JetBrains Mono", monospace; }
+.font-preview-serif .font-preview-question { font-family: "Instrument Serif", Georgia, serif; }
+.font-preview-support { margin-top: 16px; font-size: 16px; }
+.font-preview-sample-footer {
+  margin-top: auto;
+  padding-top: 28px;
+  font-size: 12px;
+  color: var(--retro-info-text);
+}
+@media (max-width: 480px) {
+  .font-preview-dialog { padding: 20px; }
+  .font-preview-dialog .font-preview-question { font-size: 32px; }
+}
+@media all and (print) {
+  .font-preview-trigger, .font-preview-dialog { display: none !important; }
+}
 /* Custom Kokoro font */
 @font-face {
   font-family: "Kokoro";
