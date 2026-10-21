@@ -58,7 +58,7 @@ const SLIDE_PILLS: Record<number, string | null> = {
   1: "Health Check",
   2: "Health Check",
   3: "The last 4 weeks",
-  102: "Monthly review for you, my love",
+  102: "Feedback",
   104: "Ideas",
   105: "Health Check",
   4: "To talk about",
@@ -672,7 +672,7 @@ const RetroCards: React.FC = () => {
       1: "Wie geht's mir persönlich?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
-      [SLIDE_REFLECTION]: "Monthly review for you, my love",
+      [SLIDE_REFLECTION]: "A review for you, my love",
       5: "Wie stehts mit Dates?",
       7: "Wie erfüllend ist unsere körperliche Intimität?",
     };
@@ -1943,9 +1943,9 @@ const RetroCards: React.FC = () => {
           <div className="flex flex-col items-start w-full h-full">
             <div className="flex flex-col items-start gap-6 w-full">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
-                <span className="retro-label">Monthly review for you, my love</span>
+                <span className="retro-label">Feedback</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="Monthly review for you, my love" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="A review for you, my love" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
