@@ -215,6 +215,132 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   );
 };
 
+export interface StatementScaleProps {
+  /** The stored slider value — a numeric string 0–100; a missing one reads as the middle. */
+  value?: string;
+  /** Hands the new value back exactly as the card stores it. */
+  onChange: (value: string) => void;
+  /** What a screen reader hears for the handle. */
+  ariaLabel: string;
+  /** The quoted statement above the scale; leave it out to show the scale alone. */
+  statement?: string;
+  /** A note that rides inside the scale's own block, on screen only. */
+  below?: React.ReactNode;
+  /** A scale that cannot be moved — the printed copy. */
+  readOnly?: boolean;
+}
+
+/**
+ * One statement and its scale: the quoted sentence, the five smileys over their
+ * dashed columns, the circle that rides the rule and the column names under it.
+ * The Health Check cards stack one of these per statement; a card that only wants
+ * the scale leaves `statement` out. The field's own drag handlers live here, so a
+ * press anywhere on the line picks the circle up however the scale is used.
+ */
+export const StatementScale = ({ value, onChange, ariaLabel, statement, below, readOnly = false }: StatementScaleProps) => {
+  // A press inside the field — anywhere above the rule — picks the circle up and
+  // keeps dragging it, so the whole grey band is the handle and not only the
+  // rule's own row. The value is read with the slider's own maths, so both ways of
+  // grabbing land the circle exactly under the pointer.
+  const fieldDrag = useRef<HTMLDivElement | null>(null);
+  const fieldValueAt = (el: HTMLElement, clientX: number) => {
+    const box = el.getBoundingClientRect();
+    const from = (box.width * facePct(0)) / 100;
+    const travel = (box.width * (100 - 2 * facePct(0))) / 100;
+    if (travel <= 0) return null;
+    return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
+  };
+  const grabField = (e: React.PointerEvent<HTMLDivElement>) => {
+    // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
+    // Everywhere else in the field — the rule's outer ends included, which the slider's own
+    // track does not reach — a press places the dot, so the whole line is a tap target.
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v === null) return;
+    fieldDrag.current = e.currentTarget;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    onChange(String(Math.round(v)));
+  };
+  const dragField = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!fieldDrag.current) return;
+    const v = fieldValueAt(e.currentTarget, e.clientX);
+    if (v !== null) onChange(String(Math.round(v)));
+  };
+  const releaseField = () => { fieldDrag.current = null; };
+
+  return (
+    <div className="risiko-block relative flex flex-col w-full grow shrink-0">
+      {statement && <h2 className="risiko-statement shrink-0" lang="de">{`\u201E${statement}\u201C`}</h2>}
+      <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
+
+        {/* The field carries the drawn scale — columns, smileys, rule and circle —
+            and the names stand under it in their own row. The dashed lines then end
+            exactly where the names begin, on any width and on paper, with no band
+            height to guess per device. */}
+        <div className="risiko-scale-core relative flex flex-col w-full box-border flex-1 min-h-0 touch-pan-y swiper-no-swiping"
+          onPointerDown={grabField} onPointerMove={dragField}
+          onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
+          {/* The field and the column names under it form one stack, and the dashed
+              lines are drawn against that stack: they start at the smileys and end
+              just past the last name. */}
+          <div className="risiko-scale-stack">
+            {/* Columns: no fill at all — the five fields are drawn only as dashed
+                grey lines, one between every pair of neighbouring columns, with
+                the scale's own left and right edge left bare. They break around the smiley row
+                exactly like the smileys' own stronger guides, so every dashed line
+                on the field starts and ends at the same heights. Painted before
+                everything else, so a line never covers a smiley, a guide or the
+                handle. */}
+            <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
+              {columnEdges(FACES.length).flatMap((at) => ([
+                <span key={`es${at}`} className="risiko-column-edge risiko-column-guide--stub absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
+                <span key={`el${at}`} className="risiko-column-edge risiko-column-guide--long absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
+              ]))}
+            </div>
+            {/* Each smiley's column carries its dashed guide down the stack's whole
+                height — a stub above the face, then a long run from straight under it
+                past the column names — so the smiley reads as threaded onto its own
+                line instead of having the line drawn through it. Painted before the
+                faces and the circle, so both simply stand in front of the line. */}
+            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
+              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-column-guide--stub absolute" style={{ left: facePos(i) }} />)}
+              {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide risiko-column-guide--long absolute" style={{ left: facePos(i) }} />)}
+            </div>
+            {/* The smileys sit flush with the field's top edge, while the rule
+                and the circle centre on the long dashed line under them. */}
+            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
+              <FaceLayer />
+              <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
+                onChange={(v) => onChange(String(v))} />
+            </div>
+            {/* Every column names itself: one label per field, centred on that field,
+                so the circle always sits above the word it points at. The row takes
+                exactly the height the names need, and the dashed lines run down
+                through it — the names paint over them. */}
+            <div className="risiko-scale-captions pointer-events-none" lang="de">
+              {SCALE_CAPTIONS.map((caption, i) => (
+                <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
+                  <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
+                ))}</span>
+              ))}
+            </div>
+          </div>
+          {below && (
+            // A note that belongs to the scale rides straight under it, inside the
+            // scale's own block, so it is centred and moved with the scale — and it
+            // keeps a press to itself, so a tap on the box never drags the circle the
+            // field underneath is listening for.
+            <div className="risiko-scale-note screen-only shrink-0" onPointerDown={(e) => e.stopPropagation()}>
+              {below}
+            </div>
+          )}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
 const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, onEdit, onOverflow }: RisikoSlideProps) => {
   // A card whose statements are taller than the card itself asks the deck for
   // fewer statements per card, so nothing is cut off at the card's lower edge.
@@ -344,75 +470,15 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
 
   // Each statement is its own compact block: quote, smileys and a scale.
   const scale = (key: string, text: string, readOnly: boolean, below?: React.ReactNode) => (
-    <div key={key} className="risiko-block relative flex flex-col w-full grow shrink-0">
-      <h2 className="risiko-statement shrink-0" lang="de">{`\u201E${text}\u201C`}</h2>
-      <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
-
-        {/* The field carries the drawn scale — columns, smileys, rule and circle —
-            and the names stand under it in their own row. The dashed lines then end
-            exactly where the names begin, on any width and on paper, with no band
-            height to guess per device. */}
-        <div className="risiko-scale-core relative flex flex-col w-full box-border flex-1 min-h-0 touch-pan-y swiper-no-swiping"
-          onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
-          onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
-          {/* The field and the column names under it form one stack, and the dashed
-              lines are drawn against that stack: they start at the smileys and end
-              just past the last name. */}
-          <div className="risiko-scale-stack">
-            {/* Columns: no fill at all — the five fields are drawn only as dashed
-                grey lines, one between every pair of neighbouring columns, with
-                the scale's own left and right edge left bare. They break around the smiley row
-                exactly like the smileys' own stronger guides, so every dashed line
-                on the field starts and ends at the same heights. Painted before
-                everything else, so a line never covers a smiley, a guide or the
-                handle. */}
-            <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-              {columnEdges(FACES.length).flatMap((at) => ([
-                <span key={`es${at}`} className="risiko-column-edge risiko-column-guide--stub absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
-                <span key={`el${at}`} className="risiko-column-edge risiko-column-guide--long absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
-              ]))}
-            </div>
-            {/* Each smiley's column carries its dashed guide down the stack's whole
-                height — a stub above the face, then a long run from straight under it
-                past the column names — so the smiley reads as threaded onto its own
-                line instead of having the line drawn through it. Painted before the
-                faces and the circle, so both simply stand in front of the line. */}
-            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-column-guide--stub absolute" style={{ left: facePos(i) }} />)}
-              {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide risiko-column-guide--long absolute" style={{ left: facePos(i) }} />)}
-            </div>
-            {/* The smileys sit flush with the field's top edge, while the rule
-                and the circle centre on the long dashed line under them. */}
-            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
-              <FaceLayer />
-              <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-                onChange={(v) => onChange(key, String(v))} />
-            </div>
-            {/* Every column names itself: one label per field, centred on that field,
-                so the circle always sits above the word it points at. The row takes
-                exactly the height the names need, and the dashed lines run down
-                through it — the names paint over them. */}
-            <div className="risiko-scale-captions pointer-events-none" lang="de">
-              {SCALE_CAPTIONS.map((caption, i) => (
-                <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
-                  <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
-                ))}</span>
-              ))}
-            </div>
-          </div>
-          {below && (
-            // The chapter's sentence rides straight under the scale that explains it.
-            // It stands inside the scale's own block, so it is centred and moved with
-            // the scale — and it keeps a press to itself, so a tap on the box never
-            // drags the circle the field underneath is listening for.
-            <div className="risiko-scale-note screen-only shrink-0" onPointerDown={(e) => e.stopPropagation()}>
-              {below}
-            </div>
-          )}
-        </div>
-
-      </div>
-    </div>
+    <StatementScale
+      key={key}
+      value={values[key]}
+      onChange={(v) => onChange(key, v)}
+      ariaLabel={text}
+      statement={text}
+      below={below}
+      readOnly={readOnly}
+    />
   );
 
   // Widths encode shares. Reserved avatar slots prevent collisions even at 0%.
