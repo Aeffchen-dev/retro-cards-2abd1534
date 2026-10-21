@@ -402,8 +402,28 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const allocation = (readOnly: boolean) => {
     const partners = persons.filter(p => page.personKeys.includes(p.key));
     const keys = partners.map(p => p.key);
-    const shares = workloadShares(keys, values);
+  const shares = workloadShares(keys, values);
   const segments = workloadSegments(keys, shares);
+  // The lane point a boundary sits at: the centre of the gap between the two
+  // circles that meet there — the same maths the circles read, so the colours,
+  // the black split line and the circles all agree at every split.
+  // One number for width and height, so the avatar circle can never be
+  // squeezed into an oval when the lane gets crowded.
+  const band = workloadBand(SLOT, BAND, partners.length);
+  const slotPx = `${SLOT}px`;
+  const splitAt = (i: number) => {
+    const li = i ? `calc(${band} * ${i})` : "0px";
+    const ri = `calc(${band} * ${partners.length - 1 - i})`;
+    return `calc(${li} + ${slotPx} + (100cqw - ${li} - ${ri} - ${slotPx}) * ${segments[i].end} / 100)`;
+  };
+  // Each colour runs from the boundary behind it to its own boundary, so the
+  // colour change always lands exactly where the circles part.
+  const segmentWidth = (i: number) => {
+    if (partners.length <= 1) return "100cqw";
+    if (i === 0) return splitAt(0);
+    if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
+    return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
+  };
   // Where the pointer sits on one partner's scale, and how far that partner's
   // circle is from it — the same maths picks who gets grabbed and how far the
   // grab has travelled since.
@@ -477,11 +497,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             ))}
           </div>
           <div className="workload-bar" aria-hidden="true">
-
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: `${segment.width}%` }}>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
+            ))}
+          </div>
+          {/* Each boundary carries its own solid ink line: not dashed like the grey
+              guides, but standing exactly as tall as they do — from the lane's top
+              edge down to the names' strip — and centred in the 4px gap the two
+              circles part to either side of it. Painted after the bar, so the line
+              reads over the colours; the circles draw above it. */}
+          <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
+            {segments.slice(0, -1).map((segment, i) => (
+              <span key={`bl${i}`} className="workload-boundary absolute" style={{ left: splitAt(i) }} />
             ))}
           </div>
           {partners.map((p, i) => {
@@ -494,16 +523,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             // squeezed into an oval when the lane gets crowded.
             const slot = `min(${SLOT}px, calc(100cqw / ${partners.length}))`;
             // Every partner reserves exactly one band: its circle plus room for its
-            // centred name — adjacent circles sit exactly one band apart, touching
-            // with no margin between them. The band may never grow past the share
-            // of the lane each partner can actually use, or the circles would run
-            // out of room to move.
-            const band = workloadBand(SLOT, BAND, partners.length);
+            // centred name — adjacent circles sit exactly one band apart, and each
+            // circle steps 2px away from the boundary it marks, so neighbouring
+            // circles keep a 4px gap between them. The band may never grow past the
+            // share of the lane each partner can actually use, or the circles would
+            // run out of room to move.
             const li = `calc(${band} * ${i})`;
             const ri = `calc(${band} * ${partners.length - i - 1})`;
             const vars = {
               "--workload-li": li, "--workload-ri": ri, "--workload-slot": slot,
               "--workload-v": String(value), "--workload-band": band,
+              // The circle's 2px step away from its own boundary: every circle but
+              // the last sits just left of the boundary it rides, the last one just
+              // right of it — together they open the 4px gap the split line centres in.
+              "--workload-shift": i < partners.length - 1 ? "-2px" : "2px",
               // Names take alternating rows. With two partners each row holds a
               // single name, so it may use the whole lane; from three partners up
               // two names share a row, so each is kept within two bands.
@@ -519,7 +552,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
             if (readOnly) {
               return (
                 <div key={p.key} className={`absolute z-10 workload-color-${i % 8}`}
-                  style={{ ...vars, width: slot, height: slot, top: "calc((100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100)` }}>
+                  style={{ ...vars, width: slot, height: slot, top: "calc((100cqh - var(--risiko-name-strip) - var(--workload-slot, 32px)) / 2)", left: `calc(${li} + (100cqw - ${li} - ${ri} - ${slot}) * ${value} / 100 + var(--workload-shift, 0px))` }}>
                   {memojiEl}
                 </div>
               );
@@ -538,18 +571,20 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 <SliderPrimitive.Track className="relative w-full h-px" />
                 <SliderPrimitive.Thumb aria-label={`Beziehungsarbeit ${p.name}`} aria-valuetext={`${shares[p.key]} Prozent`} aria-valuemin={min} aria-valuemax={max}
                   className={`risiko-thumb cursor-ew-resize rounded-full pointer-events-auto workload-color-${i % 8}`}
-                  style={{ width: slot, height: slot }}>
+                  style={{ width: slot, height: slot, transform: "translateX(var(--workload-shift, 0px))" } as React.CSSProperties}>
                   {memojiEl}
                 </SliderPrimitive.Thumb>
               </SliderPrimitive.Root>
             );
           })}
         </div>
-        {/* The split each dashed guide stands for, read left partner / the rest. */}
-        <div className="workload-splits relative w-full h-[14px] shrink-0 pointer-events-none" aria-hidden="true">
+        {/* The split each column stands for, labelled in the same row, type and
+            grey the statement scales name their columns with — one label per
+            column, centred on it, in the couple's ratio with a colon and %. */}
+        <div className="risiko-scale-captions pointer-events-none" aria-hidden="true">
           {FACES.map((_, i) => {
             const at = Math.round(columnBands(FACES.length).map(([a, b]) => (a + b) / 2)[i]);
-            return <span key={`sp${i}`} className="workload-split absolute" style={{ left: facePos(i) }}>{at}/{100 - at}</span>;
+            return <span key={`sp${i}`} className="risiko-scale-caption">{at}:{100 - at}%</span>;
           })}
         </div>
       </div>
