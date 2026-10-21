@@ -637,7 +637,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const chapterMood = averageMood(values);
 
   return (
-    <div ref={pageRef} className="risiko-page flex flex-col items-start w-full h-full min-h-0" style={{ color: INK }}>
+    <div ref={pageRef} className={`risiko-page flex flex-col items-start w-full h-full min-h-0${page.statements.length === 0 ? " risiko-allocation-page" : ""}`} style={{ color: INK }}>
       {isChapterStart && (
         <div className="risiko-chapter shrink-0 w-full" lang="de">
           <p className="risiko-chapter-info">
