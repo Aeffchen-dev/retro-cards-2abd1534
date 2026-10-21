@@ -8,10 +8,13 @@ import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdge
 // traced from the very anchor curve the dragged dot morphs through. The five grey
 // scale faces, the printed average-mood face and the five Health Check faces are
 // all this one drawing, so a single feature can carry its own pen everywhere at
-// once. The mouth draws one pixel on every smiley, whatever weight its own
-// outline wears (user: "mouth stroke width all smileys 1px"); the icon paints its
-// 24-unit view into `size` pixels, so that pixel pen is stated back in grid units.
-const MOUTH_PEN_PX = 1;
+// once. The mouth keeps its own pen on every smiley, whatever weight its own
+// outline wears, and a face may overrule it: the five grey scale smileys draw
+// theirs finer than every other face in the deck (user: "MOUTH 1,4 GREY SMILIES"
+// against "1,6 FOR THE OTHERS SMILIES MOUTH"). The icon paints its 24-unit view
+// into `size` pixels, so each pixel pen is stated back in grid units.
+const MOUTH_PEN_PX = 1.6;
+const SCALE_MOUTH_PEN_PX = 1.4;
 // The eyes are filled circles a step above the pen of their outline and mouth:
 // this radius lands a 3.7px dot on the deck's 44px faces — the step the user
 // asked for on every face ("eye dot bit bigger. for aLL") — and the answer dot's
@@ -19,7 +22,7 @@ const MOUTH_PEN_PX = 1;
 const EYE_R = 1;
 
 const smiley = (mouth: number[]) =>
-  ({ size = 24, strokeWidth = 1.5, color }: { size?: number; strokeWidth?: number; color?: string }) => (
+  ({ size = 24, strokeWidth = 1.5, color, mouthPen = MOUTH_PEN_PX }: { size?: number; strokeWidth?: number; color?: string; mouthPen?: number }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -35,7 +38,7 @@ const smiley = (mouth: number[]) =>
       <circle cx="12" cy="12" r="10" />
       <circle cx="9" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
       <circle cx="15" cy="9" r={EYE_R} fill={color ?? "currentColor"} stroke="none" />
-      <path d={mouthPath(mouth)} strokeWidth={MOUTH_PEN_PX * (24 / size)} />
+      <path d={mouthPath(mouth)} strokeWidth={mouthPen * (24 / size)} />
     </svg>
   );
 
