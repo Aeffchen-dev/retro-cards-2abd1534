@@ -322,3 +322,4 @@
 - [x] info ℹ icon stroke lightened to 1.5px
 - [x] slider rule in the vertical column lines' grey (#C9CBD1)
 - [x] answer: grey smileys wear a white fill disc reaching ~2.8px past the grey outline
+- [x] Risikofaktoren-Skala: die fünf grauen Smilies ziehen sich jetzt in demselben Grau wie die senkrechten Spaltenlinien (#C9CBD1, FACE_GREY = --risiko-column-line); der Durchschnitts-Smiley im gedruckten Kapitel-Satz behält das dunklere #80828A (CHAPTER_MOOD_GREY), damit er auf Papier lesbar bleibt. Auf allen acht Skalen gemessen (face/edge/rule je rgb(201,203,209)), 162 Tests grün, Build OK.
