@@ -22,4 +22,4 @@
 - [x] "Kamera öffnen": the camera glyph reads light orange (#FFE0B5) on the slide's purple tile — pale enough to clear 3.5:1 there.
 - [x] Phones: the scale column names are as big as their column can hold in three lines — `min(calc(100cqw / 5 / 4.35), 18px)` (13.3px on a 393px phone, 9.9px on a 320px one, every name ≤3 lines, no word cut); tablet/desktop/paper keep their two-line size. 176 checks pass, print 18 pages.
 - [x] Phones: the scale column names now read the helper sentence's size (12px, the app's floor) instead of the column-scaled three-line size; tablet/desktop/paper untouched. 176 checks pass, print 18 pages.
-- [x] Big question headline pinned to the deck's own bundled face ("Stack Sans Notch Local" only, no system family) in both the shared #root rule and the headline block; weight 400 kept. 176 checks pass, build OK, print 18 pages.
+- [x] Big question headline back on the device's own "Stack Sans Notch", with the bundled "Stack Sans Notch Local" file demoted to fallback, in both the shared #root rule and the headline block (user: "headline nicht die mitgelieferte Schrift"); weight 400 kept. 176 checks pass.
