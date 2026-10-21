@@ -236,10 +236,9 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the circle's travel is inset. Its
         ends are rounded off, so the line finishes soft instead of cut square. It
-        wears the very grey the vertical column lines are drawn in
-        (--risiko-column-line), so the scale's grid and its ground line read as
-        one set — and the ink answer dot stays the heavy mark on it. */}
-    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: "var(--risiko-column-line)", left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
+        draws in the card's own ink (user: "slider range black"), while the
+        vertical column guides keep the lighter grey behind it. */}
+    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: "var(--retro-black)", left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}

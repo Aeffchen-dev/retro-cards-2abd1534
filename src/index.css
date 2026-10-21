@@ -814,9 +814,9 @@
    own 6px of breath. Two pixels come off that maximum (user: "text sie -2px"). */
 .risiko-scale-stack .risiko-scale-caption {
   font-size: calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px);
-  color: var(--risiko-guide);
-}
-.risiko-scale-stack .risiko-scale-caption[data-active="true"] {
+  /* every name reads the card's own ink, whatever column the answer rests in
+     (user: "column header text all black no matter of slider psoiron",
+     superseding the grey-until-selected rule) */
   color: var(--retro-black);
 }
 /* The grey and size the work-split card's ratio legend falls back to: it names
