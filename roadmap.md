@@ -321,4 +321,4 @@
 - [x] grey smileys' white halo restored
 - [x] info ℹ icon stroke lightened to 1.5px
 - [x] slider rule in the vertical column lines' grey (#C9CBD1)
-- [ ] answer: do the grey smileys wear a white outline or a white fill beyond the outline
+- [x] answer: grey smileys wear a white fill disc reaching ~2.8px past the grey outline
