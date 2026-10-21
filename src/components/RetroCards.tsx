@@ -674,7 +674,7 @@ const RetroCards: React.FC = () => {
       3: "Wie waren die letzten 4 Wochen? Was war los?",
       [SLIDE_REFLECTION]: "Monthly review for you, my love",
       5: "Wie stehts mit Dates?",
-      7: "Sind wir uns körperlich nah?",
+      7: "Wie erfüllend ist unsere körperliche Intimität?",
     };
     if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
@@ -1979,18 +1979,18 @@ const RetroCards: React.FC = () => {
 
       case 7: {
         return (
-          <div className="flex flex-col items-start gap-14 w-full justify-center">
-            <div className="flex flex-col items-start gap-3 w-full">
+          <div className="flex flex-col items-start gap-14 w-full h-full justify-center">
+            <div className="flex flex-col items-start gap-3 w-full flex-1 min-h-0">
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="Sind wir uns körperlich nah?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="Wie erfüllend ist unsere körperliche Intimität?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
               {/* The same scale the Health Check statements ride: five smileys over
                   their dashed columns and a circle that can be pulled along the rule.
                   The answer is kept with this card's own notes, under its own key. */}
               <div className="risiko-page risiko-page--intimacy w-full">
                 <StatementScale
-                  ariaLabel="Sind wir uns körperlich nah?"
+                  ariaLabel="Wie erfüllend ist unsere körperliche Intimität?"
                   value={editModeNotes[7]?.scale}
                   fieldMin={76}
                   onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
@@ -2005,7 +2005,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Das war so hot"
                 placeholder="Deine Antwort"
-                minHeight={112}
+                minHeight={72}
                 value={editModeNotes[7]?.hot || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
@@ -2018,7 +2018,7 @@ const RetroCards: React.FC = () => {
                 accent={labelColorOf(7)}
                 label="Eine Idee für uns"
                 placeholder="Deine Antwort"
-                minHeight={112}
+                minHeight={72}
                 value={editModeNotes[7]?.idea || ""}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
