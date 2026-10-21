@@ -174,3 +174,4 @@
 - [x] Slider auf den Mood-Test-Karten vertikal auf die Kartenmitte gesetzt (Skala eigene Höhe, freier Raum gleichmäßig aufgeteilt, restliche Pixel per gemessenem Shift, nach oben/unten begrenzt); auf Karte und im PDF geprüft, 62 Tests grün.
 - [x] Erste Mood-Test-Karte: keine große Frage mehr — "Testet euer Beziehungsgefühl" eröffnet den Einleitungssatz, das Durchschnits-Smiley reitet darin; Aussage in der Frage-Schrift auf eine Größe für alle (16px, auf dem Papier/Handy 12px), längste Aussage 3 Zeilen; Regler auf der Kartenmitte. 62 Tests grün.
 - [x] Kapitel-Pill zurück auf "Health Check" (statt "Beziehungsgefühl Test") — auf Kapitel-, Aussage- und Beziehungskarte sowie im PDF geprüft, 72 Tests grün.
+- [x] Aussage-Text bricht nur noch zwischen Wörtern — keine Trennstriche, kein Wortumbruch (overflow-wrap normal, hyphens manual); Zeilenzahlen unverändert (längste Aussage 3 Zeilen auf dem Papier, 4 auf dem Handy), nichts überlappt; 74 Tests grün.
