@@ -46,8 +46,8 @@ describe("statement card info sentence", () => {
 
   test("shows the statement on its own, without quote marks", () => {
     const head = slide.slice(slide.indexOf('className="risiko-statement shrink-0"'));
-    const line = head.slice(0, head.indexOf("\n"));
-    expect(line, "the statement headline lost its text").toContain("{statement}");
-    expect(line, "the statement is wrapped in quote marks again").not.toMatch(/\\u201[EC]|\u201E|\u201C|"/);
+    const inner = head.slice(head.indexOf(">") + 1, head.indexOf("</h2>"));
+    expect(inner, "the statement is wrapped in quote marks again").toBe("{statement}");
+    expect(slide, "a quote mark came back around the statement").not.toContain("\\u201E");
   });
 });
