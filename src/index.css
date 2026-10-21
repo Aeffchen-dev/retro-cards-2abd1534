@@ -370,11 +370,11 @@
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
 }
-/* The first two Health Check cards draw their own track: six solid grey lines
-   across the face column — one above the first smiley, one below the last and
-   one between every neighbouring pair — so the column reads as five stacked
-   fields an answer can rest in. Each starts at the column's own left edge and
-   stops short of the resting Memoji's spot; the faces draw on top of them. */
+/* The first two Health Check cards draw their own track: five solid grey lines
+   across the face column — the line under every smiley's own field, so the track
+   starts below the first face and closes below the last one. Each starts at the
+   column's own left edge and stops short of the resting Memoji's spot; the faces
+   draw on top of them. */
 .health-check-guides {
   position: absolute;
   inset: 0;
