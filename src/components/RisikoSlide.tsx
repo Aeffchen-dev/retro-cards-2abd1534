@@ -90,7 +90,7 @@ const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
   <span className="risiko-face flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={1.5} color={color} />
+    <Icon size={FACE_SIZE} strokeWidth={1.2} color={color} />
   </span>
 );
 

@@ -11,6 +11,9 @@ interface PostItFieldProps {
   className?: string;
   /** Background colour of the label bar (slide pill colour) */
   accent?: string;
+  /** The label bar's colour painted as given, skipping the contrast lightening —
+      for a neon the caller has already checked against black label text. */
+  barColor?: string;
   /** Small grey sentence under the label bar, above the writing area */
   helper?: string;
   /** Bullet points by default: every line starts with "• " */
@@ -72,6 +75,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   minHeight,
   className = "",
   accent,
+  barColor,
   helper,
   bullets = false,
 }) => (
@@ -80,7 +84,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
       className="inline-flex self-start items-center py-1 pl-3 pr-3 retro-body-copy"
       style={{
         minHeight: "32px",
-        backgroundColor: readableBg(accent),
+        backgroundColor: barColor ?? readableBg(accent),
         color: TEXT,
       }}
     >
