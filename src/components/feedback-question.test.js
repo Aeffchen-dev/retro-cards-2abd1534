@@ -65,7 +65,7 @@ describe("Feedback headline question", () => {
 
 describe("The two cards swapped their last and first question", () => {
   test("asks \"Letzte Chance\" on the Feedback card", () => {
-    expect(fields).toContain('["unspoken", "Letzte Chance", "Deine Antwort", ""]');
+    expect(fields).toContain('["unspoken", "Letzte Chance", "Deine Antwort", "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen"]');
     expect(slide).toContain("reflectionTexts[key]");
   });
 

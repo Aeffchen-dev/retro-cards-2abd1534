@@ -290,7 +290,7 @@ describe("grey columns", () => {
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    const caption = css.match(/^\.risiko-scale-caption \{([\s\S]*?)\n\}/m)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
     // One step under the info rows' floor, because two lines of a name have to fit
@@ -311,7 +311,11 @@ describe("grey columns", () => {
     // wider than them.
     const plate = css.match(/\.risiko-caption-plate \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(plate, "the name has no plate of its own").toBeTruthy();
-    expect(/background:\s*var\(--risiko-surface\)/.test(plate), "the plate is not the card's own surface").toBe(true);
+    // The plate wears the scale field's own colour — the card's surface on paper,
+    // the grey panel on screen — so the guide reads as threaded behind the word
+    // rather than drawn through its letters, whatever the field is painted with.
+    expect(/background:\s*var\(--risiko-field-bg\)/.test(plate), "the plate is not the scale field's own colour").toBe(true);
+    expect(/--risiko-field-bg:\s*var\(--risiko-surface\)/.test(css), "the field colour does not fall back to the card's surface").toBe(true);
     expect(/padding-inline/.test(plate), "the plate does not keep a little breath around the word").toBe(true);
     expect(caption, "the name itself no longer needs a background").not.toMatch(/background/);
     // and the plate repaints for paper, so it never shows as a pale patch
@@ -365,19 +369,31 @@ describe("work-split split line", () => {
     expect(slide).toContain("{at}% / {100 - at}%");
     expect(slide).not.toContain("{at}:{100 - at}%");
   });
-  test("reads as the footnote's second line on screen, with nothing left under the circles", () => {
-    // The note block holds the helper sentence first and the column ratios straight
-    // under it — the row no longer stands under the two circles.
+  test("stands under the lane on screen and on paper, in the lane's own outline", () => {
+    // The row of column ratios follows the lane it explains on both paths: the
+    // printed copy and the screen copy render the same element in the same place,
+    // straight under the bar rather than down in the footnote.
+    const laneAt = slide.indexOf("workload-lane");
+    const splitAt = slide.indexOf("<SplitCaptions />");
+    const footAt = slide.indexOf("risiko-footer screen-only");
+    expect(splitAt, "the ratios no longer stand under the lane").toBeGreaterThan(laneAt);
+    expect(splitAt, "the ratios moved out of the card's own area").toBeLessThan(footAt);
+    // Nothing is left hanging under the circles: the note block carries only the
+    // helper sentence now, and the notes button keeps the card's padding from it.
     const noteAt = slide.indexOf("risiko-footer-note");
     const note = slide.slice(noteAt, slide.indexOf("</div>", noteAt));
-    expect(noteAt, "the footnote has no block of its own").toBeGreaterThan(-1);
-    expect(note, "the ratios do not read under the helper sentence").toContain("<SplitCaptions />");
-    expect(note.indexOf("risiko-helper"), "the ratios read before the sentence").toBeLessThan(note.indexOf("SplitCaptions"));
-    // The lane's own copy is the printed one only, so on screen nothing hangs there.
-    expect(slide, "the ratios still stand under the lane on screen").toContain("{readOnly && <SplitCaptions />}");
-    // The notes button still keeps the card's own padding from the whole note.
-    const foot = slide.slice(slide.indexOf("risiko-footer screen-only"), noteAt);
+    expect(note, "the ratios still read under the helper sentence").not.toContain("SplitCaptions");
+    const foot = slide.slice(footAt, noteAt);
     expect(foot, "the note no longer stands a card padding under the button").toContain("gap-[28px]");
+    // The row names each column's own split on two lines — the shares over the
+    // word "Split" — and wears the same solid ink outline the lane's boundary
+    // is drawn with, so bar and ratios read as one diagram.
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const row = css.match(/\.risiko-scale-captions\.risiko-split-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(row, "the ratio row has no solid outline").toMatch(/border:\s*1px solid var\(--retro-black\)/);
+    const cell = css.match(/\.risiko-split-captions \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(cell, "the ratio cells no longer stack their two lines").toMatch(/flex-direction:\s*column/);
+    expect(slide, "the row no longer names the split").toContain("risiko-split-word");
   });
   test("lets the longest word break only at its own soft hyphen", () => {
     expect(softHyphenate(RISIKO_ALLOCATION_HEADING)).toContain("Beziehungs\u00ADarbeit");
@@ -524,19 +540,24 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(sentence.split(", ").length).toBe(8);
     expect(new Set(sentence.replace("Beziehungsarbeit heißt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(8);
   });
-  test("reads in the card's own ink at the same size as the headline's second half", () => {
+  test("reads as the deck's small grey info text, with no hairline above it", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const blocks = [...css.matchAll(/\.risiko-allocation-examples \{[^}]*\}/g)].map((m) => m[0]);
     const examples = blocks.find((b) => /color:/.test(b)) ?? "";
-    const subheading = css.match(/^\.risiko-allocation-subheading \{[^}]*\}/m)?.[0] ?? "";
-    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     expect(examples, "the examples rule is gone").toBeTruthy();
-    expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
-    expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
-    expect(subheading, "the headline's second half rule is gone").toBeTruthy();
-    expect(subheading, "the headline's second half no longer reads as body text").toMatch(/font-size:\s*14px/);
-    expect(examples, "the examples no longer match the headline's second half").toMatch(/font-size:\s*14px/);
-    expect(tsx, "the headline's second half wears the question's display face again")
+    // The sentence wears the same grey and the same size as the deck's ℹ helper
+    // rows, so it reads as a plain line under the question rather than a second
+    // info box — which is why it carries no hairline above it either.
+    expect(examples, "the examples do not read in the info text's grey").toMatch(/color:\s*var\(--retro-info-text\)/);
+    expect(examples, "the examples do not read at the info text's size").toMatch(/font-size:\s*16px/);
+    expect(examples, "the examples wear a hairline above them again").not.toMatch(/border-top/);
+    // On a phone or a tablet the same sentence drops to the deck's smallest size.
+    const small = css.match(/@media \(max-width: 1023px\) \{[\s\S]*?\.risiko-allocation-examples \{[^}]*\}/)?.[0] ?? "";
+    expect(small, "the examples no longer step down on small windows").toMatch(/font-size:\s*12px/);
+    // The subheadline the user took away stays away: the card carries its question
+    // and this one sentence, nothing in between.
+    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    expect(tsx, "the removed subheadline is back on the card")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
   test("draws the line between the two Memojis as thick as the slider's rule", () => {
