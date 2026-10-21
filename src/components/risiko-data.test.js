@@ -216,7 +216,9 @@ describe("grey columns", () => {
     expect(lightness(face), "the smileys are not lighter than the guides").toBeGreaterThan(lightness(guide));
     expect(lightness(face), "the smileys are not darker than the caption grey").toBeLessThan(lightness(token("risiko-caption")));
     expect(/border-left: 1px dashed var\(--risiko-guide\)/.test(css), "guides do not use --risiko-guide").toBe(true);
-    expect(/color=\{FACE_GREY\}/.test(slide), "the scale faces do not use FACE_GREY").toBe(true);
+    expect(/const Face = \(\{ Icon, color = FACE_GREY \}/.test(slide), "the scale faces no longer default to FACE_GREY").toBe(true);
+    expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
+
     expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
@@ -546,7 +548,9 @@ describe("mood test chapter", () => {
     expect(slide).toContain("RISIKO_CHAPTER_OPEN");
     expect(slide).toContain("RISIKO_CHAPTER_INFO");
     expect(slide).toContain("averageMood(values)");
-    expect(slide).toContain("moodFaceIndex(chapterMood)");
+    expect(slide).toContain("moodFaceIndex(mood)");
+    expect(slide).toContain("label={chapterIntro(chapterMood, INK)}");
+
   });
 });
 
@@ -637,11 +641,17 @@ describe("the chapter card's own text", () => {
     expect(css, "the chapter heading's own type rule is still there").not.toMatch(/\.risiko-chapter-heading/);
   });
   test("leads the info sentence with its own words and carries the mood smiley inside them", () => {
-    const chapter = slide.match(/risiko-chapter-info[\s\S]*?\n {10}<\/p>/)?.[0] ?? "";
-    expect(chapter, "the info sentence no longer opens with the chapter's words").toMatch(
+    // The sentence now stands inside the card's info box on screen and keeps its
+    // place straight under the card on paper; either way it opens with the
+    // chapter's own words and the average-mood smiley rides inside them.
+    const intro = slide.match(/const chapterIntro = [\s\S]*?\n {2}\);/)?.[0] ?? "";
+    expect(intro, "the sentence no longer opens with the chapter's words").toMatch(
       /RISIKO_CHAPTER_OPEN[\s\S]*risiko-chapter-mood[\s\S]*RISIKO_CHAPTER_INFO/,
     );
+    expect(slide, "the intro no longer reaches the card's info box").toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
+    expect(slide, "the intro no longer reaches the printed card").toMatch(/<p className="risiko-chapter-info">\{chapterIntro\(chapterMood, FACE_GREY\)\}<\/p>/);
   });
+
 });
 
 describe("the statement's one size", () => {

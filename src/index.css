@@ -365,8 +365,10 @@
 @media (min-width: 1024px) { .risiko-chapter-info { font-size: 16px; } }
 /* The chapter's smiley is one of the five scale faces, kept at the size the
    scale itself draws them, so the average reads in the scale's own language. It
-   rides inside the intro sentence, so it keeps an even breath on both sides. */
-.risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin: 0 5px; }
+   rides inside the intro sentence: the breath sits before it, so the sentence's
+   own full stop can close directly behind the face instead of floating apart. */
+.risiko-chapter-mood { display: inline-flex; vertical-align: -4px; margin: 0 0 0 5px; }
+
 .risiko-chapter-mood .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
 
 /* The scale's grey smileys: the box and the drawing inside it follow

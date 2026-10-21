@@ -7,7 +7,8 @@ export interface ActionRowProps {
   /** Custom icon node (overrides `icon`) */
   iconNode?: React.ReactNode;
   /** Label shown in the grey field */
-  label: string;
+  label: React.ReactNode;
+
   /** Background colour of the icon tile */
   accent: string;
   /** Icon colour, defaults to white */
