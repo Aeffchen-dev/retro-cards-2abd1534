@@ -5,14 +5,13 @@ const risiko = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8
 const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 
 /**
- * The shared "Notizen öffnen" CTA: user: "left side grey fill+outline" and
- * "icon blaclk" — the pencil tile reads field grey with a grey ring around it
- * and a black pencil, while the label field keeps the deck's standard field
+ * The shared "Notizen öffnen" CTA: user: "EDIT PEN BACKGROUND NO OURLINE" and
+ * "icon blaclk" — the pencil tile reads plain field grey with no outline of its
+ * own and a black pencil, while the label field keeps the deck's standard field
  * grey. Edit mode ("Fertig") keeps the card's own pill colour and white pencil.
  */
 describe("notes CTA colours", () => {
   const GREY_TILE = "#E4E6E8";
-  const GREY_RING = "1px solid #C9CBD1";
   const INK = "#201C1D";
 
   test("the Risikofaktoren notes button reads a grey tile with a grey ring", () => {
