@@ -44,9 +44,7 @@ const MARKER_SIZE = 44;
 
 
 // One ink stroke for the whole deck: the rule, the work-split bar and the split
-// line are all this thick, and it is the very weight the grey smileys' own lines
-// draw — 1.36 of a 24 grid painted at 44px lands at 3px.
-const RULE_W = 4;
+// line are all this thick — 3px, the weight the deck's other strokes share.
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
@@ -106,13 +104,26 @@ const EYE_W = MARKER_PEN;
 // rule's 3px.
 const FACE_PEN = 0.9;
 
+// The smileys' eyes draw as filled circles a step larger than the hairline pen
+// of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
+// eyes land about 2.5px wide — still far lighter than the ink answer dot's 3px.
+const EYE_R = 0.68;
+
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
   // only a shade off the card's white, so the smiley reads as being inside it.
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
-  <span className="risiko-face flex items-center justify-center">
+  // The eyes are drawn over the icon as filled circles of their own: every face
+  // in the set keeps its dot eyes on the same 24-grid pair (9,9 / 15,9), so one
+  // overlay fits all five and the circles can grow without the pen thickening
+  // the face's outline and mouth with them.
+  <span className="risiko-face relative flex items-center justify-center">
     <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
+    <svg className="absolute inset-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
+      <circle cx="9" cy="9" r={EYE_R} />
+      <circle cx="15" cy="9" r={EYE_R} />
+    </svg>
   </span>
 );
 
