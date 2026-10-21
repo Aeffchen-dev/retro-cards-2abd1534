@@ -582,8 +582,26 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*4px/);
-    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-2px\)/);
+    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*3px/);
+    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
+  });
+  test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
+    const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const eyeR = Number(src.match(/const EYE_R = ([\d.]+);/)?.[1] ?? 0);
+    expect(eyeR, "the eyes' circle radius is not a named value").toBeGreaterThan(0);
+    expect(src, "the eyes are not drawn over the face as circles").toMatch(/<circle cx="9" cy="9" r=\{EYE_R\}/);
+    // The eye is a filled circle: its diameter in 24-grid units has to stand
+    // clearly above the pen that draws the face's outline and mouth.
+    expect(eyeR * 2, "the eyes did not grow past the pen's dot").toBeGreaterThan(pen);
+    expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(3);
+  });
+  test("the info row's ℹ mark draws at 1.5px in the text's own colour", () => {
+    const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
+    expect(src, "the ℹ mark's stroke is not the asked 1.5px")
+      .toMatch(/icon === "IconInfo" \? 1\.5 : undefined/);
+    expect(src, "the ℹ mark does not take the row's own icon colour")
+      .toMatch(/color: resolvedIconColor/);
   });
   test("reads at the same size as the deck's other questions, also on a phone", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
