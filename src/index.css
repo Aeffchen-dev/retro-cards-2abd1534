@@ -310,6 +310,9 @@
 }
 @media (max-width: 767px) {
   .risiko-statement { font-size: 28px; }
+  /* The work-split card's headline is a question, not a statement, so it keeps the
+     size every other question on the deck reads — even on a phone. */
+  .risiko-allocation-statement { font-size: 38.4px; }
 }
 /* A phone's card cannot hold the work-split question at the question's own size,
    the whole sentence of examples and the split bar all at once — the bar would be
