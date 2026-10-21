@@ -46,8 +46,8 @@
        the thumb, so the scale can work the gap under the rule out from the dot */
     --risiko-marker-size: 44px;
 
-    --risiko-helper-bg: #F1F2F4;
     /* The info box carries no fill any more: its sentence reads in the scale's
+
        own grey and a hairline above it separates it from the button above. */
     --retro-info-text: #6E7078;
     --retro-info-rule: #C9CBD1;
