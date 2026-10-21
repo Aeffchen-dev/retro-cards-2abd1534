@@ -75,7 +75,7 @@ export const scaleValue = (stored?: string): number => {
 export const scaleEndInset = (markerSize: number): number => markerSize / 2;
 
 /** The circle's centre at a scale value, measured from the end of the travel. The
- *  smileys and the dashed guides are placed with the same maths, so the circle
+ *  smileys are placed with the same maths, so the circle
  *  always sits exactly under the face it points at; the value is continuous, so it
  *  can stop anywhere in between. */
 export const markerInset = (value: number, endInset: number): number =>

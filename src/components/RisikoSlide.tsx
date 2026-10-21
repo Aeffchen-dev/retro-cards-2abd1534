@@ -3,7 +3,7 @@ import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
 import { Frown, Meh, Smile, Laugh } from "lucide-react";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, CRYING_MOUTH, mouthPath, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 
 // The saddest face on the scale, drawn in the same language as the faces next to
@@ -28,8 +28,8 @@ export const SadFace = ({ size = 24, strokeWidth = 1.5, color }: { size?: number
   </svg>
 );
 export const FACES = [SadFace, Frown, Meh, Smile, Laugh];
-// The faces sit a shade lighter than the dashed guides and column names they are
-// drawn over, so the smileys read as the softest thing on the scale.
+// The faces sit a shade lighter than the column names they stand over, so the
+// smileys read as the softest thing on the scale.
 export const FACE_GREY = "#8A8C94";
 // Shared smiley header: one smiley at each end and three between them, spread
 // across the row so the circle's travel lines up with every one of them.
@@ -44,8 +44,8 @@ const MARKER_SIZE = 44;
 
 
 // The rule is exactly as thick as the work-split bar (h-1), so both scales read
-// as the same line — clearly stronger than the fine dashed guides, and it never
-// touches the grey smileys' own stroke weight.
+// as the same line — the one strong stroke on the card — and it never touches the
+// grey smileys' own stroke weight.
 const RULE_W = 4;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
@@ -67,13 +67,8 @@ const END_INSET = scaleEndInset(MARKER_SIZE);
 const SPAN = `(100% - ${2 * END_INSET}px)`;
 /** CSS left for a smiley's centre: face 0 stands one handle-radius from the edge. */
 const faceX = (i: number) => `calc(${END_INSET}px + ${i} * ${SPAN} / ${FACES.length - 1})`;
-/** CSS left for the dashed line between face `i` and the face to its right. */
-const edgeX = (i: number) => `calc(${END_INSET}px + ${i + 0.5} * ${SPAN} / ${FACES.length - 1})`;
 /** CSS left for the circle at a slider value: 0 under the first smiley, 100 under the last. */
 const markerLeft = (value: number) => `calc(${END_INSET}px + ${value} * ${SPAN} / 100)`;
-/** The work-split lane keeps its own evenly divided grid: its circles ride the share
- *  each partner holds, so its guides and split figures stay on the even columns. */
-const lanePos = (i: number) => `${(i + 0.5) * (100 / FACES.length)}%`;
 // Workload circles stay round at 32px, and every partner reserves exactly one
 // circle-width band — neighbouring dots touch with no margin between them, and
 // the band may never grow past the share of the lane each partner can use.
@@ -249,8 +244,8 @@ export interface StatementScaleProps {
 }
 
 /**
- * One statement and its scale: the quoted sentence, the five smileys over their
- * dashed columns, the circle that rides the rule and the column names under it.
+ * One statement and its scale: the sentence, the five smileys over the rule, the
+ * circle that rides it and the column names under it.
  * The Health Check cards stack one of these per statement; a card that only wants
  * the scale leaves `statement` out. The field's own drag handlers live here, so a
  * press anywhere on the line picks the circle up however the scale is used.
@@ -291,44 +286,20 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
       {statement && <h2 className="risiko-statement shrink-0" lang="de">{statement}</h2>}
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
 
-        {/* The field carries the drawn scale — columns, smileys, rule and circle —
-            and the names stand under it in their own row. The dashed lines then end
-            exactly where the names begin, on any width and on paper, with no band
-            height to guess per device. */}
+        {/* The field carries the drawn scale — smileys, rule and circle — while the
+            names stand under it in their own row, on any width and on paper, with no
+            band height to guess per device. */}
         <div className="risiko-scale-core relative flex flex-col w-full box-border flex-1 min-h-0 touch-pan-y swiper-no-swiping"
           onPointerDown={grabField} onPointerMove={dragField}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
-          {/* The field and the column names under it form one stack, and the dashed
-              lines are drawn against that stack: they start at the smileys and end
-              just past the last name. */}
           {/* The field's floor rides here as a token: the stack is what works the
               rule's own height out of the taller of the floor and the field's own
               basis — custom properties only travel downwards, so the field cannot
               tell its parent — and that height is what tells the names how far up
               they may rise. */}
           <div className="risiko-scale-stack" style={{ "--risiko-field-min": `${fieldMin ?? FIELD_MIN}px` } as React.CSSProperties}>
-            {/* Columns: no fill at all — the five fields are drawn only as dashed grey
-                lines, one between every pair of neighbouring columns, with the scale's
-                own left and right edge left bare. Each line runs the stack's whole
-                height, from the smileys' top edge down past the last name. Painted
-                before everything else, so a line never covers a smiley, a guide or
-                the handle. */}
-            <div className="risiko-columns absolute pointer-events-none" style={{ left: 0, right: 0, top: 0, bottom: 0 }} aria-hidden="true">
-              {FACES.slice(0, -1).map((_, i) => (
-                <span key={`ce${i}`} className="risiko-column-edge risiko-guide-full absolute" style={{ left: edgeX(i) }} />
-              ))}
-            </div>
-            {/* Each smiley's column carries its dashed guide down the stack's whole
-                height — from the smiley's own top edge, straight behind its face, to
-                just past the last name. The face keeps a plate of the card's own
-                surface, so the line reads as threaded behind the smiley rather than
-                drawn through it. Painted before the faces and the circle, so both
-                simply stand in front of the line. */}
-            <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
-              {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-guide-full absolute" style={{ left: faceX(i) }} />)}
-            </div>
-            {/* The smileys sit flush with the field's top edge, while the rule
-                and the circle centre on the long dashed line under them. */}
+            {/* The smileys sit flush with the field's top edge, while the rule and
+                the circle centre in the room under them. */}
             <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: fieldMin ?? FIELD_MIN }}>
               <FaceLayer />
               <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
@@ -336,8 +307,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
             </div>
             {/* Every column names itself: one label per field, centred on that field,
                 so the circle always sits above the word it points at. The row takes
-                exactly the height the names need, and the dashed lines run down
-                through it — the names paint over them. */}
+                exactly the height the names need and stands under the field. */}
             <div className="risiko-scale-captions pointer-events-none" lang="de">
               {captions.map((caption, i) => (
                 <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
@@ -581,24 +551,6 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         onPointerDown={readOnly ? undefined : grabBar}
         onPointerMove={readOnly ? undefined : dragBar}
         onPointerUp={releaseBar} onPointerCancel={releaseBar} onLostPointerCapture={releaseBar}>
-          {/* The work split is read on the same grid as the statements: no fill,
-              only the dashed grey lines between every pair of neighbouring
-              columns, the scale's own edges left bare. They stop above the quiet
-              strip at the lane's foot, and the bar, the circles and the names and
-              share figures printed on it all paint on top. */}
-          <div className="risiko-columns absolute left-0 right-0 top-0 pointer-events-none"
-            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
-            {columnEdges(FACES.length).map((at) => (
-              <span key={`c${at}`} className="risiko-column-edge absolute top-0 bottom-0"
-                style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />
-            ))}
-          </div>
-          <div className="risiko-scale-guides absolute left-0 right-0 top-0 pointer-events-none"
-            style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
-            {FACES.map((_, i) => (
-              <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: lanePos(i), top: 0, bottom: 0 }} />
-            ))}
-          </div>
           {/* The colour runs carry nothing themselves: every name and every share
               is printed in its own row, above and below the rule. */}
           <div className="workload-bar" aria-hidden="true">
@@ -606,9 +558,8 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={segment.key} className={`workload-segment workload-color-${i % 8}${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }} />
             ))}
           </div>
-          {/* Each boundary carries its own solid ink line: not dashed like the grey
-              guides, but standing exactly as tall as they do — from the lane's top
-              edge down to the names' strip — and centred in the 4px gap the two
+          {/* Each boundary carries its own solid ink line, standing from the lane's
+              top edge down to the names' strip and centred in the 4px gap the two
               circles part to either side of it. Painted after the bar, so the line
               reads over the colours; the circles draw above it. */}
           <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
