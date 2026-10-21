@@ -283,7 +283,8 @@
 ## 2026-10-21 (fifth batch)
 - [x] Scale column names: as big as possible, max two lines inside their own column, in black.
 - [x] Remove the line running down each smiley's own centre on the statement scales.
-- [ ] Info text: let it ignore the card's padding on the left, right and bottom.
+- [x] Info text: reaches the card's own bottom edge, but keeps the card's 28px at its left and right; its hairline spans only the container, not the whole card.
+- [ ] Info row: halve the gap between the ℹ icon and the sentence, and draw that icon with a 1px stroke.
 - [ ] Question text: raise its line height globally to a similar value.
 - [ ] Grey smileys: move them 40px down.
 - [ ] "Notizen öffnen": green tile, black label, white icon with a 1px stroke.

@@ -915,14 +915,10 @@
      "info Text ignore card padding ... bottom") */
   margin-bottom: calc(-1 * var(--risiko-scale-pad));
 }
-/* The info sentence runs past the card's side padding too — its hairline, its
-   icon and its words span the card from edge to edge, instead of stopping at the
-   content box the notes button still stands inside. */
-.risiko-footer-note {
-  width: auto;
-  align-self: stretch;
-  margin-inline: calc(-1 * var(--risiko-scale-pad));
-}
+/* The info sentence keeps the card's own padding at its left and right, and the
+   hairline above it spans only that content width — the card's own edges stay
+   bare (user: "info text left and right padding same as from card", "border-top
+   only container not fullwidth"). Only its foot reaches the card's own edge. */
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
    edge, behind each face (whose plate keeps the face readable), down past the last
