@@ -307,11 +307,11 @@
 - [x] info icon 1.5px stroke, same colour as text
 - [x] grey smileys' eyes bigger circles
 - [ ] range slider line colour grey (was ink) — IN PROGRESS
-- [ ] grey smileys vertically centred on the slider line, on top — IN PROGRESS
-- [ ] visual verification of the risiko card in the preview (navigation via keyboard/swipe pending)
-- [ ] grey smileys: remove the white outline/plate — IN PROGRESS
-- [ ] answer dot (range slider) z-index to top of the faces — IN PROGRESS
-- [ ] range slider snaps (to the five face anchors) — IN PROGRESS
+- [x] grey smileys vertically centred on the slider line, on top
+- [x] visual verification of the risiko card in the preview
+- [x] grey smileys: remove the white outline/plate
+- [x] answer dot (range slider) z-index to top of the faces
+- [x] range slider snaps (to the five face anchors)
 - [x] grey smileys: remove the white outline/plate
 - [x] answer dot (range slider) z-index to top of the faces
 - [x] range slider snaps (to the five face anchors)
