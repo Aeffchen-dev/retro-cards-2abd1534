@@ -417,7 +417,8 @@
 }
 /* The shares ride in their own row just below the rule. The row is a line rather
    than a box: every number stands on it and grows downwards, so a taller number
-   never crowds the rule it belongs to. */
+   never crowds the rule it belongs to. It never catches a pointer — the bar below
+   is what a press grabs. */
 .workload-shares {
   position: absolute;
   left: 0;
@@ -425,6 +426,7 @@
   top: calc((100cqh - var(--risiko-name-strip)) / 2 + 7px); /* the rule's foot, plus 5px */
   height: 0;
   z-index: 5;
+  pointer-events: none;
 }
 /* The share keeps its partner's plain colour and never wraps: "100%" is already
    the widest it ever has to be. */
@@ -442,7 +444,8 @@
   max-width: 48px;
 }
 /* The names ride in their own row just above the rule, standing on it and growing
-   upwards, so the row never has to be measured to make room for a longer name. */
+   upwards, so the row never has to be measured to make room for a longer name.
+   Like the shares' row it never catches a pointer. */
 .workload-labels {
   position: absolute;
   left: 0;
@@ -450,6 +453,7 @@
   bottom: calc((100cqh + var(--risiko-name-strip)) / 2 + 7px); /* the rule's head, plus 5px */
   height: 0;
   z-index: 5;
+  pointer-events: none;
 }
 /* A name is printed in its partner's colour pulled towards ink, so a short bold
    label stays readable on white. A name wider than the row's fixed width breaks at
