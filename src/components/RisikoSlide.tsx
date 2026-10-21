@@ -43,10 +43,10 @@ const FACE_SIZE = 44;
 const MARKER_SIZE = 44;
 
 
-// The rule is exactly as thick as the work-split bar (h-1), so both scales read
-// as the same line — the one strong stroke on the card — and it never touches the
-// grey smileys' own stroke weight.
-const RULE_W = 4;
+// One ink stroke for the whole deck: the rule, the work-split bar and the split
+// line are all this thick, and it is the very weight the grey smileys' own lines
+// draw — 1.2 of a 24 grid painted at 44px lands at 2.2px.
+const RULE_W = 2.2;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:

@@ -539,8 +539,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 2px); /* half of the bar's own 4px height */
-  height: 4px;
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 - 1.1px); /* half of the bar's own 2.2px height */
+  height: 2.2px;
   display: flex;
 }
 
@@ -914,14 +914,14 @@
   border-left: 1px solid var(--risiko-column-line);
 }
 /* The work-split's boundary line: solid ink, standing from the lane's top edge
-   down to the names' strip. Its left lands on the centre of the 4px gap between
-   the two circles that meet at the boundary. */
+   down to the names' strip. It is the deck's one shared stroke, and its left
+   lands on the centre of the gap between the two circles that meet there. */
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 4px;
+  width: 2.2px;
   background: var(--retro-black);
-  transform: translateX(-2px);
+  transform: translateX(-1.1px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
