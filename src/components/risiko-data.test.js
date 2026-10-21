@@ -229,7 +229,7 @@ describe("grey columns", () => {
     // printed card is sized to the sheet and keeps filling its whole page.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const rule = slide.match(/background: INK,[^\n]*/)?.[0] ?? "";
+    const rule = slide.match(/background: (?:INK|FACE_GREY),[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.slice(css.indexOf("@media screen {"));
@@ -250,7 +250,7 @@ describe("grey columns", () => {
     expect(slide, "the lane still carries a fixed height").not.toMatch(/workload-lane[^"]*h-\[\d+px\]/);
     // The bar rides the fields' middle, so both scales read the same way.
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
-    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 2px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
+    expect(/top:\s*calc\(\(100cqh - var\(--risiko-name-strip\)\) \/ 2 - 1\.5px\)/.test(bar), "the bar is not centred on the fields").toBe(true);
   });
   test("each partner is named above the rule and its share printed below, on that partner's own colour", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
@@ -312,6 +312,12 @@ describe("grey columns", () => {
     // 11px and would not fit at 12px. Every name still breaks at its own words into
     // exactly two lines, so the row reads as one even block.
     expect(/font-size:\s*11px/.test(caption), "the labels do not read at their own small size").toBe(true);
+    // The names stand in Stack Sans Text — the headline family's own upright
+    // companion — and they win it against the global #root typography only
+    // through a #root rule of their own.
+    expect(/font-family:\s*"Stack Sans Text"/.test(caption), "the labels do not name their own face in the class rule").toBe(true);
+    expect(css, "the labels' face does not survive the global #root rule")
+      .toMatch(/#root \.risiko-scale-caption \{\s*font-family: "Stack Sans Text"/);
     // … and they keep that size on phones instead of being swept into the 12px media rule
     const mq = css.split("@media (max-width: 1023px)")[1] ?? "";
     const block = mq.slice(0, mq.indexOf("\n}"));
@@ -342,7 +348,7 @@ describe("grey columns", () => {
     // the work-split bar is 3px tall, however it is drawn
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
-    expect(thick, "the work-split bar's thickness is gone").toBe(4);
+    expect(thick, "the work-split bar's thickness is gone").toBe(3);
     const rule = Number(slide.match(/const RULE_W = ([\d.]+)/)?.[1]);
     expect(rule, "the slider rule does not match the work-split bar's 3px").toBe(thick);
   });
@@ -582,8 +588,26 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*4px/);
-    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-2px\)/);
+    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*3px/);
+    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
+  });
+  test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
+    const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+    const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const eyeR = Number(src.match(/const EYE_R = ([\d.]+);/)?.[1] ?? 0);
+    expect(eyeR, "the eyes' circle radius is not a named value").toBeGreaterThan(0);
+    expect(src, "the eyes are not drawn over the face as circles").toMatch(/<circle cx="9" cy="9" r=\{EYE_R\}/);
+    // The eye is a filled circle: its diameter in 24-grid units has to stand
+    // clearly above the pen that draws the face's outline and mouth.
+    expect(eyeR * 2, "the eyes did not grow past the pen's dot").toBeGreaterThan(pen);
+    expect(eyeR * 2 * (44 / 24), "the eyes grew too heavy next to the answer dot").toBeLessThan(3);
+  });
+  test("the info row's ℹ mark draws at 1.5px in the text's own colour", () => {
+    const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
+    expect(src, "the ℹ mark's stroke is not the asked 1.5px")
+      .toMatch(/icon === "IconInfo" \? 1\.5 : undefined/);
+    expect(src, "the ℹ mark does not take the row's own icon colour")
+      .toMatch(/color: resolvedIconColor/);
   });
   test("reads at the same size as the deck's other questions, also on a phone", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
@@ -801,7 +825,7 @@ describe("the statement's one size", () => {
     const statement = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? [])
       .find((block) => block.includes("font-size")) ?? "";
     expect(statement, "the statement's own size is gone").toMatch(/font-size:\s*32\.6px/);
-    expect(statement).toMatch(/line-height:\s*1\.2/);
+    expect(statement).toMatch(/line-height:\s*1\.3/);
   });
 
   test("a phone steps the statement down, but not under the deck's floor", () => {

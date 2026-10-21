@@ -43,19 +43,19 @@ const FACE_SIZE = 44;
 const MARKER_SIZE = 44;
 
 
-// One ink stroke for the whole deck: the rule, the work-split bar and the split
-// line are all this thick, and it is the very weight the grey smileys' own lines
-// draw — 1.36 of a 24 grid painted at 44px lands at 3px.
-const RULE_W = 4;
+// One stroke for the whole deck: the rule, the work-split bar and the split line
+// are all this thick — 3px. The rule draws in the smileys' own grey, the split
+// and the answer dot stay ink.
+const RULE_W = 3;
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
 // the smiley row centres itself on it (see .risiko-face-header in index.css), so
 // the row's own height has to be counted in when the fields are given a floor.
-// How far the smiley row's own centre stands above the rule's centre: the two are
-// centred together in the field (--risiko-face-rise in index.css), so the row's
-// height plus this rise is what the field has to hold, mirrored about its middle.
-const FACE_RISE = 56;
+// The smiley row rides the rule's own centre line: the field centres the row and
+// the rule together (--risiko-face-rise in index.css is 0), so the row's height
+// alone is what the field's floor has to hold, mirrored about its middle.
+const FACE_RISE = 0;
 const FIELD_MIN = 2 * (FACE_RISE + FACE_SIZE / 2);
 
 // The five columns are equal shares of the scale (user: "graph columns make even
@@ -106,13 +106,26 @@ const EYE_W = MARKER_PEN;
 // rule's 3px.
 const FACE_PEN = 0.9;
 
+// The smileys' eyes draw as filled circles a step larger than the hairline pen
+// of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
+// eyes land about 2.5px wide — still far lighter than the ink answer dot's 3px.
+const EYE_R = 0.68;
+
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
   // No plate behind the face: it sits straight on its column's fill, which is
   // only a shade off the card's white, so the smiley reads as being inside it.
   // The box comes from --risiko-face-size (index.css) so the face can be a size
   // smaller on tablet and desktop without moving anything else on the scale.
-  <span className="risiko-face flex items-center justify-center">
+  // The eyes are drawn over the icon as filled circles of their own: every face
+  // in the set keeps its dot eyes on the same 24-grid pair (9,9 / 15,9), so one
+  // overlay fits all five and the circles can grow without the pen thickening
+  // the face's outline and mouth with them.
+  <span className="risiko-face relative flex items-center justify-center">
     <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
+    <svg className="absolute inset-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
+      <circle cx="9" cy="9" r={EYE_R} />
+      <circle cx="15" cy="9" r={EYE_R} />
+    </svg>
   </span>
 );
 
@@ -217,16 +230,18 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   return (
   <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the circle's travel is inset. Its
-        ends are rounded off, so the line finishes soft instead of cut square. */}
-    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
+        ends are rounded off, so the line finishes soft instead of cut square. It
+        draws in the smileys' own grey, so faces and line read as one family and
+        the ink answer dot stays the heavy mark on it. */}
+    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: FACE_GREY, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
-    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+    <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
     ) : (
       <>
         <SliderPrimitive.Root
-          className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
+          className="swiper-no-swiping absolute flex items-center touch-none select-none z-40 cursor-ew-resize"
           style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
@@ -248,7 +263,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
           <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
-        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
+        <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
           {marker}
         </div>
       </>

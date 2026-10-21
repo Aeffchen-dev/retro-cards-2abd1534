@@ -82,7 +82,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   /* The ℹ mark is a small glyph inside a 32px tile, so it draws with a hairline
      pen unless the call site asks for another weight; every other icon keeps the
      set's own weight. */
-  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 1 : undefined);
+  const resolvedStrokePx = iconStrokeWidth ?? (icon === "IconInfo" ? 1.5 : undefined);
   const content = (
     <>
       <span

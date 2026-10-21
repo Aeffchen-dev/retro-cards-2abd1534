@@ -299,3 +299,15 @@
 - [x] Field: the rule and the grey smileys sit vertically centred together.
 - [x] Rule: its own z-index fixed so it never covers the dot.
 - [x] Grey smileys: white fill, painted above the slider dot.
+
+## Open (2026-10-21 evening)
+- [x] 3px stroke instead of 4px (rule, work-split bar, boundary)
+- [x] statement line-height a bit more (1.2 → 1.3)
+- [x] column header texts another font (Stack Sans Text, via #root rule)
+- [x] info icon 1.5px stroke, same colour as text
+- [x] grey smileys' eyes bigger circles
+- [ ] range slider line colour grey (was ink) — IN PROGRESS
+- [ ] grey smileys vertically centred on the slider line, on top — IN PROGRESS
+- [ ] visual verification of the risiko card in the preview (navigation via keyboard/swipe pending)
+- [ ] grey smileys: remove the white plate halo (plate hugs the drawn face circle) — IN PROGRESS
+- [ ] answer dot z-index above the grey smileys — IN PROGRESS
