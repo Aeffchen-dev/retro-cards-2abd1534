@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_SUBHEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -121,7 +121,8 @@ describe("Risikofaktoren scale", () => {
     expect(RISIKO_STATEMENTS[5]).toEqual(["quality", "Wir nehmen uns auch im Alltag Zeit für gemeinsame Erlebnisse und schaffen Nähe, bleiben neugierig auf das, was uns bewegt, und unterstützen einander dabei zu wachsen"]);
   });
   test("asks the work-split question on its own card", () => {
-    expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt oder leistet einer von uns einen deutlich größeren Anteil?");
+    expect(RISIKO_ALLOCATION_HEADING).toBe("Ist unsere Beziehungsarbeit gerecht verteilt?");
+    expect(RISIKO_ALLOCATION_SUBHEADING).toBe("Oder leistet einer von uns einen deutlich größeren Anteil?");
   });
   test("shows one statement per card and closes with the work split", () => {
     const pages = risikoPages(["p0", "p1"]);
@@ -490,14 +491,17 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(phone, "the phone size of the work-split headline is gone").toBeTruthy();
     expect(phone, "the work-split headline no longer reads at the question's own size on a phone").toMatch(/\.risiko-allocation-statement \{ font-size: 38\.4px; \}/);
   });
-  test("on a phone keeps just the question and the split bar, dropping the examples and the note", () => {
+  test("on a phone keeps the question, its smaller second half and the split bar, dropping the examples and the note", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const phone = (css.match(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g) ?? [])
       .find((b) => /risiko-allocation-page/.test(b)) ?? "";
     expect(phone, "the phone rule for the work-split card is gone").toBeTruthy();
     expect(phone, "the examples are back on a phone").toMatch(/\.risiko-allocation-page \.risiko-allocation-examples,[\s\S]*?display: none;/);
     expect(phone, "the scale's note line is back on a phone").toMatch(/\.risiko-allocation-page \.risiko-helper/);
-    expect(phone, "the question lost its gap to the split bar").toMatch(/\.risiko-allocation-page \.risiko-allocation-statement \{ margin-bottom: var\(--risiko-scale-pad\); \}/);
+    // The smaller headline stays on a phone, so it carries the card's gap down to
+    // the split bar while the question sits close above it.
+    expect(phone, "the question no longer sits close above its smaller second half").toMatch(/\.risiko-allocation-page \.risiko-allocation-statement \{ margin-bottom: 6px; \}/);
+    expect(phone, "the smaller headline lost its gap to the split bar").toMatch(/\.risiko-allocation-page \.risiko-allocation-subheading \{[\s\S]*?margin-bottom: var\(--risiko-scale-pad\);/);
     const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     expect(tsx, "the work-split card no longer marks itself for the phone rule").toMatch(/risiko-allocation-page/);
   });
