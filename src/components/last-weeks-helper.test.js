@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 const src = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 const card = src.slice(src.indexOf("case 3:"), src.indexOf("case 4:"));
 const overlay = src.slice(src.indexOf("Edit/Close action row"), src.indexOf("Left navigation zone"));
-const padding = src.slice(src.indexOf("retro-card-container relative w-full"), src.indexOf("Edit Mode View"));
+const padding = src.slice(src.indexOf("retro-card-container relative"), src.indexOf("Edit Mode View"));
 
 describe("last 4 weeks card", () => {
   test("carries no info box any more", () => {

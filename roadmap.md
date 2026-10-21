@@ -14,7 +14,7 @@
 - [x] Statement wording, print and clear flow unchanged: 170 checks pass, print stays 18 pages.
 
 ## Open
-- [x] Desktop: every card stops at 63% of the stage (547px on a 1440×900 window, cap 669px — the old 72%/760px shrunk by the user's "smaller 88%") so the background graphic reads around it; the Setup card keeps its own 500×720.
+- [x] Every card in the slider now wears one measure: the container's height capped at 88% (345×636 on a phone, 500×764 on a 1440×900 desktop), no per-card exception, no desktop-only ceiling, no card scrolling its own content; 175 checks pass.
 - [x] "Notizen öffnen": the grey pencil tile lost its outline everywhere (user: "EDIT PEN BACKGROUND NO OURLINE"); the ℹ-Icon stays as it is (user: "So lassen"); the big question font draws one weight heavier (400 → 500); the grey vertical guides confirmed at 1px; 176 checks pass.
 - [ ] The rule now passes straight behind the unfilled smileys (their own ask: "grey full = grey outline no fill"). If they'd rather the line stopped at each face's edge, the faces need a plate of the card's surface again — waiting on the user's call.
 - [x] Setup card back to yesterday's caps: at most 500px wide and 720px tall, always in that 500:720 proportion (measured 469×674 on an 873×755 window).
