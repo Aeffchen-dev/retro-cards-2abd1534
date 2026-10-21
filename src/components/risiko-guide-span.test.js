@@ -25,9 +25,9 @@ test("every scale line is drawn with a solid stroke", () => {
   // and every one of those lines is a normal stroke: the dividers wear the ink
   // the column names are printed in, the Health Check track the scale's own pale grey
   const guide = css.match(/\.risiko-column-guide \{[\s\S]*?\}/)?.[0] ?? "";
-  expect(guide, "the guide is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-line\)/);
+  expect(guide, "the guide is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-column-line\)/);
   const edge = css.match(/\.risiko-column-edge \{[\s\S]*?\}/)?.[0] ?? "";
-  expect(edge, "the divider is not a solid line").toMatch(/border-left:\s*1px solid var\(--retro-black\)/);
+  expect(edge, "the divider is not a solid line").toMatch(/border-left:\s*1px solid var\(--risiko-column-line\)/);
   const track = css.match(/\.health-check-guide \{[\s\S]*?\}/)?.[0] ?? "";
   expect(track, "the Health Check track is not a solid line").toMatch(/border-top:\s*1px solid var\(--risiko-column-line\)/);
 });
