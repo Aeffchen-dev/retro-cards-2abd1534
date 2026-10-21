@@ -1473,7 +1473,7 @@ const RetroCards: React.FC = () => {
                       }));
                     }}
                   >
-                    <Face size={HC_FACE} strokeWidth={1.5} color="var(--retro-black)" />
+                    <Face size={HC_FACE} strokeWidth={1.2} color="var(--retro-black)" />
                   </Button>
                 ))}
               </div>
