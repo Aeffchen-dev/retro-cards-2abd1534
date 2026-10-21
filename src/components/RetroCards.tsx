@@ -674,7 +674,7 @@ const RetroCards: React.FC = () => {
       3: "Wie waren die letzten 4 Wochen? Was war los?",
       [SLIDE_REFLECTION]: "Monthly review for you, my love",
       5: "Wie stehts mit Dates?",
-      7: "Sind wir uns körperlich nah?",
+      7: "Wie erfüllend ist unsere körperliche Intimität?",
     };
     if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
@@ -1984,13 +1984,13 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Intimacy</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="Sind wir uns körperlich nah?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="Wie erfüllend ist unsere körperliche Intimität?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
               {/* The same scale the Health Check statements ride: five smileys over
                   their dashed columns and a circle that can be pulled along the rule.
                   The answer is kept with this card's own notes, under its own key. */}
               <div className="risiko-page risiko-page--intimacy w-full">
                 <StatementScale
-                  ariaLabel="Sind wir uns körperlich nah?"
+                  ariaLabel="Wie erfüllend ist unsere körperliche Intimität?"
                   value={editModeNotes[7]?.scale}
                   fieldMin={76}
                   onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
