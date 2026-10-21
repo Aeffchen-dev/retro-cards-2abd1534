@@ -272,3 +272,4 @@
 
 ## 2026-10-21 (fourth batch)
 - [x] Dot smiley: no white outline behind it, and its own colour back instead of the smileys' grey.
+- [x] Dot smiley: white fill (the face\u2019s own white, on screen and on paper).
