@@ -290,7 +290,7 @@ describe("grey columns", () => {
   test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const caption = css.match(/\.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    const caption = css.match(/^\.risiko-scale-caption \{([\s\S]*?)\n\}/m)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
     expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
     // One step under the info rows' floor, because two lines of a name have to fit
@@ -365,19 +365,31 @@ describe("work-split split line", () => {
     expect(slide).toContain("{at}% / {100 - at}%");
     expect(slide).not.toContain("{at}:{100 - at}%");
   });
-  test("reads as the footnote's second line on screen, with nothing left under the circles", () => {
-    // The note block holds the helper sentence first and the column ratios straight
-    // under it — the row no longer stands under the two circles.
+  test("stands under the lane on screen and on paper, in the lane's own outline", () => {
+    // The row of column ratios follows the lane it explains on both paths: the
+    // printed copy and the screen copy render the same element in the same place,
+    // straight under the bar rather than down in the footnote.
+    const laneAt = slide.indexOf("workload-lane");
+    const splitAt = slide.indexOf("<SplitCaptions />");
+    const footAt = slide.indexOf("risiko-footer screen-only");
+    expect(splitAt, "the ratios no longer stand under the lane").toBeGreaterThan(laneAt);
+    expect(splitAt, "the ratios moved out of the card's own area").toBeLessThan(footAt);
+    // Nothing is left hanging under the circles: the note block carries only the
+    // helper sentence now, and the notes button keeps the card's padding from it.
     const noteAt = slide.indexOf("risiko-footer-note");
     const note = slide.slice(noteAt, slide.indexOf("</div>", noteAt));
-    expect(noteAt, "the footnote has no block of its own").toBeGreaterThan(-1);
-    expect(note, "the ratios do not read under the helper sentence").toContain("<SplitCaptions />");
-    expect(note.indexOf("risiko-helper"), "the ratios read before the sentence").toBeLessThan(note.indexOf("SplitCaptions"));
-    // The lane's own copy is the printed one only, so on screen nothing hangs there.
-    expect(slide, "the ratios still stand under the lane on screen").toContain("{readOnly && <SplitCaptions />}");
-    // The notes button still keeps the card's own padding from the whole note.
-    const foot = slide.slice(slide.indexOf("risiko-footer screen-only"), noteAt);
+    expect(note, "the ratios still read under the helper sentence").not.toContain("SplitCaptions");
+    const foot = slide.slice(footAt, noteAt);
     expect(foot, "the note no longer stands a card padding under the button").toContain("gap-[28px]");
+    // The row names each column's own split on two lines — the shares over the
+    // word "Split" — and wears the same solid ink outline the lane's boundary
+    // is drawn with, so bar and ratios read as one diagram.
+    const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
+    const row = css.match(/\.risiko-scale-captions\.risiko-split-captions \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(row, "the ratio row has no solid outline").toMatch(/border:\s*1px solid var\(--retro-black\)/);
+    const cell = css.match(/\.risiko-split-captions \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(cell, "the ratio cells no longer stack their two lines").toMatch(/flex-direction:\s*column/);
+    expect(slide, "the row no longer names the split").toContain("risiko-split-word");
   });
   test("lets the longest word break only at its own soft hyphen", () => {
     expect(softHyphenate(RISIKO_ALLOCATION_HEADING)).toContain("Beziehungs\u00ADarbeit");
