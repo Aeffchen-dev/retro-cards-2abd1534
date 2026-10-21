@@ -331,3 +331,4 @@
 - [ ] Column names always black, whatever the slider position (user, latest).
 - [ ] Slider rule black again, with its stroke and every smiley stroke a bit thicker (user, latest).
 - [ ] Resting slider circle carries the same styling as the dragged one; the arrow hint draws at 1px (user, latest).
+- [ ] The drag hint stays the horizontal arrow inside the resting circle (user: "horizontally", latest).
