@@ -20,6 +20,15 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     expect(slide).toContain("stroke={INK} strokeWidth={ARROW_W}");
   });
 
+  test("the dot is drawn with the rule's own pen, not an unrelated number", () => {
+    // A 24 grid painted into MARKER_SIZE px: the rule's pixel width back into
+    // grid units, so the dot's lines render exactly as thick as the rule.
+    expect(slide).toContain("const MARKER_PEN = RULE_W * (24 / MARKER_SIZE);");
+    expect(slide).toContain("const MOUTH_W = MARKER_PEN;");
+    expect(slide).toContain("const EYE_W = MARKER_PEN;");
+    expect(slide).toContain("const ARROW_W = RULE_W * (24 / ARROW_SIZE);");
+  });
+
   test("no white disc and no ring is painted around the face", () => {
     const point = block(".risiko-expression-point {");
     expect(point).toContain("background: none;");
