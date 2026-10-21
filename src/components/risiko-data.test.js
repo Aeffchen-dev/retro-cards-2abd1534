@@ -266,7 +266,10 @@ describe("grey columns", () => {
     // Both are printed inside one colour run, so a name and its number always agree.
     const run = slide.match(/<div className="workload-bar"[\s\S]*?\n {10}<\/div>/)?.[0] ?? "";
     expect(run, "the colour runs no longer carry their own labels").toBeTruthy();
-    expect(run, "the name is not worded as an share label").toContain("&rsquo;s Anteil:");
+    expect(run, "the name is not worded as an share label").toContain("shareLabel(");
+    // A name ending in an s keeps just the apostrophe, so it never doubles.
+    expect(/\/s\$\//.test(slide), "the s-ending rule is gone").toBe(true);
+    expect(slide, "the plain name label is gone").toContain("’s Anteil:");
     expect(/className="workload-label"/.test(run), "a colour run has no name above the rule").toBe(true);
     expect(/className="workload-percentage"/.test(run), "a colour run has no share below the rule").toBe(true);
     // Nothing hangs under the circles any more — the names moved above the rule.

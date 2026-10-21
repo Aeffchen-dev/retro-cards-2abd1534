@@ -426,7 +426,13 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   };
   // A colour run belongs to exactly one partner, so the name printed above the
   // rule and the share printed below it can both be read off that one colour.
-  const partnerName = (key: string) => partners.find(p => p.key === key)?.name ?? "";
+  // A name that already ends in an s takes only the apostrophe — German never
+  // doubles it ("Max’ Anteil") — so a name like "Name deines Partners" or "Niklas"
+  // is never printed with a stutter.
+  const shareLabel = (key: string) => {
+    const name = partners.find(p => p.key === key)?.name ?? "";
+    return /s$/i.test(name.trim()) ? `${name}’ Anteil:` : `${name}’s Anteil:`;
+  };
   // Where the pointer sits on one partner's scale, and how far that partner's
   // circle is from it — the same maths picks who gets grabbed and how far the
   // grab has travelled since.
@@ -506,7 +512,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="workload-bar" aria-hidden="true">
             {segments.map((segment, i) => (
               <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }}>
-                <span className="workload-label">{partnerName(segment.key)}&rsquo;s Anteil:</span>
+                <span className="workload-label">{shareLabel(segment.key)}</span>
                 <span className="workload-percentage">{shares[segment.key]}%</span>
               </span>
             ))}
