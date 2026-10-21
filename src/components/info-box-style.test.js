@@ -35,16 +35,18 @@ describe("info box appearance", () => {
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);
   });
 
-  test("the note hangs straight under the button, with a wider breath beside its mark", () => {
+  test("the note hangs straight under the button and needs no indent of its own", () => {
     // user: "info text top padding only 8px", then "Notizen öffnen move closer to
     // top border of info text (same value as top padding)" — the button no longer
     // stands a breath of its own over the hairline, so the note reads as one
-    // block hung under it; and "info i icon smaller", "double gap to text" — the
-    // smaller mark steps twice that breath back from its sentence.
+    // block hung under it. The sentence's own indent is gone: the mark stands in
+    // the icon tile's column and the sentence keeps the field's padding, so both
+    // start their words at the same x (user: "info I text move to same x position
+    // as Notizen öffnen text").
     expect(css, "the note's breath is not its own token").toMatch(/--retro-info-gap:\s*8px;/);
-    expect(css, "the mark's breath is not twice the note's").toMatch(/--retro-info-mark-gap:\s*16px;/);
-    expect(css, "the mark does not stand its own breath from its sentence").toMatch(
-      /\.retro-info-row > span \+ span \{\s*padding-left:\s*var\(--retro-info-mark-gap\);?\s*\}/,
+    expect(css, "a mark-gap token is back").not.toMatch(/--retro-info-mark-gap/);
+    expect(css, "the sentence is still pushed over by a padding of its own").not.toMatch(
+      /\.retro-info-row > span \+ span \{\s*padding-left/,
     );
     const stacks = [
       ["the Risikofaktoren footer", risiko],
@@ -117,18 +119,40 @@ describe("info box appearance", () => {
     }
   });
 
-  test("the ℹ mark keeps no tile of its own", () => {
-    // user: "info i icon remove padding" — the helper sentence's mark sits flush
-    // at the row's content edge, so it must not be handed the 32px tile the
-    // filled CTAs use, and its sentence must not be held at that tile's height.
-    expect(actionRow, "the info tile sizes to the glyph, not to a 32px plate").toMatch(
-      /isInfo\s*\?\s*"shrink-0 flex items-center justify-center leading-none"/,
+  test("the ℹ mark keeps no filled tile, but stands in the tile's column", () => {
+    // user: "info i icon remove padding" — the mark wears no filled plate and the
+    // glyph sits flush at the row's content edge; user: "info I text move to same
+    // x position as Notizen öffnen text" — it does stand in the icon tile's own
+    // 32px column, so its sentence starts where the button's label starts; and
+    // user: "aligned with 1 line of text" — it rides the first line, not the
+    // middle of a wrapped note.
+    expect(actionRow, "the mark is not handed the tile's 32px column").toMatch(
+      /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-start leading-none"/,
     );
-    expect(actionRow, "the info sentence keeps its own height").toMatch(
+    expect(actionRow, "the mark is not flushed to the column's left edge").not.toMatch(
+      /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-center/,
+    );
+    expect(actionRow, "the info sentence lost the field's own padding").toMatch(
       /isInfo\s*\?\s*"flex items-center px-3/,
     );
-    expect(actionRow, "only the filled CTAs keep the 32px tile").toMatch(
+    expect(actionRow, "only the filled CTAs keep the 32px square tile").toMatch(
       /:\s*"shrink-0 w-8 h-8 flex items-center justify-center"/,
     );
+    // the mark rides the sentence's first line: dropped from the row's own top by
+    // half the difference between the line and the 12px glyph, on desktop (22px
+    // line) and on phones and tablets (16px line).
+    const helper = css.match(/\.risiko-helper > span:first-child \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(helper, "the mark is not aligned to the row's top").toMatch(/align-self:\s*flex-start/);
+    expect(helper, "the mark does not drop onto the first line").toMatch(/margin-top:\s*5px/);
+    const hc = css.match(/\.hc-helper > span:first-child \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(hc, "the Health Check mark is not aligned to the row's top").toMatch(
+      /align-self:\s*flex-start/,
+    );
+    expect(css, "the small-screen mark offset is missing").toMatch(
+      /\.risiko-helper > span:first-child,\s*\.hc-helper > span:first-child \{\s*margin-top:\s*2px;\s*\}/,
+    );
+    // the note hugs its own text instead of a 32px field's height
+    const note = css.match(/\.risiko-helper > span:last-child \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(note, "the note is still held at a 32px field height").not.toMatch(/min-height:\s*32px/);
   });
 });

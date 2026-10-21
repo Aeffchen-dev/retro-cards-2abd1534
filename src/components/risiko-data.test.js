@@ -631,10 +631,15 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(zs.length, "the drawn markers are gone").toBeGreaterThanOrEqual(2);
     expect(zs.every((z) => z > 30), "a marker still hides under the smiley row's z-30").toBe(true);
   });
-  test("the grey smileys wear their white halo again", () => {
+  test("the grey smileys draw as an outline with no fill", () => {
+    // user: "grey full = grey outline no fill" — the scale's faces carry no plate
+    // of their own any more; only the answer dot keeps a white one (covered by
+    // marker-face.test.js), so the answer is the one face that reads clear of the
+    // rule and the column guides running behind the row.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    const face = css.match(/\.risiko-face \{[^}]*\}/g)?.find((r) => /background/.test(r)) ?? "";
-    expect(face, "the smileys' halo plate is gone").toMatch(/background: var\(--risiko-field-bg\)/);
+    const face = css.match(/\.risiko-face \{[^}]*\}/g)?.find((r) => /border-radius/.test(r)) ?? "";
+    expect(face, "the smileys' own rule is gone").toBeTruthy();
+    expect(face, "a grey smiley is filled again").not.toMatch(/background/);
     const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const comp = tsx.match(/const Face = [\s\S]*?\n\);/)?.[0] ?? "";
     expect(comp, "the face paints a fill circle of its own inside the outline")
