@@ -1449,6 +1449,10 @@ textarea.bg-retro-post-it:focus,
     font-size: 1rem !important;
     line-height: 1.4 !important;
   }
+  .intimacy-question {
+    font-size: 1rem !important;
+    line-height: 1.4 !important;
+  }
 
   .retro-label {
     font-size: 1rem !important;
