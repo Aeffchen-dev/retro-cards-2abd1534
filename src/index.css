@@ -1866,15 +1866,13 @@ textarea.bg-retro-post-it:focus,
 @media (max-width: 767px) {
   .risiko-scale-caption { line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { white-space: normal; }
-  /* Phones: the names may spend three lines on their column instead of two, so the
-     largest size is no longer the longest half of a name but the widest single word
-     — at that size a name breaks at its own word boundary once more and nothing has
-     to be cut in half. The widest word of the five, "teilweise", measures 4.254em,
-     so a column of 100cqw/5 still holds it at 100cqw/5/4.35: 13.3px on a 393px
-     phone, 9.9px on a 320px one, and three lines on both. Capped at
-     the 18px the bigger scales already use, so a wide phone's long columns don't run
-     away. */
-  .risiko-scale-stack .risiko-scale-caption { font-size: min(calc(100cqw / 5 / 4.35), 18px); }
+  /* Phones: the names read the same size as the card's helper sentence — 12px, the
+     app's floor (user: "use info text font size"). A name then spends up to three
+     lines on its own column: its two written halves, and one of them breaking once
+     more at its own space. On a 393px phone that is 13.3px worth of room per line,
+     so every word stands whole; only on a 320px phone does "teilweise" have to take
+     its soft hyphen (Teil-weise) to stay inside its column. */
+  .risiko-scale-stack .risiko-scale-caption { font-size: 12px; }
 }
 
 /* A 2px white gap between neighbouring shares of the work-split bar. */
