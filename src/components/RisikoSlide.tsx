@@ -663,10 +663,12 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>
       {/* The buttons keep the card's own padding below the rule; being outside the
-          area, they leave its lower edge exactly on the rule for the guidelines. */}
+          area, they leave its lower edge exactly on the rule for the guidelines.
+          The info sentence comes first, straight under the slider, so it reads as
+          the scale's own note and the notes button closes the card. */}
       <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-2">
-        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
         <ActionRow className="risiko-helper" icon="IconInfo" label={page.personKeys.length ? "Verändere die prozentuale Verteilung der Anteile indem du eure Emojis nach links oder rechts ziehst" : "Schiebt den schwarzen Kreis nach links und rechts um ihn entlang der Skala zu bewegen"} accent="var(--risiko-helper-bg)" fieldBg="var(--risiko-helper-bg)" iconColor={INK} labelColor={INK} />
+        <ActionRow icon="IconPencil" label="Macht Notizen" accent={pill} onClick={onEdit} />
       </div>
     </div>
   );
