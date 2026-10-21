@@ -2384,7 +2384,7 @@ const RetroCards: React.FC = () => {
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
                           accent={pillColorOf(slideId)}
-                          iconColor={slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : undefined}
+                          iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : undefined}
                           onClick={() => toggleEditMode(slideId)}
                         />
                       </div>
