@@ -538,7 +538,6 @@
    every field height: the capped field on screen, the shorter one on a small
    phone, and the one the printed sheet stretches over the whole card. */
 .risiko-scale-field {
-  --risiko-face-top: 0px;
   padding-top: calc(var(--risiko-face-size) + 4px);
 }
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
@@ -550,8 +549,10 @@
 .risiko-column-guide--long { top: calc(var(--risiko-face-top) + var(--risiko-face-size) + 4px); bottom: 0; }
 /* The field and the names under it form one stack, and the dashed lines are
    drawn against that stack — so a line starts at the smileys and ends just past
-   the last name, on the screen and on the printed sheet alike. */
+   the last name, on the screen and on the printed sheet alike. The face row's
+   own position lives here too, so the guides read it from their own parent. */
 .risiko-scale-stack {
+  --risiko-face-top: 0px;
   position: relative;
   display: flex;
   flex-direction: column;
