@@ -1870,8 +1870,8 @@ textarea.bg-retro-post-it:focus,
      largest size is no longer the longest half of a name but the widest single word
      — at that size a name breaks at its own word boundary once more and nothing has
      to be cut in half. The widest word of the five, "teilweise", measures 4.254em,
-     so a column of 100cqw/5 still holds it at 100cqw/5/4.3 (a hair of slack):
-     13.4px on a 393px phone, 10px on a 320px one, and three lines on both. Capped at
+     so a column of 100cqw/5 still holds it at 100cqw/5/4.35: 13.3px on a 393px
+     phone, 9.9px on a 320px one, and three lines on both. Capped at
      the 18px the bigger scales already use, so a wide phone's long columns don't run
      away. */
   .risiko-scale-stack .risiko-scale-caption { font-size: min(calc(100cqw / 5 / 4.3), 18px); }
