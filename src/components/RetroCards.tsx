@@ -1652,7 +1652,7 @@ const RetroCards: React.FC = () => {
               <br />
               für eine gesunde Beziehung
             </p>
-            <div className="absolute left-0 right-0 flex items-center justify-center" style={{ bottom: '0px' }}>
+            <div className="absolute z-40 flex items-center" style={{ left: 0, bottom: 0 }}>
               <ActionRow
                 icon="IconArrowRight"
                 label="Weiter swipen"
