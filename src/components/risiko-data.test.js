@@ -206,24 +206,27 @@ describe("grey columns", () => {
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
 
-  test("the rule, the smileys and the answer dot share one slightly heavier pen", () => {
-    // user: "grey smilies stroke width less", then "outline range slider and dot
-    // smiley face same as grey smileys", then "Mae this rand stroke-width and all
-    // smilie stroke withs a bit more" — one pen for the whole scale, drawn a step
-    // thicker than before and shared by the rule, the faces and the answer.
+  test("the smileys and the rule draw 20% heavier than the answer's face", () => {
+    // user: "smiley outlines and the slider line +20% stroke width compared to
+    // face" — the answer dot's face keeps the reference pen, while the five grey
+    // smileys and the rule they stand on take a pen 20% over it.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const step = Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
-    expect(pen, "the smileys' pen is not a named value").toBeGreaterThan(0);
-    expect(src, "the scale faces no longer wear that pen").toContain("strokeWidth={FACE_PEN}");
+    expect(pen, "the face's pen is not a named value").toBeGreaterThan(0);
+    expect(step, "the scale's pen is not a 20% step over the face's").toBeCloseTo(1.2, 5);
+    expect(src, "the scale faces no longer wear the heavier pen").toContain("strokeWidth={SCALE_PEN}");
     expect(src, "the rule does not take the smileys' pen").toContain(
-      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+      "const RULE_W = SCALE_PEN * (FACE_SIZE / 24);",
     );
-    // The pen is converted to pixels: a real line at the face's size, a step
-    // heavier than the 1.65px it used to paint and still short of a heavy bar.
-    const drawn = pen * (face / 24);
-    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(1.8);
-    expect(drawn, "the shared pen is heavier than asked for").toBeLessThan(2.6);
+    // Both pens are converted to pixels: the scale draws about 2.4px, the answer's
+    // face a step finer at about 2px.
+    const drawn = pen * step * (face / 24);
+    const faceDrawn = pen * (face / 24);
+    expect(drawn, "the scale's pen is too faint to read").toBeGreaterThan(2.2);
+    expect(drawn, "the scale's pen is heavier than asked for").toBeLessThan(2.8);
+    expect(drawn / faceDrawn, "the scale does not stand 20% over the face").toBeCloseTo(1.2, 5);
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -365,7 +368,7 @@ describe("grey columns", () => {
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
     expect(thick, "the work-split bar's thickness is gone").toBe(3);
     expect(slide, "the rule no longer follows the smileys' pen").toContain(
-      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+      "const RULE_W = SCALE_PEN * (FACE_SIZE / 24);",
     );
   });
 });
@@ -601,21 +604,21 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(tsx, "the removed subheadline is back on the card")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
-  test("draws the line between the two Memojis at its own 3px", () => {
-    // the boundary keeps the weight the scale's rule once carried: the rule and
-    // the answer dot now draw with the grey smileys' pen (user: "outline range
-    // slider and dot smiley face same as grey smileys"), while the share bar and
-    // its boundary stay the work-split card's own heavier ink.
+  test("draws the line between the two Memojis as a single pixel", () => {
+    // every vertical line on the deck is one pixel wide (user: "Vertical lines
+    // 1px stroke width"), the work-split's boundary included — only its weight
+    // changed, the line still stands solid ink in the gap between the circles.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis changed weight").toMatch(/width:\s*3px/);
-    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
+    expect(boundary, "the line between the Memojis is not one pixel wide").toMatch(/width:\s*1px/);
+    expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-0\.5px\)/);
   });
   test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
+    const pen = Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0) *
+      Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
     const eyeR = Number(src.match(/const EYE_R = ([\d.]+);/)?.[1] ?? 0);
     expect(eyeR, "the eyes' circle radius is not a named value").toBeGreaterThan(0);
     expect(src, "the eyes are not drawn over the face as circles").toMatch(/<circle cx="9" cy="9" r=\{EYE_R\}/);
