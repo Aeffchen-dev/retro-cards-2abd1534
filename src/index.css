@@ -660,6 +660,16 @@
   width: 0;
   border-left: 1px dashed var(--risiko-column-line);
 }
+/* The work-split's boundary line: solid ink, not dashed, but standing exactly as
+   tall as the grey guides around it. Its left lands on the centre of the 4px gap
+   between the two circles that meet at the boundary. */
+.workload-boundary {
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid var(--retro-black);
+  transform: translateX(-0.5px);
+}
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
 .risiko-expression-point {
