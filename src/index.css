@@ -39,9 +39,9 @@
     /* the scale's grey smileys: one shared size everywhere — the very 44px the
        answer dot fills — so a dragged face and a scale face are the same thing */
     --risiko-face-size: 44px;
-    /* the answer dot's own 1px ring: the Health Check's own light green
-       (BRAND.neonGreen), so the handle belongs to the chapter's colour story */
-    --risiko-marker-ring: #63E82B;
+    /* The answer dot wears no ring any more: it is drawn in the very grey the
+       scale's smileys wear — outline, eyes and mouth alike — so the handle reads
+       as one of the faces rather than as a disc painted over them. */
     /* the answer dot's own box: the same 44px the marker's React constant hands
        the thumb, so the scale can work the gap under the rule out from the dot */
     --risiko-marker-size: 44px;
@@ -937,14 +937,12 @@
   aspect-ratio: 1;
 
   border-radius: 50%;
-  background: var(--retro-black);
-  /* the ring is the dot's own border, not an outline: an outline is painted
-     just outside the box and, on the marker's fractional position, smears into
-     a soft glow — a border shares the disc's own edge and reads as one crisp
-     hairline in every state: the plain dot, the dragged face and the saved
-     answer all wear it */
-  border: 1px solid var(--risiko-marker-ring);
-  /* the thumb is as narrow as a scale face, so the marker must not be squeezed
+  /* The marker is drawn like a scale face, not painted over one: it carries the
+     card's own surface behind it, so the rule under it stays hidden, and it wears
+     no ring at all (user: "slider dot face same as from grey smilies" and "no
+     green outline"). */
+  background: var(--risiko-field-bg);
+  /* The thumb is as narrow as a scale face, so the marker must not be squeezed
      into an oval — it keeps its circle and spills evenly over the thumb's edges */
   flex-shrink: 0;
   color: var(--retro-black);
