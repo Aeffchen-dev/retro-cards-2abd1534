@@ -519,10 +519,12 @@ describe("smallest text size", () => {
     // 4.254em — still fits the column: 100cqw/5/4.35, capped at the 18px the bigger
     // scales already use. Measured live: 13.3px on a 393px phone and 9.9px on a
     // 320px one, every name on at most three lines with no word cut in half.
-    const phone = css.match(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/)[0];
-    expect(phone).toMatch(
-      /\.risiko-scale-stack \.risiko-scale-caption \{ font-size: min\(calc\(100cqw \/ 5 \/ 4\.35\), 18px\); \}/
-    );
+    const phoneBlocks = [...css.matchAll(/@media \(max-width: 767px\) \{[\s\S]*?\n\}/g)].map((m) => m[0]);
+    expect(
+      phoneBlocks.some((b) =>
+        /\.risiko-scale-stack \.risiko-scale-caption \{ font-size: min\(calc\(100cqw \/ 5 \/ 4\.35\), 18px\); \}/.test(b)
+      )
+    ).toBe(true);
     // the wider layouts keep their two-line size untouched
     const stack = css.match(/\.risiko-scale-stack \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
     expect(stack).toContain("font-size: calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px);");
