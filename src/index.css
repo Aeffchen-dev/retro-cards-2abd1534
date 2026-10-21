@@ -331,7 +331,7 @@
   margin: 0 0 var(--risiko-scale-pad);
   font-size: 12px;
   line-height: 1.4;
-  color: var(--risiko-guide);
+  color: var(--retro-black);
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
