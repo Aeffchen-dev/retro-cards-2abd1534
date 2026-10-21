@@ -22,7 +22,9 @@ describe("info box appearance", () => {
     expect(rule, "a grey hairline sits above the sentence").toMatch(
       /border-top:\s*1px solid var\(--retro-info-rule\);/,
     );
+    expect(rule, "the line runs the card's whole content width").toMatch(/width:\s*100%;/);
     expect(rule, "the line keeps its distance from the letters").toMatch(/padding-top:\s*8px;/);
+
     expect(rule, "the border never squeezes the label").toMatch(/height:\s*auto;/);
     expect(rule, "the box carries no background of its own").not.toMatch(/background/);
   });

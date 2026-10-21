@@ -962,9 +962,13 @@ button {
    own height so the border and the gap above the text never squeeze the label. */
 .retro-info-row {
   height: auto;
+  /* the hairline runs the card's whole content width, so a short sentence does
+     not leave the line stopping half way across the card */
+  width: 100%;
   border-top: 1px solid var(--retro-info-rule);
   padding-top: 8px;
 }
+
 
 /* Info rows (the ℹ helper sentences) read one size smaller on phones and
 
