@@ -679,7 +679,10 @@
      still shrinks, and still scrolls, when a statement grows too tall for the
      card, so the deck's "fewer statements per card" signal keeps working. */
   .risiko-page { justify-content: center; }
-  .risiko-page .risiko-scale-area { flex: 0 1 auto; }
+  /* The area takes the card's whole height: the free room goes into the gaps
+     between the statement, the scale and the buttons, so nothing stands as an
+     empty band at the card's foot. */
+  .risiko-page .risiko-scale-area { flex: 1 1 auto; }
   /* The scale carries no panel any more: smileys, rule and names stand straight
      on the card's own surface, so the field colour falls back to that surface and
      nothing is painted behind the control. */
@@ -1744,6 +1747,10 @@ textarea.bg-retro-post-it:focus,
    scrolling. Phones step both down again. */
 #root .intro-lede { font-size: 24px; line-height: 1.15; }
 #root .intro-copy { font-size: 16px; line-height: 22px; }
+/* The opening fills the card: the block takes the card's whole height and the
+   four paragraphs spread their gaps through the room that is left. */
+#root .intro-block { flex: 1 1 auto; }
+#root .intro-copy { flex: 1 1 auto; justify-content: space-between; }
 @media (max-width: 767px) {
   #root .intro-lede { font-size: 20px; line-height: 1.15; }
   #root .intro-copy { font-size: 14px; line-height: 20px; }
