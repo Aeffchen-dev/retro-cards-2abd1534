@@ -249,7 +249,10 @@
   font-style: normal;
   font-feature-settings: "ss02";
   font-size: 38.4px;
-  line-height: 1.05;
+  /* The deck's questions and headlines breathe like its other display text (the
+     notes header 1.15, the statement 1.25) instead of standing shoulder to
+     shoulder: one value, on screen and on paper alike. */
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
@@ -279,6 +282,14 @@
      scrolls sideways rather than growing, so clip the sideways direction. */
   overflow-x: hidden;
 }
+/* On a desktop window the card no longer stretches over the whole height of the
+   slide: it stops at 88% of the window, and at 940px at the latest, so a tall
+   monitor shows a card of a sane proportion instead of a banner. */
+@media screen and (min-width: 1024px) {
+  .retro-card-container {
+    max-height: min(88vh, 940px);
+  }
+}
 
 .risiko-card { overflow: hidden; }
 /* The scale keeps the same breathing room above and below as the card's own padding. */
@@ -300,7 +311,7 @@
      grid: the statement fields stop growing here, and the work-split lane is
      exactly this tall plus the strip its names live in — so a card with one
      work-split field shows fields as high as a card with two statements. */
-  --risiko-field-h: 120px;
+  --risiko-field-h: 160px;
   /* the strip the work-split card's area keeps above the lane, for a partner name
      that wraps to a second line and grows upwards past the lane's own top edge */
   --risiko-work-headroom: 24px;
@@ -687,16 +698,15 @@
      on the card's own surface, so the field colour falls back to that surface and
      nothing is painted behind the control. */
 }
-/* The smiley row sits flush with the field's top edge: no padding above the
-   faces, so their stubs vanish and the field's own drawing starts right under
-   them. The rule then centres on the room that is left: the field's top
-   padding equals the smiley row's own height, so the flex centring — the rule is the
-   field's only flow child — lands the rule and the circle exactly on the
-   midpoint between the line's top and the field's foot. One formula covers
+/* The smiley row stands a step down from the field's own top edge (see
+   --risiko-face-top), so the field's top padding carries that step plus the row's
+   own height. The rule then centres on the room that is left: the flex centring —
+   the rule is the field's only flow child — lands the rule and the circle exactly
+   on the midpoint between the row's foot and the field's foot. One formula covers
    every field height: the capped field on screen, the shorter one on a small
    phone, and the one the printed sheet stretches over the whole card. */
 .risiko-scale-field {
-  padding-top: calc(var(--risiko-face-size) + 4px);
+  padding-top: calc(var(--risiko-face-top) + var(--risiko-face-size) + 4px);
 }
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
 /* The field and the names under it form one stack, so the scale's own parts keep
@@ -704,7 +714,10 @@
    position lives here too, so anything placed against the stack reads it from its
    own parent. */
 .risiko-scale-stack {
-  --risiko-face-top: 0px;
+  /* The smiley row no longer sits flush with the field's top edge: it stands this
+     far down, and the field's padding, its floor and the names' own lift all read
+     the step from here so the scale keeps one source of truth. */
+  --risiko-face-top: 40px;
   /* On screen the field stands at the taller of its own basis and the floor the
      card hands it (see --risiko-field-min), and it centres the rule in the room
      that is left under the smileys — so half of that room is the rule's own drop
@@ -714,7 +727,7 @@
      the circle's own radius and a hair of air, is how far the row can travel up.
      A card whose field is too short for that (Intimacy's) lifts by nothing and
      keeps its names where they stand. */
-  --risiko-caption-lift: max(0px, calc((var(--risiko-field-live) - var(--risiko-face-size) - 4px) / 2 - var(--risiko-marker-size) / 2 - 4px));
+  --risiko-caption-lift: max(0px, calc((var(--risiko-field-live) - var(--risiko-face-top) - var(--risiko-face-size) - 4px) / 2 - var(--risiko-marker-size) / 2 - 4px));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -919,6 +932,12 @@
    hairline above it spans only that content width — the card's own edges stay
    bare (user: "info text left and right padding same as from card", "border-top
    only container not fullwidth"). Only its foot reaches the card's own edge. */
+/* Every ℹ row keeps half the usual breath between the mark and its sentence: the
+   field's own 12px of padding falls to 6px on its icon side, so the mark and the
+   words read as one line rather than two blocks set apart. */
+.retro-info-row > span + span {
+  padding-left: 6px;
+}
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
    edge, behind each face (whose plate keeps the face readable), down past the last
@@ -1550,11 +1569,11 @@ textarea.bg-retro-post-it:focus,
      size, the statement a step below it — the same 85% the screen reads. */
   .retro-heading {
     font-size: 2rem !important;
-    line-height: 1.05 !important;
+    line-height: 1.2 !important;
   }
   .risiko-statement {
     font-size: 1.7rem !important;
-    line-height: 1.05 !important;
+    line-height: 1.2 !important;
   }
 
   /* The work-split card's second half and its examples read as body text on
