@@ -367,10 +367,23 @@ describe("smallest text size", () => {
     expect(sizes.length).toBeGreaterThan(10);
     const below = sizes.filter((size) => {
       if (size === "inherit") return false;
-      const px = size.match(/^([\d.]+)px$/);
-      const rem = size.match(/^([\d.]+)rem$/);
-      if (!px && !rem) return true; // a computed size could drop under the floor
-      return (px ? Number(px[1]) : Number(rem[1]) * 16) < 12;
+      const isSize = (value) => {
+        const px = value.trim().match(/^([\d.]+)px$/);
+        const rem = value.trim().match(/^([\d.]+)rem$/);
+        return px || rem ? (px ? Number(px[1]) : Number(rem[1]) * 16) : null;
+      };
+      // A size that comes from a token is only safe when the token itself — and the
+      // fallback written at the use site — are both real sizes above the floor.
+      const variable = size.match(/^var\(\s*(--[\w-]+)\s*(?:,\s*([^)]+))?\)$/);
+      if (variable) {
+        const token = css.match(new RegExp(`${variable[1]}:\\s*([^;]+);`));
+        const readings = [variable[2], token && token[1]].filter((v) => v !== undefined && v !== null);
+        if (!readings.length) return true;
+        return readings.some((v) => { const n = isSize(v); return n === null || n < 12; });
+      }
+      const n = isSize(size);
+      if (n === null) return true; // a computed size could drop under the floor
+      return n < 12;
     });
     // The two deliberate exceptions, both the five column labels: they read one step
     // under the floor (11px) so a name's longer half fits its column on two lines, and
