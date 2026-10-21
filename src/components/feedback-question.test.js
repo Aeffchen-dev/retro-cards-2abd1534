@@ -22,6 +22,14 @@ describe("Feedback card is labelled Feedback above and titled A review for you, 
   });
 });
 
+describe("Feedback card sits on white", () => {
+  test("its card is forced to #FFFFFF like Logo, Talk-about and Takeaways", () => {
+    const cardStyle = src.slice(src.indexOf("const cardStyle ="), src.indexOf("} as React.CSSProperties"));
+    const whiteForced = cardStyle.slice(0, cardStyle.indexOf(": theme.bg"));
+    expect(whiteForced, "the review card still takes the slide's own card colour").toContain("slideId === SLIDE_REFLECTION");
+  });
+});
+
 describe("Feedback headline question", () => {
   test("asks \"Perspektivwechsel\" with the remembering sentence", () => {
     expect(fields).toContain('["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
