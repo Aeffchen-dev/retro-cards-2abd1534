@@ -1538,10 +1538,10 @@ const RetroCards: React.FC = () => {
 
 
       case 3: {
-        // Five questions ride the centred block; the last one keeps the card's
+        // Five questions ride the block above; the last one keeps the card's
         // bottom-left corner — the same content edge the notes button uses. The
-        // block keeps a room of its own at the foot, so centring can never slide
-        // a row into the pinned one.
+        // block sits at the foot of the free room and reserves exactly the pinned
+        // row's own height plus one 24px gap, so every gap in the column is even.
         const blockRows = [
           ["IconTrendingUp", "Ein voller Erfolg"],
           ["IconFaceJoy", "Ein schöner Moment"],
@@ -1557,7 +1557,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col flex-1 justify-center w-full" style={{ gap: '24px', marginTop: '28px', paddingBottom: '40px' }}>
+            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '24px', marginTop: '28px', paddingBottom: '56px' }}>
               {blockRows.map(([iconName, label], i) => (
                 <ActionRow
                   key={i}
