@@ -232,7 +232,7 @@ describe("grey columns", () => {
     const rule = slide.match(/background: INK,[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
-    const screen = css.split("@media screen")[1] ?? "";
+    const screen = css.slice(css.indexOf("@media screen {"));
     expect(/\.risiko-scale-field \{ flex: 0 0 var\(--risiko-field-h\); \}/.test(screen), "the fields do not stand at their own height on screen").toBe(true);
     const print = css.split("@media print")[1] ?? "";
     expect(print, "the printed fields are capped too").not.toContain("max-height: var(--risiko-field-h)");
@@ -462,9 +462,10 @@ describe("smallest text size", () => {
       return n < 12;
     });
     // The two deliberate exceptions, both the five column labels: they read one step
-    // under the floor (11px) so a name's longer half fits its column on two lines, and
-    // on phones they scale to the column instead.
-    expect(below).toEqual(["11px", "clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px)"]);
+    // under the floor so a name's longer half fits its column on two lines — the
+    // statement scale's names size themselves against their own equal column, the
+    // work-split legend keeps its fixed small size.
+    expect(below).toEqual(["calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px)", "11px"]);
     expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 11px;[^}]*\}/);
   });
   test("the helper sentences read exactly the floor size on phones and tablets", () => {
@@ -796,11 +797,11 @@ describe("the statement's one size", () => {
     const display = css.match(/\.retro-title,\s*\.retro-heading \{[^}]*\}/);
     expect(display, "the display rule is gone").not.toBeNull();
     expect(display[0]).toMatch(/font-size:\s*38\.4px/);
-    expect(display[0]).toMatch(/line-height:\s*1\.05/);
+    expect(display[0]).toMatch(/line-height:\s*1\.2/);
     const statement = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? [])
       .find((block) => block.includes("font-size")) ?? "";
     expect(statement, "the statement's own size is gone").toMatch(/font-size:\s*32\.6px/);
-    expect(statement).toMatch(/line-height:\s*1\.05/);
+    expect(statement).toMatch(/line-height:\s*1\.2/);
   });
 
   test("a phone steps the statement down, but not under the deck's floor", () => {

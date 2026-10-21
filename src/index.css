@@ -249,7 +249,10 @@
   font-style: normal;
   font-feature-settings: "ss02";
   font-size: 38.4px;
-  line-height: 1.05;
+  /* The deck's questions and headlines breathe like its other display text (the
+     notes header 1.15, the statement 1.25) instead of standing shoulder to
+     shoulder: one value, on screen and on paper alike. */
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
@@ -279,6 +282,14 @@
      scrolls sideways rather than growing, so clip the sideways direction. */
   overflow-x: hidden;
 }
+/* On a desktop window the card no longer stretches over the whole height of the
+   slide: it stops at 88% of the window, and at 940px at the latest, so a tall
+   monitor shows a card of a sane proportion instead of a banner. */
+@media screen and (min-width: 1024px) {
+  .retro-card-container {
+    max-height: min(88vh, 940px);
+  }
+}
 
 .risiko-card { overflow: hidden; }
 /* The scale keeps the same breathing room above and below as the card's own padding. */
@@ -300,7 +311,7 @@
      grid: the statement fields stop growing here, and the work-split lane is
      exactly this tall plus the strip its names live in — so a card with one
      work-split field shows fields as high as a card with two statements. */
-  --risiko-field-h: 120px;
+  --risiko-field-h: 220px;
   /* the strip the work-split card's area keeps above the lane, for a partner name
      that wraps to a second line and grows upwards past the lane's own top edge */
   --risiko-work-headroom: 24px;
@@ -400,7 +411,8 @@
    still closes above the scale and the notes with room to spare. */
 .risiko-statement {
   font-size: 32.6px;
-  line-height: 1.05;
+  /* the same breath the big question reads at, on screen and on paper */
+  line-height: 1.2;
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
   /* The statement keeps every word whole: it breaks only between words, and a
@@ -683,28 +695,41 @@
      between the statement, the scale and the buttons, so nothing stands as an
      empty band at the card's foot. */
   .risiko-page .risiko-scale-area { flex: 1 1 auto; }
+  /* The names keep the card's own padding of air before the scale begins, so the
+     smileys stand well clear of the text above them (user: "much more gap between
+     grey smiley and text above"). */
+  .risiko-scale-stack .risiko-scale-captions { margin-bottom: 28px; }
   /* The scale carries no panel any more: smileys, rule and names stand straight
      on the card's own surface, so the field colour falls back to that surface and
      nothing is painted behind the control. */
 }
-/* The smiley row sits flush with the field's top edge: no padding above the
-   faces, so their stubs vanish and the field's own drawing starts right under
-   them. The rule then centres on the room that is left: the field's top
-   padding equals the smiley row's own height, so the flex centring — the rule is the
-   field's only flow child — lands the rule and the circle exactly on the
-   midpoint between the line's top and the field's foot. One formula covers
-   every field height: the capped field on screen, the shorter one on a small
-   phone, and the one the printed sheet stretches over the whole card. */
+/* The field centres the rule in its own box — the rule is its only flow child —
+   and the smiley row hangs above it at --risiko-face-rise (see .risiko-face-header),
+   so the slider and the smileys are centred together however tall the field
+   stands: the capped field on screen, the shorter one on a small phone, and the one
+   the printed sheet stretches over the whole card. */
 .risiko-scale-field {
-  padding-top: calc(var(--risiko-face-size) + 4px);
+  padding-top: 0;
 }
-.risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
+/* The smiley row hangs over the rule: its own centre sits --risiko-face-rise above
+   the field's middle — where the rule centres — and the row is painted over the
+   circle, so a face never disappears behind the dot (user: "grey smileies ... ON
+   TOP SLIDER DOT"). Its white plate (.risiko-face) keeps each face readable. */
+.risiko-face-header {
+  top: calc(50% - var(--risiko-face-rise));
+  height: var(--risiko-face-size);
+  transform: translateY(-50%);
+  z-index: 30;
+}
 /* The field and the names under it form one stack, so the scale's own parts keep
    their order on the screen and on the printed sheet alike. The face row's own
    position lives here too, so anything placed against the stack reads it from its
    own parent. */
 .risiko-scale-stack {
-  --risiko-face-top: 0px;
+  /* How far the smiley row's own centre stands above the rule's centre: the field
+     centres the two together, and its floor, the row's placement and the names' own
+     lift all read the step from here so the scale keeps one source of truth. */
+  --risiko-face-rise: 56px;
   /* On screen the field stands at the taller of its own basis and the floor the
      card hands it (see --risiko-field-min), and it centres the rule in the room
      that is left under the smileys — so half of that room is the rule's own drop
@@ -714,7 +739,7 @@
      the circle's own radius and a hair of air, is how far the row can travel up.
      A card whose field is too short for that (Intimacy's) lifts by nothing and
      keeps its names where they stand. */
-  --risiko-caption-lift: max(0px, calc((var(--risiko-field-live) - var(--risiko-face-size) - 4px) / 2 - var(--risiko-marker-size) / 2 - 4px));
+  --risiko-caption-lift: max(0px, calc((var(--risiko-field-live) - var(--risiko-face-rise) - var(--risiko-face-size) - 4px) / 2 - var(--risiko-marker-size) / 2 - 4px));
   position: relative;
   display: flex;
   flex-direction: column;
@@ -741,32 +766,46 @@
   order: -1;
   margin-bottom: 6px;
   gap: 0;
-  grid-template-columns:
-    calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8)
-    repeat(3, calc((100% - 2 * var(--risiko-scale-inset)) / 4))
-    calc(var(--risiko-scale-inset) + (100% - 2 * var(--risiko-scale-inset)) / 8);
+  /* the row is what the names measure themselves against — every column is a
+     share of this row's own width, so the size that just fits two lines can be
+     written as a share of it (see .risiko-scale-stack .risiko-scale-caption) */
+  container-type: inline-size;
+  /* the five names stand in five equal columns — the very fifths the smileys, the
+     drawn lines and the circle's travel are laid out on, so every name sits in the
+     middle of the column it names (user: "graph columns make even wide") */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
-/* The two end names line up with the card's own edges rather than their smiley's
-   centre, and they take their own width instead of their narrow stretch: the first
-   stands at the card's left edge and grows inwards, the last at its right edge. That
-   keeps both inside the card without ever forcing a name to break. */
-.risiko-scale-stack .risiko-scale-caption:first-child { text-align: left; }
-.risiko-scale-stack .risiko-scale-caption:last-child { text-align: right; }
-.risiko-scale-stack .risiko-scale-caption:first-child,
-.risiko-scale-stack .risiko-scale-caption:last-child {
-  width: max-content;
-  justify-self: start;
+/* Every name stands centred in its own equal column — the outer ones included: the
+   columns no longer narrow towards the card's edges, so nothing has to be pushed
+   against an edge to stay inside the card (user: "column headline text alignment
+   centered"). */
+/* The column names are as big as their own column can hold. Every name breaks at
+   its own words into exactly two lines (captionLines), so the largest size is the
+   one at which the longest line of every name still fits inside its column. Both
+   terms are read off the live card, size by size, until a line touched its
+   divider: the outer columns run from the card's own edge to the first divider
+   (100cqw/8 + 16.5px) and the binding line there, "Trifft noch", measures
+   4.5em + 7px; the three inside are a quarter of the travel (100cqw/4 - 11px)
+   and their binding line, "teilweise zu", measures 5.66em + 1.5px. That reads
+   14.4px on a tablet or desktop card, 10.1px on a phone and about 11px on paper —
+   always the very largest size that still needs only two lines. The names wear
+   the deck's own ink black, one step above the scale's greys. */
+/* The column names are as big as their own equal column can hold, two steps down:
+   every name breaks at its own words into exactly two lines (captionLines), so the
+   largest size is the one at which the longest line of every name — "teilweise zu",
+   5.66em + 1.5px — still fits inside a fifth of the row (100cqw/5) with its plate's
+   own 6px of breath. Two pixels come off that maximum (user: "text sie -2px"). */
+.risiko-scale-stack .risiko-scale-caption {
+  font-size: calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px);
+  color: var(--retro-black);
 }
-.risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
-/* They read in the scale's own grey, while the faces above sit a shade lighter —
-   one step under the info rows' 12px floor.
-   At that size the longest half of a name ("teilweise zu", 12 letters) still
-   fits a column's width (~61px), and every name breaks at its own words into
-   exactly two lines of even length, so the row reads as one even block instead
-   of a mix of one-, two- and three-line labels. Phones keep their own
-   column-scaled size and let a half that cannot fit wrap inside its column. */
+/* The grey and size the work-split card's ratio legend falls back to: it names
+   no column, it only repeats each column's own split, so it stays a footnote. */
 .risiko-scale-caption {
-  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
+  /* A grotesque with upright, square-cut letters: the column names are the smallest
+     text on the card and have to stay readable at a glance, which the rounder,
+     more slanted terminals of the deck's body face do not give them. */
+  font-family: "Hanken Grotesk", "Figtree", Arial, sans-serif;
   font-weight: 500;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
@@ -792,9 +831,6 @@
 /* The plate is only as wide as the word it carries, so the row keeps its even
    columns and only the letters themselves sit on the card's own surface. */
 .risiko-caption-plate { background: var(--risiko-field-bg); padding-inline: 3px; }
-/* The outer names touch the card's edge, so their plate never bleeds past it. */
-.risiko-scale-stack .risiko-scale-caption:first-child .risiko-caption-plate { padding-left: 0; }
-.risiko-scale-stack .risiko-scale-caption:last-child .risiko-caption-plate { padding-right: 0; }
 /* Each name stands in its own lines: the spans the component emits (first word /
    middle words / last word) become real lines on every device, so the row never
    mixes single-line and wrapped labels. */
@@ -886,12 +922,30 @@
 .risiko-thumb > * { pointer-events: none; }
 /* The slider row's height is shared with the footer's margin maths below. */
 .risiko-track { height: var(--risiko-track-h); }
+/* The rule is the scale's own ground line: it paints over the column grid but stays
+   under the circle (z-10) and under the smiley row (z-30), so nothing ever hides
+   the answer it carries. */
+.risiko-rule { z-index: 1; }
 /* The button block sits below the scale and carries the card colour, so nothing
    shows through behind it. */
 .risiko-footer {
   background: var(--risiko-label-bg);
   /* the buttons stand no further under the scale than the card's own padding */
   margin-top: var(--risiko-scale-pad);
+  /* the info sentence under the button ignores the card's padding at the foot:
+     the footer's own bottom edge lands on the card's very bottom edge (user:
+     "info Text ignore card padding ... bottom") */
+  margin-bottom: calc(-1 * var(--risiko-scale-pad));
+}
+/* The info sentence keeps the card's own padding at its left and right, and the
+   hairline above it spans only that content width — the card's own edges stay
+   bare (user: "info text left and right padding same as from card", "border-top
+   only container not fullwidth"). Only its foot reaches the card's own edge. */
+/* Every ℹ row keeps half the usual breath between the mark and its sentence: the
+   field's own 12px of padding falls to 6px on its icon side, so the mark and the
+   words read as one line rather than two blocks set apart. */
+.retro-info-row > span + span {
+  padding-left: 6px;
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
 /* A solid line that stretches the stack's whole height: from the smileys' own top
@@ -911,7 +965,9 @@
    range still reads as five identical fields with the scale's own edges left open. */
 .risiko-column-edge {
   width: 0;
-  border-left: 1px solid var(--risiko-column-line);
+  /* the lines wear the very colour the column names are printed in (user: "grey
+     lines as text color"), so the grid and its labels read as one ink */
+  border-left: 1px solid var(--retro-black);
 }
 /* The work-split's boundary line: solid ink, standing from the lane's top edge
    down to the names' strip. It is the deck's one shared stroke, and its left
@@ -1524,11 +1580,11 @@ textarea.bg-retro-post-it:focus,
      size, the statement a step below it — the same 85% the screen reads. */
   .retro-heading {
     font-size: 2rem !important;
-    line-height: 1.05 !important;
+    line-height: 1.2 !important;
   }
   .risiko-statement {
     font-size: 1.7rem !important;
-    line-height: 1.05 !important;
+    line-height: 1.2 !important;
   }
 
   /* The work-split card's second half and its examples read as body text on
@@ -1743,13 +1799,13 @@ textarea.bg-retro-post-it:focus,
 
 /* Questions slide: same headline size as all other slides */
 
-/* Phones: the column names keep their own column-scaled size (captionLines splits
-   every name into two lines); a half too wide for the narrow column wraps inside it.
+/* Phones: the column names take the same column-scaled size as everywhere else
+   (see .risiko-scale-stack .risiko-scale-caption); a half that still cannot fit
+   its column wraps inside it rather than breaking a word in half.
    The smileys need no phone copy of their token any more — one shared 44px
    everywhere, the size the answer dot fills. */
 @media (max-width: 767px) {
-  .risiko-scale-captions { container-type: inline-size; }
-  .risiko-scale-caption { font-size: clamp(9px, calc((100cqw - 16px) / 5 / 5.2), 13px); line-height: 1.15; hyphens: manual; }
+  .risiko-scale-caption { line-height: 1.15; hyphens: manual; }
   .risiko-caption-line { white-space: normal; }
 }
 
