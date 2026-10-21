@@ -252,7 +252,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
       const lane = visible(".workload-lane");
       const mover = core ?? visible(".risiko-allocation");
       const pivot = core ? core.querySelector<HTMLElement>(".risiko-track") : visible(".workload-bar");
-      const box = core ?? lane;
+      const box = core ?? visible(".risiko-scale-area") ?? lane;
       if (!mover || !pivot || !box) return;
       const card = pageEl.getBoundingClientRect();
       const rule = pivot.getBoundingClientRect();
@@ -699,7 +699,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <p className="risiko-allocation-examples shrink-0" lang="de">{allocationExamplesSentence()}</p>
         </>
       )}
-      <div ref={areaRef} className="risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto">
+      <div ref={areaRef} className={`risiko-scale-area relative flex flex-col w-full flex-1 min-h-0 overflow-y-auto${page.statements.length === 0 ? " risiko-scale-area--work" : ""}`}>
         <div className="screen-only w-full relative flex-1 min-h-0 flex flex-col">{body(false)}</div>
         <div className="hidden print-only w-full relative flex-1 min-h-0 flex flex-col">{body(true)}</div>
       </div>

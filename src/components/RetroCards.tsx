@@ -159,7 +159,7 @@ const BRAND = {
   babyBlue: "#7FD9FF",
   neonPurple: "#9B30FF",
   spiralBlue: "#4E6BEE",
-  darkTurquoise: "#054C45",
+  deepGreen: "#0B7A35",
   olive: "#4E7A0F",
   neonGreen: "#63E82B",
   maroon: "#5C1524",
@@ -2251,8 +2251,8 @@ const RetroCards: React.FC = () => {
               // Per-slide color overrides (square = pill, icon = pillDot)
               const overrides: Record<number, { pill: string; pillDot: string }> = {
                 0: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
-                1: { pill: BRAND.neonGreen, pillDot: BRAND.darkTurquoise },
-                2: { pill: BRAND.neonGreen, pillDot: BRAND.darkTurquoise },
+                1: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
+                2: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
                 3: { pill: BRAND.stackOrange, pillDot: "#FFC4EA" },
                 4: { pill: "#F39FFF", pillDot: "#FF4A0C" },
                 5: { pill: BRAND.neonGreen, pillDot: BRAND.darkBlue },
@@ -2260,7 +2260,7 @@ const RetroCards: React.FC = () => {
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 [SLIDE_VORHABEN]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
-                [SLIDE_RISIKO]: { pill: BRAND.neonGreen, pillDot: BRAND.darkTurquoise },
+                [SLIDE_RISIKO]: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
