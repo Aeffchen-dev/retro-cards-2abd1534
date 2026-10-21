@@ -46,16 +46,22 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
-// The scale's grey smileys draw with this pen: 1.1 of the 24 grid painted into
+// The answer dot's own face draws with this pen: 1.1 of the 24 grid painted into
 // the 44px face ≈ 2px (user: "grey smilies stroke width less", then "all smilie
-// stroke withs a bit more"). The rule and the answer's face take this pen too.
+// stroke withs a bit more"). It is the scale's reference pen — the one every
+// other stroke on the scale is measured against.
 const FACE_PEN = 1.1;
 
-// One pen for the whole scale: the rule and the answer dot's face draw exactly
-// as thick as the grey smileys standing above them (user: "outline range slider
-// and dot smiley face same as grey smileys"). The work-split bar keeps its own
-// heavier 3px — it carries the shares, it is not a track.
-const RULE_W = FACE_PEN * (FACE_SIZE / 24);
+// The five grey smileys and the rule they stand on draw a step heavier than that
+// face: 20% over its pen, so the scale reads as the drawing and the answer rides
+// it as the finer mark (user: "smiley outlines and the slider line +20% stroke
+// width compared to face"). The work-split bar keeps its own heavier 3px — it
+// carries the shares, it is not a track.
+const SCALE_PEN = FACE_PEN * 1.2;
+const RULE_W = SCALE_PEN * (FACE_SIZE / 24);
+// The dot's face keeps the reference pen, so its own pixel width is stated apart
+// from the rule's: the two no longer draw with one and the same number.
+const FACE_RULE_W = FACE_PEN * (FACE_SIZE / 24);
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
@@ -101,11 +107,10 @@ const FACE_ZOOM = 1.2;
 const FACE_VIEW = 24 / FACE_ZOOM;
 const FACE_VIEW_OFF = (24 - FACE_VIEW) / 2;
 
-// The dot is drawn with the very pen the rule uses: its outline, eyes and mouth
-// render exactly as thick as the line it rides (user: "dot like range slider line
-// stroke width"). The zoomed window makes each of its grid units wider than the
-// 24 grid's, so the rule's pixel width is converted back against that window.
-const MARKER_PEN = RULE_W * (FACE_VIEW / MARKER_SIZE);
+// The dot keeps its own face pen — a step under the rule it rides. The zoomed
+// window makes each of its grid units wider than the 24 grid's, so the face's
+// pixel width is converted back against that window.
+const MARKER_PEN = FACE_RULE_W * (FACE_VIEW / MARKER_SIZE);
 const MOUTH_W = MARKER_PEN;
 const EYE_W = MARKER_PEN;
 
@@ -126,7 +131,7 @@ const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color
   // overlay fits all five and the circles can grow without the pen thickening
   // the face's outline and mouth with them.
   <span className="risiko-face relative flex items-center justify-center">
-    <Icon size={FACE_SIZE} strokeWidth={FACE_PEN} color={color} />
+    <Icon size={FACE_SIZE} strokeWidth={SCALE_PEN} color={color} />
     <svg className="absolute inset-0" viewBox="0 0 24 24" fill={color} aria-hidden="true">
       <circle cx="9" cy="9" r={EYE_R} />
       <circle cx="15" cy="9" r={EYE_R} />

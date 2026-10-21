@@ -1045,14 +1045,15 @@
   border-left: 1px solid var(--risiko-column-line);
 }
 /* The work-split's boundary line: solid ink, standing from the lane's top edge
-   down to the names' strip. It is the deck's one shared stroke, and its left
-   lands on the centre of the gap between the two circles that meet there. */
+   down to the names' strip. Like every other vertical line on the scales it is a
+   single pixel wide (user: "Vertical lines 1px stroke width"), and its left lands
+   on the centre of the gap between the two circles that meet there. */
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 3px;
+  width: 1px;
   background: var(--retro-black);
-  transform: translateX(-1.5px);
+  transform: translateX(-0.5px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
