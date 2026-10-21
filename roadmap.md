@@ -328,3 +328,5 @@
 - [x] Range slider and the dot's smiley face draw with the grey smileys' own pen: `RULE_W = FACE_PEN * (FACE_SIZE / 24)` ≈ 1.65px, measured 1.64px on the rule and 0.75 units × 44/20 = 1.65px on an answered face; the answer keeps its ink colour so it still stands out from the grey faces, and the work-split bar/boundary keep their own 3px. 169 tests pass.
 - [x] Note row: the ℹ mark is 14px standing 16px from its sentence (double the note's 8px breath), its "i" darker and capped at the smileys' pen, and the notes button now stands directly on the hairline (`gap-0`) on both Health Check and Risikofaktoren; measured 16px mark→text, 8px hairline→text, ~0px button→hairline at 873×755, 169 tests pass.
 - [ ] Slider dot: a subtle white outline around the answer face, so it reads clearly above the rule and the grey smileys (user, latest).
+- [ ] Column names always black, whatever the slider position (user, latest).
+- [ ] Slider rule black again, with its stroke and every smiley stroke a bit thicker (user, latest).
