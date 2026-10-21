@@ -531,7 +531,11 @@
      statement — so the component measures the last few pixels and hands them to
      the shift below, which it never lets run past the text or the buttons. */
   .risiko-scale-core { flex: 0 1 auto; margin-block: auto; }
-  .screen-only :is(.risiko-scale-core, .risiko-allocation) { transform: translateY(var(--risiko-centre-shift, 0px)); }
+  .screen-only :is(.risiko-scale-core) { transform: translateY(var(--risiko-centre-shift, 0px)); }
+  /* The work-split card's block fills its area exactly, so shifting the block would
+     slide it out of the area's own clip and slice the names' tops: the area shifts
+     instead, carrying its clip edge along with the block inside it. */
+  .risiko-scale-area--work { transform: translateY(var(--risiko-centre-shift, 0px)); }
 }
 /* The smiley row sits flush with the field's top edge: no padding above the
    faces, so their stubs vanish and the long dashed guide starts right under
