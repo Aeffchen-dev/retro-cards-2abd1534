@@ -402,8 +402,25 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   const allocation = (readOnly: boolean) => {
     const partners = persons.filter(p => page.personKeys.includes(p.key));
     const keys = partners.map(p => p.key);
-    const shares = workloadShares(keys, values);
+  const shares = workloadShares(keys, values);
   const segments = workloadSegments(keys, shares);
+  // The lane point a boundary sits at: the centre of the gap between the two
+  // circles that meet there — the same maths the circles read, so the colours,
+  // the black split line and the circles all agree at every split.
+  const slotPx = `${SLOT}px`;
+  const splitAt = (i: number) => {
+    const li = i ? `calc(${band} * ${i})` : "0px";
+    const ri = `calc(${band} * ${partners.length - 1 - i})`;
+    return `calc(${li} + ${slotPx} + (100cqw - ${li} - ${ri} - ${slotPx}) * ${segments[i].end} / 100)`;
+  };
+  // Each colour runs from the boundary behind it to its own boundary, so the
+  // colour change always lands exactly where the circles part.
+  const segmentWidth = (i: number) => {
+    if (partners.length <= 1) return "100cqw";
+    if (i === 0) return splitAt(0);
+    if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
+    return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
+  };
   // Where the pointer sits on one partner's scale, and how far that partner's
   // circle is from it — the same maths picks who gets grabbed and how far the
   // grab has travelled since.
