@@ -316,22 +316,13 @@
 }
 /* A phone's card cannot hold the work-split question at the question's own size,
    the whole sentence of examples and the split bar all at once — the bar would be
-   pushed clean out of the card. So on a phone the examples keep every word but
-   read in a short window of their own, and the bar gets the room it needs. */
+   squeezed clean out of the card. So on a phone the work-split card keeps just the
+   question and the bar: the examples and the scale's own note line are left out
+   there, and the question carries the card's usual gap down to the lane. */
 @media (max-width: 767px) {
-  .risiko-allocation-examples {
-    max-height: 96px;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-right: 4px;
-    margin-bottom: 12px;
-  }
-}
-/* The smallest phones have no room to spare: the work-split card carries its long
-   question, the fixed sentence of examples and the lane, so there the examples
-   sit a touch closer together. */
-@media (max-width: 380px) {
-  .risiko-allocation-examples { line-height: 1.25; }
+  .risiko-allocation-page .risiko-allocation-examples,
+  .risiko-allocation-page .risiko-helper { display: none; }
+  .risiko-allocation-page .risiko-allocation-statement { margin-bottom: var(--risiko-scale-pad); }
 }
 /* The work-split card reads the question together with the fixed sentence of
    what counts as Beziehungsarbeit, set straight under it as small body text in
