@@ -846,18 +846,21 @@ describe("the statement's own type", () => {
   test("paints the display face at its regular weight", () => {
     const questionRule = css.match(/#root \.question-font,[\s\S]*?\n\}/)?.[0] ?? "";
     expect(questionRule, "the shared question rule is missing").toBeTruthy();
-    // The big question paints the display face the device provides first —
-    // "Stack Sans Notch" — and falls back to the bundled "Stack Sans Notch
-    // Local" file only where no such face is installed (user: "headline nicht
-    // die mitgelieferte Schrift"). Its own weight token stays the regular 400.
+    // The big question paints the display face it has always led with —
+    // "Stack Sans Notch" — and behind it stand only smooth, un-notched faces:
+    // "Stack Sans Text", then the deck's own body face. The bundled
+    // "Stack Sans Notch Local" file is deliberately absent from the chain, so
+    // the sliced stencil letterforms it draws can never paint the headline
+    // (user: "headline nicht die mitgelieferte Schrift", then "Ohne Einschnitte").
+    // Its own weight token stays the regular 400.
     expect(questionRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the big question's family moved")
-      .toBe('"Stack Sans Notch", "Stack Sans Notch Local", sans-serif');
+      .toBe('"Stack Sans Notch", "Stack Sans Text", "Figtree", Arial, sans-serif');
     expect(questionRule.match(/font-weight:\s*(\d+)/)?.[1], "the big question's weight moved")
       .toBe("400");
-    // the plain headline rule agrees, so nothing above it can pull a system face back in
+    // the plain headline rule agrees, so nothing above it can pull a notched face back in
     const headingRule = css.match(/\.retro-title,\n\.retro-heading \{[\s\S]*?\n\}/)?.[0] ?? "";
     expect(headingRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the headline rule's family moved")
-      .toBe('"Stack Sans Notch", "Stack Sans Notch Local", sans-serif');
+      .toBe('"Stack Sans Notch", "Stack Sans Text", "Figtree", Arial, sans-serif');
   });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")
