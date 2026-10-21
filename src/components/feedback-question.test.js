@@ -24,7 +24,9 @@ describe("Feedback card is labelled Feedback above and titled A review for you, 
 
 describe("Feedback card sits on white", () => {
   test("its card is forced to #FFFFFF like Logo, Talk-about and Takeaways", () => {
-    const cardStyle = src.slice(src.indexOf("const cardStyle ="), src.indexOf("} as React.CSSProperties"));
+    const start = src.indexOf("const cardStyle =");
+    expect(start, "the shared card style is gone").toBeGreaterThan(-1);
+    const cardStyle = src.slice(start, src.indexOf("} as React.CSSProperties", start));
     const whiteForced = cardStyle.slice(0, cardStyle.indexOf(": theme.bg"));
     expect(whiteForced, "the review card still takes the slide's own card colour").toContain("slideId === SLIDE_REFLECTION");
   });
