@@ -206,31 +206,34 @@ describe("grey columns", () => {
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
 
-  test("the smileys and the rule draw 20% heavier than the answer's face", () => {
+  test("the answer's face, the smileys and the rule all draw with one pen", () => {
     // user: "smiley outlines and the slider line +20% stroke width compared to
-    // face" — the answer dot's face keeps the reference pen, while the five grey
-    // smileys and the rule they stand on take a pen 20% over it.
+    // face" once stood the scale a step over the answer, and "make face astrerpke
+    // width 2px" fixed the answer's own width — until "range slider dot stroke
+    // with vs slider line stroke with" was answered "Kreis wie die Linie": the
+    // dot's face now wears the very pen the rule and the five smileys draw with.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const facePx = Number(src.match(/const FACE_PEN_PX = ([\d.]+);/)?.[1] ?? 0);
-    const step = Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
-    // The face's pen is stated as a real pixel, so it is the width the answer
-    // dot's own smiley paints (user: "make face astrerpke width 2px").
-    expect(facePx, "the answer's face does not draw the asked-for 2px").toBeCloseTo(2, 5);
-    expect(step, "the scale's pen is not a 20% step over the face's").toBeCloseTo(1.2, 5);
-    expect(src, "the scale faces no longer wear the heavier pen").toContain("strokeWidth={SCALE_PEN}");
+    expect(facePx, "the shared pen is not a named value").toBeGreaterThan(0);
+    // The 20% step is gone: the scale takes the face's pen as it stands.
+    expect(src, "the scale no longer takes the face's own pen").toContain("const SCALE_PEN = FACE_PEN;");
+    expect(src, "a step over the answer's pen is back").not.toMatch(/const SCALE_PEN = FACE_PEN \* [\d.]+;/);
+    expect(src, "the scale faces no longer wear that pen").toContain("strokeWidth={SCALE_PEN}");
     expect(src, "the rule does not take the smileys' pen").toContain(
       "const RULE_W = SCALE_PEN * (FACE_SIZE / 24);",
     );
-    // The scale's pen is a grid-unit value, so both are compared as the pixels
-    // they actually paint: the smileys and the rule draw 2.4px, the answer's
-    // face a step finer at exactly 2px.
-    const pen = facePx * (24 / face);
-    const drawn = pen * step * (face / 24);
-    const faceDrawn = pen * (face / 24);
-    expect(drawn, "the scale's pen is too faint to read").toBeGreaterThan(2.2);
-    expect(drawn, "the scale's pen is heavier than asked for").toBeLessThan(2.8);
-    expect(drawn / faceDrawn, "the scale does not stand 20% over the face").toBeCloseTo(1.2, 5);
+    // The answer's face states its own pixel width and converts it through the
+    // marker's zoomed window, so the dot lands on the same stroke as its rule.
+    expect(src, "the dot no longer converts the shared pen").toContain(
+      "const MARKER_PEN = FACE_RULE_W * (FACE_VIEW / MARKER_SIZE);",
+    );
+    // Both widths are compared as the pixels they actually paint at the 44px
+    // face: the rule, the smileys and the answer's face all stand at 2.4px.
+    const drawn = facePx * (24 / face) * (face / 24);
+    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(2.2);
+    expect(drawn, "the shared pen is heavier than asked for").toBeLessThan(2.8);
+    expect(drawn, "the scale does not draw the asked-for 2.4px").toBeCloseTo(2.4, 5);
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -621,8 +624,8 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
   });
   test("draws the smileys' eyes as filled circles a step larger than their pen", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const pen = Number(src.match(/const FACE_PEN_PX = ([\d.]+);/)?.[1] ?? 0) *
-      (24 / 44) * Number(src.match(/const SCALE_PEN = FACE_PEN \* ([\d.]+);/)?.[1] ?? 0);
+    // The scale draws with the face's own pen, so the eyes are measured against it.
+    const pen = Number(src.match(/const FACE_PEN_PX = ([\d.]+);/)?.[1] ?? 0) * (24 / 44);
     const eyeR = Number(src.match(/const EYE_R = ([\d.]+);/)?.[1] ?? 0);
     expect(eyeR, "the eyes' circle radius is not a named value").toBeGreaterThan(0);
     expect(src, "the eyes are not drawn over the face as circles").toMatch(/<circle cx="9" cy="9" r=\{EYE_R\}/);
