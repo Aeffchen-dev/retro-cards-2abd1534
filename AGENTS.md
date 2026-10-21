@@ -19,5 +19,5 @@
 - Pass a shared row component's label as one element: its label field lays its children side by side, so a bare fragment splits a sentence.
 - A reveal's end state beats a declared font-size: settle it on the element's own token, not `inherit`.
 - Intimacy uses a focused star-rating control that maps to the existing scale answer key, preserving saved answers and the shared notes/print flow.
-- Keep one writing field's per-card behaviour (e.g. bullet points) behind an opt-in flag on the shared `PostItField` so sibling cards stay untouched, and let the printed view normalise presentation instead of rewriting what is saved.
+- Keep per-card behaviour behind an opt-in flag on the shared component so siblings stay untouched, and let print normalise rather than rewrite saved answers; derive card colours from the shared colour helpers and theme overrides, passing real values to shared fields so their contrast lightening works.
 
