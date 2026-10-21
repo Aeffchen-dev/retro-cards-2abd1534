@@ -550,8 +550,9 @@ describe("chapter card pagination", () => {
 describe("the statement's own type", () => {
   const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
   const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-  test("reads in the big question's display face, one step under the question", () => {
-    const statement = css.match(/\.risiko-statement \{([\s\S]*?)\n\}/)?.[1] ?? "";
+  test("reads in the big question's display face, at the question's own size", () => {
+    const statement = (css.match(/\.risiko-statement \{[\s\S]*?\n\}/g) ?? [])
+      .find((block) => block.includes("overflow-wrap")) ?? "";
     expect(statement, ".risiko-statement missing from index.css").toBeTruthy();
     // The display face comes from the rule that already dresses the big question,
     // so the statement cannot drift away from it; the global `#root *` rule would
@@ -560,11 +561,11 @@ describe("the statement's own type", () => {
     expect(questionRule, "the shared question rule is missing").toBeTruthy();
     expect(questionRule, "the statement does not stand in the question's own rule")
       .toMatch(/#root \.risiko-statement/);
-    const size = Number(statement.match(/font-size:\s*(\d+(?:\.\d+)?)px/)?.[1]);
-    const heading = Number((css.match(/\.retro-title,\s*\.retro-heading \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [])[1]);
-    expect(size, "the statement has no size of its own").toBeGreaterThan(0);
-    expect(heading, "the big question's size is gone").toBeGreaterThan(0);
-    expect(size, "the statement does not read smaller than the big question").toBeLessThan(heading);
+    // The size comes from that same display rule: the statement stands in it
+    // beside the question, so neither can ever drift away from the other again.
+    const display = css.match(/\.retro-title,\s*\.retro-heading,\s*\.risiko-statement \{[\s\S]*?font-size:\s*(\d+(?:\.\d+)?)px/) ?? [];
+    expect(Number(display[1]), "the big question's size is gone").toBeGreaterThan(0);
+    expect(statement, "the statement sets a size of its own again").not.toMatch(/font-size:/);
   });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")
