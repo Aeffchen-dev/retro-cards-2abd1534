@@ -687,7 +687,7 @@
      one control rather than marks loose on the card. The faces and names keep
      plates of the same colour, so nothing shows through as a white tile. */
   .risiko-page { --risiko-field-bg: #F1F2F4; }
-  .risiko-scale-field { background: var(--risiko-field-bg); border-radius: 14px; }
+  .risiko-scale-field { background: var(--risiko-field-bg); border-radius: 14px; padding-bottom: 12px; }
   /* The first two Health Check cards draw their own scale; theirs is the same
      panel, and the guides and faces inside it keep their own ink colours. */
   .health-check-page .print-memoji-container { background: var(--risiko-field-bg, #F1F2F4); border-radius: 14px; }
