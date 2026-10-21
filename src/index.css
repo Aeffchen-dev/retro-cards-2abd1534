@@ -415,12 +415,22 @@
 .workload-label, .workload-percentage, .workload-avatar {
   --workload-ink: color-mix(in srgb, var(--workload-color) 55%, #101010);
 }
-/* The share sits below the rule, never on it: the name is printed above the rule on
-   the very same colour run, so a partner reads as one block — name, colour, number. */
+/* The shares ride in their own row just below the rule. The row is a line rather
+   than a box: every number stands on it and grows downwards, so a taller number
+   never crowds the rule it belongs to. */
+.workload-shares {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc((100cqh - var(--risiko-name-strip)) / 2 + 7px); /* the rule's foot, plus 5px */
+  height: 0;
+  z-index: 5;
+}
+/* The share keeps its partner's plain colour and never wraps: "100%" is already
+   the widest it ever has to be. */
 .workload-percentage {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 5px);
+  top: 0;
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
   color: var(--workload-color);
@@ -429,17 +439,24 @@
   font-weight: 700;
   padding: 0 3px;
   white-space: nowrap;
+  max-width: 48px;
 }
-/* Every partner is named on its own colour run, just above the rule, in that
-   partner's colour pulled towards ink so a short bold label stays readable on white.
-   Because the label rides the run and not the circle, it can never drift onto a
-   neighbour's colour: the two circles that mark a split sit right together, while
-   each run's middle — where its name and its share stand — is always its own.
-   The white backing masks the dashed guides behind it. */
+/* The names ride in their own row just above the rule, standing on it and growing
+   upwards, so the row never has to be measured to make room for a longer name. */
+.workload-labels {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc((100cqh + var(--risiko-name-strip)) / 2 + 7px); /* the rule's head, plus 5px */
+  height: 0;
+  z-index: 5;
+}
+/* A name is printed in its partner's colour pulled towards ink, so a short bold
+   label stays readable on white. A name wider than the row's fixed width breaks at
+   its own words onto a second line rather than reaching over a neighbour's circle. */
 .workload-label {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% + 5px);
+  bottom: 0;
   transform: translateX(-50%);
   background: var(--risiko-label-bg);
   color: var(--workload-ink);
@@ -449,9 +466,7 @@
   font-weight: 700;
   padding: 0 2px;
   text-align: center;
-  /* A name longer than its colour run breaks at its own words onto a second line
-     instead of running over a neighbour's circle or off the card's edge. */
-  max-width: var(--workload-label-cap, 100cqw);
+  max-width: 96px;
   overflow-wrap: anywhere;
   hyphens: auto;
 }

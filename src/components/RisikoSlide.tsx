@@ -424,17 +424,17 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
     if (i === segments.length - 1) return `calc(100cqw - ${splitAt(i - 1)})`;
     return `calc(${splitAt(i)} - ${splitAt(i - 1)})`;
   };
-  // A name may only use the room its own colour run really has: that run's width
-  // less the two circles marking its ends, and never more than the lane's edges
-  // leave on either side. A longer name takes a second line rather than running
-  // over a neighbour's circle or off the card.
-  const labelCap = (i: number) => {
-    const f = segments[i].width / 100;
-    const cf = (segments[i].start + segments[i].end) / 200;
-    const room = `calc(100cqw * ${f.toFixed(4)} - 32px)`;
-    const left = `calc(100cqw * ${(cf * 2).toFixed(4)})`;
-    const right = `calc(100cqw * ${((1 - cf) * 2).toFixed(4)})`;
-    return `min(max(60px, ${room}), ${left}, ${right})`;
+  // A name or a share is never allowed to grow past these widths: a longer name
+  // takes a second line instead, so a one-sided split can neither squeeze a
+  // partner's name into a sliver nor push a number off the card's edge.
+  const LABEL_W = 96;
+  const SHARE_W = 48;
+  // The middle of one colour run, measured exactly the way the run itself is
+  // drawn, and held inside the lane's own edges by half of its row's fixed width.
+  const centreAt = (i: number, half: number) => {
+    const a = i ? splitAt(i - 1) : "0px";
+    const b = i < segments.length - 1 ? splitAt(i) : "100cqw";
+    return `clamp(${half}px, calc((${a} + ${b}) / 2), calc(100% - ${half}px))`;
   };
   // A colour run belongs to exactly one partner, so the name printed above the
   // rule and the share printed below it can both be read off that one colour.
@@ -518,15 +518,11 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
               <span key={`gu${i}`} className="risiko-column-guide absolute" style={{ left: facePos(i), top: 0, bottom: 0 }} />
             ))}
           </div>
-          {/* Every colour run carries its partner's name just above the rule and
-              that partner's share just below it, so a name and its number always
-              stand on the same colour and never drift onto a neighbour's run. */}
+          {/* The colour runs carry nothing themselves: every name and every share
+              is printed in its own row, above and below the rule. */}
           <div className="workload-bar" aria-hidden="true">
             {segments.map((segment, i) => (
-              <span key={segment.key} className={`workload-segment workload-color-${i % 8} relative${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i), "--workload-label-cap": labelCap(i) } as React.CSSProperties}>
-                <span className="workload-label">{shareLabel(segment.key)}</span>
-                <span className="workload-percentage">{shares[segment.key]}%</span>
-              </span>
+              <span key={segment.key} className={`workload-segment workload-color-${i % 8}${i ? " workload-segment-gap" : ""}`} style={{ width: segmentWidth(i) }} />
             ))}
           </div>
           {/* Each boundary carries its own solid ink line: not dashed like the grey
@@ -537,6 +533,21 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           <div className="absolute left-0 right-0 top-0 pointer-events-none" style={{ bottom: "var(--risiko-name-strip)" }} aria-hidden="true">
             {segments.slice(0, -1).map((segment, i) => (
               <span key={`bl${i}`} className="workload-boundary absolute" style={{ left: splitAt(i) }} />
+            ))}
+          </div>
+          {/* Each partner is named just above the rule and its share printed just
+              below it, both centred on that partner's own colour run. A name never
+              grows past the row's fixed width — a longer one takes a second line —
+              and both rows are held inside the lane's own edges, so nothing is ever
+              cut off, not even when one partner carries almost all of the work. */}
+          <div className="workload-labels" aria-hidden="true">
+            {segments.map((segment, i) => (
+              <span key={`lb${i}`} className={`workload-label workload-color-${i % 8}`} style={{ left: centreAt(i, LABEL_W / 2) }}>{shareLabel(segment.key)}</span>
+            ))}
+          </div>
+          <div className="workload-shares" aria-hidden="true">
+            {segments.map((segment, i) => (
+              <span key={`sh${i}`} className={`workload-percentage workload-color-${i % 8}`} style={{ left: centreAt(i, SHARE_W / 2) }}>{shares[segment.key]}%</span>
             ))}
           </div>
           {partners.map((p, i) => {
