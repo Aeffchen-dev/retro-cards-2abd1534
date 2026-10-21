@@ -204,7 +204,7 @@ const MorphFace = ({ value, features = true }: { value: number; features?: boole
     <svg width={MARKER_SIZE} height={MARKER_SIZE} fill="none"
       viewBox={`${FACE_VIEW_OFF} ${FACE_VIEW_OFF} ${FACE_VIEW} ${FACE_VIEW}`}
       style={{ overflow: "visible" }}
-      stroke={INK} strokeWidth={MOUTH_W} strokeLinecap="round" strokeLinejoin="round">
+      stroke={INK} strokeWidth={MARKER_PEN} strokeLinecap="round" strokeLinejoin="round">
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not
           in their grey (user: "color back instead of grey"). */}
@@ -218,7 +218,7 @@ const MorphFace = ({ value, features = true }: { value: number; features?: boole
           <path d={`M ${eye[0]} ${eye[1]} L ${eye[2]} ${eye[3]} M ${eye[4]} ${eye[5]} L ${eye[6]} ${eye[7]}`} strokeWidth={eyeW * (EYE_W / 1.5)} />
           {/* The brows only rise between the anchors, where no header face stands. */}
           <path d={`M 7.5 ${9 - brow * 2.4} L 10 ${9 - brow * 3.8} M 14 ${9 - brow * 3.8} L 16.5 ${9 - brow * 2.4}`} strokeWidth={MOUTH_W * brow} />
-          <path d={path} />
+          <path d={path} strokeWidth={MOUTH_W} />
         </>
       ) : null}
     </svg>
