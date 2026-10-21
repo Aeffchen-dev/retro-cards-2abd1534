@@ -314,12 +314,36 @@
   background: transparent;
 }
 .intimacy-rating .intimacy-star svg { width: 32px; height: 32px; }
-.intimacy-star[data-filled="true"] svg { fill: currentColor; }
-.intimacy-rating .intimacy-star:hover { color: var(--intimacy-accent); }
+/* A chosen heart wears the card's own pink, filled and outlined; an empty one
+   keeps only its ink outline. */
+.intimacy-star[data-filled="true"] svg {
+  fill: var(--intimacy-accent);
+  stroke: var(--intimacy-accent);
+}
+/* Hovering a heart previews that pink without the grey tile the ghost button
+   would otherwise paint behind it. */
+.intimacy-rating .intimacy-star:hover {
+  color: var(--intimacy-accent);
+  background: transparent;
+}
 .intimacy-rating .intimacy-star:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
   box-shadow: none;
+}
+/* The sentence naming what the hearts rate: plain body text standing above
+   them, a step smaller on a phone. */
+.intimacy-question {
+  font-size: 16px;
+  line-height: 22px;
+  margin: 0;
+  color: var(--retro-black);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+@media (max-width: 767px) {
+  .intimacy-question { font-size: 14px; line-height: 20px; }
 }
 /* Flex children must shrink to the actual content box, including when the
    statement area has a vertical scrollbar or a long helper sentence. */
