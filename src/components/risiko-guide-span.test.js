@@ -34,7 +34,7 @@ test("the dotted guides run from the smileys down past the column names", () => 
   expect(/top:\s*0;/.test(full), "the guides do not start at the stack's top").toBe(true);
   expect(/bottom:\s*0;/.test(full), "the guides do not reach the stack's foot").toBe(true);
   expect(slide.match(/risiko-column-guide risiko-guide-full/g)?.length ?? 0).toBeGreaterThanOrEqual(FACES_COUNT);
-  expect(slide.match(/risiko-column-divider risiko-guide-full/g)?.length ?? 0).toBeGreaterThanOrEqual(FACES_COUNT - 1);
+  expect(slide.match(/risiko-column-edge risiko-guide-full/g)?.length ?? 0).toBeGreaterThanOrEqual(FACES_COUNT - 1);
   expect(/\.risiko-scale-stack \{[^}]*position: relative;/.test(css), "the stack is not a positioning parent").toBe(true);
 });
 

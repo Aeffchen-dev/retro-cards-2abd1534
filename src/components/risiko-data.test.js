@@ -201,7 +201,7 @@ describe("grey columns", () => {
     // and the dividers are drawn on both scales, screen and print alike: the
     // statement scale places them between its smileys (edgeX), the work-split
     // lane between its own even columns (columnEdges)
-    expect(slide, "the statement scale draws no column dividers").toMatch(/className="risiko-column-divider/);
+    expect(slide, "the statement scale draws no column dividers").toMatch(/className="risiko-column-edge risiko-guide-full/);
     expect(slide, "the work-split lane draws no column dividers").toMatch(/columnEdges\(FACES\.length\)/);
   });
   test("the scale smileys sit a shade lighter than their dotted guides and column names", () => {
