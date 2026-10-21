@@ -292,11 +292,12 @@
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */
-/* A statement reads in the same voice as the deck's big question — the display face
-   is handed to it by the shared question rule above — but one step under its 38.4px,
-   because under a statement sit the smileys, the scale and the notes. The size is
-   set by the chapter's longest statement: at 16px that one still closes within
-   three lines on the card, and every statement reads at that same size. */
+/* A statement reads in the same voice and at the same size as the deck's big
+   question: the display face and the 38.4px come from the shared question rule
+   above. Only a phone's card is too narrow for that — there the chapter's longest
+   statement would push the smileys, the scale and the notes past the card's lower
+   edge — so a phone steps down to 30px, the largest size at which every statement
+   still closes above the scale with room to spare. */
 .risiko-statement {
   margin-bottom: var(--risiko-scale-pad);
   color: var(--retro-black);
@@ -306,6 +307,9 @@
   word-break: normal;
   hyphens: manual;
   -webkit-hyphens: manual;
+}
+@media (max-width: 767px) {
+  .risiko-statement { font-size: 30px; }
 }
 /* The smallest phones have no room to spare: the work-split card carries its long
    question, the fixed sentence of examples and the lane, so there the examples
