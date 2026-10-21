@@ -35,8 +35,8 @@ describe("notes CTA colours", () => {
     expect(stack, "edit mode does not keep the pill colour").toMatch(
       /accent=\{editModeSlides\[cardId\] \? pillColorOf\(cardId\) : "#E4E6E8"\}/,
     );
-    expect(stack, "the grey ring is not left off in edit mode").toMatch(
-      /tileBorder=\{editModeSlides\[cardId\] \? undefined : "1px solid #C9CBD1"\}/,
+    expect(stack, "the grey tile carries no outline").not.toMatch(
+      /tileBorder/,
     );
     expect(stack, "the pencil does not turn black outside edit mode").toMatch(
       /iconColor=\{editModeSlides\[cardId\] \? "#FFFFFF" : "#201C1D"\}/,
@@ -51,8 +51,8 @@ describe("notes CTA colours", () => {
     expect(overlay, "edit mode does not keep the pill colour").toMatch(
       /accent=\{editModeSlides\[slideId\] \? pillColorOf\(slideId\) : "#E4E6E8"\}/,
     );
-    expect(overlay, "the grey ring is not left off in edit mode").toMatch(
-      /tileBorder=\{editModeSlides\[slideId\] \? undefined : "1px solid #C9CBD1"\}/,
+    expect(overlay, "the grey tile carries no outline").not.toMatch(
+      /tileBorder/,
     );
     expect(overlay, "the pencil does not turn black outside edit mode").toMatch(
       /: editModeSlides\[slideId\] \? "#FFFFFF" : "#201C1D"\}/,
