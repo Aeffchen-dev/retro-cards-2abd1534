@@ -58,10 +58,10 @@ describe("The two cards swapped their last and first question", () => {
     expect(slide).toContain("reflectionTexts[key]");
   });
 
-  test("asks the unspoken-thoughts question on the Ideas card", () => {
+  test("asks the last-chance question on the Ideas card", () => {
     // Only the list of prompts counts here, not the comment above it.
     const list = vorhaben.slice(vorhaben.indexOf("export const VORHABEN_QUESTIONS"));
-    expect(list).toContain('["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?"]');
+    expect(list).toContain('["unspoken", "Letzte Chance"]');
     expect(list, "Ideas still asks for next month's plans").not.toContain('"plans"');
     expect(list).not.toContain("Das wollen wir kommenden Monat machen");
     // Ideas still asks three things: the moved question plus its own two.
