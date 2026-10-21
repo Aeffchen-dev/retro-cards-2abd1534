@@ -188,7 +188,7 @@ describe("grey columns", () => {
     };
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
     const line = hex("risiko-column-line");
-    expect(lightness(line), "the column lines are not softer than the smileys' guides").toBeGreaterThan(lightness(hex("risiko-guide")));
+    expect(lightness(line), "the column lines are not softer than the smileys' dotted guides").toBeGreaterThan(lightness(hex("risiko-line")));
     // both stay well clear of ink black
     expect(lightness(line)).toBeLessThan(720);
     expect(/border-left: 1px dashed var\(--risiko-column-line\)/.test(css), "the column lines do not use --risiko-column-line").toBe(true);
@@ -200,26 +200,28 @@ describe("grey columns", () => {
     const edges = slide.match(/columnEdges\(FACES\.length\)/g) ?? [];
     expect(edges.length, "the dividers are missing from a scale").toBeGreaterThanOrEqual(2);
   });
-  test("the scale smileys sit a shade lighter than their guides and column names", () => {
-    // The dashed line down each column and the five column names share the
-    // scale's darker grey; the faces themselves are drawn a step lighter, so
-    // they read as the softest thing on the scale — but still dark enough to
-    // stand out from the pale column fill behind them.
+  test("the scale smileys sit a shade lighter than their dotted guides and column names", () => {
+    // The dotted line down each column reads as a whisper (--risiko-line), the
+    // five names below it in the scale's darker grey (--risiko-guide), and the
+    // faces themselves a step lighter than the line — the softest thing on the
+    // scale, but still dark enough to stand out from the pale grey around them.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const token = (name) => css.match(new RegExp(`--${name}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase();
     const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
-    const guide = token("risiko-guide");
+    const line = token("risiko-line");
+    const names = token("risiko-guide");
     const face = slide.match(/export const FACE_GREY = "#([0-9A-Fa-f]{6})"/)?.[1]?.toLowerCase();
-    expect(guide, "--risiko-guide missing from index.css").toBeTruthy();
+    expect(line, "--risiko-line missing from index.css").toBeTruthy();
     expect(face, "FACE_GREY missing from RisikoSlide.tsx").toBeTruthy();
-    expect(lightness(face), "the smileys are not lighter than the guides").toBeGreaterThan(lightness(guide));
-    expect(lightness(face), "the smileys are not darker than the caption grey").toBeLessThan(lightness(token("risiko-caption")));
-    expect(/border-left: 1px dashed var\(--risiko-guide\)/.test(css), "guides do not use --risiko-guide").toBe(true);
+    expect(/border-left: 1px dashed var\(--risiko-line\)/.test(css), "the dotted guides do not use --risiko-line").toBe(true);
+    expect(lightness(face), "the smileys are not lighter than the dotted guides").toBeGreaterThan(lightness(line));
+    expect(lightness(line), "the dotted guides are not softer than the column names").toBeGreaterThan(lightness(names));
+    expect(lightness(face), "the smileys are not darker than the pale caption grey").toBeLessThan(lightness(token("risiko-caption")));
     expect(/const Face = \(\{ Icon, color = FACE_GREY \}/.test(slide), "the scale faces no longer default to FACE_GREY").toBe(true);
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
 
-    expect(lightness(guide)).toBeLessThan(lightness(token("risiko-caption")));
+    expect(lightness(line)).toBeLessThan(lightness(token("risiko-caption")));
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -304,10 +306,13 @@ describe("grey columns", () => {
     expect(block).not.toContain(".risiko-scale-caption");
     // nothing separates the labels from the fields they name
     expect(/className="risiko-scale-row[^"]*gap-/.test(slide), "the label row still keeps a gap above the columns").toBe(false);
-    // The columns carry no fill, so a name stands on the card's own ground: no
-    // grey plate behind it. The dashed lines simply stop above the names' band,
-    // so nothing ever draws through a name's letters.
-    expect(caption).not.toMatch(/background:/);
+    // The dotted lines run down through the names' band now, so each name keeps
+    // a plate of the card's own surface — never a grey fill: the line passes
+    // behind the word instead of drawing through its letters.
+    expect(/background:\s*var\(--risiko-surface\)/.test(caption), "the name does not keep a plate of the card's surface").toBe(true);
+    expect(caption).not.toMatch(/background:\s*(#|var[(]--risiko-(guide|caption|column|helper))/);
+    // and the plate repaints for paper, so it never shows as a pale patch
+    expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });
 
   test("the slider rule is exactly as thick as the work-split bar", () => {

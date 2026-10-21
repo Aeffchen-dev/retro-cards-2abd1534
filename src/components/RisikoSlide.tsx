@@ -355,7 +355,10 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
         <div className="risiko-scale-core relative flex flex-col w-full box-border flex-1 min-h-0 touch-pan-y swiper-no-swiping"
           onPointerDown={grabField(key, readOnly)} onPointerMove={dragField(key)}
           onPointerUp={releaseField} onPointerCancel={releaseField} onLostPointerCapture={releaseField}>
-          <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
+          {/* The field and the column names under it form one stack, and the dashed
+              lines are drawn against that stack: they start at the smileys and end
+              just past the last name. */}
+          <div className="risiko-scale-stack">
             {/* Columns: no fill at all — the five fields are drawn only as dashed
                 grey lines, one between every pair of neighbouring columns, with
                 the scale's own left and right edge left bare. They break around the smiley row
@@ -369,30 +372,33 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
                 <span key={`el${at}`} className="risiko-column-edge risiko-column-guide--long absolute" style={{ left: `clamp(0px, ${at}%, calc(100% - 1px))` }} />,
               ]))}
             </div>
-            {/* Each smiley's column carries its dashed guide down the field's whole
+            {/* Each smiley's column carries its dashed guide down the stack's whole
                 height — a stub above the face, then a long run from straight under it
-                to the field's foot — so the smiley reads as threaded onto its own line
-                instead of having the line drawn through it. Painted before the faces
-                and the circle, so both simply stand in front of the line. */}
+                past the column names — so the smiley reads as threaded onto its own
+                line instead of having the line drawn through it. Painted before the
+                faces and the circle, so both simply stand in front of the line. */}
             <div className="risiko-scale-guides absolute left-0 right-0 pointer-events-none" style={{ top: 0, bottom: 0 }} aria-hidden="true">
               {FACES.map((_, i) => <span key={`gu${i}`} className="risiko-column-guide risiko-column-guide--stub absolute" style={{ left: facePos(i) }} />)}
               {FACES.map((_, i) => <span key={`gl${i}`} className="risiko-column-guide risiko-column-guide--long absolute" style={{ left: facePos(i) }} />)}
             </div>
             {/* The smileys sit flush with the field's top edge, while the rule
                 and the circle centre on the long dashed line under them. */}
-            <FaceLayer />
-            <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
-              onChange={(v) => onChange(key, String(v))} />
-          </div>
-          {/* Every column names itself: one label per field, centred on that field and
-              resting at its foot, so the circle always sits above the word it points
-              at. The row takes exactly the height the names need. */}
-          <div className="risiko-scale-captions pointer-events-none" lang="de">
-            {SCALE_CAPTIONS.map((caption, i) => (
-              <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
-                <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
-              ))}</span>
-            ))}
+            <div className="risiko-scale-field relative flex-1 min-w-0 min-h-0 flex flex-col justify-center box-border" style={{ minHeight: FIELD_MIN }}>
+              <FaceLayer />
+              <Track value={scaleValue(values[key])} readOnly={readOnly} ariaLabel={text} hasValue={values[key] !== undefined}
+                onChange={(v) => onChange(key, String(v))} />
+            </div>
+            {/* Every column names itself: one label per field, centred on that field,
+                so the circle always sits above the word it points at. The row takes
+                exactly the height the names need, and the dashed lines run down
+                through it — the names paint over them. */}
+            <div className="risiko-scale-captions pointer-events-none" lang="de">
+              {SCALE_CAPTIONS.map((caption, i) => (
+                <span key={i} className="risiko-scale-caption">{captionLines(caption).map((line, j, all) => (
+                  <span key={j} className="risiko-caption-line">{softHyphenate(line)}{j < all.length - 1 ? " " : ""}</span>
+                ))}</span>
+              ))}
+            </div>
           </div>
           {below && (
             // The chapter's sentence rides straight under the scale that explains it.
