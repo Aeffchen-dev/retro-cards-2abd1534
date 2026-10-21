@@ -689,9 +689,9 @@
 .workload-boundary {
   top: 0;
   bottom: 0;
-  width: 0;
-  border-left: 1px solid var(--retro-black);
-  transform: translateX(-0.5px);
+  width: 4px;
+  background: var(--retro-black);
+  transform: translateX(-2px);
 }
 /* The circle rides the rule; the slider stays underneath it. */
 .risiko-marker { pointer-events: none; }
