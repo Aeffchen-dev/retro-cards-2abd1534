@@ -84,6 +84,10 @@ const ActionRow: React.FC<ActionRowProps> = ({
      "info icon stroke width 1,5px enough") — so the helper sentence stays a
      footnote beside the heavy answer circle on the scales. */
   const resolvedStrokePx = iconStrokeWidth ?? (isInfo ? 1.5 : undefined);
+  /* The helper sentence's mark reads one step smaller than the sentence it
+     introduces, so it points at the words instead of competing with them
+     (user: "info i icon smaller"); every other CTA keeps the full 16px glyph. */
+  const resolvedIconSize = isInfo ? 14 : 16;
   /* The helper sentence has no tile: the ℹ glyph sits flush at the row's own
      content edge instead of inside a 32px plate with 8px of empty space around
      it (user: "info i icon remove padding"), and the sentence keeps its height
@@ -100,7 +104,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
         className={tileClass}
         style={{ background: outlined ? "transparent" : accent, color: resolvedIconColor, border }}
       >
-        {iconNode ?? (icon ? <StackIcon name={icon} size={16} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
+        {iconNode ?? (icon ? <StackIcon name={icon} size={resolvedIconSize} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
       </span>
       <span
         className={fieldClass}

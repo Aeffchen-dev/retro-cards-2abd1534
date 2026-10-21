@@ -206,18 +206,23 @@ describe("grey columns", () => {
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
 
-  test("the grey smileys draw lighter than the rule they stand on", () => {
+  test("the rule and the answer dot draw with the grey smileys' own pen", () => {
+    // user: "grey smilies stroke width less", then "outline range slider and dot
+    // smiley face same as grey smileys" — the line under the faces, and the face
+    // riding it, are no longer heavier than the faces themselves.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
-    const rule = Number(src.match(/const RULE_W = ([\d.]+);/)?.[1] ?? 0);
     expect(pen, "the smileys' pen is not a named value").toBeGreaterThan(0);
     expect(src, "the scale faces no longer wear that pen").toContain("strokeWidth={FACE_PEN}");
-    // The pen is converted to pixels: lighter than the rule's own stroke, but
-    // still a visible line at the face's size.
+    expect(src, "the rule does not take the smileys' pen").toContain(
+      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+    );
+    // The pen is converted to pixels: a real line at the face's size, but no
+    // heavier than the outline it now shares with the rule and the dot.
     const drawn = pen * (face / 24);
-    expect(drawn, "the smileys do not draw lighter than the rule").toBeLessThan(rule);
-    expect(drawn, "the smileys are too faint to read").toBeGreaterThan(1.2);
+    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(1.2);
+    expect(drawn, "the shared pen is heavier than the faces it copies").toBeLessThan(2);
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -341,15 +346,19 @@ describe("grey columns", () => {
     expect(/\.print-slide-page \.risiko-page \{[^}]*--risiko-surface:\s*#F0EFEE/.test(css), "the plate does not repaint for paper").toBe(true);
   });
 
-  test("the slider rule is exactly as thick as the work-split bar", () => {
+  test("the work-split bar keeps its own weight while the scale's rule follows the smileys", () => {
+    // the work-split bar is 3px tall, however it is drawn: it carries the shares,
+    // so it stays heavier than the scale's own line — the rule and the answer dot
+    // now draw with the grey smileys' pen instead (user: "outline range slider
+    // and dot smiley face same as grey smileys")
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    // the work-split bar is 3px tall, however it is drawn
     const bar = css.match(/\.workload-bar \{([\s\S]*?)\n\}/)?.[1] ?? "";
     const thick = Number(bar.match(/height:\s*([\d.]+)px/)?.[1]);
     expect(thick, "the work-split bar's thickness is gone").toBe(3);
-    const rule = Number(slide.match(/const RULE_W = ([\d.]+)/)?.[1]);
-    expect(rule, "the slider rule does not match the work-split bar's 3px").toBe(thick);
+    expect(slide, "the rule no longer follows the smileys' pen").toContain(
+      "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
+    );
   });
 });
 
@@ -400,13 +409,14 @@ describe("work-split split line", () => {
     expect(splitAt, "the ratios no longer stand under the lane").toBeGreaterThan(laneAt);
     expect(splitAt, "the ratios moved out of the card's own area").toBeLessThan(footAt);
     // Nothing is left hanging under the circles: the note block carries only the
-    // helper sentence now, and the notes button stands the note's own 8px breath
-    // over its hairline.
+    // helper sentence now, and the notes button sits straight on its hairline
+    // (user: "Notizen öffnen move closer to top border of info text").
     const noteAt = slide.indexOf("risiko-footer-note");
     const note = slide.slice(noteAt, slide.indexOf("</div>", noteAt));
     expect(note, "the ratios still read under the helper sentence").not.toContain("SplitCaptions");
     const foot = slide.slice(footAt, noteAt);
-    expect(foot, "the button does not stand the note's own breath over the hairline").toContain("gap-[var(--retro-info-gap)]");
+    expect(foot, "the button does not sit straight on the hairline").toContain("gap-0");
+    expect(foot, "the button's old breath over the hairline came back").not.toContain("gap-[var(--retro-info-gap)]");
     // The row names each column's own split on two lines — the shares over the
     // word "Split" — and stands as a plain legend under the lines: no outline
     // around it, so it reads as labels rather than a boxed table.
@@ -583,12 +593,16 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(tsx, "the removed subheadline is back on the card")
       .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
-  test("draws the line between the two Memojis as thick as the slider's rule", () => {
+  test("draws the line between the two Memojis at its own 3px", () => {
+    // the boundary keeps the weight the scale's rule once carried: the rule and
+    // the answer dot now draw with the grey smileys' pen (user: "outline range
+    // slider and dot smiley face same as grey smileys"), while the share bar and
+    // its boundary stay the work-split card's own heavier ink.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const boundary = css.match(/\.workload-boundary \{[^}]*\}/)?.[0] ?? "";
     expect(boundary, "the boundary rule is gone").toBeTruthy();
     expect(boundary, "the line between the Memojis is no longer solid ink").toMatch(/background:\s*var\(--retro-black\)/);
-    expect(boundary, "the line between the Memojis is thinner than the slider's rule").toMatch(/width:\s*3px/);
+    expect(boundary, "the line between the Memojis changed weight").toMatch(/width:\s*3px/);
     expect(boundary, "the line between the Memojis is no longer centred in the gap").toMatch(/transform:\s*translateX\(-1\.5px\)/);
   });
   test("draws the smileys' eyes as filled circles a step larger than their pen", () => {

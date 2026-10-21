@@ -33,9 +33,13 @@ describe("statement card info sentence", () => {
     expect(cta, "the info box still reads before the notes button").toBeLessThan(info);
   });
 
-  test("keeps the note's own breath between the button and the info box", () => {
+  test("sits the button straight on the note's hairline", () => {
+    // user: "Notizen öffnen move closer to top border of info text (same value as
+    // top padding)" — the button keeps no breath of its own over the hairline, so
+    // the note's 8px under the line is the only air between button and letters.
     const footer = slide.slice(FOOT_AT, slide.indexOf(">", FOOT_AT));
-    expect(footer, "the button does not stand the note's 8px breath over the hairline").toContain("gap-[var(--retro-info-gap)]");
+    expect(footer, "the button still stands a breath over the hairline").toContain("gap-0");
+    expect(footer, "the button's old breath came back").not.toContain("gap-[var(--retro-info-gap)]");
   });
 
   test("leaves the work-split card its own sentence", () => {

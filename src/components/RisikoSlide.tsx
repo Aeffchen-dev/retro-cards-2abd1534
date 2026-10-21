@@ -46,11 +46,15 @@ const FACE_SIZE = 44;
 // scale's smileys wear — outline, eyes and mouth alike — and wears no ring.
 const MARKER_SIZE = 44;
 
+// The scale's grey smileys draw with this pen: 0.9 of the 24 grid painted into
+// the 44px face ≈ 1.65px (user: "grey smilies stroke width less").
+const FACE_PEN = 0.9;
 
-// One stroke for the whole deck: the rule, the work-split bar and the split line
-// are all this thick — 3px. The rule draws in the smileys' own grey, the split
-// and the answer dot stay ink.
-const RULE_W = 3;
+// One pen for the whole scale: the rule and the answer dot's face draw exactly
+// as thick as the grey smileys standing above them (user: "outline range slider
+// and dot smiley face same as grey smileys"). The work-split bar keeps its own
+// heavier 3px — it carries the shares, it is not a track.
+const RULE_W = FACE_PEN * (FACE_SIZE / 24);
 // The rule's row is this tall; it mirrors --risiko-track-h in index.css.
 const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
@@ -104,15 +108,10 @@ const MARKER_PEN = RULE_W * (FACE_VIEW / MARKER_SIZE);
 const MOUTH_W = MARKER_PEN;
 const EYE_W = MARKER_PEN;
 
-// The scale's grey smileys draw lighter than the rule and the dot, so the ink
-// answer stays the heavy mark on the line (user: "grey smilies stroke width
-// less"). 0.9 of the 24 grid painted into the 44px face ≈ 1.65px, against the
-// rule's 3px.
-const FACE_PEN = 0.9;
-
 // The smileys' eyes draw as filled circles a step larger than the hairline pen
 // of their outline and mouth: a dot eye reads at 1.65px at the 44px face, so the
-// eyes land about 2.5px wide — still far lighter than the ink answer dot's 3px.
+// eyes land about 2.5px wide — a step above the pen every outline on the scale
+// now draws with.
 const EYE_R = 0.68;
 
 const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color?: string }) => (
@@ -833,7 +832,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
           The notes button comes first and the info sentence reads after it, so
           every Health Check page ends answer → button → note, with the card's own
           padding (28px) standing between the two. */}
-      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-[var(--retro-info-gap)]">
+      <div className="risiko-footer screen-only w-full shrink-0 flex flex-col items-start gap-0">
         <ActionRow icon="IconPencil" label="Notizen öffnen" accent="#201C1D" iconColor="#FFFFFF" iconStrokeWidth={1} onClick={onEdit} />
         {/* The note is one block: the sentence reads first and, on the work-split
             card, the row of column ratios follows it as the note's second line.
