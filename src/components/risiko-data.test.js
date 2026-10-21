@@ -591,7 +591,7 @@ describe("the statement's one size", () => {
 
 
 describe("the statement's line breaks", () => {
-  const css = readFileSync(join(root, "src/index.css"), "utf8");
+  const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
   const rule = css.match(/\.risiko-statement \{([^}]*)\}/)[1];
 
   test("breaks between words only, never inside one", () => {
