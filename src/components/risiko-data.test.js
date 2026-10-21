@@ -429,7 +429,8 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
   });
   test("reads in the card's own ink at the smallest readable size, with every example kept", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    const examples = css.match(/\.risiko-allocation-examples \{[\s\S]*?\n\}/)?.[0] ?? "";
+    const blocks = [...css.matchAll(/\.risiko-allocation-examples \{[^}]*\}/g)].map((m) => m[0]);
+    const examples = blocks.find((b) => /color:/.test(b)) ?? "";
     expect(examples, "the examples rule is gone").toBeTruthy();
     expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
     expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
