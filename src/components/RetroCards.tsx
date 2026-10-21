@@ -3,8 +3,9 @@ import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
-import RisikoSlide, { FACES, StatementScale } from "@/components/RisikoSlide";
-import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, INTIMACY_CAPTIONS } from "@/components/risiko-data";
+import RisikoSlide, { FACES } from "@/components/RisikoSlide";
+import StarRating from "@/components/StarRating";
+import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
 import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
@@ -1993,21 +1994,13 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Wie erfüllend ist unsere körperliche Intimität?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
-              {/* The same scale the Health Check statements ride: five smileys over a
-                  rule and a circle that can be pulled along it.
-                  The answer is kept with this card's own notes, under its own key. */}
-              <div className="risiko-page risiko-page--intimacy w-full">
-                <StatementScale
-                  ariaLabel="Wie erfüllend ist unsere körperliche Intimität?"
-                  value={editModeNotes[7]?.scale}
-                  fieldMin={76}
-                  onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
-                  captions={INTIMACY_CAPTIONS}
-                />
-              </div>
+              <StarRating
+                value={editModeNotes[7]?.scale}
+                onChange={(v) => setEditModeNotes(prev => ({ ...prev, 7: { ...(prev[7] || {}), scale: v } }))}
+              />
               <PostItField
                 accent={labelColorOf(7)}
-                label="Das war so hot"
+                label="Das war hot"
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.hot || ""}
@@ -2020,7 +2013,7 @@ const RetroCards: React.FC = () => {
               />
               <PostItField
                 accent={labelColorOf(7)}
-                label="Eine Idee für uns"
+                label="Spicy thought"
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.idea || ""}
@@ -2391,7 +2384,7 @@ const RetroCards: React.FC = () => {
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
                           accent={pillColorOf(slideId)}
-                          iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : undefined}
+                          iconColor={slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : undefined}
                           onClick={() => toggleEditMode(slideId)}
                         />
                       </div>
