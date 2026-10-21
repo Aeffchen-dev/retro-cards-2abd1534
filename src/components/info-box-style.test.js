@@ -127,7 +127,7 @@ describe("info box appearance", () => {
     // user: "aligned with 1 line of text" — it rides the first line, not the
     // middle of a wrapped note.
     expect(actionRow, "the mark is not handed the tile's 32px column").toMatch(
-      /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-start leading-none"/,
+      /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-center leading-none"/,
     );
     expect(actionRow, "the mark is not flushed to the column's left edge").not.toMatch(
       /isInfo\s*\?\s*"shrink-0 w-8 flex items-start justify-center/,
