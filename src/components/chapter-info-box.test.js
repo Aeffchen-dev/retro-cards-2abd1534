@@ -7,7 +7,13 @@ const chapter = src.slice(src.indexOf("const chapterIntro"), src.indexOf("export
 describe("chapter intro lives in the info box", () => {
   test("the whole intro sentence stands inside the card's info box on screen", () => {
     expect(chapter).toMatch(/label=\{chapterIntro\(chapterMood, INK\)\}/);
-    expect(chapter).toMatch(/\{isChapterStart && \(\s*<ActionRow className="risiko-helper" icon="IconInfo"/);
+    // The box is handed to the scale as its "below" node, so it stands inside the
+    // scale's own block — straight under the rule, centred and moved with it.
+    expect(src).toMatch(/scale\(k, t, readOnly,\s*!readOnly && isChapterStart && i === 0 \? chapterBox : undefined\)/);
+    expect(src).toMatch(/className="risiko-scale-note screen-only shrink-0"/);
+    // A press on the box belongs to the box: the field underneath listens for the
+    // circle, so the note must not let that press through.
+    expect(src).toMatch(/risiko-scale-note[^>]*onPointerDown=\{\(e\) => e\.stopPropagation\(\)\}/);
   });
 
   test("the sentence above the card is left to the printed sheet only", () => {
@@ -19,6 +25,6 @@ describe("chapter intro lives in the info box", () => {
     expect(chapter).toContain("{RISIKO_CHAPTER_OPEN}");
     expect(chapter).toContain("{RISIKO_CHAPTER_INFO}");
     expect(chapter).toContain("Durchschnittliche Stimmung");
-    expect(chapter.match(/isChapterStart && \(/g)?.length).toBe(2);
+    expect(chapter.match(/chapterIntro\(chapterMood/g)?.length).toBe(2);
   });
 });
