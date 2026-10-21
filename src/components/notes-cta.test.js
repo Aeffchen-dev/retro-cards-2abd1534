@@ -77,7 +77,26 @@ describe("notes CTA colours", () => {
     expect(row, "the camera CTA is missing").toBeTruthy();
     expect(row, "the camera does not read light orange").toContain('iconColor={BRAND.lightOrange}');
     const brand = cards.slice(cards.indexOf("const BRAND = {"), cards.indexOf("} as const"));
-    expect(brand, "the palette lost its light orange").toMatch(/lightOrange:\s*"#FFA24D"/);
+    const lightOrange = /lightOrange:\s*"(#[0-9A-Fa-f]{6})"/.exec(brand)?.[1];
+    const purple = /purple:\s*"(#[0-9A-Fa-f]{6})"/.exec(brand)?.[1];
+    expect(lightOrange, "the palette lost its light orange").toBeTruthy();
+    expect(purple, "the palette lost its purple tile colour").toBeTruthy();
+    /* The camera sits on the slide's own purple, so the tone has to carry real
+       contrast there (user: "Erhöhe den Kontrast des hellorangefarbenen
+       Kamera-Icons auf dem lila Feld") — measured with relative luminance. */
+    const lum = (hex) => {
+      const rgb = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+      const lin = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+      return 0.2126 * lin(rgb[0]) + 0.7152 * lin(rgb[1]) + 0.0722 * lin(rgb[2]);
+    };
+    const ratio = (a, b) => {
+      const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    };
+    expect(
+      ratio(lightOrange, purple),
+      "the camera no longer stands out on the purple tile",
+    ).toBeGreaterThanOrEqual(3.5);
     expect(row, "the tile no longer wears the slide's purple").toContain("accent={pillColorOf(0)}");
   });
 });

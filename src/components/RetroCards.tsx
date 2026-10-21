@@ -174,7 +174,10 @@ const BRAND = {
   lightBrown: "#575757",
   darkOrange: "#371318",
   mediumOrange: "#FF7A00",
-  lightOrange: "#FFA24D",
+  /* Light orange the camera glyph wears on the Memory slide's purple tile. It is
+     pale enough to clear 3.5:1 against that purple (user: "Erhöhe den Kontrast
+     des hellorangefarbenen Kamera-Icons auf dem lila Feld") and still orange. */
+  lightOrange: "#FFE0B5",
   darkPurple: "#5343A8",
   midPurple: "#A85BA8",
   darkPink: "#492049",
