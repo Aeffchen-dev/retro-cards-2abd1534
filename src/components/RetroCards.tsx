@@ -1940,6 +1940,8 @@ const RetroCards: React.FC = () => {
         return (
           <VorhabenSlide
             slideId={SLIDE_VORHABEN}
+            pillColor={pillColorOf(SLIDE_VORHABEN)}
+            labelColor={labelColorOf(SLIDE_VORHABEN)}
             values={editModeNotes[SLIDE_VORHABEN] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
