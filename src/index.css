@@ -311,8 +311,11 @@
 .health-check-guide {
   position: absolute;
   left: 0;
-  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) - 16px));
-  border-top: 1px dashed var(--risiko-caption);
+  /* The tracks stop well short of the card's right edge — they hug the smiley
+     column the way the dotted guides do on the statement scales — and share
+     those guides' colour instead of the lighter caption grey. */
+  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px));
+  border-top: 1px dashed var(--risiko-line);
 }
 /* The statement is plain body copy: no coloured plate and no word reveal, at the user's
    request. It still grows with its text and never gets squeezed or cut off. */

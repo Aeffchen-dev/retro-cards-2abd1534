@@ -41,7 +41,7 @@ const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTIN
 // dashed guides. Both shrank by 30% — the faces are 24px where they were 34px,
 // and the column they span covers only 70% of the field instead of all of it.
 // Faces, guides and the Memoji that anchors to a face all read this one geometry.
-const HC_FACE = 24;
+const HC_FACE = 29;
 const HC_SPAN_PCT = 70;
 const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
 /** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
@@ -1435,7 +1435,7 @@ const RetroCards: React.FC = () => {
                     variant="ghost"
                     aria-label={["Lachend", "Glücklich", "Neutral", "Traurig", "Weinend"][i]}
                     style={{ top: `calc(${hcSpanPoint(i / 4)} - ${HC_FACE / 2}px)`, left: 0 }}
-                    className="swiper-no-swiping absolute h-[24px] w-[24px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[24px]"
+                    className="swiper-no-swiping absolute h-[29px] w-[29px] shrink-0 rounded-full p-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 [&_svg]:size-[29px]"
 
                     onClick={(event) => {
                       event.stopPropagation();
@@ -1490,7 +1490,7 @@ const RetroCards: React.FC = () => {
                 );
               })}
             </div>
-            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '28px' }}>
+            <div className="absolute screen-only min-w-0" style={{ left: '28px', right: '28px', bottom: '68px' }}>
               <ActionRow
                 icon="IconInfo"
                 className="hc-helper"
@@ -2379,7 +2379,7 @@ const RetroCards: React.FC = () => {
 
                     {/* Edit/Close action row - bottom left */}
                     {hasEditButton(slideId) && (slideId !== 3 || editModeSlides[slideId]) && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && (
-                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: (slideId === 1 || slideId === 2) && !editModeSlides[slideId] ? '68px' : '28px' }}>
+                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Macht Notizen"}
