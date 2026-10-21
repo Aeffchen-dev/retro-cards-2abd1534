@@ -483,14 +483,20 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(sentence.split(", ").length).toBe(8);
     expect(new Set(sentence.replace("Beziehungsarbeit heißt zum Beispiel ", "").replace(/\.$/, "").split(", ")).size).toBe(8);
   });
-  test("reads in the card's own ink at the smallest readable size", () => {
+  test("reads in the card's own ink at the same size as the headline's second half", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const blocks = [...css.matchAll(/\.risiko-allocation-examples \{[^}]*\}/g)].map((m) => m[0]);
     const examples = blocks.find((b) => /color:/.test(b)) ?? "";
+    const subheading = css.match(/^\.risiko-allocation-subheading \{[^}]*\}/m)?.[0] ?? "";
+    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     expect(examples, "the examples rule is gone").toBeTruthy();
     expect(examples, "the examples do not read in the card's ink").toMatch(/color:\s*var\(--retro-black\)/);
     expect(examples, "the examples are grey again").not.toMatch(/color:\s*var\(--risiko-guide\)/);
-    expect(examples, "the examples no longer read at 12px").toMatch(/font-size:\s*12px/);
+    expect(subheading, "the headline's second half rule is gone").toBeTruthy();
+    expect(subheading, "the headline's second half no longer reads as body text").toMatch(/font-size:\s*16px/);
+    expect(examples, "the examples no longer match the headline's second half").toMatch(/font-size:\s*16px/);
+    expect(tsx, "the headline's second half wears the question's display face again")
+      .not.toMatch(/className="risiko-statement risiko-allocation-subheading/);
   });
   test("draws the line between the two Memojis as thick as the slider's rule", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
