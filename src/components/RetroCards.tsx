@@ -2309,7 +2309,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className={`retro-card-container relative w-full max-w-[500px] h-[88%] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+                    className={`retro-card-container relative w-full max-w-[500px] flex-1 min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
 
                     style={{
                       ...cardStyle,
