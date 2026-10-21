@@ -689,7 +689,7 @@ const RisikoSlide = ({ page, persons, values, onChange, onWorkloadChange, pill, 
   // Blocks share the free space evenly; the buttons sit below, never underneath.
   const body = (readOnly: boolean) => (
     <div className="risiko-body flex flex-col w-full flex-1 min-h-0 justify-evenly gap-6">
-      {page.statements.map(([k, t], i) => scale(k, t, readOnly))}
+      {page.statements.map(([k, t]) => scale(k, t, readOnly))}
 
       {page.personKeys.length > 0 && allocation(readOnly)}
     </div>
