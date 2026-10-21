@@ -206,10 +206,11 @@ describe("grey columns", () => {
     expect(/color=\{color\}/.test(slide), "the scale faces do not paint that colour").toBe(true);
   });
 
-  test("the rule and the answer dot draw with the grey smileys' own pen", () => {
+  test("the rule, the smileys and the answer dot share one slightly heavier pen", () => {
     // user: "grey smilies stroke width less", then "outline range slider and dot
-    // smiley face same as grey smileys" — the line under the faces, and the face
-    // riding it, are no longer heavier than the faces themselves.
+    // smiley face same as grey smileys", then "Mae this rand stroke-width and all
+    // smilie stroke withs a bit more" — one pen for the whole scale, drawn a step
+    // thicker than before and shared by the rule, the faces and the answer.
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const pen = Number(src.match(/const FACE_PEN = ([\d.]+);/)?.[1] ?? 0);
     const face = Number(src.match(/const FACE_SIZE = (\d+);/)?.[1] ?? 0);
@@ -218,11 +219,11 @@ describe("grey columns", () => {
     expect(src, "the rule does not take the smileys' pen").toContain(
       "const RULE_W = FACE_PEN * (FACE_SIZE / 24);",
     );
-    // The pen is converted to pixels: a real line at the face's size, but no
-    // heavier than the outline it now shares with the rule and the dot.
+    // The pen is converted to pixels: a real line at the face's size, a step
+    // heavier than the 1.65px it used to paint and still short of a heavy bar.
     const drawn = pen * (face / 24);
-    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(1.2);
-    expect(drawn, "the shared pen is heavier than the faces it copies").toBeLessThan(2);
+    expect(drawn, "the shared pen is too faint to read").toBeGreaterThan(1.8);
+    expect(drawn, "the shared pen is heavier than asked for").toBeLessThan(2.6);
   });
   test("the rule's ends are rounded and the fields stand at their own height on screen", () => {
     // The rule carries a radius of half its own thickness, so it finishes in a
@@ -231,10 +232,10 @@ describe("grey columns", () => {
     // printed card is sized to the sheet and keeps filling its whole page.
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const rule = slide.match(/background: "var\(--risiko-column-line\)",[^\n]*/)?.[0] ?? "";
+    const rule = slide.match(/background: "var\(--retro-black\)",[^\n]*/)?.[0] ?? "";
     expect(rule, "the rule line is missing").not.toBe("");
-    expect(rule, "the rule does not wear the vertical column lines' grey")
-      .toContain('background: "var(--risiko-column-line)"');
+    expect(rule, "the rule does not wear the card's ink")
+      .toContain('background: "var(--retro-black)"');
     expect(/borderRadius: RULE_W \/ 2/.test(rule), "the rule's ends are not rounded").toBe(true);
     const screen = css.slice(css.indexOf("@media screen {"));
     expect(/\.risiko-scale-field \{ flex: 0 0 var\(--risiko-field-h\); \}/.test(screen), "the fields do not stand at their own height on screen").toBe(true);
@@ -305,12 +306,19 @@ describe("grey columns", () => {
     // Nothing hangs under the circles any more — the names moved above the rule.
     expect(slide, "a name still hangs under a circle").not.toContain("workload-name");
   });
-  test("the end labels rest on the columns' top edge in the scale's grey at their own small size", () => {
+  test("the end labels rest on the columns' top edge in ink at their own small size", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
     const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
     const caption = css.match(/^\.risiko-scale-caption \{([\s\S]*?)\n\}/m)?.[1] ?? "";
     expect(caption, ".risiko-scale-caption missing from index.css").toBeTruthy();
-    expect(/color:\s*var\(--risiko-guide\)/.test(caption), "the labels do not use the smileys' grey").toBe(true);
+    // every name reads the card's own ink, whatever column the answer rests in
+    // (user: "column header text all black no matter of slider psoiron") — the
+    // grey-until-selected rule is gone.
+    const stackCaption =
+      css.match(/\.risiko-scale-stack \.risiko-scale-caption \{([\s\S]*?)\n\}/)?.[1] ?? "";
+    expect(stackCaption, "the names' own sizing rule is missing").toBeTruthy();
+    expect(/color:\s*var\(--retro-black\)/.test(stackCaption), "the names do not read ink").toBe(true);
+    expect(stackCaption, "a name still waits to turn grey or black by column").not.toMatch(/--risiko-guide/);
     // One step under the info rows' floor, because two lines of a name have to fit
     // a column's width (~61px): the longest half ("teilweise zu") measures 59px at
     // 11px and would not fit at 12px. Every name still breaks at its own words into
