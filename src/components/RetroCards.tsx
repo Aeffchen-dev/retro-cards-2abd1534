@@ -1674,7 +1674,7 @@ const RetroCards: React.FC = () => {
       case SLIDE_INTRO:
         return (
           <div className="flex flex-col justify-start items-start w-full h-full">
-            <div className="flex flex-col items-start gap-6 w-full">
+            <div className="flex flex-col items-start gap-6 w-full intro-block">
               <h2 className="retro-heading intro-lede w-full"><RevealText text="Euer interaktiver Beziehungs Check-in, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern" color={pillColorOf(cardIndex)} slideIndex={cardIndex} stagger={45} /></h2>
               <div className="flex flex-col gap-4 w-full retro-body-copy intro-copy">
 

@@ -1567,4 +1567,17 @@ textarea.bg-retro-post-it:focus,
   #root .intro-lede { font-size: 20px; line-height: 1.15; }
   #root .intro-copy { font-size: 14px; line-height: 20px; }
 }
+/* Short windows: the card's own height runs out before its width does, so the
+   opening steps down again and the gaps tighten — the paragraphs stop at the
+   12px floor, which is the smallest size anywhere in the app. */
+@media (max-height: 690px) and (max-width: 767px) {
+  #root .intro-block { gap: 12px; }
+  #root .intro-lede { font-size: 16px; line-height: 1.1; }
+  #root .intro-copy { font-size: 12px; line-height: 16px; gap: 8px; }
+}
+@media (max-height: 690px) and (min-width: 768px) {
+  #root .intro-block { gap: 16px; }
+  #root .intro-lede { font-size: 20px; line-height: 1.12; }
+  #root .intro-copy { font-size: 14px; line-height: 19px; gap: 10px; }
+}
 
