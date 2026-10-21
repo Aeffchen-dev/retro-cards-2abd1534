@@ -91,20 +91,24 @@ describe("intro card on short windows", () => {
 });
 
 describe("intro card on desktop", () => {
-  const desktop =
-    [...css.matchAll(/@media \(min-width: 1024px\) and \(min-height: 860px\) \{[\s\S]*?\n\}/g)]
+  const tier = (h) =>
+    [...css.matchAll(new RegExp(`@media \\(min-width: 1024px\\) and \\(min-height: ${h}px\\) \\{[\\s\\S]*?\\n\\}`, "g"))]
       .map((m) => m[0])
       .find((b) => b.includes(".intro-lede")) ?? "";
+  const wide = tier(860);
+  const narrow = tier(905);
 
   test("caps the lede and the paragraphs at a narrow column", () => {
-    expect(desktop, "the desktop width cap is gone").toContain(".intro-copy");
-    expect(desktop.match(/#root \.intro-lede, #root \.intro-copy \{ max-width: (\d+)px/)?.[1], "desktop cap width").toBe("320");
+    expect(wide, "the 320px desktop cap is gone").toContain(".intro-copy");
+    expect(wide.match(/max-width: (\d+)px/)?.[1], "the 860px tier's cap moved").toBe("320");
+    expect(narrow, "the 288px desktop cap is gone").toContain(".intro-copy");
+    expect(narrow.match(/max-width: (\d+)px/)?.[1], "the 905px tier's cap moved").toBe("288");
   });
 
-  test("only caps the column where the card is tall enough to hold it", () => {
-    const heights = [...desktop.matchAll(/min-height: (\d+)px/g)].map((m) => +m[1]);
-    expect(heights.length, "the cap no longer waits for a tall window").toBe(1);
-    // 320px needs ~661px of text; the card only holds that from a ~847px window up.
-    expect(heights[0], "the cap would overflow a window this short").toBeGreaterThanOrEqual(847);
+  test("only caps the column as far as the card can hold it", () => {
+    // 320px needs ~661px of text (a ~847px window up); 288px needs ~711px (a ~902px window up).
+    expect(wide.match(/min-height: (\d+)px/)?.[1], "the 320px cap waits for a shorter window than it fits").toBe("860");
+    expect(narrow.match(/min-height: (\d+)px/)?.[1], "the 288px cap waits for a shorter window than it fits").toBe("905");
+    expect(css.indexOf(narrow), "the narrower cap must be declared after the wider one").toBeGreaterThan(css.indexOf(wide));
   });
 });

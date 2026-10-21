@@ -1573,6 +1573,12 @@ textarea.bg-retro-post-it:focus,
 @media (min-width: 1024px) and (min-height: 860px) {
   #root .intro-lede, #root .intro-copy { max-width: 320px; }
 }
+/* The 288px column needs about 711px of text, which the card only holds from a
+   window about 902px tall up — so it waits for a taller window than the 320px
+   column does, and is declared after it so it wins there. */
+@media (min-width: 1024px) and (min-height: 905px) {
+  #root .intro-lede, #root .intro-copy { max-width: 288px; }
+}
 /* Short windows: the card's own height runs out before its width does, so the
    opening steps down again and the gaps tighten — the paragraphs stop at the
    12px floor, which is the smallest size anywhere in the app. */
