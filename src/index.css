@@ -41,11 +41,14 @@
     --risiko-face-size: 25px;
     --risiko-helper-bg: #F1F2F4;
     /* the columns carry no fill: they are drawn only as dashed grey lines, and
-       those lines sit a shade behind the smileys' own guides (--risiko-guide) */
+       those lines sit a shade behind the smileys' own guides (--risiko-line) */
     --risiko-column-line: #C9CBD1;
     --risiko-caption: #9B9BA3;
-    /* the scale's own grey: the dashed guides and the column names share it; the
-       smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
+    /* the dotted line down a smiley's column: a step lighter than the old ink
+       grey so it reads as a whisper, but still darker than the faces themselves */
+    --risiko-line: #80828A;
+    /* the scale's own grey: the column names and the printed intro sentence share
+       it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
     --risiko-label-bg: #FFFFFF;
     /* Workload partners follow this slide's own scheme: its neon-green accent and
@@ -540,12 +543,25 @@
 }
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
 /* Each face's column keeps its two stretches of dashed guide: a stub from the
-   field's top down to the face, then the long run from just under the face to
-   the field's foot — both read the face row's own position, so they follow it
-   anywhere. */
+   stack's top down to the face, then the long run from just under the face to
+   the foot of the column names — both read the face row's own position, so they
+   follow it anywhere. */
 .risiko-column-guide--stub { top: 0; height: var(--risiko-face-top); }
 .risiko-column-guide--long { top: calc(var(--risiko-face-top) + var(--risiko-face-size) + 4px); bottom: 0; }
+/* The field and the names under it form one stack, and the dashed lines are
+   drawn against that stack — so a line starts at the smileys and ends just past
+   the last name, on the screen and on the printed sheet alike. */
+.risiko-scale-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
 .risiko-scale-captions {
+  /* stands above the dashed lines that run down through the row */
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0 4px;
@@ -679,13 +695,13 @@
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
-/* The scale's columns are drawn, not filled: dashed grey lines stand at the
-   scale's own edges and between every pair of neighbouring columns, so the
-   range the circle travels over still reads as five identical fields. They sit
-   a shade behind the smileys' guides, and the rule and circle draw on top. */
+/* The scale's columns are drawn, not filled: dashed grey lines stand between
+   every pair of neighbouring columns, so the range the circle travels over still
+   reads as five identical fields. They sit a shade behind the smileys' own
+   guides, and the rule and circle draw on top. */
 .risiko-column-guide {
   width: 0;
-  border-left: 1px dashed var(--risiko-guide);
+  border-left: 1px dashed var(--risiko-line);
   transform: translateX(-0.5px);
 }
 .risiko-column-edge {
