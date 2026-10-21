@@ -20,10 +20,11 @@ describe("the dot's smiley is painted on the card in its own colour", () => {
     expect(slide).toContain("stroke={INK} strokeWidth={ARROW_W}");
   });
 
-  test("the dot keeps its own face pen, a step under the rule it rides", () => {
-    // user: "smiley outlines and the slider line +20% stroke width compared to
-    // face" — the dot's outline, eyes and mouth keep the reference pen, so the
-    // zoomed window converts that face's own pixel width back into its units.
+  test("the dot's face converts the shared pen through its zoomed window", () => {
+    // user: "range slider dot stroke with vs slider line stroke with", answered
+    // "Kreis wie die Linie" — the dot's outline, eyes and mouth wear the very pen
+    // the rule draws with, and the zoomed window converts that pixel width back
+    // into the marker's own units.
     expect(slide).toContain("const FACE_RULE_W = FACE_PEN * (FACE_SIZE / 24);");
     expect(slide).toContain("const MARKER_PEN = FACE_RULE_W * (FACE_VIEW / MARKER_SIZE);");
     expect(slide).toContain("const MOUTH_W = MARKER_PEN;");
