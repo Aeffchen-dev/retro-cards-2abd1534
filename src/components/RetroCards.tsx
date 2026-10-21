@@ -76,7 +76,6 @@ interface SetupData {
 const REFLECTION_FIELDS = [
   ["nice", "Du in meinen Augen", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
   ["thanks", "Dafür möchte ich Danke sagen", "Deine Antwort", ""],
-  ["idea", "Das wünsche ich mir", "Deine Antwort", ""],
   ["unspoken", "Gab es etwas, dass du gedacht aber nicht angesprochen hast?", "Deine Antwort", ""],
 ] as const;
 
@@ -122,7 +121,6 @@ const sanitizeEmoji = (input: string): string => {
 interface ReflectionTexts {
   nice: string;
   thanks: string;
-  idea: string;
   unspoken: string;
 }
 
@@ -343,7 +341,7 @@ const RetroCards: React.FC = () => {
   // State for reflection slide post-its
   const [reflectionTexts, setReflectionTexts] = useState<ReflectionTexts>(() => {
     const saved = loadFromStorage<ReflectionTexts>(STORAGE_KEYS.REFLECTION_TEXTS);
-    const texts: ReflectionTexts = { nice: '', thanks: '', idea: '', unspoken: '', ...(saved || {}) };
+    const texts: ReflectionTexts = { nice: '', thanks: '', unspoken: '', ...(saved || {}) };
     // This question used to sit on the Vorhaben card. Anything written there while
     // it lived there moves over with it, so nobody has to type it again.
     if (!texts.unspoken.trim()) {
@@ -351,6 +349,10 @@ const RetroCards: React.FC = () => {
       const written = notes?.[String(SLIDE_VORHABEN)]?.unspoken;
       if (typeof written === "string" && written.trim()) texts.unspoken = written;
     }
+    // "Das wünsche ich mir" moved the other way round, onto the Vorhaben card. Its old
+    // answer is dropped from here — the copy Vorhaben needs is made below — so the same
+    // text is never kept in two places.
+    delete (texts as any).idea;
     return texts;
   });
 
@@ -392,6 +394,14 @@ const RetroCards: React.FC = () => {
     // there above), so the Vorhaben card does not keep a second copy of it.
     const oldVorhaben = migrated[SLIDE_VORHABEN as any];
     if (oldVorhaben && "unspoken" in oldVorhaben) delete oldVorhaben.unspoken;
+    // "Das wünsche ich mir" now lives on the Vorhaben card: an answer written while it
+    // still sat on Feedback moves over with it, so nobody has to type it again.
+    const savedWish = loadFromStorage<Record<string, any>>(STORAGE_KEYS.REFLECTION_TEXTS)?.idea;
+    if (typeof savedWish === "string" && savedWish.trim()) {
+      if (!migrated[SLIDE_VORHABEN as any]) migrated[SLIDE_VORHABEN as any] = {};
+      const here = migrated[SLIDE_VORHABEN as any];
+      if (!(here.idea || "").trim()) here.idea = savedWish;
+    }
     return migrated;
   });
 
@@ -1274,7 +1284,7 @@ const RetroCards: React.FC = () => {
       setPostItTexts({});
       setTakeawayTexts({});
       setEditModeNotes({});
-      setReflectionTexts({ nice: '', thanks: '', idea: '', unspoken: '' });
+      setReflectionTexts({ nice: '', thanks: '', unspoken: '' });
       setCapturedPhotos([]);
       setCurrentQuestion("");
       
