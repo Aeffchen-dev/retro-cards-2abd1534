@@ -25,4 +25,12 @@ describe("last 4 weeks card", () => {
     expect(card, "a question row is no longer clickable").toContain("openQuestionEdit(3, i, String(label))");
     expect([...card.matchAll(/"Icon\w+"/g)].length, "the six question rows are not all there").toBe(6);
   });
+
+  test("paints the close icon in the card's own rosa", () => {
+    // Only the X: the tile keeps the card's pill colour.
+    expect(overlay, "the X is not rosa any more")
+      .toMatch(/iconColor=\{slideId === 3 && editModeSlides\[slideId\] \? labelColorOf\(3\)/);
+    // The rosa is the card's own label colour, the one the field labels wear.
+    expect(src.match(/if \(slideId === 3\) return "(#[0-9A-Fa-f]{6})"/)?.[1]).toBe("#F39FFF");
+  });
 });
