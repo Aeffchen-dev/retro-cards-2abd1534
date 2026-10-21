@@ -710,7 +710,7 @@ describe("mood test chapter", () => {
     // asked to "remove the upper info text box from that slide". They reach the
     // printed card only.
     expect(slide).not.toContain("label={chapterIntro(chapterMood, INK)}");
-    expect(slide).toContain('<p className="risiko-chapter-info">{chapterIntro(chapterMood, FACE_GREY)}</p>');
+    expect(slide).toContain('<p className="risiko-chapter-info">{chapterIntro(chapterMood, CHAPTER_MOOD_GREY)}</p>');
   });
 
 });
