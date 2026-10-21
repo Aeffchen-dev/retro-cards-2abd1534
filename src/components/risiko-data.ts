@@ -10,7 +10,10 @@ export const RISIKO_STATEMENTS = [
 export const RISIKO_HOT = ["hot", "Wir geben uns gegenseitig das Gefühl sexy und begehrt zu sein und unser Sexleben erfüllt uns beide"] as const;
 
 /** The display-size question on the card that asks about the work split. */
-export const RISIKO_ALLOCATION_HEADING = "Ist unsere Beziehungsarbeit gerecht verteilt oder leistet einer von uns einen deutlich größeren Anteil?";
+export const RISIKO_ALLOCATION_HEADING = "Ist unsere Beziehungsarbeit gerecht verteilt?";
+
+/** The question's second half, read as a smaller headline straight under the first. */
+export const RISIKO_ALLOCATION_SUBHEADING = "Oder leistet einer von uns einen deutlich größeren Anteil?";
 
 /** What counts as Beziehungsarbeit — the card's fixed examples, read as one
  *  flowing sentence under the question. The items keep the couple's own wording

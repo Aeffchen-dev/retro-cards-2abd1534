@@ -329,7 +329,13 @@
 @media (max-width: 767px) {
   .risiko-allocation-page .risiko-allocation-examples,
   .risiko-allocation-page .risiko-helper { display: none; }
-  .risiko-allocation-page .risiko-allocation-statement { margin-bottom: var(--risiko-scale-pad); }
+  /* The smaller headline stays on a phone, so it — not the dropped examples —
+     carries the card's gap down to the split bar. */
+  .risiko-allocation-page .risiko-allocation-statement { margin-bottom: 6px; }
+  .risiko-allocation-page .risiko-allocation-subheading {
+    font-size: 18px;
+    margin-bottom: var(--risiko-scale-pad);
+  }
 }
 /* The work-split card reads the question together with the fixed sentence of
    what counts as Beziehungsarbeit, set straight under it as small body text in
@@ -337,11 +343,22 @@
    carries the card's usual gap down to the work-split lane, so the fields still
    start where the statement cards' do. */
 .risiko-allocation-statement {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   /* This headline is a question, so it may hyphenate like the deck's other
      questions: "Beziehungsarbeit" is the longest word in the deck and at the
      question's own size it is wider than a phone card's text column, where the
      statement rule (never break inside a word) would push it past the card edge. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+/* The question's second half rides under the first as a smaller headline in the
+   same display face: it carries .risiko-statement, so only its size and gaps are
+   its own, and — like the question above it — it may hyphenate. */
+.risiko-allocation-subheading {
+  font-size: 22px;
+  line-height: 1.1;
+  margin: 0 0 10px;
   overflow-wrap: anywhere;
   hyphens: auto;
   -webkit-hyphens: auto;
@@ -1295,6 +1312,12 @@ textarea.bg-retro-post-it:focus,
   .risiko-statement {
     font-size: 2rem !important;
     line-height: 1.05 !important;
+  }
+
+  /* The work-split card's smaller headline keeps its step down on paper too. */
+  .risiko-allocation-subheading {
+    font-size: 1.15rem !important;
+    line-height: 1.1 !important;
   }
 
   .retro-label {
