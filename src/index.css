@@ -881,8 +881,10 @@
   align-items: stretch;
 }
 .risiko-helper > span:first-child {
+  /* the ℹ mark keeps no tile of its own — it rides the sentence's own height
+     instead of a 32px plate (user: "info i icon remove padding") */
   height: auto;
-  min-height: 32px;
+  align-self: center;
 }
 .risiko-helper > span:last-child {
   min-width: 0;
@@ -906,8 +908,10 @@
   align-items: stretch;
 }
 .hc-helper > span:first-child {
+  /* the ℹ mark keeps no tile of its own — it rides the sentence's own height
+     instead of a 32px plate (user: "info i icon remove padding") */
   height: auto;
-  min-height: 32px;
+  align-self: center;
 }
 .hc-helper > span:last-child {
   min-width: 0;

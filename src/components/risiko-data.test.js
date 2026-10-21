@@ -628,7 +628,7 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
   test("the info row's ℹ mark draws with a light 1.5px pen", () => {
     const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");
     expect(src, "the ℹ mark's stroke is not the light 1.5px pen")
-      .toMatch(/icon === "IconInfo" \? 1\.5 : undefined/);
+      .toMatch(/isInfo \? 1\.5 : undefined/);
     expect(src, "the ℹ mark does not take the row's own icon colour")
       .toMatch(/color: resolvedIconColor/);
   });
