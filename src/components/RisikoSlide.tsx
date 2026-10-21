@@ -35,12 +35,14 @@ export const FACE_GREY = "#8A8C94";
 // across the row so the circle's travel lines up with every one of them.
 const FACE_SIZE = 28;
 // The face's own box is the --risiko-face-size token in index.css: phones and the
-// printed sheet keep the full 28px, tablet and desktop draw it a size smaller.
+// printed sheet draw it at 32px, tablet and desktop a size smaller at 30px.
 // FACE_SIZE itself stays as the icon's intrinsic size and as the height of the row
 // the faces are centred in, so the guides and the circle's travel never move.
 // The draggable marker keeps its own, larger size: it has to read as the handle
-// among the smaller scale faces and stay a comfortable thing to grab.
-const MARKER_SIZE = 32;
+// among the smaller scale faces and stay a comfortable thing to grab, and it wears
+// a 1px ring in the Health Check's light green (see --risiko-marker-ring).
+const MARKER_SIZE = 40;
+
 // The rule is exactly as thick as the work-split bar (h-1), so both scales read
 // as the same line — clearly stronger than the fine dashed guides, and it never
 // touches the grey smileys' own stroke weight.
