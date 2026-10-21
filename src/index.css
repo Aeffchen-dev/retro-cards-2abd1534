@@ -52,13 +52,7 @@
     --retro-info-text: #6E7078;
     --retro-info-rule: #C9CBD1;
 
-    /* the columns carry no fill: they are drawn only as dashed grey lines, and
-       those lines sit a shade behind the smileys' own guides (--risiko-line) */
-    --risiko-column-line: #C9CBD1;
     --risiko-caption: #9B9BA3;
-    /* the dotted line down a smiley's column: a step lighter than the old ink
-       grey so it reads as a whisper, but still darker than the faces themselves */
-    --risiko-line: #80828A;
     /* the scale's own grey: the column names and the printed intro sentence share
        it; the smileys sit a shade lighter (FACE_GREY in RisikoSlide.tsx) */
     --risiko-guide: #6E7078;
@@ -284,8 +278,8 @@
   min-width: 0;
   max-width: 100%;
   --risiko-scale-pad: 28px; /* the card's own padding */
-  /* the card's own surface: a name that stands on a dashed line keeps a plate of
-     this colour, so the line passes behind the word (paper repaints it) */
+  /* the card's own surface: a name's plate keeps this colour, so the word always
+     stands on clean paper (paper repaints it) */
   --risiko-surface: #FFFFFF;
   /* The slider row is a full head taller than its marker, so the handle floats
      free of the smileys above and the buttons below, centred on its rule. */
@@ -317,19 +311,6 @@
 }
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
-}
-.health-check-guides {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.health-check-guide {
-  position: absolute;
-  left: 0;
-  /* Match the other charts' open-ended inter-column dividers, with clear space
-     beside the faces and the existing short endpoint before the resting avatar. */
-  width: max(0px, calc(min(var(--health-guide-end), calc(100% - 56px)) * 0.75 - 16px));
-  border-top: 1px dashed var(--risiko-column-line);
 }
 .health-check-page .health-check-face,
 .health-check-page .health-check-face svg {
@@ -448,9 +429,8 @@
    dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
-/* The dashed guide runs the line's whole height now and passes straight behind each
-   smiley, so the face keeps a plate of the card's own surface: the line disappears
-   behind the disc and reappears under it, exactly like a name's plate below. */
+/* Each smiley keeps a plate of the card's own surface behind it, so the face always
+   stands on clean paper — exactly like a name's plate below. */
 .risiko-face { background: var(--risiko-surface); border-radius: 50%; }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
@@ -462,9 +442,9 @@
 .print-slide-page { --risiko-face-size: 44px; }
 
 
-/* The names take the strip at the lane's foot; the grey fields and dashed guides stop
-   just above it — a quiet band 26px tall, so no guide runs right up to the split
-   labels that follow the lane and nothing printed on the bar crowds them.
+/* The names take the strip at the lane's foot — a quiet band 26px tall, so the
+   fields stop short of the split labels that follow the lane and nothing printed
+   on the bar crowds them.
    On screen the lane stands as tall as the statement scales' fields plus that strip, so
    the work split is read on a grid of exactly the same height as every other card. In
    print it stretches over the card instead, the way the printed statement fields do.
@@ -573,10 +553,9 @@
 }
 
 /* The five column labels — "Trifft noch nicht zu" … "Trifft immer zu" — stand in
-   their own row under the field, so every label sits under the column it names and
-   the dashed lines above end exactly where the names begin. One label per field,
-   centred on it, and each one takes its own column's width so long labels wrap
-   instead of crowding their neighbours. */
+   their own row under the field, so every label sits under the column it names.
+   One label per field, centred on it, and each one takes its own column's width so
+   long labels wrap instead of crowding their neighbours. */
 /* On screen the field stands at its own height: the scale keeps a comfortable
    margin from the names at its foot, and the whole scale can be centred on the
    card (below). The printed sheet is sized to the page instead, so print is left
@@ -589,8 +568,8 @@
   .risiko-scale-field { flex: 0 0 var(--risiko-field-h); }
   /* The names ride up to the rule instead of waiting at the field's foot: the
      field keeps its height, but the empty room under the circle is handed back to
-     the scale, so the block — rule, names, and the dashed lines drawn against it —
-     ends just past the names and its shorter self re-centres on the card. */
+     the scale, so the block — rule and names — ends just past the names and its
+     shorter self re-centres on the card. */
   .risiko-scale-stack .risiko-scale-captions { margin-top: calc(-1 * var(--risiko-caption-lift)); }
   /* The interactive slider sits on the card's mid-line: the scale stops growing
      to fill the card and the free space around it is split evenly, so it lands in
@@ -606,9 +585,9 @@
   .risiko-scale-area--work { transform: translateY(var(--risiko-centre-shift, 0px)); }
 }
 /* The smiley row sits flush with the field's top edge: no padding above the
-   faces, so their stubs vanish and the long dashed guide starts right under
-   them. The rule then centres on that line's own height: the field's top
-   padding equals the line's start, so the flex centring — the rule is the
+   faces, so their stubs vanish and the field's own drawing starts right under
+   them. The rule then centres on the room that is left: the field's top
+   padding equals the smiley row's own height, so the flex centring — the rule is the
    field's only flow child — lands the rule and the circle exactly on the
    midpoint between the line's top and the field's foot. One formula covers
    every field height: the capped field on screen, the shorter one on a small
@@ -617,15 +596,10 @@
   padding-top: calc(var(--risiko-face-size) + 4px);
 }
 .risiko-face-header { top: var(--risiko-face-top); height: var(--risiko-face-size); }
-/* A dashed line that stretches the stack's whole height: from the smileys' own top
-   edge, behind each face (whose plate keeps the face readable), down past the last
-   column name. Both families use it — the smileys' own guides and the lighter column
-   dividers between them — so every line on the scale spans smileys, rule and names. */
-.risiko-guide-full { top: 0; bottom: 0; }
-/* The field and the names under it form one stack, and the dashed lines are
-   drawn against that stack — so a line starts at the smileys and ends just past
-   the last name, on the screen and on the printed sheet alike. The face row's
-   own position lives here too, so the guides read it from their own parent. */
+/* The field and the names under it form one stack, so the scale's own parts keep
+   their order on the screen and on the printed sheet alike. The face row's own
+   position lives here too, so anything placed against the stack reads it from its
+   own parent. */
 .risiko-scale-stack {
   --risiko-face-top: 0px;
   /* On screen the field stands at the taller of its own basis and the floor the
@@ -646,7 +620,7 @@
   width: 100%;
 }
 .risiko-scale-captions {
-  /* stands above the dashed lines that run down through the row */
+  /* stands above whatever the scale draws behind it */
   position: relative;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -677,8 +651,8 @@
   justify-self: start;
 }
 .risiko-scale-stack .risiko-scale-caption:last-child { justify-self: end; }
-/* They read in the scale's own grey — the tone of the dashed guides, while the
-   faces above sit a shade lighter — one step under the info rows' 12px floor.
+/* They read in the scale's own grey, while the faces above sit a shade lighter —
+   one step under the info rows' 12px floor.
    At that size the longest half of a name ("teilweise zu", 12 letters) still
    fits a column's width (~61px), and every name breaks at its own words into
    exactly two lines of even length, so the row reads as one even block instead
@@ -703,15 +677,13 @@
   overflow-wrap: break-word;
   hyphens: auto;
   min-width: 0;
-  /* The dotted lines run down through this band now, so every name keeps a
-     plate of the card's own surface: the line passes behind the word and
-     reappears just under it. The plate bleeds into the 4px gap between the
-     columns, so it never touches a neighbour's letters. */
+  /* every name keeps a plate of the card's own surface, so the word always stands
+     on clean paper; the plate bleeds into the 4px gap between the columns, so it
+     never touches a neighbour's letters */
   padding-top: 4px;
 }
-/* The plate is only as wide as the word it protects, so the dashed lines that run
-   down through the names' band stay visible beside it — only the letters themselves
-   sit on the card's own surface. */
+/* The plate is only as wide as the word it carries, so the row keeps its even
+   columns and only the letters themselves sit on the card's own surface. */
 .risiko-caption-plate { background: var(--risiko-surface); padding-inline: 3px; }
 /* The outer names touch the card's edge, so their plate never bleeds past it. */
 .risiko-scale-stack .risiko-scale-caption:first-child .risiko-caption-plate { padding-left: 0; }
@@ -746,7 +718,7 @@
   padding: 4px 0;
   /* never squeeze the plate shorter than its text when a row is tight */
   flex-shrink: 0;
-  /* mask the dashed column lines behind the question text (card is white) */
+  /* the question text stands on the card's own surface (card is white) */
   background: var(--risiko-label-bg);
 }
 /* The helper keeps its full sentence at the default size: on narrow cards the
@@ -814,22 +786,9 @@
   margin-top: 16px;
 }
 .risiko-block .risiko-statement { margin-bottom: var(--risiko-statement-gap); }
-/* The scale's columns are drawn, not filled: dashed grey lines stand between
-   every pair of neighbouring columns, so the range the circle travels over still
-   reads as five identical fields. They sit a shade behind the smileys' own
-   guides, and the rule and circle draw on top. */
-.risiko-column-guide {
-  width: 0;
-  border-left: 1px dashed var(--risiko-line);
-  transform: translateX(-0.5px);
-}
-.risiko-column-edge {
-  width: 0;
-  border-left: 1px dashed var(--risiko-column-line);
-}
-/* The work-split's boundary line: solid ink, not dashed, but standing exactly as
-   tall as the grey guides around it. Its left lands on the centre of the 4px gap
-   between the two circles that meet at the boundary. */
+/* The work-split's boundary line: solid ink, standing from the lane's top edge
+   down to the names' strip. Its left lands on the centre of the 4px gap between
+   the two circles that meet at the boundary. */
 .workload-boundary {
   top: 0;
   bottom: 0;
@@ -1462,9 +1421,6 @@ textarea.bg-retro-post-it:focus,
     margin: 0 !important;
   }
 
-  .health-check-guide {
-    --health-guide-end: var(--health-guide-print-end);
-  }
 
   .print-emoji-scale > * {
     margin-top: 0 !important;

@@ -37,9 +37,9 @@ const SLIDE_RISIKO = 105;
 const RISIKO_CONTINUATION = 200;
 const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTINUATION;
 
-// The first two Health Check cards share a centred face column with open-ended
-// dashed dividers. A taller span leaves the larger faces breathing room.
-// Faces, guides and the Memoji that anchors to a face all read this one geometry.
+// The first two Health Check cards share a centred face column. A taller span
+// leaves the larger faces breathing room. Faces and the Memoji that anchors to a
+// face all read this one geometry.
 const HC_FACE = 34;
 const HC_SPAN_PCT = 84;
 const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
@@ -1434,17 +1434,7 @@ const RetroCards: React.FC = () => {
             </div>
             <div className="relative w-full flex-1 my-10 print-memoji-container" style={{
               '--health-face-size': `${HC_FACE}px`,
-              '--health-guide-end': `${defaultX}px`,
-              '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
-              <div className="health-check-guides" aria-hidden="true">
-                {Array.from({ length: 6 }, (_, i) => (
-                  <span key={i} className="health-check-guide" style={{
-                    top: hcSpanPoint((i - 0.5) / 4),
-                  }} />
-
-                ))}
-              </div>
               <div className="relative h-full print-emoji-scale">
                 {/* Five faces so the neutral one sits exactly in the middle of the scale */}
                 {[...FACES].reverse().map((Face, i) => (
@@ -2003,8 +1993,8 @@ const RetroCards: React.FC = () => {
                 <span className="retro-label">Intimacy</span>
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Wie erfüllend ist unsere körperliche Intimität?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
-              {/* The same scale the Health Check statements ride: five smileys over
-                  their dashed columns and a circle that can be pulled along the rule.
+              {/* The same scale the Health Check statements ride: five smileys over a
+                  rule and a circle that can be pulled along it.
                   The answer is kept with this card's own notes, under its own key. */}
               <div className="risiko-page risiko-page--intimacy w-full">
                 <StatementScale

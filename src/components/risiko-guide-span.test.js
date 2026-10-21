@@ -2,67 +2,36 @@ import { test, expect } from "bun:test";
 import { readFileSync } from "node:fs";
 
 const slide = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
+const cards = readFileSync(new URL("./RetroCards.tsx", import.meta.url), "utf8");
 const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-const FACES_COUNT = 5;
 
-// The dotted guides no longer stop at the field's foot: they are drawn against a
-// stack that holds the field *and* the column names, so a line runs from the
-// smileys down past the last name. The names themselves paint over the line.
-test("the dotted guides run from the smileys down past the column names", () => {
+// The scales carry no dashed lines any more: the smileys, the rule and the column
+// names stand on their own, with nothing drawn behind them.
+test("no dashed line is drawn on any scale", () => {
+  // no dashed border anywhere in the deck's own stylesheet
+  expect(css, "the stylesheet draws a dashed line again").not.toMatch(/border[^;]*dashed/);
+  // the smileys' own guides and the column dividers are gone from the statement
+  // scales, and so is the full-height rule they used to stretch on
+  expect(slide, "a scale still draws a guide line").not.toMatch(/risiko-column-guide|risiko-column-edge/);
+  expect(slide, "a scale still wraps its guides in a layer").not.toMatch(/risiko-scale-guides|risiko-columns|risiko-guide-full/);
+  // the first two Health Check cards lost their dashed track too
+  expect(cards, "a Health Check card still draws its dashed track").not.toMatch(/health-check-guide/);
+  // the two greys that only ever painted those lines went with them
+  expect(css, "--risiko-line survived its lines").not.toMatch(/--risiko-line:/);
+  expect(css, "--risiko-column-line survived its lines").not.toMatch(/--risiko-column-line:/);
+});
+
+test("the column names still stand under the field in their own row", () => {
   const stack = slide.indexOf('className="risiko-scale-stack"');
-  const guides = slide.indexOf('className="risiko-scale-guides');
-  const columns = slide.indexOf('className="risiko-columns');
   const field = slide.indexOf('className="risiko-scale-field');
   const captions = slide.indexOf('className="risiko-scale-captions');
   expect(stack, "the scale has no stack").toBeGreaterThan(-1);
-  // the two dashed families are drawn against the stack, before anything else,
-  // so a line can never cover a smiley, a guide or the handle
-  expect(guides, "the smiley guides are missing").toBeGreaterThan(stack);
-  expect(columns, "the column lines are missing").toBeGreaterThan(stack);
-  expect(guides).toBeLessThan(field);
-  // ...and the field and the names live inside that same stack
+  // the field and the names live inside that same stack
   expect(field, "the field is missing").toBeGreaterThan(stack);
   expect(captions, "the column names are missing").toBeGreaterThan(field);
-  // the chapter's own sentence box sits outside the stack: the lines must stop
-  // with the names, not run down through the box
+  // the chapter's own sentence box sits outside the stack
   expect(slide.indexOf("{below && (")).toBeGreaterThan(captions);
-  // both families stretch the stack's full height, from the smileys' top edge to
-  // the foot of the names, on screen and on paper alike
-  const full = css.match(/\.risiko-guide-full \{([\s\S]*?)\n\}/)?.[1] ?? "";
-  expect(full, "the guides have no full-height rule").toBeTruthy();
-  expect(/top:\s*0;/.test(full), "the guides do not start at the stack's top").toBe(true);
-  expect(/bottom:\s*0;/.test(full), "the guides do not reach the stack's foot").toBe(true);
-  // one guide per smiley, one lighter line per pair of neighbours — and both
-  // families carry the full-height rule
-  expect(slide, "the smileys' guides are not drawn full height").toMatch(/className="risiko-column-guide risiko-guide-full/);
-  expect(slide, "the column lines are not drawn full height").toMatch(/className="risiko-column-edge risiko-guide-full/);
-  expect(slide.match(/FACES\.map\(\(_, i\) => <span key=\{`gu\$\{i\}`\}/)?.[0], "the guides are not drawn per smiley").toBeTruthy();
-  expect(slide.match(/FACES\.slice\(0, -1\)\.map/)?.[0], "the column lines are not drawn per pair of neighbours").toBeTruthy();
   expect(/\.risiko-scale-stack \{[^}]*position: relative;/.test(css), "the stack is not a positioning parent").toBe(true);
-});
-
-test("the column names paint above the dotted lines that run through them", () => {
-  expect(/\.risiko-scale-captions \{[^}]*position: relative;/.test(css), "the names do not paint above the lines").toBe(true);
-  // the names are the last thing in the stack, so they draw over the lines
-  const captions = slide.indexOf('className="risiko-scale-captions');
-  const stackEnd = slide.indexOf("</div>", slide.indexOf("</div>", captions) + 1);
-  expect(slide.slice(captions, stackEnd).includes("risiko-scale-stack"), "the stack closes before the names").toBe(false);
-});
-
-test("no dotted line draws through a smiley", () => {
-  // The guides run the stack's whole height now, so they pass straight behind the
-  // face row. Two things keep the smileys clean: the row is painted after both
-  // dashed families, and every face carries a disc of the card's own surface
-  // behind its outline, so a line reads as threaded behind the face.
-  const guides = slide.indexOf('className="risiko-scale-guides');
-  const columns = slide.indexOf('className="risiko-columns');
-  const faceRow = slide.indexOf("<FaceLayer />");
-  expect(faceRow, "the smiley row is missing").toBeGreaterThan(guides);
-  expect(faceRow).toBeGreaterThan(columns);
-  const face = css.match(/\.risiko-face \{([^}]*)\}/)?.[1] ?? "";
-  expect(face, "the face has no rule of its own").toBeTruthy();
-  expect(/background:\s*var\(--risiko-surface\)/.test(face), "the smiley has no plate of the card's surface").toBe(true);
-  expect(/border-radius:\s*50%/.test(face), "the smiley's plate is not a disc").toBe(true);
 });
 
 // The column names no longer wait at the field's foot: on screen they rise to

@@ -44,13 +44,3 @@ test("a press anywhere on the field places the circle by the same ends", () => {
   expect(travel, "the press maths does not end at the outer smiley").toContain("END_INSET");
 });
 
-test("the dotted guides span the smileys, the rule and the names in one stretch", () => {
-  const full = css.match(/\.risiko-guide-full \{([\s\S]*?)\n\}/)?.[1] ?? "";
-  expect(/top:\s*0;/.test(full) && /bottom:\s*0;/.test(full), "a guide does not stretch the stack").toBe(true);
-  // lighter than the smileys' own grey, and long enough to reach past the names
-  const hex = (token) => css.match(new RegExp(`--${token}:\\s*#([0-9A-Fa-f]{6})`))?.[1]?.toLowerCase() ?? "";
-  const lightness = (h) => parseInt(h.slice(0, 2), 16) + parseInt(h.slice(2, 4), 16) + parseInt(h.slice(4, 6), 16);
-  const column = hex("risiko-column-line");
-  expect(column, "the column lines have no colour of their own").toBeTruthy();
-  expect(lightness(column), "the column lines are not softer than the smileys' guides").toBeGreaterThan(lightness(hex("risiko-line")));
-});
