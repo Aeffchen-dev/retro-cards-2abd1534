@@ -714,16 +714,22 @@ describe("the statement's line breaks", () => {
   const rule = (css.match(/\.risiko-statement \{[^}]*\}/g) ?? []).find((block) =>
     block.includes("overflow-wrap"),
   );
+  const question = css.match(/\.question-word \{[^}]*\}/)[0];
 
-  test("breaks between words only, never inside one", () => {
-    expect(rule).not.toMatch(/overflow-wrap:\s*(anywhere|break-word)/);
-    expect(rule).toMatch(/overflow-wrap:\s*normal/);
-    expect(rule).toMatch(/word-break:\s*normal/);
+  // The same three declarations decide where a line may end, so comparing them
+  // compares the two headlines' line breaks.
+  const breaks = (block) => ({
+    hyphens: block.match(/\n\s*hyphens:\s*([\w-]+)/)[1],
+    webkitHyphens: block.match(/-webkit-hyphens:\s*([\w-]+)/)[1],
+    overflowWrap: block.match(/overflow-wrap:\s*([\w-]+)/)[1],
   });
 
-  test("never hyphenates a word", () => {
-    expect(rule).not.toMatch(/hyphens:\s*auto/);
-    expect(rule).toMatch(/hyphens:\s*manual/);
-    expect(rule).toMatch(/-webkit-hyphens:\s*manual/);
+  test("breaks its lines exactly like the big question", () => {
+    expect(breaks(rule)).toEqual(breaks(question));
+  });
+
+  test("hyphenates instead of breaking only at spaces", () => {
+    expect(rule).toMatch(/\n\s*hyphens:\s*auto/);
+    expect(rule).not.toMatch(/\n\s*hyphens:\s*manual/);
   });
 });
