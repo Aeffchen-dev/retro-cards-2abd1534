@@ -52,29 +52,27 @@ const TRACK_H = 56;
 // The space a statement keeps above the scale, mirroring --risiko-statement-gap:
 // the smiley row centres itself on it (see .risiko-face-header in index.css), so
 // the row's own height has to be counted in when the fields are given a floor.
-const STATEMENT_GAP = 12;
-// The fields stretch to fill whatever height the card has left over, but never so
-// far that the smiley row — which stands midway between the statement above and
-// the rule below — is squeezed into the circle sitting on that rule.
-// How far the smiley row stands down from the field's own top edge, mirroring
-// --risiko-face-top in index.css: the row no longer sits flush with the field, so
-// the space it steps over has to be counted in when the fields are given a floor.
-const FACE_DROP = 40;
-const FIELD_MIN = FACE_DROP + 4 * (2 + FACE_SIZE / 2 - STATEMENT_GAP / 2 + MARKER_SIZE / 2);
+// How far the smiley row's own centre stands above the rule's centre: the two are
+// centred together in the field (--risiko-face-rise in index.css), so the row's
+// height plus this rise is what the field has to hold, mirrored about its middle.
+const FACE_RISE = 56;
+const FIELD_MIN = 2 * (FACE_RISE + FACE_SIZE / 2);
 
-// The scale spans its container edge to edge: the first and last smiley stand exactly
-// one handle-radius from the container's own edges and the five faces are spread evenly
-// over everything in between, so the smileys fill the whole width the circle travels
-// and the handle still lands fully visible on the outermost faces. The names under the
-// scale take the same stretches (see .risiko-scale-stack .risiko-scale-captions).
+// The five columns are equal shares of the scale (user: "graph columns make even
+// wide"): every smiley stands in the middle of its own fifth, the lines between the
+// columns fall on the fifths' borders, and the circle's travel stops half a column
+// inside each end — the price of even columns is that the outer smileys no longer
+// sit flush with the card's edge. The column names take the same equal fifths.
 const END_INSET = scaleEndInset(MARKER_SIZE);
-const SPAN = `(100% - ${2 * END_INSET}px)`;
-/** CSS left for a smiley's centre: face 0 stands one handle-radius from the edge. */
-const faceX = (i: number) => `calc(${END_INSET}px + ${i} * ${SPAN} / ${FACES.length - 1})`;
-/** CSS left for the circle at a slider value: 0 under the first smiley, 100 under the last. */
-const markerLeft = (value: number) => `calc(${END_INSET}px + ${value} * ${SPAN} / 100)`;
-/** CSS left for the line between face `i` and the face to its right. */
-const edgeX = (i: number) => `calc(${END_INSET}px + ${i + 0.5} * ${SPAN} / ${FACES.length - 1})`;
+const COLUMN = 100 / FACES.length;
+const TRAVEL_INSET = COLUMN / 2;
+const TRAVEL = 100 - 2 * TRAVEL_INSET;
+/** CSS left for a smiley's centre: the middle of its own column. */
+const faceX = (i: number) => `${TRAVEL_INSET + i * COLUMN}%`;
+/** CSS left for the circle at a slider value: 0 in the first column's middle, 100 in the last. */
+const markerLeft = (value: number) => `calc(${TRAVEL_INSET}% + ${value} * ${TRAVEL / 100}%)`;
+/** CSS left for the line between face `i` and the face to its right: their columns' border. */
+const edgeX = (i: number) => `${(i + 1) * COLUMN}%`;
 /** The work-split lane keeps its own evenly divided grid: its circles ride the share
  *  each partner holds, so its guides and split figures stay on the even columns. */
 const lanePos = (i: number) => `${(i + 0.5) * (100 / FACES.length)}%`;
@@ -220,7 +218,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   <div className="risiko-track relative w-full shrink-0">
     {/* The rule spans the full card width; only the circle's travel is inset. Its
         ends are rounded off, so the line finishes soft instead of cut square. */}
-    <div className="absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
+    <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: INK, left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
     {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-10" style={{ left: markerLeft(value) }}>
         {marker}
@@ -229,7 +227,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
       <>
         <SliderPrimitive.Root
           className="swiper-no-swiping absolute flex items-center touch-none select-none z-10 cursor-ew-resize"
-          style={{ left: `${END_INSET}px`, right: `${END_INSET}px`, top: 0, bottom: 0 }}
+          style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
           onPointerUp={() => setDragging(false)}
@@ -294,8 +292,9 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
   const fieldDrag = useRef<HTMLDivElement | null>(null);
   const fieldValueAt = (el: HTMLElement, clientX: number) => {
     const box = el.getBoundingClientRect();
-    const from = END_INSET;
-    const travel = box.width - 2 * END_INSET;
+    // the same equal fifths the smileys, the drawn columns and the circle stand on
+    const from = (box.width * TRAVEL_INSET) / 100;
+    const travel = (box.width * TRAVEL) / 100;
     if (travel <= 0) return null;
     return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
   };
