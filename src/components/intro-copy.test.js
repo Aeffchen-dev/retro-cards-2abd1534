@@ -8,7 +8,7 @@ const card = src.slice(src.indexOf("case SLIDE_INTRO:"), src.indexOf("case SLIDE
 // Supplied verbatim by the user on 2026-10-21; only "machts" -> "macht's" and the
 // doubled full stop after "erzählt habt" were tidied.
 const LEDE =
-  "Euer interaktiver Beziehung Check-in, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern";
+  "Euer interaktiver Beziehungs Check-in, mit Deep Talk Themen die eure Connection stärken und Reflexions-Fragen, die euch helfen eure Beziehungsqualität zu verbessern";
 const PARAGRAPHS = [
   "Macht daraus eure Date Night, schnappt euch euer Lieblingsgetränk, macht's euch gemütlich.",
   "Nehmt euch Zeit füreinander und connected euch bei Deep Talks über das, was euch am anderen fasziniert und euch verbindet. Bleibt neugierig dafür, was euch jeweils wirklich bewegt, stärkt, Angst macht und was ihr euch vielleicht noch nie erzählt habt.",
