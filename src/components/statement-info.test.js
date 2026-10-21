@@ -43,4 +43,11 @@ describe("statement card info sentence", () => {
     expect(intimacy, "the Intimacy card shows the old helper sentence").not.toContain("Schiebt den schwarzen Kreis nach links und rechts");
     expect(intimacy).not.toContain("Die Aussage beschreibt");
   });
+
+  test("shows the statement on its own, without quote marks", () => {
+    const head = slide.slice(slide.indexOf('className="risiko-statement shrink-0"'));
+    const line = head.slice(0, head.indexOf("\n"));
+    expect(line, "the statement headline lost its text").toContain("{statement}");
+    expect(line, "the statement is wrapped in quote marks again").not.toMatch(/\\u201[EC]|\u201E|\u201C|"/);
+  });
 });
