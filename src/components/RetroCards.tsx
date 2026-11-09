@@ -20,6 +20,7 @@ import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
 import { saveMemoryThumb } from './memory-thumbs';
 import PartnerActivity from './PartnerActivity';
+import EmojiPicker from './EmojiPicker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
