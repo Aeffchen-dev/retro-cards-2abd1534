@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Stack+Sans+Text:wght@400;500;600;700&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Stack+Sans+Headline:wght@400;500;600;700&family=Stack+Sans+Notch:wght@400;500&display=swap';
     document.head.appendChild(link);
     return () => link.remove();
   }, []);
