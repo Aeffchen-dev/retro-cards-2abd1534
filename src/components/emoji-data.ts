@@ -111,7 +111,7 @@ const KEYWORDS: Record<string, string> = {
   '💋': 'kuss lippen', '🌹': 'rose blume', '🫶': 'herz hände gest',
   '👍': 'daumen hoch gut', '👎': 'daumen runten schlecht',
   '👌': 'ok perfekt', '✌️': 'peace sieg', '🤞': 'drücken glück',
-  '🙏': 'bitte danke gebet', '💪': 'stark muskel kraft', '👋': 'hallo tschüss wink',
+  '🙏': 'bitte danke gebet', '💪': 'stark muskel kraft', '👋': 'hallo tschüss wink grüße',
   '🤝': 'handschlag deal', '👏': 'klatschen applaud', '🙌': 'hände hoch feiern',
   '🫡': 'salut respekt',
   '🧚': 'fee elf', '🦸': 'held super', '🧙': 'zauberer hexe',
