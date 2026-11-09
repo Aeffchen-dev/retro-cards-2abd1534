@@ -5,9 +5,10 @@ import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
 import ActionRow from './ActionRow';
+import { MoodSummary } from './MoodCheck';
 
-type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
-export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent }: Props) {
+type Props = { pageIndex: number; values: Record<string,string>; moodValues?: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
+export default function HealthCheckRatings({ pageIndex, values, moodValues = {}, onChange, names, categoryColor, categoryAccent }: Props) {
   const s = usePartnerSession();
   const actualPerson = 'p0';
   const own = healthResults(values, actualPerson);
@@ -20,6 +21,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
       <h2 className="retro-heading">Auswertung</h2>
       <HealthCheckChart own={own} other={other} names={evaluationNames([ownName??'Ich',otherName??'Partner'], Boolean(s.partner))}/>
+      <MoodSummary values={moodValues} />
       <HealthCheckHistory complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
         { id: s.memberId ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
         { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
