@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
-import { canResendInvitation } from './partner-invitation-data';
+import { canResendInvitation, invitationName } from './partner-invitation-data';
 import { revealSelection } from './partner-answer-visibility';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
@@ -22,8 +22,8 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const connect = () => {
     if (busy) return;
     setNotice(''); s.setError('');
-    if (!name.trim()) { s.setError('Bitte gib deinen Namen ein.'); return; }
-    void act(() => s.connect(name, code || undefined));
+    if (code && !name.trim()) { s.setError('Bitte gib deinen Namen ein.'); return; }
+    void act(() => s.connect(code ? name : invitationName(initialName), code || undefined));
   };
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
   const shareLink = async () => {
@@ -39,7 +39,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">Teile euren privaten Link und macht die Retro gemeinsam – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
-        <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
+        {code && <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />}
         {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={connect} />
         : <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label={busy ? 'Erstellt …' : 'Einladungslink erstellen'} onClick={connect} />}
       </div> : <div className="space-y-4">
