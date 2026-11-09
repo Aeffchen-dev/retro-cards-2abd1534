@@ -1,5 +1,9 @@
 export type InvitationStatus = 'unavailable' | 'loading' | 'pending' | 'accepted';
 
+export function invitationName(existingName: string): string {
+  return existingName.trim().slice(0, 80) || 'Gast';
+}
+
 export function invitationStatus(
   sessionId: string | null,
   userId: string | undefined,
