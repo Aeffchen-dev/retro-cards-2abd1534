@@ -1933,6 +1933,8 @@ const RetroCards: React.FC = () => {
       case riskSlideIds.find(id => id === cardIndex):
         return (
           <HealthCheckRatings
+            categoryColor={pillColorOf(cardIndex)}
+            categoryAccent={BRAND.deepGreen}
             pageIndex={riskSlideIds.indexOf(cardIndex)}
             names={persons.map(p => p.name)}
             values={editModeNotes[SLIDE_RISIKO] || {}}

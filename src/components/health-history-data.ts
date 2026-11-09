@@ -35,6 +35,17 @@ export function historyForPair(entries: HealthHistoryEntry[], userIds: string[])
     userIds.every(id => entry.results.people.some(person => person.id === id))));
 }
 
+export function pastHealthHistory(entries: HealthHistoryEntry[], now = new Date()) {
+  const day = (date: Date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  const today = day(now);
+  return chronologicalHistory(entries.filter(entry => day(new Date(entry.recorded_at)) < today));
+}
+
+export function healthTrend(current: (number | null)[], previous: (number | null)[], topic: string) {
+  const currentScore = historyScore(current, topic), previousScore = historyScore(previous, topic);
+  return currentScore === null || previousScore === null ? null : Math.round((currentScore - previousScore) * 100) / 100;
+}
+
 export function readLocalHealthHistory(): HealthHistoryEntry[] {
   try {
     const entries: unknown = JSON.parse(localStorage.getItem(HEALTH_HISTORY_KEY) ?? '[]');
