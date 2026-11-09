@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { HEALTH_CATEGORIES, healthScore, healthResults, HEALTH_SATISFACTION_CAPTIONS, healthScaleValue, healthScaleScore } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
+import HealthCheckHistory from './HealthCheckHistory';
 
 type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; onEvaluate: () => void; names: string[] };
 export default function HealthCheckRatings({ pageIndex, values, onChange, onEvaluate, names }: Props) {
@@ -24,6 +25,10 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
     const completeOther = other.every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
       <h2 className="retro-heading">Euer Health Check</h2>
+      <HealthCheckHistory complete={completeOwn} results={{ people: [
+        { id: s.user?.id ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
+        { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
+      ] }} />
       <div className="health-chart"><ResponsiveContainer width="100%" height="100%"><RadarChart data={data} outerRadius="65%">
         <PolarGrid stroke="var(--retro-info-rule)" /><PolarAngleAxis dataKey="axis" tick={{ fill: 'var(--color-text-primary)', fontSize: 12 }} /><PolarRadiusAxis domain={[0,5]} tickCount={6} tick={false} axisLine={false} />
         {completeOwn && <Radar isAnimationActive={false} name={ownName} dataKey="own" stroke="var(--health-partner-one)" fill="var(--health-partner-one)" fillOpacity={0.12} strokeWidth={2} dot={{ r: 3 }} />}
