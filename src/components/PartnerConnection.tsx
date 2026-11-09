@@ -30,6 +30,14 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     void act(() => s.connect(invitationName(initialName), code || undefined));
   };
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
+  const shareLink = async () => {
+    if (!link) return;
+    setNotice(''); s.setError('');
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Unsere gemeinsame Retro', text: 'Mach mit bei unserer Retro.', url: link }); }
+      catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; }
+    } else { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }
+  };
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label="Partner einladen" className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
@@ -42,7 +50,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
         <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? s.online ? `${s.partner.display_name} ist verbunden` : 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
         <div className="flex items-center justify-between gap-2">
-          {link && <Button variant="ghost" size="sm" disabled={busy} onClick={() => { void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }}><Copy size={16}/> Link kopieren</Button>}
+          {link && <Button variant="ghost" size="sm" disabled={busy} onClick={() => { void act(shareLink); }}><Share2 size={16}/> Link teilen</Button>}
           {s.partner && <Button variant="ghost" size="sm" className="text-muted-foreground" disabled={busy} onClick={() => { setNotice(''); setConfirmDisconnect(true); }}><Unplug size={16} /> Verbindung trennen</Button>}
         </div>
       </div>}
