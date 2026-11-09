@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      retro_health_history: {
+        Row: {
+          id: string
+          owner_id: string
+          recorded_at: string
+          results: Json
+          session_id: string | null
+        }
+        Insert: {
+          id?: string
+          owner_id: string
+          recorded_at?: string
+          results: Json
+          session_id?: string | null
+        }
+        Update: {
+          id?: string
+          owner_id?: string
+          recorded_at?: string
+          results?: Json
+          session_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retro_health_history_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "retro_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       retro_members: {
         Row: {
           answers: Json
