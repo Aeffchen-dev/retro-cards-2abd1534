@@ -1,4 +1,14 @@
 .health-ratings { display: flex; flex-direction: column; width: 100%; height: 100%; min-height: 0; color: var(--color-text-primary); gap: 12px; }
+#root .health-ratings, #root .partner-connect-trigger { color: var(--color-text-primary); }
+#root .health-rating-hint, #root .health-rater, #root .health-rating-heading output, #root .health-ticks, #root .health-progress { color: var(--retro-info-text); }
+#root .health-rating-item > p { color: var(--color-text-primary); }
+#root .health-rating-heading h2 { font-size: 28px; line-height: 1.2; letter-spacing: 0; }
+#root .health-ratings button { color: var(--color-text-primary); background: var(--risiko-face-fill); border-color: var(--retro-info-rule); }
+#root .health-person-switch button[aria-pressed="true"] { background: var(--retro-textarea-bg); border-color: var(--color-text-primary); }
+#root .health-one { color: var(--health-partner-one); }
+#root .health-two { color: var(--health-partner-two); }
+#root .health-rating-item .health-other-score { color: var(--health-partner-two); }
+.partner-dialog { color: var(--color-text-primary); }
 .health-person-switch { display: flex; gap: 8px; flex-wrap: wrap; }
 .health-person-switch button { max-width: 48%; overflow: hidden; text-overflow: ellipsis; }
 .health-rater, .health-rating-hint { font-size: 12px; color: var(--retro-info-text); }
@@ -26,14 +36,15 @@
 .health-table-head { font-weight: 600; }
 .partner-connect-trigger { max-width: 100%; white-space: normal; height: auto; min-height: 36px; text-align: left; font-size: 12px; }
 .partner-dialog { max-height: calc(100dvh - 40px); overflow-y: auto; }
-.partner-live-trigger { position: fixed; bottom: 12px; left: 24px; z-index: 45; }
+.partner-live-trigger { position: fixed; bottom: 4px; left: 24px; z-index: 45; }
+.partner-live-trigger .partner-connect-trigger { min-height: 24px; padding: 2px 8px; }
 .partner-live-notes { border-top: 1px solid var(--retro-info-rule); padding-top: 16px; }
 .partner-live-notes h3 { font-size: 16px; margin-bottom: 12px; }
 .partner-live-notes dl > div { margin-top: 12px; }
 .partner-live-notes dt { font-size: 12px; color: var(--retro-info-text); }
 .partner-live-notes dd { font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 480px) {
- .health-rating-heading h2 { font-size: 23px; }
+ #root .health-rating-heading h2 { font-size: 23px; }
  .health-rating-heading output { font-size: 16px; }
  .health-rating-item > p { font-size: 14px; }
  .health-rating-items { gap: 16px; }
@@ -41,8 +52,9 @@
  .health-results > h2 { font-size: 24px; }
  .health-results { gap: 8px; }
  .health-result-table > div { padding: 3px 0; }
- .intro-block:has(.partner-connect-trigger) { gap: 12px; }
- .intro-block:has(.partner-connect-trigger) .intro-copy { gap: 8px; }
+ #root .intro-block:has(.partner-connect-trigger) { gap: 10px; }
+ #root .intro-block:has(.partner-connect-trigger) .intro-copy { gap: 6px; font-size: 12px; line-height: 17px; }
+ #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 18px; }
 }
-@media (max-height: 650px) { .health-rating-heading h2 { font-size: 20px; } .health-rating-items { gap: 12px; } .health-rating-control { margin-top: 16px; } .health-chart { min-height: 160px; } }
+@media (max-height: 650px) { #root .health-rating-heading h2 { font-size: 20px; } .health-rating-items { gap: 12px; } .health-rating-control { margin-top: 16px; } .health-chart { min-height: 160px; } #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 16px; } }
 @media print { .partner-connect-trigger, .partner-live-trigger, .health-evaluate, .health-person-switch { display: none !important; } .health-chart { height: 300px; flex: none; } .health-ratings { min-height: 500px; } }

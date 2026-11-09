@@ -26,8 +26,8 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
       <h2 className="retro-heading">Euer Health Check</h2>
       <div className="health-chart"><ResponsiveContainer width="100%" height="100%"><RadarChart data={data} outerRadius="65%">
         <PolarGrid stroke="var(--retro-info-rule)" /><PolarAngleAxis dataKey="axis" tick={{ fill: 'var(--color-text-primary)', fontSize: 12 }} /><PolarRadiusAxis domain={[0,5]} tickCount={6} tick={false} axisLine={false} />
-        {completeOwn && <Radar name={ownName} dataKey="own" stroke="var(--health-partner-one)" fill="var(--health-partner-one)" fillOpacity={0.12} strokeWidth={2} dot={{ r: 3 }} />}
-        {completeOther && <Radar name={otherName} dataKey="other" stroke="var(--health-partner-two)" fill="var(--health-partner-two)" fillOpacity={0.08} strokeWidth={2} dot={{ r: 3 }} />}
+        {completeOwn && <Radar isAnimationActive={false} name={ownName} dataKey="own" stroke="var(--health-partner-one)" fill="var(--health-partner-one)" fillOpacity={0.12} strokeWidth={2} dot={{ r: 3 }} />}
+        {completeOther && <Radar isAnimationActive={false} name={otherName} dataKey="other" stroke="var(--health-partner-two)" fill="var(--health-partner-two)" fillOpacity={0.08} strokeWidth={2} dot={{ r: 3 }} />}
       </RadarChart></ResponsiveContainer></div>
       <div className="health-legend"><span className="health-one">{ownName}</span><span className="health-two">{otherName}{!completeOther ? ' · noch nicht vollständig' : ''}</span></div>
       {!completeOwn && <p className="text-sm text-muted-foreground">Deine Bewertung ist noch nicht vollständig.</p>}
@@ -35,14 +35,14 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
     </section>;
   }
   return <section className="health-ratings" aria-label="Health Check Bewertungen">
-    {!s.sessionId && <div className="health-person-switch" aria-label="Bewertung von">{names.slice(0,2).map((name,i) => <Button key={i} size="sm" variant={person === `p${i}` ? 'default' : 'outline'} onClick={() => setPerson(`p${i}`)}>{name}</Button>)}</div>}
+    {!s.sessionId && <div className="health-person-switch" aria-label="Bewertung von">{names.slice(0,2).map((name,i) => <Button key={i} size="sm" aria-pressed={person === `p${i}`} variant="outline" onClick={() => setPerson(`p${i}`)}>{name}</Button>)}</div>}
     {s.sessionId && <p className="health-rater">{ownName}{s.partner ? ` · live mit ${otherName}` : ' · wartet auf Partner'}</p>}
     <p className="health-rating-hint">1 = Gar nicht zufrieden · 5 = Sehr zufrieden</p>
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex*2,pageIndex*2+2).map(c => {
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = s.sessionId ? healthScore(s.partnerAnswers.notes?.['105']?.[`hc_p0_${c.id}`]) : healthScore(values[`hc_${actualPerson === 'p0' ? 'p1' : 'p0'}_${c.id}`]);
       return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="retro-heading">{c.title}</h2><output>{score ?? '–'}/5</output></div><p>{c.text}</p>
-        <div className="health-rating-control swiper-no-swiping"><Slider min={1} max={5} step={1} value={[score ?? 3]} aria-label={c.title} onValueChange={([value]) => onChange(`hc_${actualPerson}_${c.id}`,String(value))} /><div className="health-ticks" aria-hidden="true">{[1,2,3,4,5].map(n => <span key={n}>{n}</span>)}</div></div>
+        <div className="health-rating-control swiper-no-swiping" onKeyDown={e => e.stopPropagation()}><Slider min={1} max={5} step={1} value={[score ?? 3]} aria-label={c.title} onValueChange={([value]) => onChange(`hc_${actualPerson}_${c.id}`,String(value))} /><div className="health-ticks" aria-hidden="true">{[1,2,3,4,5].map(n => <span key={n}>{n}</span>)}</div></div>
         {otherScore !== null && <p className="health-other-score">{s.sessionId ? otherName : names[actualPerson === 'p0' ? 1 : 0]}: {otherScore}/5</p>}
       </div>;
     })}</div>

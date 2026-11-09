@@ -8,6 +8,13 @@
       "when": 1794195996058,
       "tag": "0000_private_partner_sessions",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794196293962,
+      "tag": "0001_restrict_partner_member_updates",
+      "breakpoints": true
     }
   ]
 }
