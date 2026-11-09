@@ -18,9 +18,16 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const [code, setCode] = useState(() => invitationFromUrl());
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
-  const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : `${location.origin}${location.pathname}`;
+  const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : '';
+  const connect = () => {
+    if (busy) return;
+    setNotice(''); s.setError('');
+    if (!name.trim()) { s.setError('Bitte gib deinen Namen ein.'); return; }
+    void act(() => s.connect(name, code || undefined));
+  };
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
   const shareLink = async () => {
+    if (!link) return;
     setNotice(''); s.setError('');
     if (navigator.share) {
       try { await navigator.share({title:'Unsere gemeinsame Retro',text:'Mach mit bei unserer Retro.',url:link}); }
@@ -28,19 +35,18 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Einladung ausstehend' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Einladung ausstehend' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setNotice(''); s.setError(''); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Partner einladen?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teile euren Einladungslink, um die Retro gemeinsam zu machen. Sobald ihr verbunden seid, seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.' : 'Teile den Link und lade deine Partner zur Retro ein. Mit einer bestehenden Verbindung seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.'}</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">Teile euren privaten Link und macht die Retro gemeinsam – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
         <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
-        {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={() => { if (!busy && name.trim()) void act(() => s.connect(name, code)); }} />
-        : <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label={busy ? 'Erstellt …' : 'Einladungslink erstellen'} onClick={() => { if (!busy && name.trim()) void act(() => s.connect(name)); }} />}
-        <p className="text-sm text-muted-foreground">Ohne Registrierung. Wer euren privaten Link besitzt, kann beitreten. Teilt ihn nur mit euren Partnern.</p>
+        {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={connect} />
+        : <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label={busy ? 'Erstellt …' : 'Einladungslink erstellen'} onClick={connect} />}
       </div> : <div className="space-y-4">
+        {link && <><Input readOnly aria-label="Einladungslink" value={link} onFocus={event => event.currentTarget.select()} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={canResendInvitation(s.invitation, s.invite) ? <Send size={16}/> : <Share2 size={16}/>} iconColor="var(--retro-black)" label={canResendInvitation(s.invitation, s.invite) ? 'Erneut senden' : 'Link teilen'} onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div><p className="text-sm text-muted-foreground">Wer diesen Link besitzt, kann beitreten. Teile ihn nur mit deinen Partnern.</p></>}
         <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? `Einladung angenommen · ${s.partner.display_name} ist verbunden` : s.invitation === 'pending' ? 'Einladung ausstehend · Noch niemand beigetreten' : 'Einladungsstatus wird geprüft …'}</p>
         <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
-        {s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={canResendInvitation(s.invitation, s.invite) ? <Send size={16}/> : <Share2 size={16}/>} iconColor="var(--retro-black)" label={canResendInvitation(s.invitation, s.invite) ? 'Erneut senden' : 'Link teilen'} onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div></>}
-        <Button variant="outline" disabled={busy} onClick={() => act(s.leave)}><Unplug size={16} /> Verbindung trennen</Button>
+        <Button variant="outline" disabled={busy} onClick={() => { setNotice(''); void act(async () => { await s.leave(); setCode(''); }); }}><Unplug size={16} /> Verbindung trennen</Button>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
       </div>}
       {notice && <p role="status" className="text-sm">{notice}</p>}{s.error && <p role="alert" className="text-sm text-destructive">{s.error}</p>}
