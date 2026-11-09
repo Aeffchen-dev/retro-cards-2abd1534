@@ -308,13 +308,13 @@
 
 /* Retro Cards specific styles */
 /* ---- Unified type scale ----
-   Display  : Figtree 400 / 38.4px           (.retro-title, .retro-heading)
+   Display  : Arial 400 / 38.4px             (.retro-title, .retro-heading)
    Body     : Figtree 500 / 16px             (.retro-label, .retro-body, .retro-body-copy, button)
    Small    : Figtree 500 / 12px             (.retro-small)                                     */
 
 .retro-title,
 .retro-heading {
-  font-family: "Figtree", Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-feature-settings: "ss02";
@@ -1865,7 +1865,7 @@ textarea.bg-retro-post-it:focus,
 #root .retro-title,
 #root .retro-title *,
 #root .risiko-statement {
-  font-family: "Figtree", Arial, sans-serif;
+  font-family: Arial, sans-serif;
   font-weight: 400;
   font-feature-settings: normal;
   letter-spacing: 0;
