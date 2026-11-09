@@ -25,10 +25,10 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Zu zweit verbinden'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader><SheetTitle>Gemeinsame Retro</SheetTitle><SheetDescription>Teile euren Einladungslink mit deinem Partner. Sobald ihr beide angemeldet und verbunden seid, seht ihr eure Texte und Auswahlen auf allen Karten live. Eure eigenen Antworten bleiben getrennt; eure Health-Check-Ergebnisse könnt ihr gemeinsam vergleichen.</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Zu zweit verbinden?</SheetTitle><SheetDescription className="partner-sheet-description">Teile euren Einladungslink mit deinem Partner. Sobald ihr beide angemeldet und verbunden seid, seht ihr eure Texte und Auswahlen auf allen Karten live. Eure eigenen Antworten bleiben getrennt; eure Health-Check-Ergebnisse könnt ihr gemeinsam vergleichen.</SheetDescription></SheetHeader>
       {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
       {!s.user ? <div className="space-y-3">
-        <Button variant="outline" disabled={busy} onClick={() => act(shareLink)}><Share2 size={16}/> Link teilen</Button>
+        <ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />
         <p className="text-sm text-muted-foreground">Dieser Link öffnet die Retro. Ohne Anmeldung werden eure Antworten noch nicht live miteinander geteilt.</p>
       </div> : !s.sessionId ? <div className="space-y-3">
         <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
@@ -39,7 +39,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
       </div> : <div className="space-y-4">
         <p>{s.partner ? `Mit ${s.partner.display_name} verbunden` : 'Warte auf deinen Partner'}</p>
         <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
-        {s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><div className="flex flex-wrap gap-2"><Button variant="outline" disabled={busy} onClick={() => act(async () => { if (navigator.share) { try { await navigator.share({title:'Unsere gemeinsame Retro',text:'Mach mit bei unserer Retro.',url:link}); } catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; } } else { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); } })}><Share2 size={16} /> Link teilen</Button><Button variant="outline" disabled={busy} onClick={() => act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); })}><Copy size={16} /> Link kopieren</Button></div></>}
+        {s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div></>}
         <Button variant="outline" disabled={busy} onClick={() => act(s.leave)}><Unplug size={16} /> Verbindung trennen</Button>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
       </div>}
