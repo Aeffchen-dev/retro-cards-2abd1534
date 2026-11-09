@@ -14,13 +14,70 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      retro_members: {
+        Row: {
+          answers: Json
+          display_name: string
+          session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          display_name?: string
+          session_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answers?: Json
+          display_name?: string
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retro_members_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "retro_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retro_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          owner_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          owner_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          owner_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_retro_session: { Args: { member_name: string }; Returns: string }
+      is_retro_member: { Args: { sid: string }; Returns: boolean }
+      join_retro_session: {
+        Args: { code: string; member_name: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
