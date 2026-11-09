@@ -263,7 +263,7 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
 
 const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue, comparison }: {
   value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
-  comparison?: { value: string; label: string; color: string };
+  comparison?: { value: string; label: string; color: string; name: string };
 }) => {
   const [dragging, setDragging] = useState(false);
   // The face appears on the first drag and stays there; a cleared answer drops back to the dot.
@@ -315,6 +315,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue, comparis
     {comparison && <span className="risiko-comparison-marker" role="img" aria-label={comparison.label}
       style={{ left: markerLeft(scaleValue(comparison.value)), '--risiko-comparison-color': comparison.color } as React.CSSProperties}>
       <MorphFace value={scaleValue(comparison.value)} color="var(--risiko-comparison-color)" />
+      <span className="risiko-comparison-name">{comparison.name}</span>
     </span>}
   </div>
   );
@@ -339,7 +340,7 @@ export interface StatementScaleProps {
   /** A scale that cannot be moved — the printed copy. */
   readOnly?: boolean;
   /** Independent read-only answer; never participates in slider input. */
-  comparison?: { value: string; label: string; color: string };
+  comparison?: { value: string; label: string; color: string; name: string };
 }
 
 /**
