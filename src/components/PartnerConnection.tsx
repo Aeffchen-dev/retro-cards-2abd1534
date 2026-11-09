@@ -4,9 +4,6 @@ import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { supabase } from '@/integrations/supabase/client';
-import { lovable } from '@/integrations/lovable';
-import '@lovable.dev/cloud-auth-js/styles.css';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
 
@@ -15,28 +12,24 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(initialName);
   const [code, setCode] = useState(() => new URLSearchParams(location.search).get('join') ?? '');
-  const [email, setEmail] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
-  const link = `${location.origin}${location.pathname}?join=${s.invite}`;
+  const link = s.invite ? `${location.origin}${location.pathname}?join=${s.invite}` : `${location.origin}${location.pathname}`;
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
-  const sendLink = async () => {
-    const url = new URL(location.href); if (code) url.searchParams.set('join', code);
-    const { error } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: url.toString() } });
-    if (error) s.setError(error.message); else setNotice('Der Anmeldelink ist unterwegs. Schau auch im Spam-Ordner nach.');
+  const shareLink = async () => {
+    if (navigator.share) {
+      try { await navigator.share({title:'Unsere gemeinsame Retro',text:'Mach mit bei unserer Retro.',url:link}); }
+      catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; }
+    } else { await navigator.clipboard.writeText(link); setNotice('Link kopiert'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Zu zweit verbinden'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader><SheetTitle>Gemeinsame Retro</SheetTitle><SheetDescription>Teile euren Einladungslink mit deinem Partner. Sobald ihr beide angemeldet und verbunden seid, seht ihr eure Texte und Auswahlen auf allen Karten live. Eure eigenen Antworten bleiben getrennt; eure Health-Check-Ergebnisse könnt ihr gemeinsam vergleichen.</SheetDescription></SheetHeader>
-      {!s.sessionId && <p className="text-sm text-muted-foreground">Melde dich an und starte eine Retro, um einen privaten Einladungslink zu erhalten. Dein Partner öffnet den Link, meldet sich an und tritt bei.</p>}
+      {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
       {!s.user ? <div className="space-y-3">
-        <Button variant="outline" className="w-full" disabled={busy} onClick={() => act(async () => { const r = await lovable.auth.signInWithOAuth('google', { redirect_uri: location.href }); if (r.error) s.setError(r.error.message); })}>Mit Google fortfahren</Button>
-        <Button className="lovable-auth-button w-full" disabled={busy} onClick={() => act(async () => { const r = await lovable.auth.signInWithOAuth('lovable', { redirect_uri: location.href }); if (r.error) s.setError(r.error.message); })}>Continue with Lovable</Button>
-        <form className="space-y-3" onSubmit={e => { e.preventDefault(); void act(sendLink); }}>
-          <Input type="email" required maxLength={255} aria-label="E-Mail" placeholder="Deine E-Mail" value={email} onChange={e => setEmail(e.target.value)} />
-          <Button type="submit" variant="outline" className="w-full" disabled={busy}>Anmeldelink senden</Button>
-        </form>
+        <Button variant="outline" disabled={busy} onClick={() => act(shareLink)}><Share2 size={16}/> Link teilen</Button>
+        <p className="text-sm text-muted-foreground">Dieser Link öffnet die Retro. Ohne Anmeldung werden eure Antworten noch nicht live miteinander geteilt.</p>
       </div> : !s.sessionId ? <div className="space-y-3">
         <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
         <Button className="w-full" disabled={busy || !name.trim()} onClick={() => act(() => s.connect(name))}>Retro starten</Button>
