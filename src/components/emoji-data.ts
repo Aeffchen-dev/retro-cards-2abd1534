@@ -141,6 +141,7 @@ const norm = (s: string) =>
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ß/g, 'ss')
     .trim();
 
 /** Groups whose emojis match the query; empty query returns every group. */
