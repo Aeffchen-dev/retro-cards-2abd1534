@@ -80,7 +80,7 @@
 @media (max-width: 480px) {
  .health-ratings:has(.health-smiley-control) .health-rating-items { gap: 8px; }
  .health-rating-heading output { font-size: 16px; }
- .health-rating-item > p { font-size: 14px; }
+ .health-rating-item > p:not(.retro-heading) { font-size: 14px; }
  .health-rating-items { gap: 16px; }
  .health-chart { min-height: 190px; }
  .health-results > h2 { font-size: 24px; }
