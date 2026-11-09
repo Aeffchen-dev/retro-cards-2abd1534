@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Users, Copy, Unplug, Share2 } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
@@ -31,14 +30,6 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     void act(() => s.connect(invitationName(initialName), code || undefined));
   };
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
-  const shareLink = async () => {
-    if (!link) return;
-    setNotice(''); s.setError('');
-    if (navigator.share) {
-      try { await navigator.share({title:'Unsere gemeinsame Retro',text:'Mach mit bei unserer Retro.',url:link}); }
-      catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; }
-    } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
-  };
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label="Partner einladen" className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
