@@ -1217,7 +1217,7 @@ button {
   margin-inline: calc(-1 * var(--retro-card-pad));
   margin-top: var(--retro-card-pad);
   padding-inline: var(--retro-card-pad);
-  border-top: 1px solid var(--retro-info-rule);
+  border-top: 0;
   /* the air between the hairline and the sentence is the note's own breath —
      the same 8px the button above keeps over the hairline and the ℹ mark keeps
      over its sentence (user: "info text top padding only 8px", "gap top border
@@ -1225,7 +1225,9 @@ button {
   padding-top: var(--retro-info-gap);
 }
 
-.retro-info-row > span:last-child { flex: 1; min-width: 0; white-space: normal; height: auto; overflow: visible; }
+.retro-info-row { gap: 6px; }
+.retro-info-row > span:first-child { width: 12px; }
+.retro-info-row > span:last-child { flex: 1; min-width: 0; white-space: normal; height: auto; overflow: visible; padding-inline: 0; }
 .retro-card-container:has(.retro-info-row) { padding-bottom: 8px; }
 
 /* The "i" inside the ℹ mark reads darker than its ring so the letter holds up
@@ -1237,8 +1239,8 @@ button {
    smileys' 1.65px (user: "stroke width max like grey smiley"). The ring keeps
    the footnote's lighter pen. */
 .retro-info-mark path {
-  stroke: var(--retro-info-ink);
-  stroke-width: 3.2;
+  stroke: currentColor;
+  stroke-width: 1.5;
 }
 
 
