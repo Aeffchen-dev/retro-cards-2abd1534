@@ -42,7 +42,13 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = s.sessionId ? healthScore(s.partnerAnswers.notes?.['105']?.[`hc_p0_${c.id}`]) : healthScore(values[`hc_${actualPerson === 'p0' ? 'p1' : 'p0'}_${c.id}`]);
       return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="retro-heading">{c.title}</h2><output>{score ?? '–'}/5</output></div><p>{c.text}</p>
-        <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDown={e => e.stopPropagation()}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={HEALTH_SATISFACTION_CAPTIONS} fieldMin={80} onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
+        <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDownCapture={e => {
+          e.stopPropagation();
+          const delta = ['ArrowRight', 'ArrowUp'].includes(e.key) ? 1 : ['ArrowLeft', 'ArrowDown'].includes(e.key) ? -1 : 0;
+          if (!delta && e.key !== 'Home' && e.key !== 'End') return;
+          e.preventDefault();
+          onChange(`hc_${actualPerson}_${c.id}`, String(e.key === 'Home' ? 1 : e.key === 'End' ? 5 : Math.min(5, Math.max(1, (score ?? 3) + delta))));
+        }}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={HEALTH_SATISFACTION_CAPTIONS} fieldMin={80} onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
         {otherScore !== null && <p className="health-other-score">{s.sessionId ? otherName : names[actualPerson === 'p0' ? 1 : 0]}: {otherScore}/5</p>}
       </div>;
     })}</div>
