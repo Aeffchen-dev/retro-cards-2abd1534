@@ -17,7 +17,9 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     const fit = () => {
       let size = 38.4;
       heading.style.setProperty('--health-question-size', `${size}px`);
-      while (size > 12 && heading.scrollHeight > parseFloat(getComputedStyle(heading).lineHeight) * 2 + 1) {
+      const range = document.createRange();
+      range.selectNodeContents(heading);
+      while (size > 12 && range.getBoundingClientRect().height > parseFloat(getComputedStyle(heading).lineHeight) * 2 + 1) {
         size = Math.max(12, size - 0.5);
         heading.style.setProperty('--health-question-size', `${size}px`);
       }
