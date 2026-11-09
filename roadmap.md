@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [ ] Simplify sharing, remove join name entry, close after successful join, consolidate status and confirm disconnection.
 - [x] Add private invitation links and capability-protected guest connections without registration. Two real guests verified on mobile/desktop: invitation accepted, independent 1/5 and 5/5 ratings, live text readback, evaluation and reload. Integration test verifies room isolation, invalid/invite credentials rejected for reads, direct table reads expose no rows and leave revokes access; 17 focused tests pass. Guest history remains on-device.
 - [x] Show independent category-coloured partner markers on Health Check scales, preserving own-answer-first and local slider values; 13 relevant tests pass and mobile/desktop checks with saved local comparison answers pass. Real connected-account verification remains blocked below.
 - [x] Show partner edits without reload: immediate member updates and foreground catch-up with effect cleanup. Actual hook tested with simulated service: direct live updates and missed-event catch-up visible without reload; 5 relevant tests pass. Real-account verification remains blocked below.
