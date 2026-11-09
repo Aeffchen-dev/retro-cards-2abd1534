@@ -24,9 +24,9 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Gemeinsam starten'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Gemeinsam starten?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teilt den Link und seht eure Antworten live.' : 'Teile den Link. Live-Antworten brauchen eine bestehende Verbindung.'}</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Partner einladen?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teilt den Link und seht eure Antworten live.' : 'Teile den Link. Live-Antworten brauchen eine bestehende Verbindung.'}</SheetDescription></SheetHeader>
       {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
       {!s.user ? <div className="space-y-3">
         <ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />
