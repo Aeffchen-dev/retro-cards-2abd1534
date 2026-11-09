@@ -53,7 +53,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
       </div> : <div className="space-y-4">
         {s.others.length > 0 && s.online
           ? <ul className="space-y-2" aria-label="Verbundene Partner">{s.others.map(m => <li key={m.user_id}>
-              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${m.display_name} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner && s.others.length > 1) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
+              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${m.display_name} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
             </li>)}</ul>
           : <p role="status" aria-live="polite">{s.partner ? 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>}
         {link && <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />}
