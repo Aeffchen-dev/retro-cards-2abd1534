@@ -33,6 +33,9 @@
 .health-rating-footer { margin-top: auto; flex-shrink: 0; }
 .health-rating-control.health-smiley-control { margin-top: 0; }
 .health-smiley-control.risiko-page { --risiko-field-h: 120px; }
+.health-smiley-control .risiko-track.has-comparison { height: 88px; }
+.risiko-comparison-marker { position: absolute; top: calc(50% + 26px); width: 32px; height: 32px; transform: translate(-50%, -50%); pointer-events: none; z-index: 35; border-radius: 50%; background: var(--risiko-face-fill); }
+.risiko-comparison-marker > svg { width: 32px; height: 32px; }
 .health-smiley-control .risiko-scale-captions { display: none; }
 .health-chart svg { width: 100%; height: 100%; }
 .health-chart { display: flex; align-items: center; }

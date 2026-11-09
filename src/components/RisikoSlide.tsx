@@ -196,7 +196,7 @@ const ARROW_SIZE = 26;
 const ARROW_W = 24 / ARROW_SIZE;
 
 // Morph the features through all five header expressions, keeping the disc fixed.
-const MorphFace = ({ value, features = true }: { value: number; features?: boolean }) => {
+const MorphFace = ({ value, features = true, color = INK }: { value: number; features?: boolean; color?: string }) => {
   const { eye, eyeW, brow, mouth } = scaleFaceGeometry(value);
   // Open stroke, no fill: the mouth is the very same curve the happy faces
   // draw, only flipped — one clean trace, exactly like the header smileys.
@@ -208,7 +208,7 @@ const MorphFace = ({ value, features = true }: { value: number; features?: boole
     <svg width={MARKER_SIZE} height={MARKER_SIZE} fill="none"
       viewBox={`${FACE_VIEW_OFF} ${FACE_VIEW_OFF} ${FACE_VIEW} ${FACE_VIEW}`}
       style={{ overflow: "visible" }}
-      stroke={INK} strokeWidth={MARKER_PEN} strokeLinecap="round" strokeLinejoin="round">
+      stroke={color} strokeWidth={MARKER_PEN} strokeLinecap="round" strokeLinejoin="round">
       {/* The same drawing as the header smileys — the round outline, the fine
           mouth, the round-dot eyes — only in the ink of the rule it rides, not
           in their grey (user: "color back instead of grey"). */}
@@ -261,8 +261,9 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
   );
 };
 
-const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
+const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue, comparison }: {
   value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
+  comparison?: { value: string; label: string; color: string };
 }) => {
   const [dragging, setDragging] = useState(false);
   // The face appears on the first drag and stays there; a cleared answer drops back to the dot.
@@ -271,7 +272,7 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
   const shown = touched || !!hasValue;
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
-  <div className="risiko-track relative w-full shrink-0">
+  <div className={`risiko-track relative w-full shrink-0${comparison ? " has-comparison" : ""}`}>
     {/* The rule spans the full card width; only the circle's travel is inset. Its
         ends are rounded off, so the line finishes soft instead of cut square. It
         draws in the card's own ink (user: "slider range black"), while the
@@ -311,6 +312,10 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue }: {
         </div>
       </>
     )}
+    {comparison && <span className="risiko-comparison-marker" role="img" aria-label={comparison.label}
+      style={{ left: markerLeft(scaleValue(comparison.value)), '--risiko-comparison-color': comparison.color } as React.CSSProperties}>
+      <MorphFace value={scaleValue(comparison.value)} color="var(--risiko-comparison-color)" />
+    </span>}
   </div>
   );
 };
@@ -333,6 +338,8 @@ export interface StatementScaleProps {
   fieldMin?: number;
   /** A scale that cannot be moved — the printed copy. */
   readOnly?: boolean;
+  /** Independent read-only answer; never participates in slider input. */
+  comparison?: { value: string; label: string; color: string };
 }
 
 /**
@@ -342,7 +349,7 @@ export interface StatementScaleProps {
  * the scale leaves `statement` out. The field's own drag handlers live here, so a
  * press anywhere on the line picks the circle up however the scale is used.
  */
-export const StatementScale = ({ value, onChange, ariaLabel, statement, below, captions = SCALE_CAPTIONS, fieldMin, readOnly = false }: StatementScaleProps) => {
+export const StatementScale = ({ value, onChange, ariaLabel, statement, below, captions = SCALE_CAPTIONS, fieldMin, readOnly = false, comparison }: StatementScaleProps) => {
   // A press inside the field — anywhere above the rule — picks the circle up and
   // keeps dragging it, so the whole grey band is the handle and not only the
   // rule's own row. The value is read with the slider's own maths, so both ways of
@@ -410,7 +417,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
                   dividers between neighbouring ones, painted above. */}
               <FaceLayer />
               <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
-                onChange={(v) => onChange(String(v))} />
+                comparison={comparison} onChange={(v) => onChange(String(v))} />
             </div>
             {/* Every column names itself: one label per field, centred on that field,
                 so the circle always sits above the word it points at. The row takes

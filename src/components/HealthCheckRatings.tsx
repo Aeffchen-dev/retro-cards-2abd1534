@@ -37,7 +37,9 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
           if (!delta && e.key !== 'Home' && e.key !== 'End') return;
           e.preventDefault();
           onChange(`hc_${actualPerson}_${c.id}`, String(e.key === 'Home' ? 1 : e.key === 'End' ? 5 : Math.min(5, Math.max(1, (score ?? 3) + delta))));
-        }}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={[]} fieldMin={120} onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
+        }}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={[]} fieldMin={120}
+          comparison={otherScore !== null ? { value: String((otherScore - 1) * 25), label: `${otherName ?? 'Partner'}: ${otherScore}/5`, color: categoryColor } : undefined}
+          onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
         <div className="health-scale-ends"><span>Trifft noch nicht zu</span><span>Trifft immer zu</span></div>
         {otherScore !== null && <p className="health-other-score">{s.sessionId ? otherName : names[actualPerson === 'p0' ? 1 : 0]}: {otherScore}/5</p>}
       </div></div></div>;
