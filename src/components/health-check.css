@@ -2,7 +2,6 @@
 #root .health-ratings, #root .partner-connect-trigger { color: var(--color-text-primary); }
 #root .health-rating-hint, #root .health-rater, #root .health-rating-heading output, #root .health-ticks, #root .health-progress { color: var(--retro-info-text); }
 #root .health-rating-item > p { color: var(--color-text-primary); }
-#root .health-rating-item .retro-heading { font-family: var(--font-question); font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 0; }
 #root .health-ratings button { color: var(--color-text-primary); background: var(--risiko-face-fill); border-color: var(--retro-info-rule); }
 #root .health-person-switch button[aria-pressed="true"] { background: var(--retro-textarea-bg); border-color: var(--color-text-primary); }
 #root .health-one { color: var(--health-partner-one); }
@@ -16,7 +15,8 @@
 .health-rating-heading { display: flex; align-items: baseline; gap: 12px; justify-content: space-between; }
 #root .health-rating-heading .health-category-pill { font-family: var(--font-app); font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; text-transform: none; color: var(--color-text-primary); border: 0; border-radius: 0; padding: 0; width: 100%; overflow-wrap: break-word; }
 .health-rating-heading output { font-size: 20px; color: var(--retro-info-text); white-space: nowrap; }
-.health-rating-item > p { font-size: 16px; line-height: 1.4; margin-top: var(--retro-card-pad); }
+.health-rating-item > p { margin-top: var(--retro-card-pad); }
+.health-rating-item > p:not(.retro-heading) { font-size: 16px; line-height: 1.4; }
 #root .health-rating-item > .retro-heading { margin-top: 8px; }
 .health-rating-control.health-smiley-control { margin-top: var(--retro-card-pad); }
 .health-smiley-control.risiko-page { --risiko-field-h: 120px; }
@@ -80,7 +80,7 @@
 @media (max-width: 480px) {
  .health-ratings:has(.health-smiley-control) .health-rating-items { gap: 8px; }
  .health-rating-heading output { font-size: 16px; }
- .health-rating-item > p { font-size: 14px; }
+ .health-rating-item > p:not(.retro-heading) { font-size: 14px; }
  .health-rating-items { gap: 16px; }
  .health-chart { min-height: 190px; }
  .health-results > h2 { font-size: 24px; }
