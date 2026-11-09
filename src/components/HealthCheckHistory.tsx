@@ -18,7 +18,6 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [notice, setNotice] = useState('');
   const [topic, setTopic] = useState('average');
   useEffect(() => {
     let cancelled = false;
@@ -76,7 +75,6 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   };
   const people = results.people.filter(p => entries.some(e => e.results.people.some(person => person.id === p.id)));
   const pastEntries = pastHealthHistory(entries);
-  void notice; void setNotice;
   const hasPast = pastEntries.length > 0;
   const latest = pastEntries[pastEntries.length - 1];
   const review = yearReview(entries, results.people[0]?.id ?? '');
