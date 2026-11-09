@@ -18,6 +18,11 @@
 .health-rating-heading output { font-size: 20px; color: var(--retro-info-text); white-space: nowrap; }
 .health-rating-item > p { font-size: 16px; line-height: 1.4; margin-top: 10px; }
 .health-rating-control { margin-top: 24px; }
+.health-smiley-control.risiko-page { --risiko-field-h: 80px; }
+.health-smiley-control .risiko-scale-core { margin-block: 0; }
+.health-smiley-control .risiko-scale-stack .risiko-scale-captions { margin-bottom: 6px; }
+.health-smiley-control .risiko-caption-line { white-space: normal; }
+#root .health-smiley-control .risiko-scale-caption { font-size: 12px; letter-spacing: 0; }
 .health-rating-control [data-radix-slider-thumb] { width: 32px; height: 32px; border-color: var(--color-text-primary); background: var(--risiko-face-fill); }
 .health-rating-control [data-radix-slider-track] { background: var(--retro-info-rule); }
 .health-ticks { display: flex; justify-content: space-between; font-size: 12px; color: var(--retro-info-text); margin-top: 10px; padding: 0 4px; }
@@ -44,6 +49,8 @@
 .partner-live-notes dt { font-size: 12px; color: var(--retro-info-text); }
 .partner-live-notes dd { font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 480px) {
+ .health-smiley-control { margin-top: 8px; }
+ .health-ratings:has(.health-smiley-control) .health-rating-items { gap: 8px; }
  #root .health-rating-heading h2 { font-size: 23px; }
  .health-rating-heading output { font-size: 16px; }
  .health-rating-item > p { font-size: 14px; }
