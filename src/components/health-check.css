@@ -12,12 +12,12 @@
 .health-person-switch { display: flex; gap: 8px; flex-wrap: wrap; }
 .health-person-switch button { max-width: 48%; overflow: hidden; text-overflow: ellipsis; }
 .health-rater, .health-rating-hint { font-size: 12px; color: var(--retro-info-text); }
-.health-rating-items { display: flex; flex-direction: column; flex: 1; justify-content: center; gap: 24px; min-height: 0; }
+.health-rating-items { display: flex; flex-direction: column; flex: 1; justify-content: flex-start; gap: 24px; min-height: 0; }
 .health-rating-heading { display: flex; align-items: baseline; gap: 12px; justify-content: space-between; }
-.health-rating-heading h2 { font-size: 28px; line-height: 1.2; overflow-wrap: break-word; }
+#root .health-rating-heading .health-category-pill { font-family: "Figtree", Arial, sans-serif; font-size: 16px; font-weight: 500; line-height: 1.4; color: var(--color-text-primary); border: 1px solid var(--color-text-primary); border-radius: 999px; padding: 4px 12px; width: fit-content; overflow-wrap: break-word; }
 .health-rating-heading output { font-size: 20px; color: var(--retro-info-text); white-space: nowrap; }
-.health-rating-item > p { font-size: 16px; line-height: 1.4; margin-top: 10px; }
-.health-rating-control { margin-top: 24px; }
+.health-rating-item > p { font-size: 16px; line-height: 1.4; margin-top: var(--retro-card-pad); }
+.health-rating-control.health-smiley-control { margin-top: var(--retro-card-pad); }
 .health-smiley-control.risiko-page { --risiko-field-h: 120px; }
 .health-smiley-control .risiko-scale-captions { display: none; }
 .health-chart svg { width: 100%; height: 100%; }
@@ -70,7 +70,6 @@
 .partner-live-notes dt { font-size: 12px; color: var(--retro-info-text); }
 .partner-live-notes dd { font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (max-width: 480px) {
- .health-smiley-control { margin-top: 8px; }
  .health-ratings:has(.health-smiley-control) .health-rating-items { gap: 8px; }
  #root .health-rating-item .retro-heading { font-size: 38.4px; }
  .health-rating-heading output { font-size: 16px; }
@@ -84,5 +83,5 @@
  #root .intro-block:has(.partner-connect-trigger) .intro-copy { gap: 6px; font-size: 12px; line-height: 17px; }
  #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 18px; }
 }
-@media (max-height: 650px) { .health-rating-items { gap: 12px; } .health-rating-control { margin-top: 16px; } .health-chart { min-height: 160px; } #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 16px; } }
+@media (max-height: 650px) { .health-rating-items { gap: 12px; } .health-chart { min-height: 160px; } #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 16px; } }
 @media print { .partner-connect-trigger, .partner-live-trigger, .health-evaluate, .health-person-switch { display: none !important; } .health-chart { height: 300px; flex: none; } .health-ratings { min-height: 500px; } }
