@@ -30,7 +30,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex,pageIndex+1).map(c => {
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = other[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] ?? null;
-      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><div className="health-category-label"><span className="health-category-square" aria-hidden="true"><span /></span><p className="health-category-text">{c.title}</p></div></div><div className="health-question-scale"><h2 className="retro-heading">“{c.text}”</h2><div className="health-scale-centre">
+      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><div className="health-category-label"><p className="health-category-text">{c.title}</p></div></div><div className="health-question-scale"><h2 className="retro-heading">“{c.text}”</h2><div className="health-scale-centre">
         <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDownCapture={e => {
           e.stopPropagation();
           const delta = ['ArrowRight', 'ArrowUp'].includes(e.key) ? 1 : ['ArrowLeft', 'ArrowDown'].includes(e.key) ? -1 : 0;
