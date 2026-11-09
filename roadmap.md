@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Current request
+- [ ] Simplify Health Check cards, restore question typography and show a chart-only result with meaningful missing-answer marks.
+- [ ] Add Setup partner connection and share edits across all slide types.
 - [x] Save dated Health Check snapshots locally or privately for connected partners; cloud schema and access policies confirmed.
 - [x] Show chronological partner trends with per-topic selection; two local retros saved and read after reload on mobile/desktop, both partner lines and +4/-4 changes verified.
 - [ ] Verify cloud history saving in an authenticated browser — blocked: no signed-up auth users; session minting failed.
