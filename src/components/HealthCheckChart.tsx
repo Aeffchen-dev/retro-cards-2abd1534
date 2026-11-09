@@ -1,4 +1,4 @@
-import { HEALTH_CATEGORIES, answeredHealthTopics } from './health-check-data';
+import { HEALTH_CATEGORIES } from './health-check-data';
 
 export function radarPoint(index: number, score: number, radius = 140) {
   const angle = index * Math.PI / 4 - Math.PI / 2;
