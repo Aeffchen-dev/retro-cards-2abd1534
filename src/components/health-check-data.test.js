@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { healthScore, healthResults, HEALTH_CATEGORIES } from './health-check-data';
+import { healthScore, healthResults, HEALTH_CATEGORIES, healthScaleValue, healthScaleScore } from './health-check-data';
 test('ratings are bounded from 1 to 5', () => {
   assert.equal(healthScore('1'),1); assert.equal(healthScore('5'),5);
   for (const n of ['0','6','2.5','',undefined,'NaN']) assert.equal(healthScore(n),null);
@@ -14,4 +14,10 @@ test('both partners retain distinct selections', () => {
   assert.equal(healthResults(values,'p0')[0],1);
   assert.equal(healthResults(values,'p1')[0],5);
   assert.equal(healthResults(values,'p0')[1],null);
+});
+test('smiley endpoints keep the existing satisfaction scores and saved answers', () => {
+  assert.equal(healthScaleScore('0'), '1');
+  assert.equal(healthScaleScore('100'), '5');
+  assert.equal(healthScaleValue(null), undefined);
+  for (const score of [1,2,3,4,5]) assert.equal(healthScaleScore(healthScaleValue(score)), String(score));
 });

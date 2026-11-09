@@ -18,3 +18,14 @@ export function healthScore(value: unknown): number | null {
 export function healthResults(values: Record<string, string>, person: string) {
   return HEALTH_CATEGORIES.map(c => healthScore(values[`hc_${person}_${c.id}`]));
 }
+
+export const HEALTH_SATISFACTION_CAPTIONS = ['Gar nicht zufrieden', 'Wenig zufrieden', 'Teils zufrieden', 'Eher zufrieden', 'Sehr zufrieden'] as const;
+
+export function healthScaleValue(score: number | null): string | undefined {
+  return score === null ? undefined : String((score - 1) * 25);
+}
+
+export function healthScaleScore(value: string): string {
+  const n = Number(value);
+  return String(1 + Math.round(Math.min(100, Math.max(0, Number.isFinite(n) ? n : 50)) / 25));
+}
