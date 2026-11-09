@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { invitationStatus, canResendInvitation } from './partner-invitation-data';
+import { invitationStatus, canResendInvitation, connectionHint } from './partner-invitation-data';
 
 test('invitation is accepted only when another member has joined', () => {
   assert.equal(invitationStatus('retro', 'self', [{user_id:'self'}], true), 'pending');
@@ -15,4 +15,12 @@ test('only a pending invitation with an existing link can be resent', () => {
   assert.equal(canResendInvitation('pending', 'existing-code'), true);
   for (const state of ['accepted', 'loading', 'unavailable']) assert.equal(canResendInvitation(state, 'existing-code'), false);
   assert.equal(canResendInvitation('pending', ''), false);
+});
+test('no status hint before anyone has joined', () => {
+  assert.equal(connectionHint(false, false), null);
+  assert.equal(connectionHint(false, true), null);
+});
+test('a joined partner offline reads as reconnecting, a live one as connected', () => {
+  assert.equal(connectionHint(true, false), 'Verbindung wird wiederhergestellt …');
+  assert.equal(connectionHint(true, true), null);
 });

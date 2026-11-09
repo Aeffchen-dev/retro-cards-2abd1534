@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
-import { invitationName } from './partner-invitation-data';
+import { connectionHint, invitationName } from './partner-invitation-data';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { toast } from 'sonner';
 
@@ -28,6 +28,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     if (disconnecting && !s.sessionId) { setOpen(false); setConfirmDisconnect(false); setDisconnecting(false); }
   }, [code, s.sessionId, disconnecting]);
   const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : '';
+  const hint = connectionHint(Boolean(s.partner), s.online);
   const connect = () => {
     if (busy) return;
     setNotice(''); s.setError('');
@@ -43,7 +44,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.sessionId && <span className={`partner-status-dot ${s.partner && s.online ? 'is-connected' : 'is-pending'}`} role="img" aria-label={s.partner && s.online ? `${s.partner.display_name} ist verbunden` : 'Wartet auf Beitritt'} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Schick diesen Link deinem Partner – er öffnet die Retro und ist sofort mit dir verbunden. Ohne Registrierung, eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
@@ -55,7 +56,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
           ? <ul className="space-y-2" aria-label="Verbundene Partner">{s.others.map(m => <li key={m.user_id}>
               <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${m.display_name} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
             </li>)}</ul>
-          : <p role="status" aria-live="polite">{s.partner ? 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>}
+          : hint ? <p role="status" aria-live="polite">{hint}</p> : null}
         {link && <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />}
       </div>}
       {notice && <p role="status" className="text-sm">{notice}</p>}{s.error && <p role="alert" className="text-sm text-destructive">{s.error}</p>}
