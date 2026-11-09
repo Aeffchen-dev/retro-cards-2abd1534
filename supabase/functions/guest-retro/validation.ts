@@ -6,4 +6,5 @@ export const requestSchema = z.discriminatedUnion('action', [
  z.object({action:z.literal('read'),token:capability}),
  z.object({action:z.literal('update'),token:capability,answers:z.record(z.unknown()).refine(v=>JSON.stringify(v).length<=200000)}),
  z.object({action:z.literal('leave'),token:capability}),
+ z.object({action:z.literal('remove'),token:capability,memberId:z.string().uuid()}),
 ]);
