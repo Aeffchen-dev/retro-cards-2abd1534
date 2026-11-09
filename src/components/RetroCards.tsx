@@ -18,6 +18,9 @@ import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
+import { saveMemoryThumb } from './memory-thumbs';
+import PartnerActivity from './PartnerActivity';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1111,6 +1114,7 @@ const RetroCards: React.FC = () => {
           reader.onload = (event) => {
             if (event.target?.result) {
               setCapturedPhotos(prev => [...prev, event.target!.result as string]);
+              saveMemoryThumb(event.target!.result as string);
               console.log('Photo saved to state');
             }
           };
