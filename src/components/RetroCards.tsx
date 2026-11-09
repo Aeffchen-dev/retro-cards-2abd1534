@@ -17,6 +17,7 @@ import HealthCheckRatings from './HealthCheckRatings';
 import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { disableCameraFlash } from './camera-settings';
+import { HEALTH_HISTORY_KEY } from './health-history-data';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1338,6 +1339,7 @@ const RetroCards: React.FC = () => {
       
       // Also clear questions cache
       localStorage.removeItem('retro-cards-questions-cache-v4');
+      localStorage.removeItem(HEALTH_HISTORY_KEY);
     }
   }, []);
 
