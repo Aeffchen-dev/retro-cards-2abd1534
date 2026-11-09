@@ -1705,7 +1705,6 @@ const RetroCards: React.FC = () => {
                 <p>Und ganz nebenbei bekommt eure Beziehung ein Upgrade: Entlarvt ungesunde Muster, entdeckt, was euch wirklich zusammenschweißt, und macht mehr von dem, was eure Connection besonders macht.</p>
                 <p>Hört einander zu, bleibt neugierig und denkt immer daran: Ihr seid ein Team.</p>
               </div>
-              <PartnerConnection />
             </div>
           </div>
         );
@@ -1906,7 +1905,7 @@ const RetroCards: React.FC = () => {
                 </button>
               </div>
 
-              <PartnerConnection />
+              <PartnerConnection accent={SETUP_ACCENT} initialName={setupData.name1} />
               <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"
