@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] Auswertung: show answered topics only, darker green partner, larger chart and bottom-left Verlauf CTA opening the exact pair's saved timeline below the chart.
+- [x] Auswertung: answered topics only, darker green partner, larger chart and bottom-left Verlauf CTA expanding the saved timeline below the chart. Exact-pair filtering tested; mobile/desktop and two local dated retros verified; 188 tests pass.
 - [x] Remove Intro connection; Setup uses card CTA and bottom sheet with explanation and authenticated share/copy actions. Opening/closing verified on mobile and desktop; authenticated sharing awaits a signed-up account.
 - [x] Simplify Health Check to one topic per card in shared question typography; remove captions, top controls and evaluation CTA. Chart has full axis labels and open missing-answer marks; mobile/desktop checked.
 - [x] Add Setup partner connection; publish Setup and current question alongside all existing text and scale answers in the read-only live partner view.
