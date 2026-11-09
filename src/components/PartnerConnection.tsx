@@ -8,16 +8,17 @@ import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
 import { canResendInvitation } from './partner-invitation-data';
 import { revealSelection } from './partner-answer-visibility';
+import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
 
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
   const s = usePartnerSession();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(() => Boolean(invitationFromUrl()));
   const [name, setName] = useState(initialName);
-  const [code, setCode] = useState(() => new URLSearchParams(location.search).get('join') ?? '');
+  const [code, setCode] = useState(() => invitationFromUrl());
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
-  const link = s.invite ? `${location.origin}${location.pathname}?join=${s.invite}` : `${location.origin}${location.pathname}`;
+  const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : `${location.origin}${location.pathname}`;
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
   const shareLink = async () => {
     setNotice(''); s.setError('');
@@ -30,15 +31,11 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Einladung ausstehend' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Partner einladen?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teile euren Einladungslink, um die Retro gemeinsam zu machen. Sobald ihr verbunden seid, seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.' : 'Teile den Link und lade deine Partner zur Retro ein. Mit einer bestehenden Verbindung seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.'}</SheetDescription></SheetHeader>
-      {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
-      {!s.user ? <div className="space-y-3">
-        <ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />
-      </div> : !s.sessionId ? <div className="space-y-3">
+      {!s.sessionId ? <div className="space-y-3">
         <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
-        <Button className="w-full" disabled={busy || !name.trim()} onClick={() => act(() => s.connect(name))}>Retro starten</Button>
-        <Input aria-label="Einladungscode" placeholder="Einladungscode" value={code} onChange={e => setCode(e.target.value.trim().split('join=').pop() ?? '')} />
-        <Button variant="outline" className="w-full" disabled={busy || !name.trim() || !code} onClick={() => act(() => s.connect(name, code))}>Retro beitreten</Button>
-        <p className="text-sm text-muted-foreground">In dieser Retro teilt ihr eure Texte und Auswahlen miteinander.</p>
+        {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={() => { if (!busy && name.trim()) void act(() => s.connect(name, code)); }} />
+        : <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label={busy ? 'Erstellt …' : 'Einladungslink erstellen'} onClick={() => { if (!busy && name.trim()) void act(() => s.connect(name)); }} />}
+        <p className="text-sm text-muted-foreground">Ohne Registrierung. Wer euren privaten Link besitzt, kann beitreten. Teilt ihn nur mit euren Partnern.</p>
       </div> : <div className="space-y-4">
         <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? `Einladung angenommen · ${s.partner.display_name} ist verbunden` : s.invitation === 'pending' ? 'Einladung ausstehend · Noch niemand beigetreten' : 'Einladungsstatus wird geprüft …'}</p>
         <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
@@ -52,7 +49,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
 }
 function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSession>['partnerAnswers'] }) {
   const session = usePartnerSession();
-  const ownAnswers = session.members.find(member => member.user_id === session.user?.id)?.answers as ReturnType<typeof usePartnerSession>['partnerAnswers'] | undefined;
+  const ownAnswers = session.members.find(member => member.user_id === session.memberId)?.answers as ReturnType<typeof usePartnerSession>['partnerAnswers'] | undefined;
   const rows: [string, string][] = [];
   const labels: Record<string,string> = { postIts: 'To talk about', takeaways: 'Takeaways', reflection: 'Feedback', nice: 'Perspektivwechsel', thanks: 'Danke für', unspoken: 'Letzte Chance' };
   for (const group of ['postIts','takeaways','reflection'] as const) for (const [key,value] of Object.entries(answers[group] ?? {})) if (value) rows.push([labels[key] ?? labels[group], value]);

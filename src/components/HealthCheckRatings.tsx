@@ -13,7 +13,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
   const own = healthResults(values, actualPerson);
   const remote = healthResults(s.partnerAnswers.notes?.['105'] ?? {}, 'p0');
   const other = revealedPartnerResults(own, s.sessionId ? remote : healthResults(values, 'p1'));
-  const ownName = s.members.find(m => m.user_id === s.user?.id)?.display_name ?? names[0];
+  const ownName = s.members.find(m => m.user_id === s.memberId)?.display_name ?? names[0];
   const otherName = s.partner?.display_name ?? names[1];
   if (pageIndex === 8) {
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
@@ -21,7 +21,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
       <h2 className="retro-heading">Auswertung</h2>
       <HealthCheckChart own={own} other={other} names={evaluationNames([ownName??'Ich',otherName??'Partner'], Boolean(s.partner))}/>
       <HealthCheckHistory complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
-        { id: s.user?.id ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
+        { id: s.memberId ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
         { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
       ] }} />
     </section>;
