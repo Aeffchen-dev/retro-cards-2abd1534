@@ -1,4 +1,4 @@
-:root { --font-app: "Stack Sans Text", Arial, sans-serif; }
+:root { --font-app: "Figtree", Arial, sans-serif; --font-question: "Stack Sans Headline", Arial, sans-serif; }
 body, input, textarea, select, button { font-family: var(--font-app); }
 /* The font comparison is isolated from the deck's shared headline rules. */
 .font-preview-trigger {
@@ -315,7 +315,7 @@ body, input, textarea, select, button { font-family: var(--font-app); }
 
 .retro-title,
 .retro-heading {
-  font-family: "Stack Sans Text", Arial, sans-serif;
+  font-family: "Stack Sans Headline", Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-feature-settings: "ss02";
@@ -1850,7 +1850,7 @@ textarea.bg-retro-post-it:focus,
 /* All app text shares the pill-label typography */
 #root, #root * {
   font-weight: 500;
-  font-family: "Stack Sans Text", Arial, sans-serif;
+  font-family: "Figtree", Arial, sans-serif;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
   font-style: normal;
@@ -1863,12 +1863,16 @@ textarea.bg-retro-post-it:focus,
 #root .question-font *,
 #root .retro-heading,
 #root .retro-heading *,
-#root .retro-title,
-#root .retro-title *,
 #root .risiko-statement {
-  font-family: "Stack Sans Text", Arial, sans-serif;
+  font-family: "Stack Sans Headline", Arial, sans-serif;
   font-weight: 400;
   font-feature-settings: normal;
+  letter-spacing: 0;
+}
+
+#root .retro-title,
+#root .retro-title * {
+  font-family: "Stack Sans Notch", Arial, sans-serif;
   letter-spacing: 0;
 }
 
