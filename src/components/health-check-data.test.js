@@ -19,6 +19,17 @@ test('both partners retain distinct selections', () => {
   assert.equal(healthResults(values,'p1')[0],5);
   assert.equal(healthResults(values,'p0')[1],null);
 });
+test('a partner update changes only the revealed partner answer, never the own slider value', () => {
+  const local = { hc_p0_love: '2' };
+  const own = healthResults(local, 'p0');
+  const before = revealedPartnerResults(own, healthResults({ hc_p0_love: '4' }, 'p0'));
+  const after = revealedPartnerResults(own, healthResults({ hc_p0_love: '5' }, 'p0'));
+  assert.equal(before[0], 4);
+  assert.equal(after[0], 5);
+  assert.equal(own[0], 2);
+  assert.equal(local.hc_p0_love, '2');
+  assert.equal(healthScaleValue(own[0]), '25');
+});
 test('smiley endpoints keep the existing satisfaction scores and saved answers', () => {
   assert.equal(healthScaleScore('0'), '1');
   assert.equal(healthScaleScore('100'), '5');
