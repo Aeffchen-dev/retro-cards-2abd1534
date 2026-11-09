@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
-import { invitationName } from './partner-invitation-data';
+import { connectionHint, invitationName } from './partner-invitation-data';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { toast } from 'sonner';
 
