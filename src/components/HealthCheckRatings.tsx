@@ -42,7 +42,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = s.sessionId ? healthScore(s.partnerAnswers.notes?.['105']?.[`hc_p0_${c.id}`]) : healthScore(values[`hc_${actualPerson === 'p0' ? 'p1' : 'p0'}_${c.id}`]);
       return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="retro-heading">{c.title}</h2><output>{score ?? '–'}/5</output></div><p>{c.text}</p>
-        <div className="health-rating-control swiper-no-swiping"><Slider min={1} max={5} step={1} value={[score ?? 3]} aria-label={c.title} onValueChange={([value]) => onChange(`hc_${actualPerson}_${c.id}`,String(value))} /><div className="health-ticks" aria-hidden="true">{[1,2,3,4,5].map(n => <span key={n}>{n}</span>)}</div></div>
+        <div className="health-rating-control swiper-no-swiping" onKeyDown={e => e.stopPropagation()}><Slider min={1} max={5} step={1} value={[score ?? 3]} aria-label={c.title} onValueChange={([value]) => onChange(`hc_${actualPerson}_${c.id}`,String(value))} /><div className="health-ticks" aria-hidden="true">{[1,2,3,4,5].map(n => <span key={n}>{n}</span>)}</div></div>
         {otherScore !== null && <p className="health-other-score">{s.sessionId ? otherName : names[actualPerson === 'p0' ? 1 : 0]}: {otherScore}/5</p>}
       </div>;
     })}</div>

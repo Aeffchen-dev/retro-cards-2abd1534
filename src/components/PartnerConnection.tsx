@@ -42,7 +42,7 @@ export default function PartnerConnection() {
       </div> : <div className="space-y-4">
         <p>{s.partner ? `Mit ${s.partner.display_name} verbunden` : 'Warte auf deinen Partner'}</p>
         <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
-        {!s.partner && <><Input readOnly aria-label="Einladungslink" value={link} /><Button variant="outline" onClick={() => act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); })}><Copy size={16} /> Einladung kopieren</Button></>}
+        {!s.partner && s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><Button variant="outline" onClick={() => act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); })}><Copy size={16} /> Einladung kopieren</Button></>}
         <Button variant="outline" disabled={busy} onClick={() => act(s.leave)}><Unplug size={16} /> Verbindung trennen</Button>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
       </div>}
