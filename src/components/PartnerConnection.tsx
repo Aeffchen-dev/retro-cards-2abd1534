@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Users, Copy, Unplug, Share2 } from 'lucide-react';
+import { Users, Unplug, Share2 } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
