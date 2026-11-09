@@ -18,6 +18,8 @@
 .health-rating-item > p { margin-top: var(--retro-card-pad); }
 .health-rating-item > p:not(.retro-heading) { font-size: 16px; line-height: 1.4; }
 #root .health-rating-item > .retro-heading { margin-top: 8px; }
+#root .health-rating-item > .health-statement-label { display: block; width: fit-content; max-width: 100%; margin-top: 8px; padding: 4px 12px; background: var(--retro-black); color: var(--retro-white); font-size: 16px; line-height: 1.4; font-weight: 500; }
+.health-rating-footer { margin-top: auto; flex-shrink: 0; }
 .health-rating-control.health-smiley-control { margin-top: var(--retro-card-pad); }
 .health-smiley-control.risiko-page { --risiko-field-h: 120px; }
 .health-smiley-control .risiko-scale-captions { display: none; }

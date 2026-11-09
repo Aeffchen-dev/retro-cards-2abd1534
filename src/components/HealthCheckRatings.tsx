@@ -4,7 +4,7 @@ import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, health
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
-import { readableBg } from './PostItField';
+import ActionRow from './ActionRow';
 
 type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
 export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent }: Props) {
@@ -29,7 +29,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex,pageIndex+1).map(c => {
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = other[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] ?? null;
-      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="health-category-pill retro-body-copy" style={{ backgroundColor: readableBg(categoryColor) }}>{c.title}</h2></div><p className="retro-heading">{c.text}</p>
+      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="retro-heading">{c.title}</h2></div><p className="health-statement-label retro-body-copy">{c.text}</p>
         <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDownCapture={e => {
           e.stopPropagation();
           const delta = ['ArrowRight', 'ArrowUp'].includes(e.key) ? 1 : ['ArrowLeft', 'ArrowDown'].includes(e.key) ? -1 : 0;
@@ -40,5 +40,6 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
         {otherScore !== null && <p className="health-other-score">{s.sessionId ? otherName : names[actualPerson === 'p0' ? 1 : 0]}: {otherScore}/5</p>}
       </div>;
     })}</div>
+    <ActionRow className="hc-helper health-rating-footer" icon="IconInfo" label="Schiebt den Regler zur passenden Antwort. Die Antwort der anderen Person erscheint, sobald ihr selbst geantwortet habt." accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
   </section>;
 }

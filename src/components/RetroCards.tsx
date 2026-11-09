@@ -1515,14 +1515,15 @@ const RetroCards: React.FC = () => {
             {/* The notes button comes first and the helper sentence reads under it.
                 The stack is anchored to the card's own padding, so it grows upward
                 when the helper wraps to another line on a narrow card. */}
-            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-0" style={{ left: '28px', right: '28px', bottom: '28px' }}>
+            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-0" style={{ left: 'var(--retro-card-pad)', right: 'var(--retro-card-pad)', bottom: '8px' }}>
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
                 /* the Notizen öffnen tile reads plain grey with a black pencil —
                    no outline of its own (user: "EDIT PEN BACKGROUND NO OURLINE");
                    edit mode keeps the card's own pill colour and its white pencil. */
-                accent={editModeSlides[cardId] ? pillColorOf(cardId) : "#E4E6E8"}
+                accent={pillColorOf(cardId)}
+                fieldBg={pillColorOf(cardId)}
                 iconColor={editModeSlides[cardId] ? "#FFFFFF" : "#201C1D"}
                 iconStrokeWidth={1}
                 onClick={() => toggleEditMode(cardId)}
@@ -2406,7 +2407,7 @@ const RetroCards: React.FC = () => {
                         shared overlay would paint a second one there. The last-4-weeks
                         card has no info box: its button stands in the corner alone. */}
                     {hasEditButton(slideId) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && !(slideId === 3 && !editModeSlides[slideId]) && (
-                      <div className="absolute z-40 screen-only" style={{ left: '28px', bottom: '28px' }}>
+                      <div className="absolute z-40 screen-only" style={{ left: 'var(--retro-card-pad)', bottom: 'var(--retro-card-pad)' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
@@ -2415,7 +2416,8 @@ const RetroCards: React.FC = () => {
                              OURLINE"); edit mode keeps the card's own pill colour,
                              the last-4-weeks card its pink X and Intimacy its pink
                              pencil. */
-                          accent={editModeSlides[slideId] ? pillColorOf(slideId) : "#E4E6E8"}
+                          accent={pillColorOf(slideId)}
+                          fieldBg={pillColorOf(slideId)}
                           iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : editModeSlides[slideId] ? "#FFFFFF" : "#201C1D"}
                           iconStrokeWidth={1}
                           onClick={() => toggleEditMode(slideId)}
