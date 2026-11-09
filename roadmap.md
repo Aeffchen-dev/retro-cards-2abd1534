@@ -1,6 +1,8 @@
 # Roadmap
 
 ## Current request
+- [ ] Save dated Health Check snapshots locally or privately for connected partners.
+- [ ] Show chronological partner trends with per-topic selection and verify saving/readback.
 - [x] Add a private partner connection on Intro with live notes and selections.
 - [x] Replace Health Check content after its first two cards with the eight screenshot categories, two per card.
 - [x] Add Auswerten with both partners' results in a radar chart; verified two authenticated browsers, live text readback, independent ratings and outsider access denial. 179 tests passed.
