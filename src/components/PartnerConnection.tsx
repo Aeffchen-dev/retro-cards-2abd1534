@@ -53,6 +53,10 @@ export default function PartnerConnection() {
 }
 function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSession>['partnerAnswers'] }) {
   const rows: [string, string][] = [];
+  if (answers.setup) {
+    rows.push(['Setup', [ `${answers.setup.emoji1} ${answers.setup.name1}`, `${answers.setup.emoji2} ${answers.setup.name2}`, ...answers.setup.extraPartners.map(p => `${p.emoji} ${p.name}`), answers.setup.openRelationship ? 'Nicht monogam' : 'Monogam' ].join(' · ')]);
+  }
+  if (answers.question) rows.push(['Aktuelle Frage', answers.question]);
   const labels: Record<string,string> = { postIts: 'To talk about', takeaways: 'Takeaways', reflection: 'Feedback', nice: 'Perspektivwechsel', thanks: 'Danke für', unspoken: 'Letzte Chance' };
   for (const group of ['postIts','takeaways','reflection'] as const) for (const [key,value] of Object.entries(answers[group] ?? {})) if (value) rows.push([labels[key] ?? labels[group], value]);
   for (const [slide,fields] of Object.entries(answers.notes ?? {})) for (const [key,value] of Object.entries(fields)) if (value && !key.startsWith('hc_') && !key.startsWith('work_') && key !== 'scale') rows.push([slide === '105' || Number(slide) >= 200 ? 'Health Check' : slide === '7' ? 'Intimacy' : slide === '104' ? 'Ideas' : 'Notizen', value]);

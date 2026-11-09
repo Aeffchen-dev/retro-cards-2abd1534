@@ -616,8 +616,8 @@ const RetroCards: React.FC = () => {
   }, [reflectionTexts]);
 
   useEffect(() => {
-    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions });
-  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, partnerSession.publish]);
+    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion });
+  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, partnerSession.publish]);
 
   // Toggle edit mode for a slide
   const toggleEditMode = useCallback((slideIndex: number) => {

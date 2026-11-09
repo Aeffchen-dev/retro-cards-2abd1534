@@ -21,3 +21,6 @@ test('smiley endpoints keep the existing satisfaction scores and saved answers',
   assert.equal(healthScaleValue(null), undefined);
   for (const score of [1,2,3,4,5]) assert.equal(healthScaleScore(healthScaleValue(score)), String(score));
 });
+test('missing answers remain absent rather than being scored as zero', () => {
+  assert.deepEqual(healthResults({hc_p0_love:'4'},'p0'),[4,null,null,null,null,null,null,null]);
+});
