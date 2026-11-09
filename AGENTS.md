@@ -25,3 +25,4 @@
 - Intimacy uses a focused icon-rating control that maps to the existing scale answer key, preserving saved answers and the shared notes/print flow.
 - Keep per-card behaviour behind an opt-in flag on the shared component so siblings stay untouched, and let print normalise rather than rewrite saved answers; derive card colours from the shared colour helpers and theme overrides, passing real values to shared fields so their contrast lightening works.
 
+- Health Check history saves itself once all own answers exist, one entry per day replaced in place (`upsertDailyEntry`), so users never need a save action; the year review derives from the latest twelve entries and on-device Memory thumbnails.
