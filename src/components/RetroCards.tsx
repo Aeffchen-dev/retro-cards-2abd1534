@@ -397,7 +397,7 @@ const RetroCards: React.FC = () => {
   // question and the intro sentence on top of its scales.
   const [risikoFirstPage, setRisikoFirstPage] = useState(RISIKO_PER_PAGE);
   const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage, risikoFirstPage), [persons, risikoPerPage, risikoFirstPage]);
-  const riskSlideIds = useMemo(() => [SLIDE_RISIKO, 200, 201, 202, 203], []);
+  const riskSlideIds = useMemo(() => [SLIDE_RISIKO, 200, 201, 202, 204, 205, 206, 207, 203], []);
 
 
   // State for reflection slide post-its
@@ -1906,6 +1906,7 @@ const RetroCards: React.FC = () => {
                 </button>
               </div>
 
+              <PartnerConnection />
               <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"
@@ -1935,7 +1936,6 @@ const RetroCards: React.FC = () => {
           <HealthCheckRatings
             pageIndex={riskSlideIds.indexOf(cardIndex)}
             names={persons.map(p => p.name)}
-            onEvaluate={() => swiperRef?.slideTo(slides.indexOf(203))}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
