@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] Show independent category-coloured partner markers on Health Check scales, preserving own-answer-first and local slider values.
+- [x] Show independent category-coloured partner markers on Health Check scales, preserving own-answer-first and local slider values; 13 relevant tests pass and mobile/desktop checks with saved local comparison answers pass. Real connected-account verification remains blocked below.
 - [x] Show partner edits without reload: immediate member updates and foreground catch-up with effect cleanup. Actual hook tested with simulated service: direct live updates and missed-event catch-up visible without reload; 5 relevant tests pass. Real-account verification remains blocked below.
 - [x] Show pending/accepted invitation status and resend the existing pending invite through native sharing. 15 relevant tests pass; simulated mobile/desktop status transitions and same-link sharing verified.
 - [ ] Verify invitation acceptance with real connected accounts — blocked: no signed-up accounts; session minting failed.
