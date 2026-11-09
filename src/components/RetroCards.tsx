@@ -1515,7 +1515,7 @@ const RetroCards: React.FC = () => {
             {/* The notes button comes first and the helper sentence reads under it.
                 The stack is anchored to the card's own padding, so it grows upward
                 when the helper wraps to another line on a narrow card. */}
-            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-0" style={{ left: 'var(--retro-card-pad)', right: 'var(--retro-card-pad)', bottom: '8px' }}>
+            <div className="absolute screen-only min-w-0 flex flex-col items-start gap-0" style={{ left: 'var(--retro-card-pad)', right: 'var(--retro-card-pad)', bottom: 'var(--retro-card-pad)' }}>
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
