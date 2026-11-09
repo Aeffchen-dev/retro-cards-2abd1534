@@ -74,7 +74,7 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const people = results.people.filter(p => entries.some(e => e.results.people.some(person => person.id === p.id)));
   const pastEntries = pastHealthHistory(entries);
   const hasPast = pastEntries.length > 0;
-  const latest = pastEntries.at(-1);
+  const latest = pastEntries[pastEntries.length - 1];
   const timeline = [...pastEntries, {id:'current',owner_id:null,recorded_at:new Date().toISOString(),results}];
   const chart = timeline.map((e, i) => ({ index: i+1, date: e.id === 'current' ? 'Aktuell' : new Date(e.recorded_at).toLocaleDateString('de-DE'), ...Object.fromEntries(people.map(p => [p.id, historyScore(e.results.people.find(person => person.id === p.id)?.scores ?? [],topic)])) }));
   return <div className={`health-history ${open ? 'health-history-open' : ''}`}>
