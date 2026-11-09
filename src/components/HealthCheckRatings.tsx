@@ -5,8 +5,8 @@ import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
 
-type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[] };
-export default function HealthCheckRatings({ pageIndex, values, onChange, names }: Props) {
+type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
+export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent }: Props) {
   const s = usePartnerSession();
   const actualPerson = 'p0';
   const own = healthResults(values, actualPerson);
@@ -18,7 +18,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names 
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
       <HealthCheckChart own={own} other={other} names={[ownName??'Ich',otherName??'Partner']}/>
-      <HealthCheckHistory complete={completeOwn} results={{ people: [
+      <HealthCheckHistory complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
         { id: s.user?.id ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
         { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
       ] }} />

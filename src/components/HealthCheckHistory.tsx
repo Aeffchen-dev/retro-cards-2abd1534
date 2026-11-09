@@ -8,9 +8,9 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES } from './health-check-data';
-import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore, historyForPair } from './health-history-data';
+import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore, historyForPair, pastHealthHistory, healthTrend } from './health-history-data';
 
-export default function HealthCheckHistory({ results, complete }: { results: HistoryResults; complete: boolean }) {
+export default function HealthCheckHistory({ results, complete, categoryColor, categoryAccent }: { results: HistoryResults; complete: boolean; categoryColor: string; categoryAccent: string }) {
   const session = usePartnerSession();
   const [open, setOpen] = useState(false);
   const [entries, setEntries] = useState<HealthHistoryEntry[]>([]);
@@ -24,7 +24,6 @@ export default function HealthCheckHistory({ results, complete }: { results: His
     return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   });
   useEffect(() => {
-    if (!open) return;
     let cancelled = false;
     setEntries([]); setError(''); setLoading(true);
     const load = async () => {
@@ -45,7 +44,7 @@ export default function HealthCheckHistory({ results, complete }: { results: His
     };
     void load();
     return () => { cancelled = true; };
-  }, [open, session.user?.id, session.sessionId, session.partner?.user_id]);
+  }, [session.user?.id, session.sessionId, session.partner?.user_id]);
   const save = async () => {
     if (!complete || busy || loading || !date) return;
     setBusy(true); setError(''); setNotice('');
@@ -73,15 +72,27 @@ export default function HealthCheckHistory({ results, complete }: { results: His
     finally { setBusy(false); }
   };
   const people = results.people.filter(p => entries.some(e => e.results.people.some(person => person.id === p.id)));
-  const chart = entries.map((e, i) => ({ index: i+1, date: new Date(e.recorded_at).toLocaleDateString('de-DE'), ...Object.fromEntries(people.map(p => [p.id, historyScore(e.results.people.find(person => person.id === p.id)?.scores ?? [],topic)])) }));
+  const pastEntries = pastHealthHistory(entries);
+  const hasPast = pastEntries.length > 0;
+  const latest = pastEntries[pastEntries.length - 1];
+  const timeline = [...pastEntries, {id:'current',owner_id:null,recorded_at:new Date().toISOString(),results}];
+  const chart = timeline.map((e, i) => ({ index: i+1, date: e.id === 'current' ? 'Aktuell' : new Date(e.recorded_at).toLocaleDateString('de-DE'), ...Object.fromEntries(people.map(p => [p.id, historyScore(e.results.people.find(person => person.id === p.id)?.scores ?? [],topic)])) }));
   return <div className={`health-history ${open ? 'health-history-open' : ''}`}>
-    <ActionRow iconNode={<History size={16}/>} label="Verlauf" accent="var(--retro-textarea-bg)" fieldBg="transparent" iconColor="var(--color-text-primary)" labelColor="var(--color-text-primary)" className="health-history-trigger" onClick={() => setOpen(value => !value)} />
-    {open && <section className="health-history-content swiper-no-swiping" aria-label="Health Check im Verlauf">
+    <div className="health-history-actions">
+      {hasPast && !loading && <ActionRow iconNode={<History size={16}/>} label="Verlauf" accent={categoryAccent} fieldBg={categoryColor} className="health-history-trigger" onClick={() => setOpen(value => !value)} />}
+      {complete && <ActionRow iconNode={<Save size={16}/>} label={busy ? 'Speichert …' : 'Retro speichern'} accent={categoryAccent} fieldBg={categoryColor} onClick={() => void save()} />}
+    </div>
+    {!open && error && <p role="alert">{error}</p>}{!open && notice && <p role="status">{notice}</p>}
+    {open && hasPast && <section className="health-history-content swiper-no-swiping" aria-label="Health Check im Verlauf">
       <h3>Health Check im Verlauf</h3>
       <div className="health-history-save"><label>Retro-Datum<input type="date" value={date} onChange={e => setDate(e.target.value)} /></label><Button disabled={!complete || busy || loading || !date} onClick={() => void save()}><Save size={16}/>{busy ? 'Speichert …' : 'Retro speichern'}</Button></div>
       {!complete && <p className="health-history-muted">Beantworte zuerst deine acht Health-Check-Fragen.</p>}
       {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
       <Select value={topic} onValueChange={setTopic}><SelectTrigger aria-label="Thema im Verlauf"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="average">Durchschnitt</SelectItem>{HEALTH_CATEGORIES.map(c => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}</SelectContent></Select>
+      <div className="health-trends" aria-label="Trends zur letzten Retro">{people.map((person,i) => {
+        const delta = healthTrend(person.scores,latest?.results.people.find(p=>p.id===person.id)?.scores ?? [],topic);
+        return delta === null ? null : <p key={person.id} className={i===0?'health-one':'health-two'}>{person.name}: {delta > 0 ? '↗ +' : delta < 0 ? '↘ ' : '→ '}{delta.toLocaleString('de-DE')} zur letzten Retro</p>;
+      })}</div>
       {loading ? <p>Verlauf wird geladen …</p> : entries.length === 0 ? <p className="health-history-empty">Noch keine Retro gespeichert.</p> : <>
         <div className="health-history-chart" aria-label="Bewertungen von Retro zu Retro"><ResponsiveContainer width="100%" height="100%"><LineChart data={chart} margin={{top:16,right:16,bottom:8,left:-20}}><CartesianGrid stroke="var(--retro-info-rule)"/><XAxis dataKey="index" tick={{fill:'var(--color-text-primary)',fontSize:12}}/><YAxis domain={[1,5]} ticks={[1,2,3,4,5]} tick={{fill:'var(--color-text-primary)',fontSize:12}}/><Tooltip labelFormatter={(_,payload) => payload?.[0]?.payload?.date ?? ''} contentStyle={{background:'var(--risiko-face-fill)',borderColor:'var(--retro-info-rule)',color:'var(--color-text-primary)'}}/>{people.map((p,i) => <Line key={p.id} dataKey={p.id} name={p.name} stroke={i === 0 ? 'var(--health-partner-one)' : 'var(--health-partner-two)'} strokeWidth={2} dot={{r:4}} connectNulls={false} isAnimationActive={false}/>)}</LineChart></ResponsiveContainer></div>
         <div className="health-legend">{people.map((p,i) => <span key={p.id} className={i===0?'health-one':'health-two'}>{p.name}</span>)}</div>
