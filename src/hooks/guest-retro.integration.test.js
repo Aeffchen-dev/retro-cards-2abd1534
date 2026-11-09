@@ -29,7 +29,9 @@ run('private guest capabilities isolate rooms, preserve answers and revoke acces
     const outside = await call({ action: 'read', token: unrelated.data.token });
     expect(outside.data.members.some(m => m.user_id === owner.data.memberId)).toBe(false);
     const direct = await fetch(`${url}/rest/v1/retro_guest_members?select=*`, { headers: { apikey: key } });
-    expect(direct.ok).toBe(false);
+    // Some projects grant read by default; RLS must still return no private rows.
+    if (direct.ok) expect(await direct.json()).toEqual([]);
+    else expect([401, 403]).toContain(direct.status);
     await call({ action: 'leave', token: guest.data.token });
     expect((await call({ action: 'read', token: guest.data.token })).status).toBe(403);
     await call({ action: 'leave', token: owner.data.token });
