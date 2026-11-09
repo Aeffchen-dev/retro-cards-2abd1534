@@ -2307,7 +2307,7 @@ const RetroCards: React.FC = () => {
                       — the Setup card included — stands taller or shorter than its
                       neighbours, and none is sized by a rule of its own. */}
                   <div
-                    className={`retro-card-container relative flex-1 w-full max-w-[500px] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[28px] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
+                    className={`retro-card-container relative flex-1 w-full max-w-[500px] max-h-[88%] min-h-0 mx-auto flex flex-col justify-start items-start gap-4 rounded-none p-[var(--retro-card-pad)] shadow-2xl ${isRisikoSlide(slideId) ? "risiko-card" : "overflow-y-auto"}`}
 
 
                     style={{
@@ -2330,7 +2330,7 @@ const RetroCards: React.FC = () => {
                         // group — two Aussagen, two sets of post-its.
                         const groups = risikoNoteGroups(slideId);
                         return (
-                        <div className="absolute inset-0 p-[28px] flex flex-col z-30 rounded-none overflow-hidden" style={{ ...cardStyle, paddingBottom: '76px' }}>
+                        <div className="absolute inset-0 p-[var(--retro-card-pad)] flex flex-col z-30 rounded-none overflow-hidden" style={{ ...cardStyle, paddingBottom: '76px' }}>
                           {groups ? (
                             <div className="flex flex-col flex-1 min-h-0 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
                               {groups.map((g, gi) => (
