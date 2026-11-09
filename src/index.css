@@ -1846,10 +1846,100 @@ textarea.bg-retro-post-it:focus,
   }
 }
 /* Setup slide fields: placeholder tone matches the question text */
-.name-input-field::placeholder,
-.emoji-picker-input::placeholder {
+.name-input-field::placeholder {
   color: rgba(32, 28, 29, 0.55);
   opacity: 1;
+}
+
+/* The Setup slide's emoji picker. Its panel is portalled outside #root, so it
+   carries the deck's own body face and flat fields: square corners, a grey
+   search field and emoji cells the size of a tile. */
+.emoji-popover {
+  width: min(320px, calc(100vw - 32px));
+  max-height: min(380px, calc(100dvh - 32px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: none;
+  border-radius: 0;
+  background: #fff;
+  color: #201C1D;
+  box-shadow: 0 12px 32px rgba(32, 28, 29, 0.22);
+  font-family: "Figtree", Arial, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+}
+
+.emoji-search {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 0;
+  background: #E4E6E8;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.emoji-list {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emoji-group-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6E7078;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 32px);
+  gap: 2px;
+}
+
+.emoji-cell {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.emoji-cell:hover {
+  background: #E4E6E8;
+}
+
+.emoji-cell[data-selected="true"] {
+  background: #E4E6E8;
+  box-shadow: inset 0 0 0 1.5px #201C1D;
+}
+
+.emoji-empty {
+  margin: 0;
+  font-size: 14px;
+  color: #6E7078;
+}
+
+@media print {
+  .emoji-popover {
+    display: none !important;
+  }
 }
 
 /* All app text shares the pill-label typography */
