@@ -1,6 +1,6 @@
 import HealthCheckChart from './HealthCheckChart';
 import { StatementScale } from './RisikoSlide';
-import { HEALTH_CATEGORIES, healthScore, healthResults, HEALTH_SATISFACTION_CAPTIONS, healthScaleValue, healthScaleScore } from './health-check-data';
+import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
@@ -14,9 +14,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names 
   const other = s.sessionId ? remote : healthResults(values, 'p1');
   const ownName = s.members.find(m => m.user_id === s.user?.id)?.display_name ?? names[0];
   const otherName = s.partner?.display_name ?? names[1];
-  const allAnswered = own.every(v => v !== null);
   if (pageIndex === 8) {
-    const data = HEALTH_CATEGORIES.map((c,i) => ({ axis: c.axis, own: healthResults(values,'p0')[i], other: other[i] }));
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
       <HealthCheckHistory complete={completeOwn} results={{ people: [
