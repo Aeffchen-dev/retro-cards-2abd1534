@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import StackIcon from "./StackIcon";
 
 export interface ActionRowProps {
@@ -36,6 +36,12 @@ export interface ActionRowProps {
 /** Relative luminance based contrast pick: dark text on light bg, white on dark. */
 const contrastOn = (bg?: string): string => {
   if (!bg) return "#201C1D";
+  if (bg.startsWith("rgb")) {
+    const channels = bg.match(/[\d.]+/g)?.slice(0, 3);
+    if (channels?.length === 3) {
+      bg = `#${channels.map(c => Math.round(Number(c)).toString(16).padStart(2, "0")).join("")}`;
+    }
+  }
   const hex = bg.replace("#", "").trim();
   const full = hex.length === 3 ? hex.split("").map((c) => c + c).join("") : hex;
   if (full.length !== 6) return "#201C1D";
@@ -76,7 +82,16 @@ const ActionRow: React.FC<ActionRowProps> = ({
   style,
 }) => {
   const isInfo = icon === "IconInfo";
-  const resolvedIconColor = !isInfo ? "var(--retro-action-icon, var(--retro-pill, var(--color-text-primary)))" : outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
+  const tileRef = useRef<HTMLSpanElement>(null);
+  const [actionIconColor, setActionIconColor] = useState("var(--color-text-primary)");
+  useLayoutEffect(() => {
+    if (isInfo || !tileRef.current) return;
+    const background = getComputedStyle(tileRef.current).backgroundColor;
+    setActionIconColor(contrastOn(background) === "#FFFFFF"
+      ? "var(--risiko-face-fill)"
+      : "var(--color-text-primary)");
+  });
+  const resolvedIconColor = !isInfo ? actionIconColor : outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
   const resolvedLabelColor = !isInfo ? "var(--color-text-primary)" : outlined
     ? (labelColor ?? "#201C1D")
     : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
@@ -109,6 +124,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
   const content = (
     <>
       <span
+        ref={tileRef}
         className={tileClass}
         style={{
           background: isInfo ? (outlined ? "transparent" : accent) : "var(--retro-action-tile, var(--retro-pill-dot, var(--retro-textarea-bg)))",
