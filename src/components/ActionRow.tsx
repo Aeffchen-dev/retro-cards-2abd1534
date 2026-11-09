@@ -116,7 +116,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
           border: tileBorder ?? border,
         }}
       >
-        {iconNode ?? (isInfo ? <svg className="retro-info-mark" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><circle cx="6" cy="2.5" r="0.8" fill="currentColor" /><path d="M6 5v5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg> : icon ? <StackIcon name={icon} size={resolvedIconSize} color={resolvedIconColor} strokePx={resolvedStrokePx} /> : null)}
+        {iconNode ?? (icon ? <StackIcon name={icon} size={resolvedIconSize} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
       </span>
       <span
         className={fieldClass}

@@ -1022,7 +1022,7 @@ body, input, textarea, select, button { font-family: var(--font-app); }
 }
 /* the risiko helper sentence keeps a full card padding of air under itself */
 .risiko-footer .retro-info-row {
-  margin-bottom: 8px;
+  margin-bottom: var(--retro-card-pad);
 }
 /* The info sentence keeps the card's own padding at its left and right, and the
    hairline above it spans only that content width — the card's own edges stay
@@ -1212,23 +1212,22 @@ button {
   height: auto;
   /* the hairline runs the card's whole content width, so a short sentence does
       not leave the line stopping half way across the card */
-  width: calc(100% + 2 * var(--retro-card-pad));
-  max-width: none;
-  margin-inline: calc(-1 * var(--retro-card-pad));
+  width: 100%;
+  max-width: 100%;
+  margin-inline: 0;
   margin-top: var(--retro-card-pad);
-  padding-inline: var(--retro-card-pad);
+  padding-inline: 0;
   border-top: 0;
   /* the air between the hairline and the sentence is the note's own breath —
      the same 8px the button above keeps over the hairline and the ℹ mark keeps
      over its sentence (user: "info text top padding only 8px", "gap top border
      info text to CTA same as info text top padding") */
-  padding-top: var(--retro-info-gap);
+  padding-top: 0;
 }
 
 .retro-info-row { gap: 6px; }
 .retro-info-row > span:first-child { width: 12px; }
 .retro-info-row > span:last-child { flex: 1; min-width: 0; white-space: normal; height: auto; overflow: visible; padding-inline: 0; }
-.retro-card-container:has(.retro-info-row) { padding-bottom: 8px; }
 
 /* The "i" inside the ℹ mark reads darker than its ring so the letter holds up
    beside the sentence (user: "i in info I darker if thicker"), but its pen goes
