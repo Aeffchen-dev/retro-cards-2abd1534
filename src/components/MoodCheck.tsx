@@ -23,7 +23,7 @@ export function MoodSummary({ values }: { values: Record<string, string> }) {
       const delta = moodChange(row.before, row.after);
       return <div key={i} className={`mood-summary-person${i ? ' mood-summary-partner' : ''}`}>
         <div className="mood-summary-row"><span>{row.name}</span><MoodFace value={row.before} /><MoodFace value={row.after} /></div>
-        <p>{delta === null ? 'Noch nicht vollständig beantwortet' : delta > 0 ? 'Du fühlst dich besser' : delta < 0 ? 'Du fühlst dich weniger gut' : 'Deine Stimmung ist unverändert'}</p>
+        <p>{delta === null ? 'Noch nicht vollständig beantwortet' : delta > 0 ? 'Stimmung verbessert' : delta < 0 ? 'Stimmung gesunken' : 'Stimmung unverändert'}</p>
       </div>;
     })}
   </section>;
