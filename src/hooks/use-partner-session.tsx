@@ -7,7 +7,7 @@ import { PARTNER_REFRESH_INTERVAL_MS, updatePartnerMember } from './partner-live
 import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, type GuestAccess } from './guest-retro-client';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
-type Member = { user_id: string; display_name: string; answers: Json };
+type Member = { user_id: string; display_name: string; answers: Json; is_owner?: boolean };
 function useSession() {
   const [guest, setGuest] = useState<GuestAccess | null>(readGuestAccess);
   const [user, setUser] = useState<User | null>(null);
@@ -112,11 +112,18 @@ function useSession() {
     }
     setSessionId(null); localStorage.removeItem('partner-session-id'); setMembers([]); setInvite('');
   };
+  const remove = async (id: string) => {
+    if (!guest) return;
+    try { const data = await guestRequest({ action: 'remove', token: guest.token, memberId: id }); setMembers(data.members ?? []); }
+    catch (e) { setError(e instanceof Error ? e.message : 'Partner konnte nicht entfernt werden'); }
+  };
   const memberId = guest?.memberId ?? user?.id;
+  const others = members.filter(m => m.user_id !== memberId);
+  const isOwner = Boolean(members.find(m => m.user_id === memberId)?.is_owner);
   const partner = members.find(m => m.user_id !== memberId);
   const partnerAnswers = (partner?.answers ?? {}) as DeckSnapshot;
   const invitation = invitationStatus(sessionId, memberId, members, loadedSessionId === sessionId);
-  return { user, memberId, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, connect, leave };
+  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, connect, leave };
 }
 const PartnerContext = createContext<ReturnType<typeof useSession> | null>(null);
 export function PartnerSessionProvider({ children }: { children: ReactNode }) { const value = useSession(); return <PartnerContext.Provider value={value}>{children}</PartnerContext.Provider>; }

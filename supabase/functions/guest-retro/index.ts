@@ -35,11 +35,17 @@ Deno.serve(async req=>{
    const result=member.is_owner?await db.from('retro_guest_sessions').delete().eq('id',member.session_id):await db.from('retro_guest_members').delete().eq('user_id',member.user_id);
    return result.error?reply({error:'Verbindung konnte nicht getrennt werden'},500):reply({ok:true});
   }
+  if(body.action==='remove'){
+   if(!member.is_owner)return reply({error:'Nur wer eingeladen hat, kann Partner entfernen'},403);
+   if(body.memberId===member.user_id)return reply({error:'Du kannst dich nicht selbst entfernen'},400);
+   const {error}=await db.from('retro_guest_members').delete().eq('user_id',body.memberId).eq('session_id',member.session_id);
+   if(error)return reply({error:'Partner konnte nicht entfernt werden'},500);
+  }
   if(body.action==='update'){
    const {error}=await db.from('retro_guest_members').update({answers:body.answers,updated_at:new Date().toISOString()}).eq('user_id',member.user_id).eq('session_id',member.session_id);
    if(error)return reply({error:'Antworten konnten nicht geteilt werden'},500);
   }
-  const {data:members,error}=await db.from('retro_guest_members').select('user_id,display_name,answers').eq('session_id',member.session_id);
+  const {data:members,error}=await db.from('retro_guest_members').select('user_id,display_name,answers,is_owner').eq('session_id',member.session_id);
   return error?reply({error:'Antworten konnten nicht geladen werden'},500):reply({members});
  }catch{return reply({error:'Anfrage konnte nicht verarbeitet werden'},400);}
 });
