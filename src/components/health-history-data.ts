@@ -29,6 +29,12 @@ export function chronologicalHistory(entries: HealthHistoryEntry[]) {
   return [...entries].sort((a,b) => a.recorded_at.localeCompare(b.recorded_at));
 }
 
+export function historyForPair(entries: HealthHistoryEntry[], userIds: string[]) {
+  if (userIds.length !== 2 || new Set(userIds).size !== 2) return [];
+  return chronologicalHistory(entries.filter(entry => entry.results.people.length === 2 &&
+    userIds.every(id => entry.results.people.some(person => person.id === id))));
+}
+
 export function readLocalHealthHistory(): HealthHistoryEntry[] {
   try {
     const entries: unknown = JSON.parse(localStorage.getItem(HEALTH_HISTORY_KEY) ?? '[]');

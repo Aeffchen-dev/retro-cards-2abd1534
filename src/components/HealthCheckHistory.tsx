@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { History, Save, Trash2 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogTrigger } from './ui/dialog';
+import ActionRow from './ActionRow';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES } from './health-check-data';
-import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore } from './health-history-data';
+import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore, historyForPair } from './health-history-data';
 
 export default function HealthCheckHistory({ results, complete }: { results: HistoryResults; complete: boolean }) {
   const session = usePartnerSession();
@@ -30,19 +30,22 @@ export default function HealthCheckHistory({ results, complete }: { results: His
     const load = async () => {
       if (!session.user) { if (!cancelled) { setEntries(chronologicalHistory(readLocalHealthHistory())); setLoading(false); } return; }
       let query = supabase.from('retro_health_history').select('*').order('recorded_at');
-      query = session.sessionId ? query.eq('session_id', session.sessionId) : query.eq('owner_id', session.user.id).is('session_id', null);
+      if (!session.sessionId) query = query.eq('owner_id', session.user.id).is('session_id', null);
       const { data, error: e } = await query;
       if (cancelled) return;
       if (e) setError('Der Verlauf konnte nicht geladen werden. Bitte versuche es erneut.');
-      else setEntries((data ?? []).flatMap(row => {
+      else {
+        const parsedEntries = (data ?? []).flatMap(row => {
         const parsed = parseHistoryResults(row.results);
         return parsed ? [{...row, results: parsed}] : [];
-      }));
+        });
+        setEntries(session.sessionId ? historyForPair(parsedEntries, session.partner ? [session.user.id, session.partner.user_id] : []) : chronologicalHistory(parsedEntries));
+      }
       setLoading(false);
     };
     void load();
     return () => { cancelled = true; };
-  }, [open, session.user?.id, session.sessionId]);
+  }, [open, session.user?.id, session.sessionId, session.partner?.user_id]);
   const save = async () => {
     if (!complete || busy || loading || !date) return;
     setBusy(true); setError(''); setNotice('');
@@ -69,13 +72,12 @@ export default function HealthCheckHistory({ results, complete }: { results: His
     } catch { setError('Die Retro konnte nicht gelöscht werden.'); }
     finally { setBusy(false); }
   };
-  const people = Array.from(new Map(entries.flatMap(e => e.results.people).map(p => [p.id, p])).values());
+  const people = results.people.filter(p => entries.some(e => e.results.people.some(person => person.id === p.id)));
   const chart = entries.map((e, i) => ({ index: i+1, date: new Date(e.recorded_at).toLocaleDateString('de-DE'), ...Object.fromEntries(people.map(p => [p.id, historyScore(e.results.people.find(person => person.id === p.id)?.scores ?? [],topic)])) }));
-  return <Dialog open={open} onOpenChange={setOpen}>
-    <DialogTrigger asChild><Button variant="outline" size="sm" className="health-history-trigger"><History size={16}/> Verlauf</Button></DialogTrigger>
-    <DialogContent className="health-history-dialog">
-      <DialogTitle>Health Check im Verlauf</DialogTitle>
-      <DialogDescription>{session.user ? 'Gespeicherte Retros' : 'Gespeicherte Retros auf diesem Gerät'}</DialogDescription>
+  return <div className={`health-history ${open ? 'health-history-open' : ''}`}>
+    <ActionRow iconNode={<History size={16}/>} label="Verlauf" accent="var(--retro-textarea-bg)" fieldBg="transparent" iconColor="var(--color-text-primary)" labelColor="var(--color-text-primary)" className="health-history-trigger" onClick={() => setOpen(value => !value)} />
+    {open && <section className="health-history-content swiper-no-swiping" aria-label="Health Check im Verlauf">
+      <h3>Health Check im Verlauf</h3>
       <div className="health-history-save"><label>Retro-Datum<input type="date" value={date} onChange={e => setDate(e.target.value)} /></label><Button disabled={!complete || busy || loading || !date} onClick={() => void save()}><Save size={16}/>{busy ? 'Speichert …' : 'Retro speichern'}</Button></div>
       {!complete && <p className="health-history-muted">Beantworte zuerst deine acht Health-Check-Fragen.</p>}
       {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
@@ -90,6 +92,6 @@ export default function HealthCheckHistory({ results, complete }: { results: His
           return <span role="cell" key={p.id}>{score === null ? '–' : `${score.toLocaleString('de-DE')}/5`}{delta !== null && <small>{delta > 0 ? '+' : ''}{delta.toLocaleString('de-DE')}</small>}</span>;
         })}<span>{(!session.user || entry.owner_id === session.user.id) && <Button size="icon" variant="ghost" disabled={busy} aria-label={`Retro ${i+1} löschen`} title="Retro löschen" onClick={() => void remove(entry)}><Trash2 size={16}/></Button>}</span></div>)}</div>
       </>}
-    </DialogContent>
-  </Dialog>;
+    </section>}
+  </div>;
 }

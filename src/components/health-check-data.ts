@@ -19,6 +19,10 @@ export function healthResults(values: Record<string, string>, person: string) {
   return HEALTH_CATEGORIES.map(c => healthScore(values[`hc_${person}_${c.id}`]));
 }
 
+export function answeredHealthTopics(own: (number | null)[], other: (number | null)[]) {
+  return HEALTH_CATEGORIES.flatMap((_, index) => own[index] != null || other[index] != null ? [index] : []);
+}
+
 export const HEALTH_SATISFACTION_CAPTIONS = ['Gar nicht zufrieden', 'Wenig zufrieden', 'Teils zufrieden', 'Eher zufrieden', 'Sehr zufrieden'] as const;
 
 export function healthScaleValue(score: number | null): string | undefined {
