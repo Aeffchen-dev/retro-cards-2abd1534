@@ -16,7 +16,6 @@ export default function HealthCheckChart({ own, other, names }: { own: (number|n
     {[1,2,3,4,5].map(n => <text key={n} x="204" y={200-n*28} fontSize="10" fill="var(--retro-info-text)">{n}</text>)}
     {[own,other].map((scores,person) => scores.some(n => n !== null) && <g key={person} className={person===0?'health-one':'health-two'}>
       {scores.every(n => n !== null) && <polygon points={scores.map((n,i) => {const p=radarPoint(i,n??0);return `${p.x},${p.y}`;}).join(' ')} fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="2"/>}
-      {!scores.every(n=>n!==null) && scores.map((n,i) => {const next=scores[(i+1)%8];if(n===null||next===null)return null;const a=radarPoint(i,n),b=radarPoint((i+1)%8,next);return <line key={i} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="currentColor" strokeWidth="2"/>;})}
       {scores.map((n,i) => {if(n === null)return null;const p=radarPoint(i,n);return <circle key={i} cx={p.x} cy={p.y} r="4" fill="currentColor" stroke="currentColor" strokeWidth="1.5"><title>{names[person] ? `${names[person]} · ` : ''}{HEALTH_CATEGORIES[i].title}: {n}/5</title></circle>;})}
       {names[person] && <text x={person===0?100:300} y="395" textAnchor="middle" fill="currentColor" fontSize="13">{names[person]}</text>}
     </g>)}

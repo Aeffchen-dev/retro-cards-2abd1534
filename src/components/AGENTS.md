@@ -4,7 +4,7 @@ Rules here apply to the deck's cards and scales in this directory; the project's
 root `AGENTS.md` still holds the deck-wide ones.
 
 - Reuse StatementScale for satisfaction ratings and convert its percentage position to the existing 1–5 answer namespace, so partner sharing and charts retain saved scores.
-- Show one Health Check category per card to fit the shared question typography; render partial radar results as answered vertices and adjacent segments, never substitute zero for missing answers.
+- Show one Health Check category per card to fit the shared question typography; render partial radar results as answered vertices only — no connecting line until every category is answered — and never substitute zero for missing answers.
 - Publish Setup and current-question state with the existing answer snapshot, displaying partner data read-only in the connection bottom sheet without overwriting local edits; use the shared ActionRow CTA and existing Sheet primitive for consistent card styling and accessible focus handling.
 - Archive Health Check results as explicit immutable dated snapshots, separate from live answers; anonymous archives stay on-device without answer expiry and authenticated archives use owner/member-protected storage.
 
