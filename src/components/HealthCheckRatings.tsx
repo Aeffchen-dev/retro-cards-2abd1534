@@ -35,7 +35,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
     </section>;
   }
   return <section className="health-ratings" aria-label="Health Check Bewertungen">
-    {!s.sessionId && <div className="health-person-switch" aria-label="Bewertung von">{names.slice(0,2).map((name,i) => <Button key={i} size="sm" variant={person === `p${i}` ? 'default' : 'outline'} onClick={() => setPerson(`p${i}`)}>{name}</Button>)}</div>}
+    {!s.sessionId && <div className="health-person-switch" aria-label="Bewertung von">{names.slice(0,2).map((name,i) => <Button key={i} size="sm" aria-pressed={person === `p${i}`} variant="outline" onClick={() => setPerson(`p${i}`)}>{name}</Button>)}</div>}
     {s.sessionId && <p className="health-rater">{ownName}{s.partner ? ` · live mit ${otherName}` : ' · wartet auf Partner'}</p>}
     <p className="health-rating-hint">1 = Gar nicht zufrieden · 5 = Sehr zufrieden</p>
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex*2,pageIndex*2+2).map(c => {
