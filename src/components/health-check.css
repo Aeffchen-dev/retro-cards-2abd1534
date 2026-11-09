@@ -13,7 +13,7 @@
 .health-rater, .health-rating-hint { font-size: 12px; color: var(--retro-info-text); }
 .health-rating-items { display: flex; flex-direction: column; flex: 1; justify-content: flex-start; gap: 24px; min-height: 0; }
 .health-rating-heading { display: flex; align-items: baseline; gap: 12px; justify-content: space-between; }
-#root .health-rating-heading .health-category-pill { font-family: var(--font-app); font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; text-transform: none; color: var(--color-text-primary); border: 0; border-radius: 0; padding: 0; width: 100%; overflow-wrap: break-word; }
+#root .health-rating-heading .health-category-pill { display: inline-flex; align-items: center; min-height: 32px; font-family: var(--font-app); font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0; text-transform: none; color: var(--color-text-primary); border: 0; border-radius: 0; padding: 4px 12px; width: fit-content; max-width: 100%; overflow-wrap: break-word; }
 .health-rating-heading output { font-size: 20px; color: var(--retro-info-text); white-space: nowrap; }
 .health-rating-item > p { margin-top: var(--retro-card-pad); }
 .health-rating-item > p:not(.retro-heading) { font-size: 16px; line-height: 1.4; }

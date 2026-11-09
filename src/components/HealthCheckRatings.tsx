@@ -4,6 +4,7 @@ import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, health
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
+import { readableBg } from './PostItField';
 
 type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
 export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent }: Props) {
@@ -28,7 +29,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex,pageIndex+1).map(c => {
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
       const otherScore = other[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] ?? null;
-      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="health-category-pill">{c.title}</h2></div><p className="retro-heading">{c.text}</p>
+      return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="health-category-pill retro-body-copy" style={{ backgroundColor: readableBg(categoryColor) }}>{c.title}</h2></div><p className="retro-heading">{c.text}</p>
         <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDownCapture={e => {
           e.stopPropagation();
           const delta = ['ArrowRight', 'ArrowUp'].includes(e.key) ? 1 : ['ArrowLeft', 'ArrowDown'].includes(e.key) ? -1 : 0;

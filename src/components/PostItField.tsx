@@ -27,7 +27,7 @@ const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 
 const lum = (r: number, g: number, b: number) =>
   0.2126 * lin(r / 255) + 0.7152 * lin(g / 255) + 0.0722 * lin(b / 255);
 
-const readableBg = (hex?: string) => {
+export const readableBg = (hex?: string) => {
   if (!hex || !/^#[0-9a-f]{6}$/i.test(hex)) return hex || "var(--retro-post-it, #E4E6E8)";
   let r = parseInt(hex.slice(1, 3), 16);
   let g = parseInt(hex.slice(3, 5), 16);
