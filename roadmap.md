@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Remove email, Google and Lovable sign-in from Zu zweit verbinden; retain link sharing without exposing private answers anonymously.
 - [x] Auswertung: answered topics only, darker green partner, larger chart and bottom-left Verlauf CTA expanding the saved timeline below the chart. Exact-pair filtering tested; mobile/desktop and two local dated retros verified; 188 tests pass.
 - [x] Remove Intro connection; Setup uses card CTA and bottom sheet with explanation and authenticated share/copy actions. Opening/closing verified on mobile and desktop; authenticated sharing awaits a signed-up account.
 - [x] Simplify Health Check to one topic per card in shared question typography; remove captions, top controls and evaluation CTA. Chart has full axis labels and open missing-answer marks; mobile/desktop checked.
