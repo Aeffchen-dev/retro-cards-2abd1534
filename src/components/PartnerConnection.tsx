@@ -17,7 +17,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const [confirmDisconnect, setConfirmDisconnect] = useState(false);
   const [disconnecting, setDisconnecting] = useState(false);
   useEffect(() => {
-    if (code && s.sessionId) { setOpen(false); setCode(''); }
+    if (code && s.sessionId) { setOpen(false); setCode(''); window.dispatchEvent(new Event('retro-go-first')); }
     if (disconnecting && !s.sessionId) { setOpen(false); setConfirmDisconnect(false); setDisconnecting(false); }
   }, [code, s.sessionId, disconnecting]);
   const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : '';
@@ -36,7 +36,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label="Partner einladen" className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.sessionId && <span className={`partner-status-dot ${s.partner && s.online ? 'is-connected' : 'is-pending'}`} role="img" aria-label={s.partner && s.online ? `${s.partner.display_name} ist verbunden` : 'Wartet auf Beitritt'} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Teile euren privaten Link und macht die Retro gemeinsam – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">

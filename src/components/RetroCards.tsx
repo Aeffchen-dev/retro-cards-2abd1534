@@ -18,6 +18,9 @@ import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
+import { saveMemoryThumb } from './memory-thumbs';
+import PartnerActivity from './PartnerActivity';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -356,6 +359,19 @@ const RetroCards: React.FC = () => {
 
   // State for captured photos
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
+  // Last time this person typed, shared so the partner sees "schreibt gerade …".
+  const [typingAt, setTypingAt] = useState(0);
+  useEffect(() => {
+    let last = 0;
+    const onInput = (e: Event) => {
+      const t = e.target as HTMLElement | null;
+      if (!t || !(t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && (t as HTMLInputElement).type === 'text'))) return;
+      const now = Date.now();
+      if (now - last > 1500) { last = now; setTypingAt(now); }
+    };
+    document.addEventListener('input', onInput, true);
+    return () => document.removeEventListener('input', onInput, true);
+  }, []);
 
   // State for setup (names, emojis, open-relationship toggle, extra partners)
   const [setupData, setSetupData] = useState<SetupData>(() => {
@@ -616,8 +632,14 @@ const RetroCards: React.FC = () => {
   }, [reflectionTexts]);
 
   useEffect(() => {
-    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion });
-  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, partnerSession.publish]);
+    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion, activity: typingAt ? { typingAt } : undefined });
+  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, typingAt, partnerSession.publish]);
+  // Joining through an invitation starts the retro on its first card.
+  useEffect(() => {
+    const goFirst = () => swiperRef?.slideTo(0);
+    window.addEventListener('retro-go-first', goFirst);
+    return () => window.removeEventListener('retro-go-first', goFirst);
+  }, [swiperRef]);
 
   // Toggle edit mode for a slide
   const toggleEditMode = useCallback((slideIndex: number) => {
@@ -1111,6 +1133,7 @@ const RetroCards: React.FC = () => {
           reader.onload = (event) => {
             if (event.target?.result) {
               setCapturedPhotos(prev => [...prev, event.target!.result as string]);
+              saveMemoryThumb(event.target!.result as string);
               console.log('Photo saved to state');
             }
           };
@@ -2198,17 +2221,20 @@ const RetroCards: React.FC = () => {
 
       {/* Card Content - Swiper.js slide animation like friends app */}
       <div className="print-stage relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden py-2">
+        <PartnerActivity />
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"
           onClick={(e) => { e.stopPropagation(); navigateCard("prev"); }}
-          className="swiper-no-swiping absolute left-0 top-0 bottom-0 w-11 z-40 bg-transparent border-0 p-0 cursor-w-resize screen-only"
-        />
+          title="Vorherige Karte (← Pfeiltaste)"
+          className="retro-edge-nav swiper-no-swiping absolute left-0 top-0 bottom-0 w-11 z-40 bg-transparent border-0 p-0 cursor-w-resize screen-only"
+        ><ChevronLeft aria-hidden size={24} /></button>
         <button
           aria-label="Nächste Karte"
           onClick={(e) => { e.stopPropagation(); navigateCard("next"); }}
-          className="swiper-no-swiping absolute right-0 top-0 bottom-0 w-11 z-40 bg-transparent border-0 p-0 cursor-e-resize screen-only"
-        />
+          title="Nächste Karte (→ Pfeiltaste)"
+          className="retro-edge-nav swiper-no-swiping absolute right-0 top-0 bottom-0 w-11 z-40 bg-transparent border-0 p-0 cursor-e-resize screen-only"
+        ><ChevronRight aria-hidden size={24} /></button>
         <div className="w-full h-full min-h-0 overflow-hidden">
 
             <Swiper
