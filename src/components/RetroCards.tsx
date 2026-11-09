@@ -20,6 +20,7 @@ import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
 import { saveMemoryThumb } from './memory-thumbs';
 import PartnerActivity from './PartnerActivity';
+import EmojiPicker from './EmojiPicker';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -1746,7 +1747,6 @@ const RetroCards: React.FC = () => {
         const SETUP_PILL_ON = "#201C1D";
         const nameInputCls = "swiper-no-swiping name-input-field retro-input retro-input-dark-text h-8 w-full rounded-none focus:outline-none focus:ring-2 focus:ring-black/10 px-3 text-base placeholder:text-base placeholder:text-[#201C1D]/50";
         const fieldStyle = { background: SETUP_GREY_FILL, color: SETUP_TEXT, border: "none" } as React.CSSProperties;
-        const emojiFieldStyle = { background: SETUP_PILL, color: SETUP_PILL_ON, border: "none" } as React.CSSProperties;
         const rowCls = "flex items-center gap-0 w-full mb-2";
 
         const emojiPicker = (
@@ -1754,31 +1754,15 @@ const RetroCards: React.FC = () => {
           placeholder: string,
           onChange: (val: string) => void
         ) => (
-          <div className="swiper-no-swiping inline-flex items-center gap-0 h-8 self-start">
-            <input
-              type="text"
-              inputMode="text"
-              value={value}
-              onChange={(e) => onChange(sanitizeEmoji(e.target.value))}
-              onFocus={(e) => e.currentTarget.select()}
-              placeholder={placeholder}
-              aria-label="Emoji auswählen"
-              style={emojiFieldStyle}
-              className="emoji-picker-input shrink-0 w-8 h-8 rounded-none text-center text-base retro-input retro-input-dark-text caret-transparent focus:outline-none focus:ring-2 focus:ring-black/10"
-            />
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                const input = (e.currentTarget.previousElementSibling as HTMLInputElement | null);
-                input?.focus();
-              }}
-              className="h-8 flex items-center px-3 retro-body-copy whitespace-nowrap border-none rounded-none"
-              style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}
-            >
-              Emoji auswählen
-            </button>
-          </div>
+          <EmojiPicker
+            value={value}
+            placeholder={placeholder}
+            onChange={(val) => onChange(sanitizeEmoji(val))}
+            accent={SETUP_PILL}
+            onAccent={SETUP_PILL_ON}
+            fieldBg={SETUP_GREY_FILL}
+            text={SETUP_TEXT}
+          />
         );
 
         return (
