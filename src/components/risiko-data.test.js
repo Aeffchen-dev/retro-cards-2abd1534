@@ -848,13 +848,13 @@ describe("the statement's own type", () => {
     expect(questionRule, "the shared question rule is missing").toBeTruthy();
     // The restored question face is smooth and round, with no notched fallback.
     expect(questionRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the big question's family moved")
-      .toBe('Arial, sans-serif');
+      .toBe('"Stack Sans Text", Arial, sans-serif');
     expect(questionRule.match(/font-weight:\s*(\d+)/)?.[1], "the big question's weight moved")
       .toBe("400");
     // the plain headline rule agrees, so nothing above it can pull a notched face back in
     const headingRule = css.match(/\.retro-title,\n\.retro-heading \{[\s\S]*?\n\}/)?.[0] ?? "";
     expect(headingRule.match(/font-family:\s*([^;]+);/)?.[1].trim(), "the headline rule's family moved")
-      .toBe('Arial, sans-serif');
+      .toBe('"Stack Sans Text", Arial, sans-serif');
   });
   test("is no longer dressed in the body-copy class", () => {
     expect(slide, "a statement still carries the body-copy class")

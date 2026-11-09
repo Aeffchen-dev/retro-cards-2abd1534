@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Stack+Sans+Notch:wght@200..700&family=Stack+Sans+Text:wght@400;500;600;700&family=Hanken+Grotesk:wght@300;400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@400;500;600;700;800;900&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,700&display=swap");
+:root { --font-app: "Stack Sans Text", Arial, sans-serif; }
+body, input, textarea, select, button { font-family: var(--font-app); }
 /* The font comparison is isolated from the deck's shared headline rules. */
 .font-preview-trigger {
   position: fixed;
@@ -314,7 +315,7 @@
 
 .retro-title,
 .retro-heading {
-  font-family: Arial, sans-serif;
+  font-family: "Stack Sans Text", Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-feature-settings: "ss02";
@@ -1849,7 +1850,7 @@ textarea.bg-retro-post-it:focus,
 /* All app text shares the pill-label typography */
 #root, #root * {
   font-weight: 500;
-  font-family: "Figtree", "Hanken Grotesk", Arial, sans-serif;
+  font-family: "Stack Sans Text", Arial, sans-serif;
   font-feature-settings: "ss01", "ss02", "cv11";
   letter-spacing: 0.005em;
   font-style: normal;
@@ -1865,7 +1866,7 @@ textarea.bg-retro-post-it:focus,
 #root .retro-title,
 #root .retro-title *,
 #root .risiko-statement {
-  font-family: Arial, sans-serif;
+  font-family: "Stack Sans Text", Arial, sans-serif;
   font-weight: 400;
   font-feature-settings: normal;
   letter-spacing: 0;
