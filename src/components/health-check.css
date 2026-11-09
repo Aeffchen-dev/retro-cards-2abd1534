@@ -119,7 +119,7 @@
 
 /* Desktop: visible arrows at the screen edges, phones keep swiping */
 .retro-edge-nav { display: flex; align-items: center; justify-content: center; color: var(--retro-black, #201C1D); }
-.retro-edge-nav svg { display: none; opacity: .55; transition: opacity 150ms; }
+.retro-edge-nav svg { display: none; box-sizing: content-box; padding: 4px; border-radius: 50%; background: #fff; opacity: .7; transition: opacity 150ms; }
 @media (hover: hover) and (pointer: fine) and (min-width: 768px) { .retro-edge-nav svg { display: block; } .retro-edge-nav:hover svg { opacity: 1; } }
 @media print { .partner-activity, .retro-edge-nav { display: none !important; } }
 
