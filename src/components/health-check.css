@@ -65,7 +65,6 @@
 .health-history-table small { display: block; color: var(--retro-info-text); font-size: 12px; }
 .health-history-muted, .health-history-empty { font-size: 14px; color: var(--retro-info-text); }
 @media print { .health-history { display: none !important; } }
-.health-results > h2 { font-size: 30px; }
 .health-chart { width: 100%; min-height: 220px; flex: 1; }
 .health-legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
 .health-one { color: var(--health-partner-one); }
@@ -96,7 +95,6 @@
  .health-rating-item > p:not(.retro-heading) { font-size: 14px; }
  .health-rating-items { gap: 16px; }
  .health-chart { min-height: 190px; }
- .health-results > h2 { font-size: 24px; }
  .health-results { gap: 8px; }
  .health-result-table > div { padding: 3px 0; }
  #root .intro-block:has(.partner-connect-trigger) { gap: 10px; }
