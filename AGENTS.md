@@ -1,4 +1,7 @@
 # Project rules
+<!-- LOVABLE:BEGIN -->
+- Guest connections use separate service-only tables and an edge function validating hashed member capabilities; never enable anonymous auth or direct guest table access, so invitation and member credentials stay distinct.
+<!-- LOVABLE:END -->
 - The deck's cards and scales live in `src/components`, which carries its own `AGENTS.md` to read before changing files there.
 - Trigger slider navigation hints only when the untouched marker enters view, animating the whole marker (disc and arrow) but never the saved answer; the deck keeps offscreen cards mounted, so mount-time animations would finish unseen.
 - Keep additional reflection-style slides in focused components using the existing notes persistence and print flow; reuse the Health Check scale by rendering its exported `StatementScale` inside a `.risiko-page` host, and lower the field's floor when a card shares its height.
