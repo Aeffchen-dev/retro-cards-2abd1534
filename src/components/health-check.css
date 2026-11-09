@@ -122,3 +122,10 @@
 .retro-edge-nav svg { display: none; opacity: .55; transition: opacity 150ms; }
 @media (hover: hover) and (pointer: fine) and (min-width: 768px) { .retro-edge-nav svg { display: block; } .retro-edge-nav:hover svg { opacity: 1; } }
 @media print { .partner-activity, .retro-edge-nav { display: none !important; } }
+
+.health-year-review { display: flex; flex-direction: column; gap: 6px; padding-top: 12px; font-size: 14px; }
+.health-year-review h3 { font-size: 16px; font-weight: 500; margin: 0; }
+.health-year-review p { margin: 0; }
+.health-year-review figure { margin: 4px 0 0; }
+.health-year-review img { width: 120px; height: 120px; object-fit: cover; display: block; }
+.health-year-review figcaption { font-size: 12px; color: #6E7078; }

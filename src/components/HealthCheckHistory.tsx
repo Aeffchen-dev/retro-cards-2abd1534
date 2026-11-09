@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { History, Save, Trash2 } from 'lucide-react';
+import { History, Trash2 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Button } from './ui/button';
 import ActionRow from './ActionRow';
@@ -8,7 +8,8 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES } from './health-check-data';
-import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore, historyForPair, pastHealthHistory, healthTrend } from './health-history-data';
+import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyScore, historyForPair, pastHealthHistory, healthTrend, upsertDailyEntry, yearReview } from './health-history-data';
+import { readMemoryThumbs } from './memory-thumbs';
 
 export default function HealthCheckHistory({ results, complete, categoryColor, categoryAccent }: { results: HistoryResults; complete: boolean; categoryColor: string; categoryAccent: string }) {
   const session = usePartnerSession();
@@ -19,10 +20,6 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [topic, setTopic] = useState('average');
-  const [date, setDate] = useState(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-  });
   useEffect(() => {
     let cancelled = false;
     setEntries([]); setError(''); setLoading(true);
@@ -45,20 +42,26 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
     void load();
     return () => { cancelled = true; };
   }, [session.user?.id, session.sessionId, session.partner?.user_id]);
-  const save = async () => {
-    if (!complete || busy || loading || !date) return;
-    setBusy(true); setError(''); setNotice('');
-    const entry: HealthHistoryEntry = { id: crypto.randomUUID(), owner_id: session.user?.id ?? null, recorded_at: new Date(`${date}T12:00:00`).toISOString(), results: structuredClone(results) };
-    try {
-      if (session.user) {
-        const { error: e } = await supabase.from('retro_health_history').insert({ id: entry.id, owner_id: session.user.id, session_id: session.sessionId, recorded_at: entry.recorded_at, results: entry.results as unknown as Json });
-        if (e) throw e;
-      } else localStorage.setItem(HEALTH_HISTORY_KEY, JSON.stringify([...readLocalHealthHistory(), entry]));
-      setEntries(current => chronologicalHistory([...current, entry]));
-      setNotice('Retro gespeichert.');
-    } catch { setError('Die Retro konnte nicht gespeichert werden. Bitte versuche es erneut.'); }
-    finally { setBusy(false); }
-  };
+  // Completed answers save themselves: one entry per day, replaced while answers change.
+  const resultsKey = JSON.stringify(results);
+  useEffect(() => {
+    if (!complete || loading) return;
+    const t = setTimeout(async () => {
+      const ownerId = session.user?.id ?? null;
+      const entry: HealthHistoryEntry = { id: crypto.randomUUID(), owner_id: ownerId, recorded_at: new Date().toISOString(), results: structuredClone(results) };
+      try {
+        if (session.user) {
+          const existing = upsertDailyEntry(entries, entry).find(e => e.recorded_at === entry.recorded_at)!;
+          const { error: e } = await supabase.from('retro_health_history').upsert({ id: existing.id, owner_id: session.user.id, session_id: session.sessionId, recorded_at: entry.recorded_at, results: entry.results as unknown as Json });
+          if (e) throw e;
+        } else localStorage.setItem(HEALTH_HISTORY_KEY, JSON.stringify(upsertDailyEntry(readLocalHealthHistory(), entry)));
+        setEntries(current => upsertDailyEntry(current, entry));
+        setError('');
+      } catch { setError('Die Retro konnte nicht automatisch gespeichert werden.'); }
+    }, 1200);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [complete, loading, resultsKey, session.user?.id, session.sessionId]);
   const remove = async (entry: HealthHistoryEntry) => {
     if (busy || !window.confirm('Diese gespeicherte Retro aus dem Verlauf löschen?')) return;
     setBusy(true); setError('');
@@ -73,21 +76,28 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   };
   const people = results.people.filter(p => entries.some(e => e.results.people.some(person => person.id === p.id)));
   const pastEntries = pastHealthHistory(entries);
+  void notice; void setNotice;
   const hasPast = pastEntries.length > 0;
   const latest = pastEntries[pastEntries.length - 1];
+  const review = yearReview(entries, results.people[0]?.id ?? '');
+  const thumbs = review ? readMemoryThumbs() : [];
+  const photo = thumbs[thumbs.length - 1];
   const timeline = [...pastEntries, {id:'current',owner_id:null,recorded_at:new Date().toISOString(),results}];
   const chart = timeline.map((e, i) => ({ index: i+1, date: e.id === 'current' ? 'Aktuell' : new Date(e.recorded_at).toLocaleDateString('de-DE'), ...Object.fromEntries(people.map(p => [p.id, historyScore(e.results.people.find(person => person.id === p.id)?.scores ?? [],topic)])) }));
   return <div className={`health-history ${open ? 'health-history-open' : ''}`}>
     <div className="health-history-actions">
       {hasPast && !loading && <ActionRow iconNode={<History size={16}/>} label="Verlauf" accent={categoryAccent} fieldBg={categoryColor} className="health-history-trigger" onClick={() => setOpen(value => !value)} />}
-      {complete && <ActionRow iconNode={<Save size={16}/>} label={busy ? 'Speichert …' : 'Retro speichern'} accent={categoryAccent} fieldBg={categoryColor} onClick={() => void save()} />}
     </div>
-    {!open && error && <p role="alert">{error}</p>}{!open && notice && <p role="status">{notice}</p>}
+    {!open && error && <p role="alert">{error}</p>}
+    {review && <section className="health-year-review" aria-label="Jahresrückblick">
+      <h3>Jahresrückblick · {review.count} Retros</h3>
+      {review.best && <p>Beste Kategorie: <strong>{review.best.title}</strong> ({review.best.score.toLocaleString('de-DE')}/5)</p>}
+      {review.change && review.change.delta !== 0 && <p>Größte Veränderung: <strong>{review.change.title}</strong> ({review.change.delta > 0 ? '+' : ''}{review.change.delta})</p>}
+      {photo && <figure><img src={photo.src} alt="Memory-Foto aus dem Jahr" /><figcaption>Memory vom {new Date(photo.at).toLocaleDateString('de-DE')}</figcaption></figure>}
+    </section>}
     {open && hasPast && <section className="health-history-content swiper-no-swiping" aria-label="Health Check im Verlauf">
       <h3>Health Check im Verlauf</h3>
-      <div className="health-history-save"><label>Retro-Datum<input type="date" value={date} onChange={e => setDate(e.target.value)} /></label><Button disabled={!complete || busy || loading || !date} onClick={() => void save()}><Save size={16}/>{busy ? 'Speichert …' : 'Retro speichern'}</Button></div>
-      {!complete && <p className="health-history-muted">Beantworte zuerst deine acht Health-Check-Fragen.</p>}
-      {error && <p role="alert">{error}</p>}{notice && <p role="status">{notice}</p>}
+      {error && <p role="alert">{error}</p>}
       <Select value={topic} onValueChange={setTopic}><SelectTrigger aria-label="Thema im Verlauf"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="average">Durchschnitt</SelectItem>{HEALTH_CATEGORIES.map(c => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}</SelectContent></Select>
       <div className="health-trends" aria-label="Trends zur letzten Retro">{people.map((person,i) => {
         const delta = healthTrend(person.scores,latest?.results.people.find(p=>p.id===person.id)?.scores ?? [],topic);
