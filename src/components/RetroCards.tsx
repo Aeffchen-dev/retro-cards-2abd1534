@@ -2454,7 +2454,6 @@ const RetroCards: React.FC = () => {
         </div>
 
         {/* Print-only: All slides with notes interleaved in correct order */}
-        {partnerSession.sessionId && <div className="partner-live-trigger"><PartnerConnection /></div>}
         <div className="hidden print-slides-container">
           {slides.map((slideId, index) => (
             <div key={`print-${slideId}`} className="contents">
