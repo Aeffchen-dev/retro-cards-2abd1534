@@ -107,3 +107,18 @@
 }
 @media (max-height: 650px) { .health-rating-items { gap: 12px; } .health-chart { min-height: 160px; } #root .intro-block:has(.partner-connect-trigger) .intro-lede { font-size: 16px; } }
 @media print { .partner-connect-trigger, .health-evaluate, .health-person-switch { display: none !important; } .health-chart { height: 300px; flex: none; } .health-ratings { min-height: 500px; } }
+/* Connection status dot on the "Partner einladen" button */
+.partner-trigger-label { display: inline-flex; align-items: center; gap: 8px; }
+.partner-status-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.partner-status-dot.is-connected { background: #2A8A10; }
+.partner-status-dot.is-pending { background: transparent; box-shadow: inset 0 0 0 1.5px #6E7078; }
+
+/* Live hint while the partner types */
+.partner-activity { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); z-index: 50; margin: 0; padding: 4px 12px; border-radius: 999px; background: var(--retro-black, #201C1D); color: #fff; font-size: 12px; line-height: 16px; white-space: nowrap; pointer-events: none; animation: partner-activity-in 200ms ease-out; }
+@keyframes partner-activity-in { from { opacity: 0; transform: translate(-50%, -4px); } }
+
+/* Desktop: visible arrows at the screen edges, phones keep swiping */
+.retro-edge-nav { display: flex; align-items: center; justify-content: center; color: var(--retro-black, #201C1D); }
+.retro-edge-nav svg { display: none; opacity: .55; transition: opacity 150ms; }
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) { .retro-edge-nav svg { display: block; } .retro-edge-nav:hover svg { opacity: 1; } }
+@media print { .partner-activity, .retro-edge-nav { display: none !important; } }
