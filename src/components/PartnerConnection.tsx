@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Users, Unplug, Share2 } from 'lucide-react';
+import { Users, Unplug, Share2, X } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
@@ -47,11 +47,11 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
         : busy ? <p role="status" className="text-sm text-muted-foreground">Einladungslink wird erstellt …</p>
         : s.error ? <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Erneut versuchen" onClick={connect} /> : null}
       </div> : <div className="space-y-4">
-        <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? s.online ? `${s.partner.display_name} ist verbunden` : 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>
-        {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
+        {s.partner && s.online
+          ? <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${s.partner.display_name} ist verbunden`} onClick={() => { setNotice(''); setConfirmDisconnect(true); }} />
+          : <p role="status" aria-live="polite">{s.partner ? 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>}
         <div className="flex items-center justify-between gap-2">
           {link && <Button variant="ghost" size="sm" disabled={busy} onClick={() => { void act(shareLink); }}><Share2 size={16}/> Link teilen</Button>}
-          {s.partner && <Button variant="ghost" size="sm" className="text-muted-foreground" disabled={busy} onClick={() => { setNotice(''); setConfirmDisconnect(true); }}><Unplug size={16} /> Verbindung trennen</Button>}
         </div>
       </div>}
       {notice && <p role="status" className="text-sm">{notice}</p>}{s.error && <p role="alert" className="text-sm text-destructive">{s.error}</p>}
