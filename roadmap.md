@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Current request
+- [x] Simplify Health Check to one topic per card in shared question typography; remove captions, top controls and evaluation CTA. Chart has full axis labels and open missing-answer marks; mobile/desktop checked.
+- [x] Add Setup partner connection; publish Setup and current question alongside all existing text and scale answers in the read-only live partner view.
+- [ ] Verify live partner updates after these changes — blocked: no signed-up account available for an authenticated browser test.
 - [x] Save dated Health Check snapshots locally or privately for connected partners; cloud schema and access policies confirmed.
 - [x] Show chronological partner trends with per-topic selection; two local retros saved and read after reload on mobile/desktop, both partner lines and +4/-4 changes verified.
 - [ ] Verify cloud history saving in an authenticated browser — blocked: no signed-up auth users; session minting failed.
