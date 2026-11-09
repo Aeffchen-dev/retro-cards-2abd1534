@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Users, Copy, Unplug, Share2 } from 'lucide-react';
+import { Users, Copy, Unplug, Share2, Send } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
+import { canResendInvitation } from './partner-invitation-data';
 
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
   const s = usePartnerSession();
@@ -24,7 +25,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Einladung ausstehend' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Partner einladen?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teile euren Einladungslink, um die Retro gemeinsam zu machen. Sobald ihr verbunden seid, seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.' : 'Teile den Link und lade deine Partner zur Retro ein. Mit einer bestehenden Verbindung seht ihr live, was die anderen schreiben oder auswählen. Eure eigenen Antworten bleiben getrennt und lassen sich in der Auswertung vergleichen.'}</SheetDescription></SheetHeader>
       {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
@@ -37,9 +38,9 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
         <Button variant="outline" className="w-full" disabled={busy || !name.trim() || !code} onClick={() => act(() => s.connect(name, code))}>Retro beitreten</Button>
         <p className="text-sm text-muted-foreground">In dieser Retro teilt ihr eure Texte und Auswahlen miteinander.</p>
       </div> : <div className="space-y-4">
-        <p>{s.partner ? `Mit ${s.partner.display_name} verbunden` : 'Warte auf deinen Partner'}</p>
+        <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? `Einladung angenommen · ${s.partner.display_name} ist verbunden` : s.invitation === 'pending' ? 'Einladung ausstehend · Noch niemand beigetreten' : 'Einladungsstatus wird geprüft …'}</p>
         <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
-        {s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div></>}
+        {s.invite && <><Input readOnly aria-label="Einladungslink" value={link} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={canResendInvitation(s.invitation, s.invite) ? <Send size={16}/> : <Share2 size={16}/>} iconColor="var(--retro-black)" label={canResendInvitation(s.invitation, s.invite) ? 'Erneut senden' : 'Link teilen'} onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div></>}
         <Button variant="outline" disabled={busy} onClick={() => act(s.leave)}><Unplug size={16} /> Verbindung trennen</Button>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
       </div>}

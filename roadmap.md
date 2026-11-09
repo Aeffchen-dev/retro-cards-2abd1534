@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [ ] Show live pending/accepted invitation status and resend the existing pending invite through native sharing; verify status rules and UI. Real-account verification blocked by no signed-up accounts.
 - [x] Enlarge evaluation further, match category CTA colours, show Verlauf only for past retros and compare current results in trends. Mobile/desktop verified with and without dated local history; 190 tests pass. Connected-account checks remain blocked by unavailable signed-up accounts.
 - [x] Restore smooth earlier question family; Health Check category in outlined black pill above top-aligned question, scale 28px below. Mobile/desktop verified; 188 tests pass.
 - [x] Remove email, Google and Lovable sign-in from Zu zweit verbinden; retain link sharing without exposing private answers anonymously.

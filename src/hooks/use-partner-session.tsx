@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, Re
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
+import { invitationStatus } from '@/components/partner-invitation-data';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string };
 type Member = { user_id: string; display_name: string; answers: Json };
@@ -9,6 +10,7 @@ function useSession() {
   const [user, setUser] = useState<User | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(() => localStorage.getItem('partner-session-id'));
   const [members, setMembers] = useState<Member[]>([]);
+  const [loadedSessionId, setLoadedSessionId] = useState<string | null>(null);
   const [invite, setInvite] = useState('');
   const [error, setError] = useState('');
   const [online, setOnline] = useState(false);
@@ -26,9 +28,10 @@ function useSession() {
     setMembers(data ?? []);
     const { data: room } = await supabase.from('retro_sessions').select('invite_code').eq('id', sessionId).maybeSingle();
     setInvite(room?.invite_code ?? '');
+    setLoadedSessionId(sessionId);
   }, [sessionId, user]);
   useEffect(() => {
-    if (!sessionId || !user) { setMembers([]); setOnline(false); return; }
+    if (!sessionId || !user) { setMembers([]); setInvite(''); setLoadedSessionId(null); setOnline(false); return; }
     void refresh();
     const channel = supabase.channel(`partner-${sessionId}-${crypto.randomUUID()}`).on('postgres_changes', { event: '*', schema: 'public', table: 'retro_members', filter: `session_id=eq.${sessionId}` }, () => void refresh()).subscribe(status => {
       setOnline(status === 'SUBSCRIBED');
@@ -63,7 +66,8 @@ function useSession() {
   };
   const partner = members.find(m => m.user_id !== user?.id);
   const partnerAnswers = (partner?.answers ?? {}) as DeckSnapshot;
-  return { user, sessionId, members, partner, partnerAnswers, invite, error, setError, online, publish, connect, leave };
+  const invitation = invitationStatus(sessionId, user?.id, members, loadedSessionId === sessionId);
+  return { user, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, connect, leave };
 }
 const PartnerContext = createContext<ReturnType<typeof useSession> | null>(null);
 export function PartnerSessionProvider({ children }: { children: ReactNode }) { const value = useSession(); return <PartnerContext.Provider value={value}>{children}</PartnerContext.Provider>; }
