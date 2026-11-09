@@ -26,8 +26,8 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, onEval
       <h2 className="retro-heading">Euer Health Check</h2>
       <div className="health-chart"><ResponsiveContainer width="100%" height="100%"><RadarChart data={data} outerRadius="65%">
         <PolarGrid stroke="var(--retro-info-rule)" /><PolarAngleAxis dataKey="axis" tick={{ fill: 'var(--color-text-primary)', fontSize: 12 }} /><PolarRadiusAxis domain={[0,5]} tickCount={6} tick={false} axisLine={false} />
-        {completeOwn && <Radar name={ownName} dataKey="own" stroke="var(--health-partner-one)" fill="var(--health-partner-one)" fillOpacity={0.12} strokeWidth={2} dot={{ r: 3 }} />}
-        {completeOther && <Radar name={otherName} dataKey="other" stroke="var(--health-partner-two)" fill="var(--health-partner-two)" fillOpacity={0.08} strokeWidth={2} dot={{ r: 3 }} />}
+        {completeOwn && <Radar isAnimationActive={false} name={ownName} dataKey="own" stroke="var(--health-partner-one)" fill="var(--health-partner-one)" fillOpacity={0.12} strokeWidth={2} dot={{ r: 3 }} />}
+        {completeOther && <Radar isAnimationActive={false} name={otherName} dataKey="other" stroke="var(--health-partner-two)" fill="var(--health-partner-two)" fillOpacity={0.08} strokeWidth={2} dot={{ r: 3 }} />}
       </RadarChart></ResponsiveContainer></div>
       <div className="health-legend"><span className="health-one">{ownName}</span><span className="health-two">{otherName}{!completeOther ? ' · noch nicht vollständig' : ''}</span></div>
       {!completeOwn && <p className="text-sm text-muted-foreground">Deine Bewertung ist noch nicht vollständig.</p>}

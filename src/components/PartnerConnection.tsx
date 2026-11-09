@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable';
 import '@lovable.dev/cloud-auth-js/styles.css';
 import { usePartnerSession } from '@/hooks/use-partner-session';
+import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
 
 export default function PartnerConnection() {
   const s = usePartnerSession();
@@ -55,5 +56,17 @@ function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSess
   const labels: Record<string,string> = { postIts: 'To talk about', takeaways: 'Takeaways', reflection: 'Feedback', nice: 'Perspektivwechsel', thanks: 'Danke für', unspoken: 'Letzte Chance' };
   for (const group of ['postIts','takeaways','reflection'] as const) for (const [key,value] of Object.entries(answers[group] ?? {})) if (value) rows.push([labels[key] ?? labels[group], value]);
   for (const [slide,fields] of Object.entries(answers.notes ?? {})) for (const [key,value] of Object.entries(fields)) if (value && !key.startsWith('hc_') && !key.startsWith('work_') && key !== 'scale') rows.push([slide === '105' || Number(slide) >= 200 ? 'Health Check' : slide === '7' ? 'Intimacy' : slide === '104' ? 'Ideas' : 'Notizen', value]);
+  for (const category of HEALTH_CATEGORIES) {
+    const rating = healthScore(answers.notes?.['105']?.[`hc_p0_${category.id}`]);
+    if (rating !== null) rows.push([category.title, `${rating}/5`]);
+  }
+  const intimacy = answers.notes?.['7']?.scale;
+  if (intimacy !== undefined && intimacy !== '') rows.push(['Körperliche Intimität', `${Math.round(Number(intimacy)/25)+1}/5`]);
+  for (const [slide, positions] of Object.entries(answers.positions ?? {})) {
+    if (slide !== '1' && slide !== '2') continue;
+    for (const [person, position] of Object.entries((positions ?? {}) as Record<string,{ faceIndex?: number }>)) {
+      if (typeof position.faceIndex === 'number') rows.push([slide === '1' ? 'Persönliches Gefühl' : 'Beziehungsgefühl', `${person === 'p0' ? 'Eigene Auswahl' : 'Partner-Auswahl'}: ${['😭','🙁','😐','🙂','😄'][position.faceIndex] ?? '–'}`]);
+    }
+  }
   return rows.length ? <dl>{rows.map(([label,value],i) => <div key={i}><dt>{label}</dt><dd>{value}</dd></div>)}</dl> : <p className="text-sm text-muted-foreground">Noch keine Texte geteilt.</p>;
 }
