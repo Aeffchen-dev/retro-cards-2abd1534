@@ -26,4 +26,3 @@
 - Keep per-card behaviour behind an opt-in flag on the shared component so siblings stay untouched, and let print normalise rather than rewrite saved answers; derive card colours from the shared colour helpers and theme overrides, passing real values to shared fields so their contrast lightening works.
 
 - Health Check history saves itself once all own answers exist, one entry per day replaced in place (`upsertDailyEntry`), so users never need a save action; the year review derives from the latest twelve entries and on-device Memory thumbnails.
-- Before/after mood cards share one notes namespace and pure bounded comparison helpers; use the existing scale and partner snapshot so persistence, print and own-answer-first stay consistent without altering Health Check scores.
