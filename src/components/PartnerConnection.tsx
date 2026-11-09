@@ -5,11 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
-import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
 import { invitationName } from './partner-invitation-data';
-import { revealSelection } from './partner-answer-visibility';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
-import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
 
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
   const s = usePartnerSession();
