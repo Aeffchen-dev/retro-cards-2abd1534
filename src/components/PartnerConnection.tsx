@@ -7,6 +7,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
 import { canResendInvitation } from './partner-invitation-data';
+import { revealSelection } from './partner-answer-visibility';
+import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
 
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
   const s = usePartnerSession();
@@ -52,21 +54,25 @@ function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSess
   const session = usePartnerSession();
   const ownAnswers = session.members.find(member => member.user_id === session.user?.id)?.answers as ReturnType<typeof usePartnerSession>['partnerAnswers'] | undefined;
   const rows: [string, string][] = [];
-  if (answers.setup) {
-    rows.push(['Setup', [ `${answers.setup.emoji1} ${answers.setup.name1}`, `${answers.setup.emoji2} ${answers.setup.name2}`, ...answers.setup.extraPartners.map(p => `${p.emoji} ${p.name}`), answers.setup.openRelationship ? 'Nicht monogam' : 'Monogam' ].join(' · ')]);
-  }
-  if (answers.question) rows.push(['Aktuelle Frage', answers.question]);
   const labels: Record<string,string> = { postIts: 'To talk about', takeaways: 'Takeaways', reflection: 'Feedback', nice: 'Perspektivwechsel', thanks: 'Danke für', unspoken: 'Letzte Chance' };
   for (const group of ['postIts','takeaways','reflection'] as const) for (const [key,value] of Object.entries(answers[group] ?? {})) if (value) rows.push([labels[key] ?? labels[group], value]);
-  for (const [slide,fields] of Object.entries(answers.notes ?? {})) for (const [key,value] of Object.entries(fields)) if (value && !key.startsWith('hc_') && !key.startsWith('work_') && key !== 'scale') rows.push([slide === '105' || Number(slide) >= 200 ? 'Health Check' : slide === '7' ? 'Intimacy' : slide === '104' ? 'Ideas' : 'Notizen', value]);
+  const statementKeys = new Set<string>([...RISIKO_STATEMENTS, RISIKO_HOT].map(([key]) => key));
+  for (const [slide,fields] of Object.entries(answers.notes ?? {})) for (const [key,value] of Object.entries(fields)) {
+    if (!value || key.startsWith('hc_') || key.startsWith('work_') || key === 'scale') continue;
+    if ((slide === '105' || Number(slide) >= 200) && statementKeys.has(key)) {
+      if (revealSelection(ownAnswers?.notes?.[slide]?.[key], value) !== undefined) rows.push(['Health Check', value]);
+    } else rows.push([slide === '105' || Number(slide) >= 200 ? 'Health Check' : slide === '7' ? 'Intimacy' : slide === '104' ? 'Ideas' : 'Notizen', value]);
+  }
   for (const category of HEALTH_CATEGORIES) {
     const rating = healthScore(answers.notes?.['105']?.[`hc_p0_${category.id}`]);
     if (rating !== null && healthScore(ownAnswers?.notes?.['105']?.[`hc_p0_${category.id}`]) !== null) rows.push([category.title, `${rating}/5`]);
   }
-  const intimacy = answers.notes?.['7']?.scale;
+  const intimacy = revealSelection(ownAnswers?.notes?.['7']?.scale, answers.notes?.['7']?.scale);
   if (intimacy !== undefined && intimacy !== '') rows.push(['Körperliche Intimität', `${Math.round(Number(intimacy)/25)+1}/5`]);
   for (const [slide, positions] of Object.entries(answers.positions ?? {})) {
     if (slide !== '1' && slide !== '2') continue;
+    const ownPositions = ownAnswers?.positions?.[slide] as Record<string,{faceIndex?: number}> | undefined;
+    if (revealSelection(ownPositions?.p0?.faceIndex, 'answered') === undefined) continue;
     for (const [person, position] of Object.entries((positions ?? {}) as Record<string,{ faceIndex?: number }>)) {
       if (typeof position.faceIndex === 'number') rows.push([slide === '1' ? 'Persönliches Gefühl' : 'Beziehungsgefühl', `${person === 'p0' ? 'Eigene Auswahl' : 'Partner-Auswahl'}: ${['😭','🙁','😐','🙂','😄'][position.faceIndex] ?? '–'}`]);
     }
