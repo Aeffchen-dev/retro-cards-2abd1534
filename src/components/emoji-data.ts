@@ -119,7 +119,7 @@ const KEYWORDS: Record<string, string> = {
   '🐶': 'hund wauzi', '🐱': 'katze miau', '🐰': 'hase kaninchen',
   '🦊': 'fuchs', '🐻': 'bär', '🐼': 'panda', '🦄': 'einhorn',
   '🐝': 'biene honig', '🦋': 'schmetterling', '🐬': 'delfin',
-  '🌹': 'rose blume', '🌻': 'sonnenblume blume', '🌷': 'tulpe blume',
+  '🌻': 'sonnenblume blume', '🌷': 'tulpe blume',
   '🌸': 'blüte kirsch', '🍀': 'glück klee', '🌙': 'mond nacht',
   '☀️': 'sonne sommer', '⭐': 'stern', '✨': 'funkel glitzer',
   '🌈': 'regenbogen', '🔥': 'feuer heiss hot', '🌊': 'welle meer',

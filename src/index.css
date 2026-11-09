@@ -1874,6 +1874,7 @@ textarea.bg-retro-post-it:focus,
 .emoji-search {
   width: 100%;
   height: 32px;
+  flex-shrink: 0;
   padding: 0 10px;
   border: none;
   border-radius: 0;
