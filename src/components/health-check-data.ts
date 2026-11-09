@@ -23,6 +23,10 @@ export function revealedPartnerResults(own: (number | null)[], partner: (number 
   return partner.map((score, index) => own[index] != null ? score : null);
 }
 
+export function evaluationNames(names: string[], connected: boolean) {
+  return connected ? names : [];
+}
+
 export function answeredHealthTopics(own: (number | null)[], other: (number | null)[]) {
   return HEALTH_CATEGORIES.flatMap((_, index) => own[index] != null || other[index] != null ? [index] : []);
 }

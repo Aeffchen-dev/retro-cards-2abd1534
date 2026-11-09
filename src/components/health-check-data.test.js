@@ -1,9 +1,13 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { healthScore, healthResults, HEALTH_CATEGORIES, healthScaleValue, healthScaleScore, answeredHealthTopics, revealedPartnerResults } from './health-check-data';
+import { healthScore, healthResults, HEALTH_CATEGORIES, healthScaleValue, healthScaleScore, answeredHealthTopics, revealedPartnerResults, evaluationNames } from './health-check-data';
 test('ratings are bounded from 1 to 5', () => {
   assert.equal(healthScore('1'),1); assert.equal(healthScore('5'),5);
   for (const n of ['0','6','2.5','',undefined,'NaN']) assert.equal(healthScore(n),null);
+});
+test('evaluation names appear only with a connected other player', () => {
+  assert.deepEqual(evaluationNames(['Jana', 'Niklas'], false), []);
+  assert.deepEqual(evaluationNames(['Jana', 'Niklas'], true), ['Jana', 'Niklas']);
 });
 test('the screenshot supplies eight separate rating axes', () => {
   assert.equal(HEALTH_CATEGORIES.length,8);

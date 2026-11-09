@@ -1,6 +1,6 @@
 import HealthCheckChart from './HealthCheckChart';
 import { StatementScale } from './RisikoSlide';
-import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore, revealedPartnerResults } from './health-check-data';
+import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore, revealedPartnerResults, evaluationNames } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
@@ -17,7 +17,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
   if (pageIndex === 8) {
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
-      <HealthCheckChart own={own} other={other} names={[ownName??'Ich',otherName??'Partner']}/>
+      <HealthCheckChart own={own} other={other} names={evaluationNames([ownName??'Ich',otherName??'Partner'], Boolean(s.partner))}/>
       <HealthCheckHistory complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
         { id: s.user?.id ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
         { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
