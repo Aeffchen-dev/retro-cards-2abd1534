@@ -122,7 +122,7 @@ body, input, textarea, select, button { font-family: var(--font-app); }
     --retro-info-ink: #3F4147;
     /* the card's own padding, as a token: the note keeps this much air under
        itself, and the card's edges stand this clear of its content */
-    --retro-card-pad: 28px;
+    --retro-card-pad: 24px;
     --intimacy-accent: #FF6BEF;
     --health-partner-one: #2A8A10;
     --health-partner-two: #14532D;
