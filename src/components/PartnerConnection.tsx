@@ -17,19 +17,19 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const link = s.invite ? `${location.origin}${location.pathname}?join=${s.invite}` : `${location.origin}${location.pathname}`;
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
   const shareLink = async () => {
+    setNotice(''); s.setError('');
     if (navigator.share) {
       try { await navigator.share({title:'Unsere gemeinsame Retro',text:'Mach mit bei unserer Retro.',url:link}); }
       catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; }
-    } else { await navigator.clipboard.writeText(link); setNotice('Link kopiert'); }
+    } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : 'Zu zweit verbinden'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setOpen(true); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Zu zweit verbinden?</SheetTitle><SheetDescription className="partner-sheet-description">Teile euren Einladungslink mit deinem Partner. Sobald ihr beide angemeldet und verbunden seid, seht ihr eure Texte und Auswahlen auf allen Karten live. Eure eigenen Antworten bleiben getrennt; eure Health-Check-Ergebnisse könnt ihr gemeinsam vergleichen.</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">Zu zweit verbinden?</SheetTitle><SheetDescription className="partner-sheet-description">{s.sessionId ? 'Teile euren Link. Verbunden seht ihr eure Antworten live und vergleicht eure Ergebnisse.' : 'Teile die Retro mit deinem Partner. Live-Antworten sind nur mit einer bestehenden Verbindung verfügbar.'}</SheetDescription></SheetHeader>
       {s.user && !s.sessionId && <p className="text-sm text-muted-foreground">Starte eine Retro, um einen privaten Einladungslink zu erhalten.</p>}
       {!s.user ? <div className="space-y-3">
         <ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />
-        <p className="text-sm text-muted-foreground">Dieser Link öffnet die Retro. Ohne Anmeldung werden eure Antworten noch nicht live miteinander geteilt.</p>
       </div> : !s.sessionId ? <div className="space-y-3">
         <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />
         <Button className="w-full" disabled={busy || !name.trim()} onClick={() => act(() => s.connect(name))}>Retro starten</Button>
