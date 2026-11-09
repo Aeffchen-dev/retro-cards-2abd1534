@@ -1,5 +1,10 @@
 # Roadmap
 
+## Current request
+- [ ] Add a private partner connection on Intro with live notes and selections.
+- [ ] Replace Health Check content after its first two cards with the eight screenshot categories.
+- [ ] Add Auswerten with both partners' results in a radar chart; verify sharing and results.
+
 ## Done
 - [x] Added a separate question-font preview with round, technical and serif tabs on the same sample card; the deck typography and saved answers stay unchanged.
 - [x] Big question headline reads a smooth face: the chain is now `"Stack Sans Notch", "Stack Sans Text", "Figtree", Arial, sans-serif` at weight 400 in both the shared `#root` rule and the `.retro-title, .retro-heading` block, so the bundled sliced "Stack Sans Notch Local" file can never paint the headline again (user: "headline nicht die mitgelieferte Schrift" → "nein die andere" → "Ohne Einschnitte"). 176 checks pass, build OK, print 18 pages.

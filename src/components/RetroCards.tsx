@@ -13,6 +13,9 @@ import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import { Camera } from "lucide-react";
 import BgVector from "@/components/BgVector";
+import HealthCheckRatings from './HealthCheckRatings';
+import PartnerConnection from './PartnerConnection';
+import { usePartnerSession } from '@/hooks/use-partner-session';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -285,6 +288,7 @@ const migrateMovedAnswers = () => {
 };
 
 const RetroCards: React.FC = () => {
+  const partnerSession = usePartnerSession();
   // The moved questions' answers are put where they belong before any card reads them.
   migrateMovedAnswers();
   // Initialize currentCard from localStorage synchronously for initialSlide
@@ -391,7 +395,7 @@ const RetroCards: React.FC = () => {
   // question and the intro sentence on top of its scales.
   const [risikoFirstPage, setRisikoFirstPage] = useState(RISIKO_PER_PAGE);
   const riskPages = useMemo(() => risikoPages(persons.map(p => p.key), risikoPerPage, risikoFirstPage), [persons, risikoPerPage, risikoFirstPage]);
-  const riskSlideIds = useMemo(() => riskPages.map((_, i) => i === 0 ? SLIDE_RISIKO : RISIKO_CONTINUATION + i - 1), [riskPages]);
+  const riskSlideIds = useMemo(() => [SLIDE_RISIKO, 200, 201, 202, 203], []);
 
 
   // State for reflection slide post-its
@@ -461,7 +465,7 @@ const RetroCards: React.FC = () => {
   // reflection(102), dates(5), intimacy(7)
   const slidesWithEditButton = [1, 2, 3, 7];
   // Every Risikofaktoren page gets a Notizen CTA like the Health Check slides
-  const hasEditButton = (slideId: number) => slidesWithEditButton.includes(slideId) || isRisikoSlide(slideId);
+  const hasEditButton = (slideId: number) => slidesWithEditButton.includes(slideId);
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
@@ -608,6 +612,10 @@ const RetroCards: React.FC = () => {
     if (isInitialMount.current) return;
     saveToStorage(STORAGE_KEYS.REFLECTION_TEXTS, reflectionTexts);
   }, [reflectionTexts]);
+
+  useEffect(() => {
+    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions });
+  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, partnerSession.publish]);
 
   // Toggle edit mode for a slide
   const toggleEditMode = useCallback((slideIndex: number) => {
@@ -1705,6 +1713,7 @@ const RetroCards: React.FC = () => {
                 <p>Und ganz nebenbei bekommt eure Beziehung ein Upgrade: Entlarvt ungesunde Muster, entdeckt, was euch wirklich zusammenschweißt, und macht mehr von dem, was eure Connection besonders macht.</p>
                 <p>Hört einander zu, bleibt neugierig und denkt immer daran: Ihr seid ein Team.</p>
               </div>
+              <PartnerConnection />
             </div>
           </div>
         );
@@ -1931,30 +1940,11 @@ const RetroCards: React.FC = () => {
           deck and skip it. Its overflowing area simply scrolls instead. */}
       case riskSlideIds.find(id => id === cardIndex):
         return (
-          <RisikoSlide
-            page={riskPages[riskSlideIds.indexOf(cardIndex)]}
-            persons={persons}
-            pill={BRAND.neonGreen}
-            onOverflow={(() => {
-              // The chapter card carries the big question and the intro sentence,
-              // so on a short card it drops to one statement first while every
-              // other card keeps two; only when even one statement does not fit
-              // does the whole chapter fall back to one statement per card.
-              const pageIndex = riskSlideIds.indexOf(cardIndex);
-              if (!riskPages[pageIndex]?.statements.length) return undefined;
-              if (pageIndex === 0 && risikoFirstPage > 1) return () => setRisikoFirstPage(1);
-              return risikoPerPage > 1 ? () => setRisikoPerPage(1) : undefined;
-            })()}
-
-            onEdit={() => toggleEditMode(cardIndex)}
+          <HealthCheckRatings
+            pageIndex={riskSlideIds.indexOf(cardIndex)}
+            names={persons.map(p => p.name)}
+            onEvaluate={() => swiperRef?.slideTo(slides.indexOf(203))}
             values={editModeNotes[SLIDE_RISIKO] || {}}
-            onWorkloadChange={(shares) => setEditModeNotes(prev => ({
-              ...prev,
-              [SLIDE_RISIKO]: {
-                ...prev[SLIDE_RISIKO],
-                ...Object.fromEntries(Object.entries(shares).map(([key, value]) => [`work_${key}`, String(value)])),
-              },
-            }))}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
               [SLIDE_RISIKO]: { ...prev[SLIDE_RISIKO], [key]: value },
@@ -2469,6 +2459,7 @@ const RetroCards: React.FC = () => {
         </div>
 
         {/* Print-only: All slides with notes interleaved in correct order */}
+        {partnerSession.sessionId && <div className="partner-live-trigger"><PartnerConnection /></div>}
         <div className="hidden print-slides-container">
           {slides.map((slideId, index) => (
             <div key={`print-${slideId}`} className="contents">
