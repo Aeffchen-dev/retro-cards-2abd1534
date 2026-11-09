@@ -33,6 +33,11 @@
 .health-evaluate { align-self: flex-start; flex-shrink: 0; margin-top: 8px; }
 .health-progress { font-size: 12px; color: var(--retro-info-text); margin-left: 8px; }
 .health-history-trigger { align-self: flex-start; flex-shrink: 0; }
+.health-results { overflow-y: auto; overscroll-behavior: contain; }
+.health-results > .health-chart { flex: 1 0 auto; min-height: 320px; }
+.health-history { margin-top: auto; flex-shrink: 0; width: 100%; }
+.health-history-content { display: grid; gap: 16px; padding-top: 16px; margin-top: 8px; border-top: 1px solid var(--retro-info-rule); }
+.health-chart-empty { justify-content: center; color: var(--retro-info-text); }
 .health-history-dialog { width: calc(100% - 32px); max-width: 680px; max-height: calc(100dvh - 40px); overflow-y: auto; color: var(--color-text-primary); }
 .health-history-save { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; }
 .health-history-save label { display: grid; gap: 6px; font-size: 12px; }
@@ -43,7 +48,7 @@
 .health-history-table [role="columnheader"] { font-weight: 600; overflow-wrap: anywhere; }
 .health-history-table small { display: block; color: var(--retro-info-text); font-size: 12px; }
 .health-history-muted, .health-history-empty { font-size: 14px; color: var(--retro-info-text); }
-@media print { .health-history-trigger { display: none !important; } }
+@media print { .health-history { display: none !important; } }
 .health-results > h2 { font-size: 30px; }
 .health-chart { width: 100%; min-height: 220px; flex: 1; }
 .health-legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
