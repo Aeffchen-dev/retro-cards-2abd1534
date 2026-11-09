@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 const css = readFileSync(new URL("./health-check.css", import.meta.url), "utf8");
 
 /** The rule block for one selector, up to the next closing brace. */
-const block = (selector: string) => {
+const block = (selector) => {
   const at = css.indexOf(selector + " {");
   expect(at, `rule for ${selector}`).toBeGreaterThan(-1);
   return css.slice(at, css.indexOf("}", at));
