@@ -3,6 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { invitationStatus } from '@/components/partner-invitation-data';
+import { PARTNER_REFRESH_INTERVAL_MS, updatePartnerMember } from './partner-live-data';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string };
 type Member = { user_id: string; display_name: string; answers: Json };
@@ -33,11 +34,28 @@ function useSession() {
   useEffect(() => {
     if (!sessionId || !user) { setMembers([]); setInvite(''); setLoadedSessionId(null); setOnline(false); return; }
     void refresh();
-    const channel = supabase.channel(`partner-${sessionId}-${crypto.randomUUID()}`).on('postgres_changes', { event: '*', schema: 'public', table: 'retro_members', filter: `session_id=eq.${sessionId}` }, () => void refresh()).subscribe(status => {
+    const channel = supabase.channel(`partner-${sessionId}-${crypto.randomUUID()}`).on('postgres_changes', { event: '*', schema: 'public', table: 'retro_members', filter: `session_id=eq.${sessionId}` }, payload => {
+      const updated = payload.new;
+      if (payload.eventType !== 'DELETE' && 'user_id' in updated && typeof updated.user_id === 'string' && typeof updated.display_name === 'string' && updated.answers && typeof updated.answers === 'object') {
+        setMembers(current => updatePartnerMember(current, { user_id: updated.user_id, display_name: updated.display_name, answers: updated.answers }));
+      } else void refresh();
+    }).subscribe(status => {
       setOnline(status === 'SUBSCRIBED');
       if (status === 'SUBSCRIBED') void refresh();
     });
-    return () => { void supabase.removeChannel(channel); };
+    // Catch up after mobile suspension or a silently stalled realtime connection.
+    const catchUp = () => { if (document.visibilityState === 'visible') void refresh(); };
+    const interval = setInterval(catchUp, PARTNER_REFRESH_INTERVAL_MS);
+    window.addEventListener('focus', catchUp);
+    window.addEventListener('online', catchUp);
+    document.addEventListener('visibilitychange', catchUp);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', catchUp);
+      window.removeEventListener('online', catchUp);
+      document.removeEventListener('visibilitychange', catchUp);
+      void supabase.removeChannel(channel);
+    };
   }, [sessionId, user, refresh]);
   const publish = useCallback((value: DeckSnapshot) => {
     snapshot.current = value;
