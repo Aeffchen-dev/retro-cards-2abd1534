@@ -1,9 +1,9 @@
 # Roadmap
 
 ## Current request
-- [ ] Add a private partner connection on Intro with live notes and selections.
-- [ ] Replace Health Check content after its first two cards with the eight screenshot categories.
-- [ ] Add Auswerten with both partners' results in a radar chart; verify sharing and results.
+- [x] Add a private partner connection on Intro with live notes and selections.
+- [x] Replace Health Check content after its first two cards with the eight screenshot categories, two per card.
+- [x] Add Auswerten with both partners' results in a radar chart; verified two authenticated browsers, live text readback, independent ratings and outsider access denial. 179 tests passed.
 
 ## Done
 - [x] Added a separate question-font preview with round, technical and serif tabs on the same sample card; the deck typography and saved answers stay unchanged.
@@ -24,7 +24,7 @@
 ## Open
 - [x] Every card in the slider now wears one measure: the container's height capped at 88% (345×636 on a phone, 500×764 on a 1440×900 desktop), no per-card exception, no desktop-only ceiling, no card scrolling its own content; 175 checks pass.
 - [x] "Notizen öffnen": the grey pencil tile lost its outline everywhere (user: "EDIT PEN BACKGROUND NO OURLINE"); the ℹ-Icon stays as it is (user: "So lassen"); the big question font draws one weight heavier (400 → 500); the grey vertical guides confirmed at 1px; 176 checks pass.
-- [ ] The rule now passes straight behind the unfilled smileys (their own ask: "grey full = grey outline no fill"). If they'd rather the line stopped at each face's edge, the faces need a plate of the card's surface again — waiting on the user's call.
+- [x] Superseded: the old statement-scale appearance decision no longer applies to the replaced Health Check cards; historical answer data is preserved.
 - [x] Setup card back to yesterday's caps: at most 500px wide and 720px tall, always in that 500:720 proportion (measured 469×674 on an 873×755 window).
 - [x] "Kamera öffnen": the camera glyph reads light orange (#FFE0B5) on the slide's purple tile — pale enough to clear 3.5:1 there.
 - [x] Phones: the scale column names are as big as their column can hold in three lines — `min(calc(100cqw / 5 / 4.35), 18px)` (13.3px on a 393px phone, 9.9px on a 320px one, every name ≤3 lines, no word cut); tablet/desktop/paper keep their two-line size. 176 checks pass, print 18 pages.
