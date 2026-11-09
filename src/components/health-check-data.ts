@@ -19,6 +19,10 @@ export function healthResults(values: Record<string, string>, person: string) {
   return HEALTH_CATEGORIES.map(c => healthScore(values[`hc_${person}_${c.id}`]));
 }
 
+export function revealedPartnerResults(own: (number | null)[], partner: (number | null)[]) {
+  return partner.map((score, index) => own[index] != null ? score : null);
+}
+
 export function answeredHealthTopics(own: (number | null)[], other: (number | null)[]) {
   return HEALTH_CATEGORIES.flatMap((_, index) => own[index] != null || other[index] != null ? [index] : []);
 }

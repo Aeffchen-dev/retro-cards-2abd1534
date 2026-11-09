@@ -49,6 +49,8 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   </Sheet>;
 }
 function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSession>['partnerAnswers'] }) {
+  const session = usePartnerSession();
+  const ownAnswers = session.members.find(member => member.user_id === session.user?.id)?.answers as ReturnType<typeof usePartnerSession>['partnerAnswers'] | undefined;
   const rows: [string, string][] = [];
   if (answers.setup) {
     rows.push(['Setup', [ `${answers.setup.emoji1} ${answers.setup.name1}`, `${answers.setup.emoji2} ${answers.setup.name2}`, ...answers.setup.extraPartners.map(p => `${p.emoji} ${p.name}`), answers.setup.openRelationship ? 'Nicht monogam' : 'Monogam' ].join(' · ')]);
@@ -59,7 +61,7 @@ function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSess
   for (const [slide,fields] of Object.entries(answers.notes ?? {})) for (const [key,value] of Object.entries(fields)) if (value && !key.startsWith('hc_') && !key.startsWith('work_') && key !== 'scale') rows.push([slide === '105' || Number(slide) >= 200 ? 'Health Check' : slide === '7' ? 'Intimacy' : slide === '104' ? 'Ideas' : 'Notizen', value]);
   for (const category of HEALTH_CATEGORIES) {
     const rating = healthScore(answers.notes?.['105']?.[`hc_p0_${category.id}`]);
-    if (rating !== null) rows.push([category.title, `${rating}/5`]);
+    if (rating !== null && healthScore(ownAnswers?.notes?.['105']?.[`hc_p0_${category.id}`]) !== null) rows.push([category.title, `${rating}/5`]);
   }
   const intimacy = answers.notes?.['7']?.scale;
   if (intimacy !== undefined && intimacy !== '') rows.push(['Körperliche Intimität', `${Math.round(Number(intimacy)/25)+1}/5`]);

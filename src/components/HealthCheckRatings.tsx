@@ -1,6 +1,6 @@
 import HealthCheckChart from './HealthCheckChart';
 import { StatementScale } from './RisikoSlide';
-import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore } from './health-check-data';
+import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore, revealedPartnerResults } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
@@ -11,7 +11,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
   const actualPerson = 'p0';
   const own = healthResults(values, actualPerson);
   const remote = healthResults(s.partnerAnswers.notes?.['105'] ?? {}, 'p0');
-  const other = s.sessionId ? remote : healthResults(values, 'p1');
+  const other = revealedPartnerResults(own, s.sessionId ? remote : healthResults(values, 'p1'));
   const ownName = s.members.find(m => m.user_id === s.user?.id)?.display_name ?? names[0];
   const otherName = s.partner?.display_name ?? names[1];
   if (pageIndex === 8) {
@@ -27,7 +27,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
   return <section className="health-ratings" aria-label="Health Check Bewertungen">
     <div className="health-rating-items">{HEALTH_CATEGORIES.slice(pageIndex,pageIndex+1).map(c => {
       const score = healthScore(values[`hc_${actualPerson}_${c.id}`]);
-      const otherScore = s.sessionId ? healthScore(s.partnerAnswers.notes?.['105']?.[`hc_p0_${c.id}`]) : healthScore(values[`hc_${actualPerson === 'p0' ? 'p1' : 'p0'}_${c.id}`]);
+      const otherScore = other[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] ?? null;
       return <div key={c.id} className="health-rating-item"><div className="health-rating-heading"><h2 className="health-category-pill">{c.title}</h2></div><p className="retro-heading">{c.text}</p>
         <div className="health-rating-control health-smiley-control risiko-page swiper-no-swiping" onKeyDownCapture={e => {
           e.stopPropagation();
