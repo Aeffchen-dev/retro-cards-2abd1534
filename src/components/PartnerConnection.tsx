@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import { Users, Copy, Unplug, Share2, Send } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Users, Copy, Unplug, Share2 } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HEALTH_CATEGORIES, healthScore } from './health-check-data';
-import { canResendInvitation, invitationName } from './partner-invitation-data';
+import { invitationName } from './partner-invitation-data';
 import { revealSelection } from './partner-answer-visibility';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
@@ -14,16 +15,20 @@ import { RISIKO_STATEMENTS, RISIKO_HOT } from './risiko-data';
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
   const s = usePartnerSession();
   const [open, setOpen] = useState(() => Boolean(invitationFromUrl()));
-  const [name, setName] = useState(initialName);
   const [code, setCode] = useState(() => invitationFromUrl());
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [confirmDisconnect, setConfirmDisconnect] = useState(false);
+  const [disconnecting, setDisconnecting] = useState(false);
+  useEffect(() => {
+    if (code && s.sessionId) { setOpen(false); setCode(''); }
+    if (disconnecting && !s.sessionId) { setOpen(false); setConfirmDisconnect(false); setDisconnecting(false); }
+  }, [code, s.sessionId, disconnecting]);
   const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : '';
   const connect = () => {
     if (busy) return;
     setNotice(''); s.setError('');
-    if (code && !name.trim()) { s.setError('Bitte gib deinen Namen ein.'); return; }
-    void act(() => s.connect(code ? name : invitationName(initialName), code || undefined));
+    void act(() => s.connect(invitationName(initialName), code || undefined));
   };
   const act = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); } catch { s.setError('Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'); } finally { setBusy(false); } };
   const shareLink = async () => {
@@ -35,23 +40,27 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     } else { await navigator.clipboard.writeText(link); setNotice('Dieser Browser unterstützt kein Teilen-Fenster. Link kopiert.'); }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Einladung ausstehend' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { if (!name) setName(initialName); setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={s.partner ? `Verbunden mit ${s.partner.display_name}` : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Partner einladen'} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">Teile euren privaten Link und macht die Retro gemeinsam – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Teile euren privaten Link und macht die Retro gemeinsam – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
-        {code && <Input aria-label="Dein Name für die Verbindung" placeholder="Dein Name" maxLength={80} value={name} onChange={e => setName(e.target.value)} />}
         {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={connect} />
         : busy ? <p role="status" className="text-sm text-muted-foreground">Einladungslink wird erstellt …</p>
         : s.error ? <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Erneut versuchen" onClick={connect} /> : null}
       </div> : <div className="space-y-4">
-        {link && <><Input readOnly aria-label="Einladungslink" value={link} onFocus={event => event.currentTarget.select()} /><div className="flex flex-wrap gap-2"><ActionRow accent={accent} iconNode={canResendInvitation(s.invitation, s.invite) ? <Send size={16}/> : <Share2 size={16}/>} iconColor="var(--retro-black)" label={canResendInvitation(s.invitation, s.invite) ? 'Erneut senden' : 'Link teilen'} onClick={() => { if (!busy) void act(shareLink); }} /><ActionRow accent={accent} iconNode={<Copy size={16}/>} iconColor="var(--retro-black)" label="Link kopieren" onClick={() => { if (!busy) void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }} /></div><p className="text-sm text-muted-foreground">Wer diesen Link besitzt, kann beitreten. Teile ihn nur mit deinen Partnern.</p></>}
-        <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? `Einladung angenommen · ${s.partner.display_name} ist verbunden` : s.invitation === 'pending' ? 'Einladung ausstehend · Noch niemand beigetreten' : 'Einladungsstatus wird geprüft …'}</p>
-        <p className="text-sm text-muted-foreground">{s.online ? 'Live-Verbindung aktiv' : 'Verbindung wird wiederhergestellt …'}</p>
-        <Button variant="outline" disabled={busy} onClick={() => { setNotice(''); void act(async () => { await s.leave(); setCode(''); setOpen(false); }); }}><Unplug size={16} /> Verbindung trennen</Button>
+        {link && <><Input readOnly aria-label="Einladungslink" value={link} onFocus={event => event.currentTarget.select()} /><div className="flex flex-col items-start gap-2"><ActionRow accent={accent} iconNode={<Share2 size={16}/>} iconColor="var(--retro-black)" label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} /><Button variant="ghost" size="sm" disabled={busy} onClick={() => { void act(async () => { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }); }}><Copy size={16}/> Link kopieren</Button></div><p className="text-sm text-muted-foreground">Wer diesen Link besitzt, kann beitreten. Teile ihn nur mit deinen Partnern.</p></>}
+        <p role="status" aria-live="polite">{s.invitation === 'accepted' && s.partner ? s.online ? `${s.partner.display_name} ist verbunden` : 'Verbindung wird wiederhergestellt …' : s.invitation === 'pending' ? 'Wartet auf Beitritt' : 'Verbindung wird geprüft …'}</p>
         {s.partner && <div className="partner-live-notes"><h3>{s.partner.display_name} schreibt</h3><PartnerAnswers answers={s.partnerAnswers} /></div>}
+        <Button variant="ghost" size="sm" className="text-muted-foreground" disabled={busy} onClick={() => { setNotice(''); setConfirmDisconnect(true); }}><Unplug size={16} /> Verbindung trennen</Button>
       </div>}
       {notice && <p role="status" className="text-sm">{notice}</p>}{s.error && <p role="alert" className="text-sm text-destructive">{s.error}</p>}
     </SheetContent>
+    <AlertDialog open={confirmDisconnect} onOpenChange={setConfirmDisconnect}>
+      <AlertDialogContent className="max-w-[calc(100%-32px)] sm:max-w-lg">
+        <AlertDialogHeader><AlertDialogTitle>Verbindung trennen?</AlertDialogTitle><AlertDialogDescription>Neue Antworten werden danach nicht mehr geteilt. Deine Antworten auf diesem Gerät bleiben erhalten.</AlertDialogDescription></AlertDialogHeader>
+        <AlertDialogFooter><AlertDialogCancel disabled={busy}>Abbrechen</AlertDialogCancel><Button variant="destructive" disabled={busy} onClick={() => { if (!busy) { setDisconnecting(true); void act(s.leave); } }}><Unplug size={16}/> {busy ? 'Trennt …' : 'Jetzt trennen'}</Button></AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </Sheet>;
 }
 function PartnerAnswers({ answers }: { answers: ReturnType<typeof usePartnerSession>['partnerAnswers'] }) {
