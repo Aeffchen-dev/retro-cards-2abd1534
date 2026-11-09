@@ -125,6 +125,9 @@ function useSession() {
   const invitation = invitationStatus(sessionId, memberId, members, loadedSessionId === sessionId);
   return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, connect, leave };
 }
-const PartnerContext = createContext<ReturnType<typeof useSession> | null>(null);
+// Shared on globalThis so a hot-reloaded duplicate of this module reuses the same context.
+type PartnerCtx = React.Context<ReturnType<typeof useSession> | null>;
+const ctxHolder = globalThis as unknown as { __partnerSessionContext?: PartnerCtx };
+const PartnerContext: PartnerCtx = ctxHolder.__partnerSessionContext ??= createContext<ReturnType<typeof useSession> | null>(null);
 export function PartnerSessionProvider({ children }: { children: ReactNode }) { const value = useSession(); return <PartnerContext.Provider value={value}>{children}</PartnerContext.Provider>; }
 export function usePartnerSession() { const value = useContext(PartnerContext); if (!value) throw new Error('PartnerSessionProvider missing'); return value; }
