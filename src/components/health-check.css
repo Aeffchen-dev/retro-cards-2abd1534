@@ -2,19 +2,19 @@
 #root .health-ratings, #root .partner-connect-trigger { color: var(--color-text-primary); }
 #root .health-rating-hint, #root .health-rater, #root .health-rating-heading output, #root .health-ticks, #root .health-progress { color: var(--retro-info-text); }
 #root .health-rating-item > p { color: var(--color-text-primary); }
-#root .health-rating-item .retro-heading { font-family: Arial, sans-serif; font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 0; }
+#root .health-rating-item .retro-heading { font-family: var(--font-app); font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 0; }
 #root .health-ratings button { color: var(--color-text-primary); background: var(--risiko-face-fill); border-color: var(--retro-info-rule); }
 #root .health-person-switch button[aria-pressed="true"] { background: var(--retro-textarea-bg); border-color: var(--color-text-primary); }
 #root .health-one { color: var(--health-partner-one); }
 #root .health-two { color: var(--health-partner-two); }
-#root .health-rating-item .health-other-score { color: var(--health-partner-two); font-family: "Figtree", Arial, sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 0; }
+#root .health-rating-item .health-other-score { color: var(--health-partner-two); font-family: var(--font-app); font-size: 12px; font-weight: 400; letter-spacing: 0; }
 .partner-dialog { color: var(--color-text-primary); }
 .health-person-switch { display: flex; gap: 8px; flex-wrap: wrap; }
 .health-person-switch button { max-width: 48%; overflow: hidden; text-overflow: ellipsis; }
 .health-rater, .health-rating-hint { font-size: 12px; color: var(--retro-info-text); }
 .health-rating-items { display: flex; flex-direction: column; flex: 1; justify-content: flex-start; gap: 24px; min-height: 0; }
 .health-rating-heading { display: flex; align-items: baseline; gap: 12px; justify-content: space-between; }
-#root .health-rating-heading .health-category-pill { font-family: Arial, sans-serif; font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: var(--color-text-primary); border: 0; border-radius: 0; padding: 0; width: 100%; overflow-wrap: break-word; }
+#root .health-rating-heading .health-category-pill { font-family: var(--font-app); font-size: 32px; font-weight: 400; line-height: 1.2; letter-spacing: 0; color: var(--color-text-primary); border: 0; border-radius: 0; padding: 0; width: 100%; overflow-wrap: break-word; }
 .health-rating-heading output { font-size: 20px; color: var(--retro-info-text); white-space: nowrap; }
 .health-rating-item > p { font-size: 16px; line-height: 1.4; margin-top: var(--retro-card-pad); }
 .health-rating-control.health-smiley-control { margin-top: var(--retro-card-pad); }
@@ -64,8 +64,8 @@
 .partner-connect-trigger { max-width: 100%; height: 32px; text-align: left; }
 .partner-bottom-sheet { display: grid; gap: 20px; width: 100%; max-width: 680px; margin-inline: auto; max-height: calc(100dvh - 24px); overflow-y: auto; border-radius: 8px 8px 0 0; }
 .partner-bottom-sheet .partner-sheet-header { text-align: left; gap: 16px; }
-.partner-bottom-sheet .partner-sheet-title { text-align: left; color: var(--color-text-primary); font-family: "Stack Sans Notch", "Stack Sans Text", "Figtree", Arial, sans-serif; font-weight: 400; font-size: 32px; line-height: 1.1; letter-spacing: 0; padding-right: 32px; }
-.partner-bottom-sheet .partner-sheet-description, .partner-bottom-sheet p { text-align: left; font-family: "Figtree", Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; color: var(--color-text-primary); }
+.partner-bottom-sheet .partner-sheet-title { text-align: left; color: var(--color-text-primary); font-family: var(--font-app); font-weight: 400; font-size: 32px; line-height: 1.1; letter-spacing: 0; padding-right: 32px; }
+.partner-bottom-sheet .partner-sheet-description, .partner-bottom-sheet p { text-align: left; font-family: var(--font-app); font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; color: var(--color-text-primary); }
 .partner-bottom-sheet > button:last-child { color: var(--retro-black); opacity: 1; background: transparent; }
 .partner-bottom-sheet > button:last-child > svg { width: 24px; height: 24px; }
 .partner-dialog { max-height: calc(100dvh - 40px); overflow-y: auto; }
