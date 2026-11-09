@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] Add before/after mood cards, persisted independent answers, comparison in evaluation and print; verify mobile/desktop and connected guests.
+- [x] Add before/after mood cards with persisted independent answers and comparison in evaluation and print. Two connected guests verified on mobile/desktop: own-answer-first, independent values, live comparison and reload; 15 focused tests pass.
 - [x] Status dot on "Partner einladen", jump to first card after joining, "schreibt gerade …" hint, automatic daily history saving (no save button), desktop arrows with arrow-key hint, fonts loaded with the page, year review after 12 retros (best category, biggest change, latest Memory photo). Last card was already remembered. Two-device typing hint and join jump not exercised live.
 - [x] Simplify sharing, remove join name entry, close after successful join, consolidate status and confirm disconnection; two guests verified through creation, sharing fallback, nameless join, cancellation and confirmed leave; seven focused tests pass.
 - [x] Add private invitation links and capability-protected guest connections without registration. Two real guests verified on mobile/desktop: invitation accepted, independent 1/5 and 5/5 ratings, live text readback, evaluation and reload. Integration test verifies room isolation, invalid/invite credentials rejected for reads, direct table reads expose no rows and leave revokes access; 17 focused tests pass. Guest history remains on-device.
