@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { healthScore, healthResults, HEALTH_CATEGORIES, healthScaleValue, healthScaleScore } from './health-check-data';
+import { healthScore, healthResults, HEALTH_CATEGORIES, healthScaleValue, healthScaleScore, answeredHealthTopics } from './health-check-data';
 test('ratings are bounded from 1 to 5', () => {
   assert.equal(healthScore('1'),1); assert.equal(healthScore('5'),5);
   for (const n of ['0','6','2.5','',undefined,'NaN']) assert.equal(healthScore(n),null);
@@ -23,4 +23,8 @@ test('smiley endpoints keep the existing satisfaction scores and saved answers',
 });
 test('missing answers remain absent rather than being scored as zero', () => {
   assert.deepEqual(healthResults({hc_p0_love:'4'},'p0'),[4,null,null,null,null,null,null,null]);
+});
+test('evaluation includes only topics answered by at least one partner', () => {
+  assert.deepEqual(answeredHealthTopics([4,null,null,null,null,null,null,null], [null,null,2,null,null,null,null,null]), [0,2]);
+  assert.deepEqual(answeredHealthTopics(Array(8).fill(null), Array(8).fill(null)), []);
 });
