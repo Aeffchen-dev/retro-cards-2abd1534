@@ -15,6 +15,13 @@
       "when": 1794196293962,
       "tag": "0001_restrict_partner_member_updates",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794196952778,
+      "tag": "0002_health_check_history",
+      "breakpoints": true
     }
   ]
 }

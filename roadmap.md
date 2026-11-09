@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Current request
+- [x] Save dated Health Check snapshots locally or privately for connected partners; cloud schema and access policies confirmed.
+- [x] Show chronological partner trends with per-topic selection; two local retros saved and read after reload on mobile/desktop, both partner lines and +4/-4 changes verified.
+- [ ] Verify cloud history saving in an authenticated browser — blocked: no signed-up auth users; session minting failed.
 - [x] Add a private partner connection on Intro with live notes and selections.
 - [x] Replace Health Check content after its first two cards with the eight screenshot categories, two per card.
 - [x] Add Auswerten with both partners' results in a radar chart; verified two authenticated browsers, live text readback, independent ratings and outsider access denial. 179 tests passed.
