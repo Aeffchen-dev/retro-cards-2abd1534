@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Bottom sheet look: square corners, title in a thin black outlined bar like a card category, close control as a 32px black-outlined square top right, and every action button (incl. "Link teilen" with nobody connected) drawn with a black icon tile and white glyph. Measured and screenshotted in both states; 4 focused tests pass, build OK.
 - [x] Stop showing "Wartet auf Beitritt": no status dot on "Partner einladen" and no waiting line in the sheet until someone has actually joined; the green dot and the partner list still appear once connected. Two guests verified live (join → host shows "Gast ist verbunden"); 7 focused tests pass.
 - [x] Setup emoji field opens an in-app emoji picker instead of the on-screen keyboard: grouped curated emoji in an 8-wide grid with German+English search; picking writes into that person's field and survives reload. Mobile check verified open, search filter, pick, reload readback and an added partner's field; 6 focused tests pass, build OK.
 - [x] Status dot on "Partner einladen", jump to first card after joining, "schreibt gerade …" hint, automatic daily history saving (no save button), desktop arrows with arrow-key hint, fonts loaded with the page, year review after 12 retros (best category, biggest change, latest Memory photo). Last card was already remembered. Two-device typing hint and join jump not exercised live.
