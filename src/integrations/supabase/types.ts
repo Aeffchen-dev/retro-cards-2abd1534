@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      retro_guest_members: {
+        Row: {
+          answers: Json
+          display_name: string
+          is_owner: boolean
+          session_id: string
+          token_hash: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answers?: Json
+          display_name: string
+          is_owner?: boolean
+          session_id: string
+          token_hash: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          answers?: Json
+          display_name?: string
+          is_owner?: boolean
+          session_id?: string
+          token_hash?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "retro_guest_members_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "retro_guest_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      retro_guest_sessions: {
+        Row: {
+          created_at: string
+          id: string
+          invite_hash: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_hash: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_hash?: string
+        }
+        Relationships: []
+      }
       retro_health_history: {
         Row: {
           id: string

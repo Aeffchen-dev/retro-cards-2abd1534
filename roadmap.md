@@ -1,10 +1,11 @@
 # Roadmap
 
 ## Current request
+- [x] Add private invitation links and capability-protected guest connections without registration. Two real guests verified on mobile/desktop: invitation accepted, independent 1/5 and 5/5 ratings, live text readback, evaluation and reload. Integration test verifies room isolation, invalid/invite credentials rejected for reads, direct table reads expose no rows and leave revokes access; 17 focused tests pass. Guest history remains on-device.
 - [x] Show independent category-coloured partner markers on Health Check scales, preserving own-answer-first and local slider values; 13 relevant tests pass and mobile/desktop checks with saved local comparison answers pass. Real connected-account verification remains blocked below.
 - [x] Show partner edits without reload: immediate member updates and foreground catch-up with effect cleanup. Actual hook tested with simulated service: direct live updates and missed-event catch-up visible without reload; 5 relevant tests pass. Real-account verification remains blocked below.
 - [x] Show pending/accepted invitation status and resend the existing pending invite through native sharing. 15 relevant tests pass; simulated mobile/desktop status transitions and same-link sharing verified.
-- [ ] Verify invitation acceptance with real connected accounts — blocked: no signed-up accounts; session minting failed.
+- [x] Verify invitation acceptance with two connected guests, replacing the registration-dependent check.
 - [x] Enlarge evaluation further, match category CTA colours, show Verlauf only for past retros and compare current results in trends. Mobile/desktop verified with and without dated local history; 190 tests pass. Connected-account checks remain blocked by unavailable signed-up accounts.
 - [x] Restore smooth earlier question family; Health Check category in outlined black pill above top-aligned question, scale 28px below. Mobile/desktop verified; 188 tests pass.
 - [x] Remove email, Google and Lovable sign-in from Zu zweit verbinden; retain link sharing without exposing private answers anonymously.
@@ -12,7 +13,7 @@
 - [x] Remove Intro connection; Setup uses card CTA and bottom sheet with explanation and authenticated share/copy actions. Opening/closing verified on mobile and desktop; authenticated sharing awaits a signed-up account.
 - [x] Simplify Health Check to one topic per card in shared question typography; remove captions, top controls and evaluation CTA. Chart has full axis labels and open missing-answer marks; mobile/desktop checked.
 - [x] Add Setup partner connection; publish Setup and current question alongside all existing text and scale answers in the read-only live partner view.
-- [ ] Verify live partner updates after these changes — blocked: no signed-up account available for an authenticated browser test.
+- [x] Verify live partner updates with two connected guests: independent ratings and live text readback without reload.
 - [x] Save dated Health Check snapshots locally or privately for connected partners; cloud schema and access policies confirmed.
 - [x] Show chronological partner trends with per-topic selection; two local retros saved and read after reload on mobile/desktop, both partner lines and +4/-4 changes verified.
 - [ ] Verify cloud history saving in an authenticated browser — blocked: no signed-up auth users; session minting failed.
