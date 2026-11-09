@@ -5,6 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { HEALTH_CATEGORIES, healthScore, healthResults } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
+import './health-check.css';
 
 type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; onEvaluate: () => void; names: string[] };
 export default function HealthCheckRatings({ pageIndex, values, onChange, onEvaluate, names }: Props) {
