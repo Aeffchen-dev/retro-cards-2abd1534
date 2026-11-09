@@ -340,7 +340,7 @@ export interface StatementScaleProps {
   /** A scale that cannot be moved — the printed copy. */
   readOnly?: boolean;
   /** Independent read-only answer; never participates in slider input. */
-  comparison?: { value: string; label: string; color: string };
+  comparison?: { value: string; label: string; color: string; name: string };
 }
 
 /**
