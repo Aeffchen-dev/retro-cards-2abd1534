@@ -14,6 +14,8 @@ import { ActiveSlideContext } from "@/components/ActiveSlideContext";
 import { Camera } from "lucide-react";
 import BgVector from "@/components/BgVector";
 import HealthCheckRatings from './HealthCheckRatings';
+import MoodCheck from './MoodCheck';
+import { MOOD_NOTES_ID, MOOD_AFTER_ID } from './mood-check-data';
 import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { disableCameraFlash } from './camera-settings';
@@ -63,6 +65,8 @@ const SLIDE_PILLS: Record<number, string | null> = {
   103: "Relationship by design",
   100: "Intro",
   101: "Setup",
+  [MOOD_NOTES_ID]: "Stimmungs-Check",
+  [MOOD_AFTER_ID]: "Stimmungs-Check",
   0: "Memory Time",
   1: "Health Check",
   2: "Health Check",
@@ -487,10 +491,10 @@ const RetroCards: React.FC = () => {
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
-    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION, 4];
+    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, MOOD_NOTES_ID, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION, 4];
     if (setupData.openRelationship) arr.push(5);
     // The "Ideas" card (internally still SLIDE_VORHABEN) sits directly before Takeaways.
-    arr.push(7, SLIDE_VORHABEN, 8, 9, 10);
+    arr.push(7, SLIDE_VORHABEN, 8, MOOD_AFTER_ID, 9, 10);
     return arr;
   }, [setupData.openRelationship, riskSlideIds]);
 
@@ -1962,12 +1966,19 @@ const RetroCards: React.FC = () => {
             pageIndex={riskSlideIds.indexOf(cardIndex)}
             names={persons.map(p => p.name)}
             values={editModeNotes[SLIDE_RISIKO] || {}}
+            moodValues={editModeNotes[MOOD_NOTES_ID] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
               [SLIDE_RISIKO]: { ...prev[SLIDE_RISIKO], [key]: value },
             }))}
           />
         );
+
+      case MOOD_NOTES_ID:
+      case MOOD_AFTER_ID:
+        return <MoodCheck phase={cardIndex === MOOD_NOTES_ID ? 'before' : 'after'}
+          values={editModeNotes[MOOD_NOTES_ID] || {}}
+          onChange={(key, value) => setEditModeNotes(prev => ({ ...prev, [MOOD_NOTES_ID]: { ...prev[MOOD_NOTES_ID], [key]: value } }))} />;
 
       case SLIDE_VORHABEN:
         return (
@@ -2294,6 +2305,8 @@ const RetroCards: React.FC = () => {
                   pillDot: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].icon,
                 },
                 [SLIDE_RISIKO]: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
+                [MOOD_NOTES_ID]: { pill: BRAND.pink, pillDot: BRAND.spiralBlue },
+                [MOOD_AFTER_ID]: { pill: BRAND.pink, pillDot: BRAND.spiralBlue },
                 // Archive matches the Setup slide combo
                 9: { pill: BRAND.lightBlue, pillDot: BRAND.maroon },
                 // Questions gets a random combo per question
@@ -2303,7 +2316,7 @@ const RetroCards: React.FC = () => {
                 },
               };
               const ov = isRisikoSlide(slideId) ? overrides[SLIDE_RISIKO] : overrides[slideId];
-              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || isRisikoSlide(slideId) ? { bg: BRAND.white } : {}) } : baseTheme;
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || isRisikoSlide(slideId) || slideId === MOOD_NOTES_ID || slideId === MOOD_AFTER_ID ? { bg: BRAND.white } : {}) } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
