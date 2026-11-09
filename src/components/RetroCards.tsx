@@ -16,6 +16,7 @@ import BgVector from "@/components/BgVector";
 import HealthCheckRatings from './HealthCheckRatings';
 import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
+import { disableCameraFlash } from './camera-settings';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Keyboard } from 'swiper/modules';
@@ -1028,19 +1029,7 @@ const RetroCards: React.FC = () => {
     console.log('Is Chrome:', isChrome);
     console.log('Is Safari:', isSafari);
     
-    // For iPhone, try the file input method first (most reliable)
-    if (isIOS) {
-      console.log('iPhone detected, using file input method');
-      openCameraForIOS();
-      return;
-    }
-    
-    // For Mac Safari (not Chrome), use file input method as well (more reliable)
-    if (isMac && isSafari && !isChrome) {
-      console.log('Mac Safari detected, using file input method');
-      openCameraForIOS();
-      return;
-    }
+    // Prefer live video on every device: canvas capture never fires a photo flash.
     
     // Check if we're on HTTPS or localhost (required for camera access)
     const isSecureContext = window.isSecureContext || 
@@ -1077,6 +1066,7 @@ const RetroCards: React.FC = () => {
       };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      await disableCameraFlash(stream);
       console.log('Camera access granted successfully');
 
       // Create camera preview modal
