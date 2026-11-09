@@ -31,4 +31,20 @@ test('trends compare current answers to the past without inventing missing value
   assert.equal(healthTrend(Array(8).fill(4),Array(8).fill(2),'average'),2);
   assert.equal(healthTrend(Array(8).fill(1),Array(8).fill(5),'love'),-4);
   assert.equal(healthTrend(Array(8).fill(null),Array(8).fill(5),'love'),null);
+});import { upsertDailyEntry, yearReview } from './health-history-data';
+test('automatic saving keeps one entry per day and replaces the same-day retro', () => {
+  const a = {id:'a',owner_id:null,recorded_at:'2026-11-09T08:00:00',results:{people:[]}};
+  const b = {id:'b',owner_id:null,recorded_at:'2026-11-09T20:00:00',results:{people:[]}};
+  const c = {id:'c',owner_id:null,recorded_at:'2026-12-09T20:00:00',results:{people:[]}};
+  const once = upsertDailyEntry([a], b);
+  assert.equal(once.length, 1); assert.equal(once[0].id, 'a'); assert.equal(once[0].recorded_at, b.recorded_at);
+  assert.equal(upsertDailyEntry(once, c).length, 2);
+});
+test('year review appears only after 12 retros with best category and biggest change', () => {
+  const entry = (m, scores) => ({id:String(m),owner_id:null,recorded_at:`2026-${String(m).padStart(2,'0')}-01`,results:{people:[{id:'me',name:'Me',scores}]}});
+  const rows = Array.from({length:11},(_,i) => entry(i+1,[5,1,3,3,3,3,3,3]));
+  assert.equal(yearReview(rows,'me'), null);
+  rows.push(entry(12,[5,5,3,3,3,3,3,3]));
+  const r = yearReview(rows,'me');
+  assert.equal(r.count, 12); assert.equal(r.best.score, 5); assert.equal(r.change.delta, 4);
 });

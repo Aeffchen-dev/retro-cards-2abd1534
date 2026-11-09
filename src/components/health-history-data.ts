@@ -56,3 +56,31 @@ export function readLocalHealthHistory(): HealthHistoryEntry[] {
     });
   } catch { return []; }
 }
+const dayKey = (date: Date) => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+
+/** One automatic entry per day: today's retro replaces any earlier save from the same day. */
+export function upsertDailyEntry(entries: HealthHistoryEntry[], entry: HealthHistoryEntry) {
+  const day = dayKey(new Date(entry.recorded_at));
+  const same = entries.find(e => dayKey(new Date(e.recorded_at)) === day && e.owner_id === entry.owner_id);
+  const next = same ? { ...entry, id: same.id } : entry;
+  return chronologicalHistory([...entries.filter(e => e !== same), next]);
+}
+
+export const YEAR_REVIEW_MIN = 12;
+export type YearReview = { count: number; best: { id: string; title: string; score: number } | null; change: { id: string; title: string; delta: number } | null };
+
+/** After twelve retros: best category on average and the biggest change from first to latest, for one person. */
+export function yearReview(entries: HealthHistoryEntry[], personId: string): YearReview | null {
+  const rows = chronologicalHistory(entries).slice(-YEAR_REVIEW_MIN).map(e => e.results.people.find(p => p.id === personId)?.scores).filter((s): s is (number|null)[] => Boolean(s));
+  if (rows.length < YEAR_REVIEW_MIN) return null;
+  let best: YearReview['best'] = null, change: YearReview['change'] = null;
+  HEALTH_CATEGORIES.forEach((c, i) => {
+    const values = rows.map(r => r[i]).filter((n): n is number => n !== null);
+    if (!values.length) return;
+    const avg = Math.round(values.reduce((a,b) => a+b,0) / values.length * 100) / 100;
+    if (!best || avg > best.score) best = { id: c.id, title: c.title, score: avg };
+    const delta = values[values.length-1] - values[0];
+    if (!change || Math.abs(delta) > Math.abs(change.delta)) change = { id: c.id, title: c.title, delta };
+  });
+  return { count: rows.length, best, change };
+}
