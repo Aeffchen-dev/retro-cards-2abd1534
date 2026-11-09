@@ -2292,7 +2292,7 @@ const RetroCards: React.FC = () => {
               const bodyBg = "#201C1D";
               const cardStyle = { backgroundColor: (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
-              <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden">
+              <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden" style={{ '--retro-action-tile': theme.pillDot, '--retro-action-icon': theme.pill } as React.CSSProperties}>
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
 
                   {(SLIDE_PILLS[slideId] || isRisikoSlide(slideId)) && (

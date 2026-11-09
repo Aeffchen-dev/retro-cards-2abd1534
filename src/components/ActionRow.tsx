@@ -75,13 +75,13 @@ const ActionRow: React.FC<ActionRowProps> = ({
   className = "",
   style,
 }) => {
-  const resolvedIconColor = outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
-  const resolvedLabelColor = outlined
+  const isInfo = icon === "IconInfo";
+  const resolvedIconColor = !isInfo ? "var(--retro-action-icon, var(--retro-pill, var(--color-text-primary)))" : outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
+  const resolvedLabelColor = !isInfo ? "var(--color-text-primary)" : outlined
     ? (labelColor ?? "#201C1D")
     : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
   const border = outlined ? "1px solid #201C1D" : undefined;
   // Info rows (ℹ) get their own hook so phones and tablets can shrink the sentence.
-  const isInfo = icon === "IconInfo";
   const classes = `${BASE_CLASS}${isInfo ? " retro-info-row" : ""} ${className}`;
   /* The ℹ mark draws with a light pen of its own — 1.5px is enough (user:
      "info icon stroke width 1,5px enough") — so the helper sentence stays a
@@ -111,9 +111,9 @@ const ActionRow: React.FC<ActionRowProps> = ({
       <span
         className={tileClass}
         style={{
-          background: outlined ? "transparent" : accent,
+          background: isInfo ? (outlined ? "transparent" : accent) : "var(--retro-action-tile, var(--retro-pill-dot, var(--retro-textarea-bg)))",
           color: resolvedIconColor,
-          border: tileBorder ?? border,
+          border: isInfo ? (tileBorder ?? border) : undefined,
         }}
       >
         {iconNode ?? (icon ? <StackIcon name={icon} size={resolvedIconSize} color={resolvedIconColor} strokePx={resolvedStrokePx} className={isInfo ? "retro-info-mark" : undefined} /> : null)}
@@ -121,10 +121,10 @@ const ActionRow: React.FC<ActionRowProps> = ({
       <span
         className={fieldClass}
         style={{
-          background: outlined ? "transparent" : (fieldBg ?? "#E4E6E8"),
+          background: isInfo ? (outlined ? "transparent" : (fieldBg ?? "#E4E6E8")) : "var(--retro-textarea-bg)",
           color: resolvedLabelColor,
-          border,
-          borderLeft: outlined ? "none" : undefined,
+          border: isInfo ? border : undefined,
+          borderLeft: isInfo && outlined ? "none" : undefined,
         }}
       >
 
