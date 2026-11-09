@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [ ] Remove Intro connection; use Setup CTA and bottom sheet with invitation sharing and explanation.
 - [x] Simplify Health Check to one topic per card in shared question typography; remove captions, top controls and evaluation CTA. Chart has full axis labels and open missing-answer marks; mobile/desktop checked.
 - [x] Add Setup partner connection; publish Setup and current question alongside all existing text and scale answers in the read-only live partner view.
 - [ ] Verify live partner updates after these changes — blocked: no signed-up account available for an authenticated browser test.
