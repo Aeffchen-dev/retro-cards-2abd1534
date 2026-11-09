@@ -582,12 +582,9 @@ body, input, textarea, select, button { font-family: var(--font-app); }
    dot fills, so a dragged face and a scale face are the same size. */
 .risiko-face,
 .risiko-face svg { width: var(--risiko-face-size); height: var(--risiko-face-size); }
-/* The grey smileys draw as an outline only — no fill, no plate of their own
-   (user: "grey full = grey outline no fill"), superseding the white halo they
-   wore earlier. The rule and the column guides therefore run straight behind
-   them; only the answer dot keeps a white plate, so the answer is the one face
-   that reads clear of the grid. */
+/* Fill only the drawn face, never its surrounding box: no white halo. */
 .risiko-face { border-radius: 50%; background: transparent; position: relative; z-index: 30; }
+.risiko-face > svg:first-child > circle:first-child { fill: var(--risiko-face-fill); }
 
 /* The printed copy is a fixed A4 layout, not a device, but the smileys read at the
    same shared 44px everywhere — the token is set on its container, which the faces
