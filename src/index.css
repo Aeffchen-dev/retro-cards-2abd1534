@@ -1225,7 +1225,7 @@ button {
   padding-top: 0;
 }
 
-.retro-info-row { gap: 6px; }
+.retro-info-row { gap: 6px; font-size: 12px; line-height: 16px; }
 .retro-info-row > span:first-child { width: 12px; }
 .retro-info-row > span:last-child { flex: 1; min-width: 0; white-space: normal; height: auto; overflow: visible; padding-inline: 0; }
 

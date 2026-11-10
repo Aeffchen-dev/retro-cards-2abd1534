@@ -1543,6 +1543,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
+                style={{ '--retro-action-icon-override': 'var(--risiko-face-fill)' } as React.CSSProperties}
                 /* the Notizen öffnen tile reads plain grey with a black pencil —
                    no outline of its own (user: "EDIT PEN BACKGROUND NO OURLINE");
                    edit mode keeps the card's own pill colour and its white pencil. */
