@@ -95,9 +95,9 @@ interface SetupData {
 }
 
 const REFLECTION_FIELDS = [
-  ["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"],
-  ["thanks", "Danke für", "Deine Antwort", ""],
-  ["unspoken", "Letzte Chance", "Deine Antwort", "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen"],
+  ["nice", "Spiegeln", "Deine Antwort", "Was ich an dir sehe, das du selbst vielleicht manchmal übersiehst …"],
+  ["thanks", "Danke", "Deine Antwort", "Dafür möchte ich mich bei dir bedanken"],
+  ["unspoken", "Ungesagt", "Deine Antwort", "Gibt es etwas, das du gern ansprechen, klären oder loswerden möchtest?"],
 ] as const;
 
 
@@ -715,7 +715,7 @@ const RetroCards: React.FC = () => {
       1: "Wie geht's mir persönlich?",
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
-      [SLIDE_REFLECTION]: "A review for you, my love",
+      [SLIDE_REFLECTION]: "Gegenseitiges Feedback",
       5: "Wie stehts mit Dates?",
       7: "Körperliche Intimität",
     };
