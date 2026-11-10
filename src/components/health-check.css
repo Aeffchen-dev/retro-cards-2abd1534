@@ -80,7 +80,9 @@
 .health-result-table > div span:not(:first-child) { text-align: center; overflow-wrap: anywhere; }
 .health-table-head { font-weight: 600; }
 .partner-connect-trigger { max-width: 100%; height: 32px; text-align: left; }
-.partner-bottom-sheet { display: grid; gap: 8px; width: 100%; max-width: 680px; margin-inline: auto; max-height: calc(100dvh - 24px); overflow: visible; background: transparent; border: 0; box-shadow: none; padding: 0; border-radius: 0; --retro-action-tile: var(--retro-black); }
+/* The sheet's own wrapper: two class names so it beats the primitive's own
+   padding/fill utilities — the white panel is the inner element, not this one. */
+.partner-bottom-sheet.partner-dialog { display: grid; gap: 8px; width: 100%; max-width: 680px; margin-inline: auto; max-height: calc(100dvh - 24px); overflow: visible; background: transparent; border: 0; box-shadow: none; padding: 0; border-radius: 0; --retro-action-tile: var(--retro-black); }
 .partner-sheet-pill-row { display: flex; height: 32px; flex-shrink: 0; }
 .partner-sheet-panel { display: grid; gap: 20px; background: #FFFFFF; border-radius: 0; padding: var(--retro-card-pad); max-height: calc(100dvh - 64px); overflow-y: auto; }
 .partner-bottom-sheet .partner-sheet-header { text-align: left; gap: 16px; }

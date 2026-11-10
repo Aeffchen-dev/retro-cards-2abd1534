@@ -19,7 +19,7 @@ describe("connection bottom sheet look", () => {
   });
 
   test("leaves no panel behind the category row", () => {
-    const sheet = block(".partner-bottom-sheet");
+    const sheet = block(".partner-bottom-sheet.partner-dialog");
     expect(sheet, "the wrapper itself must stay transparent").toMatch(/background: transparent/);
     expect(sheet).toMatch(/padding: 0/);
   });
