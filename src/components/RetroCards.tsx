@@ -1913,7 +1913,7 @@ const RetroCards: React.FC = () => {
                 </button>
               </div>
 
-              <PartnerConnection accent={SETUP_ACCENT} initialName={setupData.name1} />
+              <PartnerConnection accent={SETUP_ACCENT} initialName={setupData.name1} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
               <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"
