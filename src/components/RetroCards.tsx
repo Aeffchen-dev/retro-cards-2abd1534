@@ -473,6 +473,10 @@ const RetroCards: React.FC = () => {
   // Placeholder helper for per-person post-its
   const personPlaceholder = useCallback(
     (person: { name: string }, idx: number, label: string, fallbackMine: string, fallbackPartner: string): string => {
+      if (label === "Themen") {
+        const name = (idx === 0 ? setupData.name1 : idx === 1 ? setupData.name2 : person.name).trim();
+        return name ? `${name}'s Themen` : idx === 0 ? fallbackMine : fallbackPartner;
+      }
       if (idx === 0) return postItPlaceholder(setupData.name1, label, fallbackMine);
       if (idx === 1) return postItPlaceholder(setupData.name2, label, fallbackPartner);
       const name = person.name || `Partner ${idx + 1}`;
