@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Feedback card: headline "Gegenseitiges Feedback"; the three fields read "Spiegeln" / "Danke" / "Ungesagt", each with its own sentence as the grey placeholder on screen and as a printed line. Answer keys unchanged, so old answers stay. 13 focused tests pass, build OK; phone and desktop checked live.
 - [x] Connection sheet: chapter pill rides above the sheet, outside the white panel, in the deck's own pill look (slide's pill + dot colours); question sits inside the panel in the question face at 24px with no box; close square on the pill's line with a white plate. Measured and screenshotted live; 6 focused tests pass, build OK.
 - [x] Bottom sheet look: square corners, title in a thin black outlined bar like a card category, close control as a 32px black-outlined square top right, and every action button (incl. "Link teilen" with nobody connected) drawn with a black icon tile and white glyph. Measured and screenshotted in both states; 4 focused tests pass, build OK.
 - [x] Stop showing "Wartet auf Beitritt": no status dot on "Partner einladen" and no waiting line in the sheet until someone has actually joined; the green dot and the partner list still appear once connected. Two guests verified live (join → host shows "Gast ist verbunden"); 7 focused tests pass.
