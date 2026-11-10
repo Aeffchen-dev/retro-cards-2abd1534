@@ -2343,6 +2343,16 @@ const RetroCards: React.FC = () => {
                         const groups = risikoNoteGroups(slideId);
                         return (
                         <div className="absolute inset-0 p-[var(--retro-card-pad)] flex flex-col z-30 rounded-none overflow-hidden" style={{ ...cardStyle, paddingBottom: '76px' }}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Notizen schließen"
+                            title="Notizen schließen"
+                            className="absolute right-[var(--retro-card-pad)] top-[var(--retro-card-pad)] z-40 h-8 w-8 rounded-none p-0 text-foreground hover:bg-transparent swiper-no-swiping"
+                            onClick={() => toggleEditMode(slideId)}
+                          >
+                            <StackIcon name="IconClear" size={24} color="currentColor" />
+                          </Button>
                           {groups ? (
                             <div className="flex flex-col flex-1 min-h-0 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
                               {groups.map((g, gi) => (
@@ -2417,7 +2427,7 @@ const RetroCards: React.FC = () => {
                         draw their own button above their helper sentence, so the
                         shared overlay would paint a second one there. The last-4-weeks
                         card has no info box: its button stands in the corner alone. */}
-                    {hasEditButton(slideId) && slideId !== 1 && slideId !== 2 && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && !(slideId === 3 && !editModeSlides[slideId]) && (
+                    {hasEditButton(slideId) && (editModeSlides[slideId] || (slideId !== 1 && slideId !== 2)) && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && !(slideId === 3 && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: 'var(--retro-card-pad)', bottom: 'var(--retro-card-pad)' }}>
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
