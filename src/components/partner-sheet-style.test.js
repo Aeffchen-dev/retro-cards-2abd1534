@@ -34,7 +34,7 @@ describe("connection bottom sheet look", () => {
   });
 
   test("draws every action button with a black icon tile", () => {
-    expect(block(".partner-bottom-sheet")).toMatch(
+    expect(block(".partner-bottom-sheet.partner-dialog")).toMatch(
       /--retro-action-tile: var\(--retro-black\)/,
     );
   });
