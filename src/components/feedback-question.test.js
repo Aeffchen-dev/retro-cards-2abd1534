@@ -6,7 +6,7 @@ const fields = src.slice(src.indexOf("const REFLECTION_FIELDS"), src.indexOf("] 
 const slide = src.slice(src.indexOf("case SLIDE_REFLECTION:"), src.indexOf("case 7:"));
 const vorhaben = readFileSync(new URL("./vorhaben-data.ts", import.meta.url), "utf8");
 
-describe("Feedback card is labelled Feedback above and titled A review for you, my love", () => {
+describe("Feedback card is labelled Feedback above and titled Gegenseitiges Feedback", () => {
   test("shows \"Feedback\" as the pill above the card", () => {
     const pills = src.slice(src.indexOf("const SLIDE_PILLS"), src.indexOf("};", src.indexOf("const SLIDE_PILLS")));
     expect(pills).toContain('102: "Feedback"');
@@ -16,9 +16,9 @@ describe("Feedback card is labelled Feedback above and titled A review for you, 
   test("shows the short label in the card and the sentence as its heading and notes header", () => {
     expect(slide).toContain('<span className="retro-label">Feedback</span>');
     expect(slide, "the card's own label still carries the old sentence").not.toContain('<span className="retro-label">Monthly review for you, my love</span>');
-    expect(slide).toContain('text="A review for you, my love"');
+    expect(slide).toContain('text="Gegenseitiges Feedback"');
     const header = src.slice(src.indexOf("const getSlideQuestion"), src.indexOf("return questions[slideId]"));
-    expect(header).toContain('[SLIDE_REFLECTION]: "A review for you, my love"');
+    expect(header).toContain('[SLIDE_REFLECTION]: "Gegenseitiges Feedback"');
   });
 });
 
@@ -33,15 +33,16 @@ describe("Feedback card sits on white", () => {
 });
 
 describe("Feedback headline question", () => {
-  test("asks \"Perspektivwechsel\" with the remembering sentence", () => {
-    expect(fields).toContain('["nice", "Perspektivwechsel", "Deine Antwort", "Eine Erinnerung an das was ich wahrnehme oder denke, wenn ich dich sehe. Etwas, dass dir vielleicht eine neue Perspektive auf dich selbst eröffnet"]');
+  test("asks \"Spiegeln\" with the mirroring sentence", () => {
+    expect(fields).toContain('["nice", "Spiegeln", "Deine Antwort", "Was ich an dir sehe, das du selbst vielleicht manchmal übersiehst …"]');
   });
 
   test("keeps the saved answers of the three questions it asks", () => {
     expect(fields).toContain('"nice"');
     expect(fields).toContain('"thanks"');
     expect(fields).toContain('"unspoken"');
-    expect(fields).toContain('"Danke für"');
+    expect(fields).toContain('"Danke"');
+    expect(fields).toContain('["thanks", "Danke", "Deine Antwort", "Dafür möchte ich mich bei dir bedanken"]');
     // The questions that moved away are no longer asked here.
     expect(fields).not.toContain('"idea"');
     expect(fields).not.toContain("Das wünsche ich mir");
@@ -64,8 +65,8 @@ describe("Feedback headline question", () => {
 });
 
 describe("The two cards swapped their last and first question", () => {
-  test("asks \"Letzte Chance\" on the Feedback card", () => {
-    expect(fields).toContain('["unspoken", "Letzte Chance", "Deine Antwort", "Gibt es noch etwas, dass du gedacht aber nicht ausgesprochen hast? Dann wäre nun die Chance das nachzulegen"]');
+  test("asks \"Ungesagt\" on the Feedback card", () => {
+    expect(fields).toContain('["unspoken", "Ungesagt", "Deine Antwort", "Gibt es etwas, das du gern ansprechen, klären oder loswerden möchtest?"]');
     expect(slide).toContain("reflectionTexts[key]");
   });
 
