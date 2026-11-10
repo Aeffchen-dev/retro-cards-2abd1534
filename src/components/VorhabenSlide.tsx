@@ -24,8 +24,8 @@ const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange }: Vor
   const compact = useIsMobile();
   const fieldFloor = (readOnly: boolean) => (readOnly ? 96 : compact ? 78 : 96);
 
-  const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label]) => (
-    <PostItField key={key} label={label} placeholder="Deine Antwort" accent={labelColor} barColor={labelColor}
+  const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label, placeholder]) => (
+    <PostItField key={key} label={label} placeholder={placeholder} accent={labelColor} barColor={labelColor}
       readOnly={readOnly} minHeight={fieldFloor(readOnly)} value={values[key] || ""} onChange={(value) => onChange(key, value)} />
   ));
 

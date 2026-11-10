@@ -6,7 +6,7 @@
  * "unspoken" key.
  */
 export const VORHABEN_QUESTIONS = [
-  ["plans", "Das wollen wir kommenden Monat machen"],
-  ["experiment", "Das könnten wir (neues) ausprobieren"],
-  ["idea", "Das wünsche ich mir"],
+  ["plans", "Plan", "Das wollen wir im kommenden Monat machen"],
+  ["experiment", "Try", "Das könnten wir (neues) ausprobieren"],
+  ["idea", "Change", "Das könnten wir anders machen"],
 ] as const;
