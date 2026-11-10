@@ -91,7 +91,7 @@ const ActionRow: React.FC<ActionRowProps> = ({
       ? "var(--risiko-face-fill)"
       : "var(--color-text-primary)");
   });
-  const resolvedIconColor = !isInfo ? actionIconColor : outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
+  const resolvedIconColor = !isInfo ? `var(--retro-action-icon-override, ${actionIconColor})` : outlined ? (iconColor ?? "#201C1D") : (iconColor ?? contrastOn(accent));
   const resolvedLabelColor = !isInfo ? "var(--color-text-primary)" : outlined
     ? (labelColor ?? "#201C1D")
     : (labelColor ?? contrastOn(fieldBg ?? "#E4E6E8"));
