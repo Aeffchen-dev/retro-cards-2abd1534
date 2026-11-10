@@ -46,7 +46,13 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="retro-heading partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Schick diesen Link deinem Partner – er öffnet die Retro und ist sofort mit dir verbunden. Ohne Registrierung, eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
+      {/* The chapter name rides above the sheet, outside its panel — the same
+          pill the cards wear above their own question. */}
+      <div className="partner-sheet-pill-row" style={{ '--retro-pill': pillColor, '--retro-pill-dot': pillDot } as CSSProperties}>
+        <div className="retro-pill"><span className="retro-label">Verbindung</span></div>
+      </div>
+      <div className="partner-sheet-panel">
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Schick diesen Link deinem Partner – er öffnet die Retro und ist sofort mit dir verbunden. Ohne Registrierung, eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
         {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={connect} />
         : busy ? <p role="status" className="text-sm text-muted-foreground">Einladungslink wird erstellt …</p>
@@ -60,6 +66,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
         {link && <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />}
       </div>}
       {notice && <p role="status" className="text-sm">{notice}</p>}{s.error && <p role="alert" className="text-sm text-destructive">{s.error}</p>}
+      </div>
     </SheetContent>
     <AlertDialog open={confirmDisconnect} onOpenChange={setConfirmDisconnect}>
       <AlertDialogContent className="max-w-[calc(100%-32px)] sm:max-w-lg">
