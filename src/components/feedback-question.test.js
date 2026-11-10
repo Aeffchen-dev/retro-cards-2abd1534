@@ -73,7 +73,7 @@ describe("The two cards swapped their last and first question", () => {
   test("asks for next month's plans on the Ideas card", () => {
     // Only the list of prompts counts here, not the comment above it.
     const list = vorhaben.slice(vorhaben.indexOf("export const VORHABEN_QUESTIONS"));
-    expect(list).toContain('["plans", "Das wollen wir kommenden Monat machen"]');
+    expect(list).toContain('["plans", "Plan", "Das wollen wir im kommenden Monat machen"]');
     expect(list, "Ideas no longer asks the last-chance question").not.toContain('"unspoken"');
     expect(list).not.toContain("Letzte Chance");
     // Ideas still asks three things: the moved question plus its own two.
@@ -115,7 +115,7 @@ describe("The two cards swapped their last and first question", () => {
   });
 
   test("keeps the wish that moved to Ideas earlier", () => {
-    expect(vorhaben).toContain('["idea", "Das wünsche ich mir"]');
+    expect(vorhaben).toContain('["idea", "Change", "Das könnten wir anders machen"]');
     expect(vorhaben).toContain('"experiment"');
     const mig = src.slice(src.indexOf("const migrateMovedAnswers"), src.indexOf("const RetroCards: React.FC"));
     expect(mig).toContain('carry(here, "idea", ideas, "idea")');
