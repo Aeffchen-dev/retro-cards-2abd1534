@@ -88,7 +88,7 @@
 .partner-bottom-sheet .partner-sheet-header { text-align: left; gap: 16px; }
 .partner-bottom-sheet .partner-sheet-title { text-align: left; color: var(--color-text-primary); font-family: var(--font-question); font-weight: 400; font-size: 24px; line-height: 1.2; letter-spacing: 0; margin: 0; }
 .partner-bottom-sheet .partner-sheet-description, .partner-bottom-sheet p { text-align: left; font-family: var(--font-app); font-size: 16px; font-weight: 400; line-height: 1.4; letter-spacing: 0; color: var(--color-text-primary); }
-.partner-bottom-sheet > button:last-child { color: var(--retro-black); opacity: 1; background: transparent; width: 32px; height: 32px; top: 0; right: 0; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-text-primary); border-radius: 0; }
+.partner-bottom-sheet > button:last-child { color: var(--retro-black); opacity: 1; background: #FFFFFF; width: 32px; height: 32px; top: 0; right: 0; display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-text-primary); border-radius: 0; }
 .partner-bottom-sheet > button:last-child > svg { width: 16px; height: 16px; }
 .partner-dialog { overflow: visible; }
 

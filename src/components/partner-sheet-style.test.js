@@ -53,6 +53,7 @@ describe("connection bottom sheet look", () => {
     expect(close).toMatch(/border: 1px solid var\(--color-text-primary\)/);
     expect(close).toMatch(/border-radius: 0/);
     expect(close, "the square rides on the pill's own line").toMatch(/top: 0/);
+    expect(close, "it wears a white plate so the ink reads on the dark backdrop").toMatch(/background: #FFFFFF/);
     expect(close).toMatch(/right: 0/);
     expect(block(".partner-bottom-sheet > button:last-child > svg")).toMatch(/width: 16px/);
   });
