@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Users, Unplug, Share2, X } from 'lucide-react';
 import ActionRow from './ActionRow';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { connectionHint, invitationName } from './partner-invitation-data';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { toast } from 'sonner';
 
-export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '' }: { accent?: string; initialName?: string }) {
+export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '', pillColor = 'var(--retro-pill, #9D9CFF)', pillDot = 'var(--retro-pill-dot, #201C1D)' }: { accent?: string; initialName?: string; pillColor?: string; pillDot?: string }) {
   const s = usePartnerSession();
   const [open, setOpen] = useState(() => Boolean(invitationFromUrl()));
   const [code, setCode] = useState(() => invitationFromUrl());
