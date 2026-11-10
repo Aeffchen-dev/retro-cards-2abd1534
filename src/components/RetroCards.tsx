@@ -277,7 +277,7 @@ const migrateMovedAnswers = () => {
   };
   // "Das wollen wir kommenden Monat machen" moves from Feedback over to Ideas...
   carry(here, "plans", ideas, "plans");
-  // ...and "Letzte Chance" the other way round, from Ideas to Feedback.
+  // ...and "Ungesagt" the other way round, from Ideas to Feedback.
   carry(ideas, "unspoken", here, "unspoken");
   // "Das wünsche ich mir" moved from Feedback to Ideas earlier.
   carry(here, "idea", ideas, "idea");
@@ -1980,7 +1980,7 @@ const RetroCards: React.FC = () => {
               <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
                 <span className="retro-label">Feedback</span>
               </div>
-              <h2 className="retro-heading w-full"><RevealText text="A review for you, my love" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <h2 className="retro-heading w-full"><RevealText text="Gegenseitiges Feedback" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6 screen-only">
               {REFLECTION_FIELDS.map(([key, label, placeholder, helper]) => (
