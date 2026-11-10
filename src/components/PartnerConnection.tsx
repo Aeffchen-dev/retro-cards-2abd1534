@@ -47,7 +47,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       {/* The chapter name rides above the sheet, outside its panel — the same
           pill the cards wear above their own question. */}
