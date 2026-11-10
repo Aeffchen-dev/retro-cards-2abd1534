@@ -7,6 +7,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, A
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { connectionHint, invitationName } from './partner-invitation-data';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
+import { copyInvitation, shareInvitation } from '@/hooks/invitation-sharing';
 import { toast } from 'sonner';
 
 export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '', pillColor = 'var(--retro-pill, #9D9CFF)', pillDot = 'var(--retro-pill-dot, #201C1D)' }: { accent?: string; initialName?: string; pillColor?: string; pillDot?: string }) {
@@ -38,10 +39,12 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const shareLink = async () => {
     if (!link) return;
     setNotice(''); s.setError('');
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Unsere gemeinsame Retro', text: 'Mach mit bei unserer Retro.', url: link }); }
-      catch (error) { if (error instanceof DOMException && error.name === 'AbortError') return; throw error; }
-    } else { await navigator.clipboard.writeText(link); setNotice('Einladungslink kopiert'); }
+    try {
+      const outcome = await shareInvitation(link, navigator.share?.bind(navigator), copyInvitation);
+      if (outcome === 'copied') setNotice('Einladungslink kopiert');
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : 'Der Link konnte nicht geteilt werden. Bitte erneut versuchen.');
+    }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
     <ActionRow accent={accent} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
