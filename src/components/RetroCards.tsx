@@ -368,11 +368,16 @@ const RetroCards: React.FC = () => {
     const onInput = (e: Event) => {
       const t = e.target as HTMLElement | null;
       if (!t || !(t.tagName === 'TEXTAREA' || (t.tagName === 'INPUT' && (t as HTMLInputElement).type === 'text'))) return;
+      // Never rerender during the browser's capture phase: React has not read the
+      // new character yet, so a controlled field would be reset to its old value.
+      // In the bubble phase React's onChange has already captured it. Also leave
+      // an ongoing phone-keyboard composition (autocorrect) undisturbed.
+      if ((e as InputEvent).isComposing) return;
       const now = Date.now();
       if (now - last > 1500) { last = now; setTypingAt(now); }
     };
-    document.addEventListener('input', onInput, true);
-    return () => document.removeEventListener('input', onInput, true);
+    document.addEventListener('input', onInput);
+    return () => document.removeEventListener('input', onInput);
   }, []);
 
   // State for setup (names, emojis, open-relationship toggle, extra partners)
