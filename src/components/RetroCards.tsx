@@ -640,6 +640,10 @@ const RetroCards: React.FC = () => {
   useEffect(() => {
     partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion, activity: typingAt ? { typingAt } : undefined });
   }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, typingAt, partnerSession.publish]);
+  // The name typed in Setup is the name the other person sees, and it follows every edit.
+  useEffect(() => {
+    partnerSession.shareName(setupData.name1);
+  }, [setupData.name1, partnerSession.shareName]);
   // Joining through an invitation starts the retro on its first card.
   useEffect(() => {
     const goFirst = () => swiperRef?.slideTo(0);

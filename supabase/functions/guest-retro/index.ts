@@ -42,7 +42,9 @@ Deno.serve(async req=>{
    if(error)return reply({error:'Partner konnte nicht entfernt werden'},500);
   }
   if(body.action==='update'){
-   const {error}=await db.from('retro_guest_members').update({answers:body.answers,updated_at:new Date().toISOString()}).eq('user_id',member.user_id).eq('session_id',member.session_id);
+   const patch:Record<string,unknown>={answers:body.answers,updated_at:new Date().toISOString()};
+   if(typeof body.name==='string'&&body.name.trim())patch.display_name=body.name.trim();
+   const {error}=await db.from('retro_guest_members').update(patch).eq('user_id',member.user_id).eq('session_id',member.session_id);
    if(error)return reply({error:'Antworten konnten nicht geteilt werden'},500);
   }
   const {data:members,error}=await db.from('retro_guest_members').select('user_id,display_name,answers,is_owner').eq('session_id',member.session_id);

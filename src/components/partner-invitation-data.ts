@@ -4,6 +4,15 @@ export function invitationName(existingName: string): string {
   return existingName.trim().slice(0, 80) || 'Gast';
 }
 
+/**
+ * The name the other person sees follows Setup: trimmed, capped, and only worth
+ * sending when it actually differs from what was shared last.
+ */
+export function displayNameUpdate(rawName: string, sentName: string): string | null {
+  const name = rawName.trim().slice(0, 80);
+  return name && name !== sentName ? name : null;
+}
+
 export function invitationStatus(
   sessionId: string | null,
   userId: string | undefined,

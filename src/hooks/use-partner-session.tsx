@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef, Re
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
-import { invitationStatus } from '@/components/partner-invitation-data';
+import { displayNameUpdate, invitationStatus } from '@/components/partner-invitation-data';
 import { PARTNER_REFRESH_INTERVAL_MS, updatePartnerMember } from './partner-live-data';
 import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, type GuestAccess } from './guest-retro-client';
 
@@ -19,6 +19,7 @@ function useSession() {
   const [online, setOnline] = useState(false);
   const snapshot = useRef<DeckSnapshot>({});
   const timer = useRef<ReturnType<typeof setTimeout>>();
+  const sharedName = useRef('');
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
     const { data } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user ?? null));
@@ -85,6 +86,23 @@ function useSession() {
     }, 250);
   }, [sessionId, user, guest]);
   useEffect(() => { publish(snapshot.current); return () => { if (timer.current) clearTimeout(timer.current); }; }, [publish]);
+  // The name typed in Setup is the name the other person sees, so it travels
+  // with every edit instead of staying the value picked when the room opened.
+  const shareName = useCallback((raw: string) => {
+    const name = displayNameUpdate(raw, sharedName.current);
+    if (!name) return;
+    if (guest) {
+      sharedName.current = name;
+      void guestRequest({ action: 'update', token: guest.token, answers: snapshot.current, name })
+        .then(data => setMembers(data.members ?? []))
+        .catch(e => { sharedName.current = ''; setError(e instanceof Error ? e.message : 'Dein Name konnte nicht geteilt werden'); });
+      return;
+    }
+    if (!sessionId || !user) return;
+    sharedName.current = name;
+    void supabase.from('retro_members').update({ display_name: name, updated_at: new Date().toISOString() }).eq('session_id', sessionId).eq('user_id', user.id)
+      .then(({ error: e }) => { if (e) { sharedName.current = ''; setError('Dein Name konnte nicht geteilt werden'); } });
+  }, [guest, sessionId, user]);
   const connect = async (name: string, code?: string) => {
     setError('');
     if (!name.trim() || name.length > 80) { setError('Bitte deinen Namen eingeben (maximal 80 Zeichen).'); return; }
@@ -110,7 +128,7 @@ function useSession() {
       const { error: e } = await supabase.from('retro_members').delete().eq('session_id', sessionId).eq('user_id', user.id);
       if (e) { setError(e.message); return; }
     }
-    setSessionId(null); localStorage.removeItem('partner-session-id'); setMembers([]); setInvite('');
+    setSessionId(null); localStorage.removeItem('partner-session-id'); setMembers([]); setInvite(''); sharedName.current = '';
   };
   const remove = async (id: string) => {
     if (!guest) return;
@@ -123,7 +141,7 @@ function useSession() {
   const partner = members.find(m => m.user_id !== memberId);
   const partnerAnswers = (partner?.answers ?? {}) as DeckSnapshot;
   const invitation = invitationStatus(sessionId, memberId, members, loadedSessionId === sessionId);
-  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, connect, leave };
+  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, shareName, connect, leave };
 }
 // Shared on globalThis so a hot-reloaded duplicate of this module reuses the same context.
 type PartnerCtx = React.Context<ReturnType<typeof useSession> | null>;
