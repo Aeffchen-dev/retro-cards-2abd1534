@@ -2130,18 +2130,20 @@ textarea.bg-retro-post-it:focus,
 .print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: 1; pointer-events: none; overflow: visible !important; }
 .print-memoji-label {
   position: absolute;
-  top: calc(100% + 2px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: calc(100% + 4px);
+  transform: translateY(-50%);
   width: max-content;
-  max-width: 120px;
+  max-width: 96px;
   padding: 1px 4px;
   background: var(--retro-card-bg);
   color: var(--retro-black);
   font-size: 12px;
   line-height: 14px;
-  text-align: center;
-  overflow-wrap: anywhere;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Memory photos as polaroids */
