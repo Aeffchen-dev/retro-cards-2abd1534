@@ -2114,3 +2114,25 @@ textarea.bg-retro-post-it:focus,
   align-items: center;
   gap: 2px;
 }
+
+/* Connected partner's answer to the same field, live under your own */
+.partner-field { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border-left: 3px solid currentColor; color: var(--retro-black, #201C1D); font-size: 14px; line-height: 1.4; margin-top: 6px; }
+.partner-field-name { font-size: 12px; color: var(--retro-info-text, #6E7078); }
+.partner-field-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: .85; }
+
+/* Memory photos as polaroids */
+.polaroid-wall { display: flex; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: 12px; overflow-y: auto; overflow-x: hidden; }
+.polaroid { margin: 0; background: #FFFFFF; padding: 8px 8px 0; box-shadow: 0 6px 18px rgba(32, 28, 29, .18); transform: rotate(var(--tilt, 0deg)); width: calc(50% - 12px); max-width: 180px; }
+.polaroid img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; background: #E4E6E8; }
+.polaroid figcaption { font-size: 12px; color: #6E7078; text-align: center; padding: 8px 0 14px; }
+.polaroid-print { display: none; }
+@media print {
+  .polaroid-print { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .polaroid-print .polaroid { width: auto; max-width: none; box-shadow: none; border: 1px solid #C9CBD1; break-inside: avoid; }
+}
+.retro-summary-prompt { margin-top: 8px; font-size: 14px; line-height: 1.4; color: var(--retro-black, #201C1D); }
+@media print {
+  .print-prompt-list { flex-direction: column; gap: 0; width: 100%; margin-top: 28px; padding: 0; list-style: none; flex: 1 1 auto; }
+  .print-prompt-list li { flex: 1 1 0; border-bottom: 1px solid #C9CBD1; padding-top: 10px; font-size: 14px; color: #201C1D; }
+}

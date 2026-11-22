@@ -43,3 +43,37 @@ export function retroSummary(values: Record<string, string>, personKeys: string[
     answered: set.length,
   };
 }
+
+export interface HealthInsights {
+  average: number | null;
+  partnerAverage: number | null;
+  /** Topics where you two differ by two or more points, biggest first. */
+  gaps: { title: string; own: number; partner: number }[];
+  /** Change of your average against the previous retro. */
+  trend: number | null;
+  nextSteps: string[];
+}
+
+const mean = (xs: (number | null)[]) => {
+  const n = xs.filter((v): v is number => v !== null);
+  return n.length === xs.length && n.length ? Math.round((n.reduce((a, b) => a + b, 0) / n.length) * 10) / 10 : null;
+};
+
+export function healthInsights(
+  own: (number | null)[], partner: (number | null)[], titles: string[],
+  previous: (number | null)[] | null, ideas: Record<string, string> = {},
+): HealthInsights {
+  const average = mean(own);
+  const prev = previous ? mean(previous) : null;
+  const gaps = titles
+    .map((title, i) => ({ title, own: own[i], partner: partner[i] }))
+    .filter((g): g is { title: string; own: number; partner: number } => g.own !== null && g.partner !== null && Math.abs(g.own - g.partner) >= 2)
+    .sort((a, b) => Math.abs(b.own - b.partner) - Math.abs(a.own - a.partner))
+    .slice(0, 3);
+  const nextSteps = Object.values(ideas).flatMap(v => v.split('\n')).map(l => l.replace(/^[•\s-]+/, '').trim()).filter(Boolean).slice(0, 3);
+  return {
+    average, partnerAverage: mean(partner), gaps,
+    trend: average !== null && prev !== null ? Math.round((average - prev) * 10) / 10 : null,
+    nextSteps,
+  };
+}

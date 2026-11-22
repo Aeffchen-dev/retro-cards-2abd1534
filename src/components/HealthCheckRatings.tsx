@@ -13,8 +13,8 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
   const own = healthResults(values, actualPerson);
   const remote = healthResults(s.partnerAnswers.notes?.['105'] ?? {}, 'p0');
   const other = revealedPartnerResults(own, s.sessionId ? remote : healthResults(values, 'p1'));
-  const ownName = s.members.find(m => m.user_id === s.memberId)?.display_name ?? names[0];
-  const otherName = s.partner?.display_name ?? names[1];
+  const ownName = names[0] || s.members.find(m => m.user_id === s.memberId)?.display_name;
+  const otherName = (s.partner ? s.partnerName : names[1]);
   if (pageIndex === 8) {
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">

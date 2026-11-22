@@ -1,4 +1,4 @@
-export const PARTNER_REFRESH_INTERVAL_MS = 3000;
+export const PARTNER_REFRESH_INTERVAL_MS = 1500;
 
 export function updatePartnerMember<T extends { user_id: string }>(members: readonly T[], updated: T): T[] {
   const index = members.findIndex(member => member.user_id === updated.user_id);
@@ -16,4 +16,11 @@ export function isTextEntryTarget(target: unknown): boolean {
 /** Polling often returns the same room; retaining the old array avoids a render. */
 export function samePartnerMembers(current: readonly unknown[], next: readonly unknown[]): boolean {
   return current === next || JSON.stringify(current) === JSON.stringify(next);
+}
+
+/** The Setup name wins over the name stored at join time (often the "Gast" fallback). */
+export function partnerDisplayName(stored?: string, setupName?: string): string {
+  const typed = (setupName ?? '').trim();
+  if (typed) return typed.slice(0, 80);
+  return (stored ?? '').trim() || 'Partner';
 }

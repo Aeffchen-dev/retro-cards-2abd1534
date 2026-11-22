@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { displayNameUpdate, invitationStatus } from '@/components/partner-invitation-data';
-import { isTextEntryTarget, PARTNER_REFRESH_INTERVAL_MS, samePartnerMembers, updatePartnerMember } from './partner-live-data';
+import { isTextEntryTarget, partnerDisplayName, PARTNER_REFRESH_INTERVAL_MS, samePartnerMembers, updatePartnerMember } from './partner-live-data';
 import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, type GuestAccess } from './guest-retro-client';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
@@ -26,9 +26,9 @@ function useSession() {
   const pendingMembers = useRef<Member[] | null>(null);
   const applyMembers = useCallback((next: Member[]) => {
     membersRef.current = next;
-    // A poll or realtime reply must not repaint a controlled field mid-keystroke.
-    // Keep the newest room state and flush it when the writing field loses focus.
-    if (isTextEntryTarget(document.activeElement)) { pendingMembers.current = next; return; }
+    // Partner text must appear while you type: the own field keeps its local value,
+    // so a repaint with an unchanged value never touches the caret.
+    pendingMembers.current = null;
     setMembers(current => samePartnerMembers(current, next) ? current : next);
   }, []);
   useEffect(() => {
@@ -175,8 +175,9 @@ function useSession() {
   const isOwner = Boolean(members.find(m => m.user_id === memberId)?.is_owner);
   const partner = members.find(m => m.user_id !== memberId);
   const partnerAnswers = (partner?.answers ?? {}) as DeckSnapshot;
+  const partnerName = partnerDisplayName(partner?.display_name, partnerAnswers.setup?.name1);
   const invitation = invitationStatus(sessionId, memberId, members, loadedSessionId === sessionId);
-  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, shareTyping, shareName, connect, leave };
+  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, partnerName, invite, invitation, error, setError, online, publish, shareTyping, shareName, connect, leave };
 }
 // Shared on globalThis so a hot-reloaded duplicate of this module reuses the same context.
 type PartnerCtx = React.Context<ReturnType<typeof useSession> | null>;

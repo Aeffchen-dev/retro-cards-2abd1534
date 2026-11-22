@@ -1,3 +1,4 @@
+import { partnerDisplayName } from '@/hooks/partner-live-data';
 import { useEffect, useState, type CSSProperties } from 'react';
 import { Users, Unplug, Share2, X } from 'lucide-react';
 import ActionRow from './ActionRow';
@@ -22,7 +23,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   const [removeId, setRemoveId] = useState<string | null>(null);
   const host = s.members.find(m => m.is_owner && m.user_id !== s.memberId) ?? s.partner;
   useEffect(() => {
-    if (welcome && host) { toast(`Willkommen! Du bist der Retro von ${host.display_name} beigetreten.`); setWelcome(false); }
+    if (welcome && host) { toast(`Willkommen! Du bist der Retro von ${partnerDisplayName(host.display_name, (host.answers as { setup?: { name1?: string } } | null)?.setup?.name1)} beigetreten.`); setWelcome(false); }
   }, [welcome, host]);
   useEffect(() => {
     if (code && s.sessionId) { setOpen(false); setCode(''); setWelcome(true); window.dispatchEvent(new Event('retro-go-first')); }
@@ -47,7 +48,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partner.display_name} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partnerName} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       {/* The chapter name rides above the sheet, outside its panel — the same
           pill the cards wear above their own question. */}
@@ -63,7 +64,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
       </div> : <div className="space-y-4">
         {s.others.length > 0 && s.online
           ? <ul className="space-y-2" aria-label="Verbundene Partner">{s.others.map(m => <li key={m.user_id}>
-              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${m.display_name} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
+              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${partnerDisplayName(m.display_name, (m.answers as { setup?: { name1?: string } } | null)?.setup?.name1)} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
             </li>)}</ul>
           : hint ? <p role="status" aria-live="polite">{hint}</p> : null}
         {link && <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />}
@@ -79,7 +80,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     </AlertDialog>
     <AlertDialog open={Boolean(removeId)} onOpenChange={o => { if (!o) setRemoveId(null); }}>
       <AlertDialogContent className="max-w-[calc(100%-32px)] sm:max-w-lg">
-        <AlertDialogHeader><AlertDialogTitle>{s.others.find(m => m.user_id === removeId)?.display_name ?? 'Partner'} entfernen?</AlertDialogTitle><AlertDialogDescription>Diese Person sieht danach keine neuen Antworten mehr. Alle anderen bleiben verbunden.</AlertDialogDescription></AlertDialogHeader>
+        <AlertDialogHeader><AlertDialogTitle>{s.partnerName} entfernen?</AlertDialogTitle><AlertDialogDescription>Diese Person sieht danach keine neuen Antworten mehr. Alle anderen bleiben verbunden.</AlertDialogDescription></AlertDialogHeader>
         <AlertDialogFooter><AlertDialogCancel disabled={busy}>Abbrechen</AlertDialogCancel><Button variant="destructive" disabled={busy} onClick={() => { const id = removeId; if (id && !busy) void act(async () => { await s.remove(id); setRemoveId(null); }); }}><X size={16}/> {busy ? 'Entfernt …' : 'Entfernen'}</Button></AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

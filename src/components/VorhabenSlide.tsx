@@ -13,9 +13,11 @@ interface VorhabenSlideProps {
   labelColor: string;
   values: Record<string, string>;
   onChange: (key: string, value: string) => void;
+  partnerLabel?: string;
+  partnerValues?: Record<string, string>;
 }
 
-const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange }: VorhabenSlideProps) => {
+const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange, partnerLabel, partnerValues }: VorhabenSlideProps) => {
   // The card now wears the deck's one measure — the slide's height capped at 88% —
   // so on a phone three writing areas, their labels and the gaps between them have
   // to stop a step earlier: otherwise the last field rides over the card's own
@@ -26,7 +28,7 @@ const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange }: Vor
 
   const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label, placeholder]) => (
     <PostItField key={key} label={label} placeholder={placeholder} accent={labelColor} barColor={labelColor}
-      readOnly={readOnly} minHeight={fieldFloor(readOnly)} value={values[key] || ""} onChange={(value) => onChange(key, value)} />
+      readOnly={readOnly} minHeight={fieldFloor(readOnly)} value={values[key] || ""} partnerLabel={partnerLabel} partnerValue={partnerValues?.[key]} onChange={(value) => onChange(key, value)} />
   ));
 
   return (

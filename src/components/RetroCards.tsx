@@ -401,9 +401,16 @@ const RetroCards: React.FC = () => {
 
   // Display fallbacks for name/emoji
   const displayName1 = setupData.name1 || NAME1_PLACEHOLDER;
-  const displayName2 = setupData.name2 || NAME2_PLACEHOLDER;
+  // Connected: the second person is the real partner — their own Setup name, emoji and answers.
+  const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
+  const liveName = live ? partnerSession.partnerName : '';
+  const name2 = live ? liveName : setupData.name2;
+  const displayName2 = name2 || NAME2_PLACEHOLDER;
   const displayEmoji1 = setupData.emoji1 || EMOJI1_PLACEHOLDER;
-  const displayEmoji2 = setupData.emoji2 || EMOJI2_PLACEHOLDER;
+  const displayEmoji2 = (live && live.setup?.emoji1) || setupData.emoji2 || EMOJI2_PLACEHOLDER;
+  /** On a connected device, the partner's field shows what they write into their own first field. */
+  const livePerson = (idx: number) => Boolean(live) && idx === 1;
+  const partnerKey = (key: string) => key.replace(/-p\d+$/, '-p0').replace(/^p\d+$/, 'p0');
 
   // All persons (2 main + extra partners) — used to render draggable memojis on health-check slides
   const persons = useMemo(() => {
@@ -484,15 +491,15 @@ const RetroCards: React.FC = () => {
   const personPlaceholder = useCallback(
     (person: { name: string }, idx: number, label: string, fallbackMine: string, fallbackPartner: string): string => {
       if (label === "Themen") {
-        const name = (idx === 0 ? setupData.name1 : idx === 1 ? setupData.name2 : person.name).trim();
+        const name = (idx === 0 ? setupData.name1 : idx === 1 ? name2 : person.name).trim();
         return name ? `${name}'s Themen` : idx === 0 ? fallbackMine : fallbackPartner;
       }
       if (idx === 0) return postItPlaceholder(setupData.name1, label, fallbackMine);
-      if (idx === 1) return postItPlaceholder(setupData.name2, label, fallbackPartner);
+      if (idx === 1) return postItPlaceholder(name2, label, fallbackPartner);
       const name = person.name || `Partner ${idx + 1}`;
       return `${germanPossessive(name)} ${label}`;
     },
-    [setupData.name1, setupData.name2]
+    [setupData.name1, name2]
   );
 
   // Slide ids with edit button: health-personal(1), health-relationship(2), last-4-weeks(3),
@@ -1071,6 +1078,8 @@ const RetroCards: React.FC = () => {
     console.log('Is Mac:', isMac);
     console.log('Is Chrome:', isChrome);
     console.log('Is Safari:', isSafari);
+    // iPhone/iPad: open the phone's own camera app straight from the tap.
+    if (isIOS || (isMac && navigator.maxTouchPoints > 1)) { openCameraForIOS(); return; }
     
     // Prefer live video on every device: canvas capture never fires a photo flash.
     
@@ -1130,7 +1139,7 @@ const RetroCards: React.FC = () => {
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
-      input.capture = 'user'; // Use front camera (selfie camera) by default
+      input.capture = 'user'; // selfie camera for couple photos
       input.style.position = 'fixed';
       input.style.top = '-1000px';
       input.style.left = '-1000px';
@@ -1181,10 +1190,8 @@ const RetroCards: React.FC = () => {
       console.log('File input added to DOM, triggering click...');
       
       // Small delay to ensure DOM insertion
-      setTimeout(() => {
-        input.click();
-        console.log('File input click triggered');
-      }, 100);
+      // Click inside the tap itself — iOS ignores a delayed click.
+      input.click();
       
     } catch (error) {
       console.error('Error in openCameraForIOS:', error);
@@ -1422,33 +1429,23 @@ const RetroCards: React.FC = () => {
 
             {/* Print-only: Show captured photos in a single row */}
             {capturedPhotos.length > 0 && (
-              <div className="hidden print-only gap-2 mt-8 w-full flex-row items-center">
+              <div className="hidden print-only polaroid-print mt-8 w-full">
                 {capturedPhotos.map((photo, index) => (
-                  <img
-                    key={index}
-                    src={photo}
-                    alt={`Captured photo ${index + 1}`}
-                    className="h-[120px] object-contain rounded-lg flex-shrink"
-                    style={{ maxWidth: `${Math.floor(100 / Math.max(capturedPhotos.length, 1)) - 2}%` }}
-                  />
+                  <figure key={index} className="polaroid" style={{ ['--tilt' as string]: `${[-3, 2, -1, 3][index % 4]}deg` } as React.CSSProperties}>
+                    <img src={photo} alt={`Foto ${index + 1}`} />
+                    <figcaption>{new Date().toLocaleDateString('de-DE')}</figcaption>
+                  </figure>
                 ))}
               </div>
             )}
-            {/* Screen: photos as photo-booth strips, three below each other */}
+            {/* Screen: every photo as a polaroid, slightly tilted, newest on top */}
             {capturedPhotos.length > 0 && (
-              <div className="screen-only flex-1 min-h-0 w-full flex flex-row items-stretch justify-center gap-4 pt-6 overflow-hidden">
-                {Array.from({ length: Math.ceil(capturedPhotos.length / 3) }, (_, s) => capturedPhotos.slice(s * 3, s * 3 + 3)).map((strip, s) => (
-                  <div
-                    key={s}
-                    className="h-full max-h-[460px] flex flex-col gap-2 p-2 pb-6 bg-white shadow-lg"
-                    style={{ aspectRatio: "0.42", transform: `rotate(${s % 2 ? 2 : -2}deg)`, border: "1px solid #E4E6E8" }}
-                  >
-                    {[0, 1, 2].map((i) => (
-                      <div key={i} className="flex-1 min-h-0" style={{ background: "#E4E6E8" }}>
-                        {strip[i] && <img src={strip[i]} alt={`Foto ${s * 3 + i + 1}`} className="w-full h-full object-cover" />}
-                      </div>
-                    ))}
-                  </div>
+              <div className="screen-only polaroid-wall flex-1 min-h-0 w-full pt-6">
+                {capturedPhotos.map((photo, i) => (
+                  <figure key={i} className="polaroid" style={{ ['--tilt' as string]: `${[-4, 3, -2, 5, -3][i % 5]}deg` } as React.CSSProperties}>
+                    <img src={photo} alt={`Foto ${i + 1}`} />
+                    <figcaption>{new Date().toLocaleDateString('de-DE')}</figcaption>
+                  </figure>
                 ))}
               </div>
             )}
@@ -1508,7 +1505,7 @@ const RetroCards: React.FC = () => {
                       if (!container) return;
                       const box = container.getBoundingClientRect();
                       const position = besideSmiley(event.currentTarget.getBoundingClientRect(), box);
-                      const renderedPositions = Object.fromEntries(persons.map(person => {
+                      const renderedPositions = Object.fromEntries(persons.filter((_, n) => !livePerson(n)).map(person => {
                         const marker = container.querySelector<HTMLElement>(`.print-memoji-${person.key}`);
                         return [person.key, { x: marker?.offsetLeft ?? 0, y: marker?.offsetTop ?? 0 }];
                       }));
@@ -1527,9 +1524,14 @@ const RetroCards: React.FC = () => {
               </div>
               {/* Draggable Memojis — one per person */}
               {persons.map((person, i) => {
-                const posX = memojisPositions[cardId]?.[person.key]?.x ?? defaultX;
-                const posY = memojisPositions[cardId]?.[person.key]?.y ?? defaultY(i);
-                const faceIndex = memojisPositions[cardId]?.[person.key]?.faceIndex;
+                // Connected: the partner's emoji rides where they dragged their own.
+                const remote = livePerson(i);
+                const at = remote
+                  ? (live?.positions as Record<number, MemojisPosition> | undefined)?.[cardId]?.p0
+                  : memojisPositions[cardId]?.[person.key];
+                const posX = at?.x ?? defaultX;
+                const posY = at?.y ?? defaultY(i);
+                const faceIndex = at?.faceIndex;
                 const anchoredTop = faceIndex === undefined ? undefined : `calc(${hcSpanPoint(faceIndex / 4)} - 28px)`;
                 return (
                   <div
@@ -1545,8 +1547,10 @@ const RetroCards: React.FC = () => {
                       '--print-anchored-top': anchoredTop,
                       '--print-left-percent': faceIndex === undefined ? `${(posX / (isMobile ? 320 : 480)) * 100}%` : `${posX}px`,
                     } as React.CSSProperties}
-                    onMouseDown={(e) => handleMemojiMouseDown(e, cardId, person.key)}
-                    onTouchStart={(e) => handleMemojiTouchStart(e, cardId, person.key)}
+                    aria-label={remote ? `${person.name} (live)` : undefined}
+                    data-remote={remote || undefined}
+                    onMouseDown={remote ? undefined : (e) => handleMemojiMouseDown(e, cardId, person.key)}
+                    onTouchStart={remote ? undefined : (e) => handleMemojiTouchStart(e, cardId, person.key)}
                   >
                     <div className="w-full h-full flex items-center justify-center rounded-full pointer-events-none text-4xl leading-none">
                       {person.emoji}
@@ -1610,7 +1614,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Was war die letzten 4 Wochen so los?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="flex flex-col flex-1 justify-end w-full" style={{ gap: '24px', marginTop: '28px', paddingBottom: '56px' }}>
+            <div className="flex flex-col flex-1 justify-end w-full screen-only" style={{ gap: '24px', marginTop: '28px', paddingBottom: '56px' }}>
               {blockRows.map(([iconName, label], i) => (
                 <ActionRow
                   key={i}
@@ -1622,7 +1626,13 @@ const RetroCards: React.FC = () => {
                 />
               ))}
             </div>
-            <div className="absolute left-0 bottom-0 w-full">
+            {/* Print-only: the six prompts as a writing list */}
+            <ol className="hidden print-only print-prompt-list">
+              {[...blockRows.map(([, label]) => String(label)), "4 Wochen in einem Wort"].map((label) => (
+                <li key={label}>{label}</li>
+              ))}
+            </ol>
+            <div className="absolute left-0 bottom-0 w-full screen-only">
               <ActionRow
                 icon="IconStar"
                 label="4 Wochen in einem Wort"
@@ -1654,7 +1664,8 @@ const RetroCards: React.FC = () => {
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
-                  value={postItTexts[person.key] || ""}
+                  readOnly={livePerson(idx)}
+                  value={livePerson(idx) ? live?.postIts?.p0 || "" : postItTexts[person.key] || ""}
                   onChange={(v) => setPostItTexts({ ...postItTexts, [person.key]: v })}
                 />
               ))}
@@ -1670,7 +1681,7 @@ const RetroCards: React.FC = () => {
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
                   placeholder="Deine Antwort"
-                  value={postItTexts[person.key] || ""}
+                  value={livePerson(idx) ? live?.postIts?.p0 || "" : postItTexts[person.key] || ""}
                 />
               ))}
             </div>
@@ -1989,6 +2000,8 @@ const RetroCards: React.FC = () => {
             pillColor={pillColorOf(SLIDE_VORHABEN)}
             labelColor="#FF47D1"
             values={editModeNotes[SLIDE_VORHABEN] || {}}
+            partnerLabel={live ? liveName : undefined}
+            partnerValues={live?.notes?.[SLIDE_VORHABEN]}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
               [SLIDE_VORHABEN]: { ...prev[SLIDE_VORHABEN], [key]: value },
@@ -2013,6 +2026,8 @@ const RetroCards: React.FC = () => {
                   label={label}
                   placeholder={helper || placeholder}
                   value={reflectionTexts[key] || ""}
+                  partnerLabel={live ? liveName : undefined}
+                  partnerValue={live?.reflection?.[key]}
                   onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />
               ))}
@@ -2030,6 +2045,8 @@ const RetroCards: React.FC = () => {
                   helper={helper}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
+                  partnerLabel={live ? liveName : undefined}
+                  partnerValue={live?.reflection?.[key]}
                 />
               ))}
 
@@ -2057,6 +2074,8 @@ const RetroCards: React.FC = () => {
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.hot || ""}
+                partnerLabel={live ? liveName : undefined}
+                partnerValue={live?.notes?.[7]?.hot}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
                     ...prev,
@@ -2070,6 +2089,8 @@ const RetroCards: React.FC = () => {
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.idea || ""}
+                partnerLabel={live ? liveName : undefined}
+                partnerValue={live?.notes?.[7]?.idea}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
                     ...prev,
@@ -2092,7 +2113,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir aus der Retro mit" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="mt-6 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} /></div>
+            <div className="mt-6 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined} partnerName={liveName} ideas={editModeNotes[SLIDE_VORHABEN]} /></div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
@@ -2100,7 +2121,8 @@ const RetroCards: React.FC = () => {
                   accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
-                  value={takeawayTexts[person.key] || ""}
+                  readOnly={livePerson(idx)}
+                  value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                   onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
                 />
               ))}
@@ -2115,7 +2137,7 @@ const RetroCards: React.FC = () => {
                   accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
                   placeholder="Deine Antwort"
-                  value={takeawayTexts[person.key] || ""}
+                  value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                 />
               ))}
             </div>
@@ -2400,7 +2422,8 @@ const RetroCards: React.FC = () => {
                                           accent={labelColorOf(slideId)}
                                           label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                                           placeholder="Deine Antwort"
-                                          value={editModeNotes[slideId]?.[noteKey] || ""}
+                                          readOnly={livePerson(idx)}
+                                          value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                           onChange={(v) =>
                                             setEditModeNotes(prev => ({
                                               ...prev,
@@ -2433,7 +2456,8 @@ const RetroCards: React.FC = () => {
                                       accent={labelColorOf(slideId)}
                                       label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                                       placeholder="Deine Antwort"
-                                      value={editModeNotes[slideId]?.[noteKey] || ""}
+                                      readOnly={livePerson(idx)}
+                                      value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                       onChange={(v) =>
                                         setEditModeNotes(prev => ({
                                           ...prev,
@@ -2507,7 +2531,7 @@ const RetroCards: React.FC = () => {
           {slides.map((slideId, index) => (
             <div key={`print-${slideId}`} className="contents">
               {/* Skip Logo, Intro, Setup, Archive (9) and Questions (10) in print */}
-              {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (
+              {slideId !== SLIDE_LOGO && slideId !== SLIDE_INTRO && slideId !== SLIDE_SETUP && slideId !== 9 && slideId !== 10 && (slideId !== 0 || capturedPhotos.length > 0) && (
                 <div className="print-slide-page" style={{ order: index * 2 }}>
                   <div className="retro-card-container relative flex flex-col justify-center items-start gap-10 bg-retro-card-bg rounded-none">
                     {renderCard(slideId)}

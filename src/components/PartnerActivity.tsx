@@ -17,5 +17,5 @@ export default function PartnerActivity() {
     return () => clearTimeout(t);
   }, [typingAt]);
   if (!visible || !s.partner) return null;
-  return <p className="partner-activity screen-only" role="status" aria-live="polite">{s.partner.display_name} schreibt gerade …</p>;
+  return <p className="partner-activity screen-only" role="status" aria-live="polite">{s.partnerName} schreibt gerade …</p>;
 }

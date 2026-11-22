@@ -27,3 +27,4 @@
 - Keep per-card behaviour behind an opt-in flag on the shared component so siblings stay untouched, and let print normalise rather than rewrite saved answers; derive card colours from the shared colour helpers and theme overrides, passing real values to shared fields so their contrast lightening works.
 
 - Health Check history saves itself once all own answers exist, one entry per day replaced in place (`upsertDailyEntry`), so users never need a save action; the year review derives from the latest twelve entries and on-device Memory thumbnails.
+- Connected partners never share one writing field: each writes into their own first-person keys, and the other device shows those answers read-only (per-person fields map partner `p0` into the local `p1` slot; shared fields render `PostItField`'s `partnerValue` block). Partner names come from their Setup answers via `partnerDisplayName`, because the stored join name is often the "Gast" fallback.

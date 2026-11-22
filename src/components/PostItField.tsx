@@ -18,6 +18,9 @@ interface PostItFieldProps {
   helper?: string;
   /** Bullet points by default: every line starts with "• " */
   bullets?: boolean;
+  /** Connected partner's name — shows their answer to the same field under yours, live. */
+  partnerLabel?: string;
+  partnerValue?: string;
 
 }
 
@@ -78,6 +81,8 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   barColor,
   helper,
   bullets = false,
+  partnerLabel,
+  partnerValue,
 }) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
@@ -132,6 +137,12 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         placeholder={bullets && !placeholder.startsWith(BULLET) ? BULLET + placeholder : placeholder}
       />
     )}
+    {partnerLabel ? (
+      <div className="partner-field" aria-live="polite">
+        <span className="partner-field-name">{partnerLabel}</span>
+        <span className="partner-field-text">{partnerValue?.trim() ? (bullets ? bulletize(partnerValue) : partnerValue) : "Noch nichts geschrieben"}</span>
+      </div>
+    ) : null}
   </div>
 );
 

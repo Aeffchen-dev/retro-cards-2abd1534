@@ -46,9 +46,7 @@ test('own write replies and name replies do not repaint member state', () => {
   assert.match(shareName, /nameTimer\.current = setTimeout/);
 });
 
-test('incoming room state is held while a field is focused and flushed on focusout', () => {
+test('incoming partner text applies at once, even while a field is focused', () => {
   const hook = read('../hooks/use-partner-session.tsx');
-  assert.match(hook, /if \(isTextEntryTarget\(document\.activeElement\)\) \{ pendingMembers\.current = next; return; \}/);
-  assert.match(hook, /document\.addEventListener\('focusout', flush\)/);
-  assert.match(hook, /document\.removeEventListener\('focusout', flush\)/);
+  assert.doesNotMatch(hook, /pendingMembers\.current = next; return;/);
 });
