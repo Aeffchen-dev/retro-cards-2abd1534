@@ -404,9 +404,20 @@ const RetroCards: React.FC = () => {
   const displayName1 = setupData.name1 || NAME1_PLACEHOLDER;
   // Connected: the second person is the real partner — their own Setup name, emoji and answers.
   const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
-  // A joined partner follows the inviting person's "Nicht monogam" choice and cannot change it.
-  const guestSetup = Boolean(live && !partnerSession.isOwner);
-  const openRelationship = guestSetup ? Boolean(live?.setup?.openRelationship) : setupData.openRelationship;
+  // "Nicht monogam" is one shared choice: whoever flips it last sets it for everyone.
+  const openRelationship = setupData.openRelationship;
+  const partnerOpen = live?.setup ? Boolean(live.setup.openRelationship) : undefined;
+  const seenPartnerOpen = useRef<boolean | undefined>(undefined);
+  useEffect(() => {
+    if (partnerOpen === undefined) { seenPartnerOpen.current = undefined; return; }
+    if (seenPartnerOpen.current !== undefined && seenPartnerOpen.current !== partnerOpen) {
+      setSetupData(prev => prev.openRelationship === partnerOpen ? prev : { ...prev, openRelationship: partnerOpen });
+    } else if (seenPartnerOpen.current === undefined && !partnerSession.isOwner) {
+      // On joining, take over the inviting person's setting.
+      setSetupData(prev => prev.openRelationship === partnerOpen ? prev : { ...prev, openRelationship: partnerOpen });
+    }
+    seenPartnerOpen.current = partnerOpen;
+  }, [partnerOpen, partnerSession.isOwner]);
   const liveName = live ? partnerDisplayName(partnerSession.partner?.display_name, live.setup?.name1, setupData.name2) : '';
   const name2 = live ? liveName : setupData.name2;
   const displayName2 = name2 || NAME2_PLACEHOLDER;
@@ -1974,11 +1985,9 @@ const RetroCards: React.FC = () => {
               <button
                 type="button"
                 role="checkbox"
-                disabled={guestSetup}
                 aria-checked={openRelationship}
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (guestSetup) return;
                   setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                 }}
                 className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
@@ -1994,7 +2003,7 @@ const RetroCards: React.FC = () => {
 
 
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
-                  Nicht monogam{guestSetup ? <span className="partner-field-name">&nbsp;· von {liveName} festgelegt</span> : null}
+                  Nicht monogam{live ? <span className="partner-field-name">&nbsp;· gilt für euch beide</span> : null}
                 </span>
                 </button>
               </div>
