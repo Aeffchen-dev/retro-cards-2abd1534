@@ -104,7 +104,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
 
     {readOnly ? (
       <div
-        className="w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap"
+        className="post-it-readonly w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap"
         style={{ minHeight: minHeight ? `${minHeight}px` : undefined }}
       >
         {(bullets ? bulletize(value) : value) || placeholder}

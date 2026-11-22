@@ -1475,6 +1475,14 @@ textarea.bg-retro-post-it:focus,
   box-shadow: none;
 }
 
+/* A read-only answer — the partner's text shown under yours — wears the same
+   square corners as your own writing area, so the two fields read as one pair
+   (user: "partner input field not rounded corners"). */
+.post-it-readonly,
+.post-it-readonly:hover {
+  border-radius: 0;
+}
+
 /* Name input wrapper */
 .name-input-wrapper {
   position: relative;
