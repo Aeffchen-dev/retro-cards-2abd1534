@@ -1824,7 +1824,7 @@ const RetroCards: React.FC = () => {
               <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
-                    {NAME1_PLACEHOLDER}
+                    {live ? 'Du' : NAME1_PLACEHOLDER}
                   </div>
                   <div className="name-input-wrapper first-name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
                     <input
@@ -1843,6 +1843,23 @@ const RetroCards: React.FC = () => {
                 {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
               </div>
 
+              {live ? (
+                <div className="flex flex-col w-full min-w-0">
+                  <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
+                    Partner
+                  </div>
+                  <div className="setup-partner-card" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }} aria-label={`${liveName}, verbunden`}>
+                    <span className="setup-partner-card-emoji" aria-hidden="true">{live.setup?.emoji1 || setupData.emoji2 || EMOJI2_PLACEHOLDER}</span>
+                    <span className="flex flex-col min-w-0">
+                      <span className={`setup-partner-card-name${live.setup?.name1?.trim() ? '' : ' is-pending'}`}>{liveName}</span>
+                      <span className="setup-partner-card-status">
+                        <span className={`partner-status-dot${partnerSession.online ? ' is-connected' : ''}`} aria-hidden="true" />
+                        {live.setup?.name1?.trim() ? (partnerSession.online ? 'verbunden' : 'gerade offline') : 'trägt seinen Namen noch ein …'}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              ) : (
               {/* Person 2 — post-it style field */}
               <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col w-full min-w-0">
@@ -1865,13 +1882,10 @@ const RetroCards: React.FC = () => {
                     </div>
                     <PartnerConnection compact partnerName={setupData.name2} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
                   </div>
-                  {live && (live.setup?.name1 || live.setup?.emoji1) ? (
-                    <p className="setup-partner-own retro-body-copy">{live.setup?.emoji1} {live.setup?.name1} <span className="partner-field-name">· von {liveName} eingetragen, nur lesbar</span></p>
-                  ) : null}
                 </div>
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
               </div>
-
+              )}
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
@@ -1929,8 +1943,8 @@ const RetroCards: React.FC = () => {
               {/* Add partner and the "Nicht monogam" toggle keep one shared gap between
                   them — the same 8px a name has to its emoji picker. */}
               <div className="flex flex-col gap-2 w-full">
-              {/* Add partner — own evenly spaced slot */}
-              <button
+              {/* Add partner — own evenly spaced slot; only the inviting person shapes the group */}
+              {!(live && !partnerSession.isOwner) && <button
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -1947,12 +1961,13 @@ const RetroCards: React.FC = () => {
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Weiteren Partner hinzufügen
                 </span>
-              </button>
+              </button>}
 
               {/* Nicht monogam — checkbox row (tile left, label field right) */}
               <button
                 type="button"
                 role="checkbox"
+                hidden={Boolean(live && !partnerSession.isOwner)}
                 aria-checked={setupData.openRelationship}
                 onClick={(e) => {
                   e.stopPropagation();

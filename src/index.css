@@ -2164,6 +2164,11 @@ textarea.bg-retro-post-it:focus,
 
 .partner-field-lock { margin-left: 4px; font-size: 11px; }
 .partner-field-lock-note { display: block; font-size: 12px; color: var(--retro-info-text, #6E7078); }
-.setup-partner-own { margin-top: 6px; font-size: 14px; }
+
 .health-partner-waiting { margin-top: 8px; font-size: 12px; color: var(--retro-info-text, #6E7078); }
 @media print { .partner-field-lock, .partner-field-lock-note, .health-partner-waiting { display: none; } }
+.setup-partner-card { display: flex; align-items: center; gap: 12px; padding: 10px 12px; cursor: default; user-select: none; }
+.setup-partner-card-emoji { font-size: 32px; line-height: 1; }
+.setup-partner-card-name { font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.setup-partner-card-name.is-pending { color: var(--retro-info-text, #6E7078); }
+.setup-partner-card-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--retro-info-text, #6E7078); }
