@@ -1,4 +1,12 @@
 import React from "react";
+import { ChevronRight, LockKeyhole } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface PostItFieldProps {
   label: string;
@@ -21,7 +29,6 @@ interface PostItFieldProps {
   /** Connected partner's name — shows their answer to the same field under yours, live. */
   partnerLabel?: string;
   partnerValue?: string;
-
 }
 
 /** Label text is always black — lighten the accent until contrast is sufficient. */
@@ -62,8 +69,68 @@ export const bulletOnEnter = (text: string, from: number, to: number) => {
   return { value, caret: from + 1 + BULLET.length };
 };
 
+interface PartnerAnswerProps {
+  label: string;
+  partnerLabel: string;
+  partnerValue?: string;
+  bullets: boolean;
+}
 
+/** A live one-line preview keeps the card's layout stable. The complete answer
+    opens on demand, where its own scrolling area can hold any amount of text. */
+const PartnerAnswer: React.FC<PartnerAnswerProps> = ({ label, partnerLabel, partnerValue, bullets }) => {
+  const [open, setOpen] = React.useState(false);
+  const rawAnswer = partnerValue ?? "";
+  const hasAnswer = Boolean(rawAnswer.trim());
+  const answer = hasAnswer ? (bullets ? bulletize(rawAnswer) : rawAnswer) : "";
 
+  return (
+    <>
+      <div className={`partner-field screen-only${hasAnswer ? "" : " is-empty"}`} aria-live="polite">
+        {hasAnswer ? (
+          <button
+            type="button"
+            className="partner-field-summary swiper-no-swiping"
+            aria-label={`Antwort von ${partnerLabel} zu „${label}“ lesen`}
+            aria-haspopup="dialog"
+            onClick={() => setOpen(true)}
+          >
+            <span className="partner-field-topline">
+              <span className="partner-field-name">{partnerLabel} schreibt:</span>
+              <span className="partner-field-preview">{answer}</span>
+            </span>
+            <span className="partner-field-read">Lesen <ChevronRight size={14} strokeWidth={1.5} aria-hidden="true" /></span>
+          </button>
+        ) : (
+          <span className="partner-field-empty">
+            <span className="partner-field-name">{partnerLabel}: Noch nichts geschrieben</span>
+            <LockKeyhole size={12} strokeWidth={1.5} aria-label={`Nur ${partnerLabel} kann das ändern`} />
+          </span>
+        )}
+      </div>
+
+      {/* Paper keeps the complete answer directly beneath its writing field. */}
+      <div className="partner-field partner-field-print hidden print-only">
+        <span className="partner-field-name">{partnerLabel} schreibt:</span>
+        <span className="partner-field-text">{answer || "Noch nichts geschrieben"}</span>
+      </div>
+
+      {hasAnswer ? (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className="partner-answer-dialog screen-only">
+            <DialogHeader className="partner-answer-header">
+              <DialogTitle className="partner-answer-title">Antwort von {partnerLabel}</DialogTitle>
+              <DialogDescription className="partner-answer-description">
+                {label} · Nur {partnerLabel} kann diese Antwort ändern.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="partner-answer-full">{answer}</div>
+          </DialogContent>
+        </Dialog>
+      ) : null}
+    </>
+  );
+};
 
 /**
  * Post-it style input with a 32px label bar directly above (0px gap).
@@ -101,7 +168,6 @@ export const PostItField: React.FC<PostItFieldProps> = ({
       <div className="post-it-helper retro-body-copy py-1" lang="de">{helper}</div>
     ) : null}
 
-
     {readOnly ? (
       <div
         className="post-it-readonly w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap"
@@ -137,11 +203,9 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         placeholder={bullets && !placeholder.startsWith(BULLET) ? BULLET + placeholder : placeholder}
       />
     )}
+
     {partnerLabel ? (
-      <div className="partner-field" aria-live="polite">
-        <span className="partner-field-name">{partnerLabel} schreibt: <span className="partner-field-lock" aria-hidden="true">🔒</span><span className="partner-field-lock-note">Nur {partnerLabel} kann das ändern</span></span>
-        <span className="partner-field-text">{partnerValue?.trim() ? (bullets ? bulletize(partnerValue) : partnerValue) : "Noch nichts geschrieben"}</span>
-      </div>
+      <PartnerAnswer label={label} partnerLabel={partnerLabel} partnerValue={partnerValue} bullets={bullets} />
     ) : null}
   </div>
 );

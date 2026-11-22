@@ -24,7 +24,7 @@ const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange, partn
   // bottom padding (user: "each card in slider should have same measurements").
   // Paper keeps the roomy field: an A4 page has the height a phone window lacks.
   const compact = useIsMobile();
-  const fieldFloor = (readOnly: boolean) => (readOnly ? 96 : compact ? 78 : 96);
+  const fieldFloor = (readOnly: boolean) => (readOnly ? 96 : compact ? (partnerLabel ? 48 : 78) : 96);
 
   const fields = (readOnly: boolean) => VORHABEN_QUESTIONS.map(([key, label, placeholder]) => (
     <PostItField key={key} label={label} placeholder={placeholder} accent={labelColor} barColor={labelColor}
@@ -35,7 +35,7 @@ const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange, partn
     <div className="vorhaben-slide flex flex-col items-start w-full min-h-full"
       style={{ ["--vorhaben-pill" as string]: pillColor, ["--vorhaben-label" as string]: labelColor } as React.CSSProperties}>
       <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir uns bis zur nächsten Retro vor" color={pillColor} slideIndex={slideId} /></h2>
-      <div className={`screen-only flex flex-col flex-1 w-full gap-3 mt-4`}>{fields(false)}</div>
+      <div className={`screen-only flex flex-col flex-1 w-full ${partnerLabel ? 'gap-1 mt-2' : 'gap-3 mt-4'}`}>{fields(false)}</div>
       <div className="hidden print-only flex-col flex-1 w-full gap-4 mt-6">{fields(true)}</div>
     </div>
   );

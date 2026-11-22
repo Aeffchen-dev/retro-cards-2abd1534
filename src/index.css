@@ -2123,10 +2123,79 @@ textarea.bg-retro-post-it:focus,
   gap: 2px;
 }
 
-/* Connected partner's answer to the same field, live under your own */
-.partner-field { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border-left: 3px solid currentColor; color: var(--retro-black, #201C1D); font-size: 14px; line-height: 1.4; margin-top: 6px; }
+/* Connected partner's answer: a compact live preview on screen, the full text
+   in its own reading dialog, and the unchanged complete answer on paper. */
+.partner-field {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 2px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 4px 8px;
+  border-left: 3px solid currentColor;
+  color: var(--retro-black, #201C1D);
+  font-size: 14px;
+  line-height: 1.4;
+  margin-top: 0;
+}
+.partner-field-print { display: none; margin-top: 6px; }
 .partner-field-name { font-size: 12px; color: var(--retro-info-text, #6E7078); }
 .partner-field-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.partner-field-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.partner-field-summary:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+.partner-field-topline { display: flex; flex: 1; align-items: baseline; gap: 4px; min-width: 0; overflow: hidden; }
+.partner-field-topline .partner-field-name,
+.partner-field-empty .partner-field-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.partner-field-topline .partner-field-name { flex: 0 1 auto; max-width: 45%; }
+.partner-field-read { display: inline-flex; align-items: center; flex: none; gap: 2px; color: var(--retro-info-text, #6E7078); font-size: 12px; line-height: 16px; }
+.partner-field-preview {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 20px;
+}
+.partner-field-empty { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+.partner-field-empty > svg { flex: none; color: var(--retro-info-text, #6E7078); }
+.partner-answer-dialog {
+  grid-template-rows: auto minmax(0, 1fr);
+  width: calc(100% - 32px);
+  max-width: 500px;
+  max-height: calc(100dvh - 48px);
+  overflow: hidden;
+  color: var(--retro-black, #201C1D);
+}
+.partner-answer-header { padding-right: 28px; text-align: left; }
+.partner-answer-title { overflow-wrap: anywhere; font-size: 20px; font-weight: 400; line-height: 1.25; }
+.partner-answer-description { font-size: 12px; line-height: 1.4; }
+.partner-answer-full {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 1.5;
+}
 .print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: 1; pointer-events: none; overflow: visible !important; }
 /* The partner's name rides under their Health Check emoji and wears the same
    12px grey the other partner labels use ("... schreibt:", "hat schon
