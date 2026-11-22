@@ -22,5 +22,7 @@ export function samePartnerMembers(current: readonly unknown[], next: readonly u
 export function partnerDisplayName(stored?: string, setupName?: string): string {
   const typed = (setupName ?? '').trim();
   if (typed) return typed.slice(0, 80);
-  return (stored ?? '').trim() || 'Partner';
+  const saved = (stored ?? '').trim();
+  // "Gast" / "Gast B" are join-time fallbacks, never a real name.
+  return saved && !/^gast(\s|$)/i.test(saved) ? saved : 'Partner';
 }
