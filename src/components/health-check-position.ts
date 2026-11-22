@@ -1,5 +1,20 @@
 export type Point = { x: number; y: number };
+export type MemojiAnswer = Point & { faceIndex?: number; answered?: boolean };
 type Box = Point & { width: number; height: number };
+
+// The resting positions are placeholders, not answers. Older saved drags did
+// not carry `answered`, so a non-resting position still counts as an answer.
+const RESTING_POSITIONS = new Set(["248,64", "248,136", "380,120", "380,192"]);
+
+export function hasHealthCheckAnswer(position: MemojiAnswer | undefined): boolean {
+  if (!position) return false;
+  return position.answered === true || position.faceIndex !== undefined ||
+    !RESTING_POSITIONS.has(`${position.x},${position.y}`);
+}
+
+export function shouldShowPartnerMemoji(own: MemojiAnswer | undefined, partner: MemojiAnswer | undefined): boolean {
+  return hasHealthCheckAnswer(own) && hasHealthCheckAnswer(partner);
+}
 
 export function besideSmiley(face: Box, container: Box, memojiSize = 56): Point {
   return {

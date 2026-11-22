@@ -2127,7 +2127,22 @@ textarea.bg-retro-post-it:focus,
 .partner-field { display: flex; flex-direction: column; gap: 2px; padding: 8px 12px; border-left: 3px solid currentColor; color: var(--retro-black, #201C1D); font-size: 14px; line-height: 1.4; margin-top: 6px; }
 .partner-field-name { font-size: 12px; color: var(--retro-info-text, #6E7078); }
 .partner-field-text { white-space: pre-wrap; overflow-wrap: anywhere; }
-.print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: .85; }
+.print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: 1; pointer-events: none; overflow: visible !important; }
+.print-memoji-label {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 120px;
+  padding: 1px 4px;
+  background: var(--retro-card-bg);
+  color: var(--retro-black);
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
 
 /* Memory photos as polaroids */
 .polaroid-wall { display: flex; flex-wrap: wrap; align-content: flex-start; justify-content: center; gap: 12px; overflow-y: auto; overflow-x: hidden; }

@@ -7,7 +7,7 @@ import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import StarRating from "@/components/StarRating";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
-import { besideSmiley, nearestMemoji } from "@/components/health-check-position";
+import { besideSmiley, nearestMemoji, shouldShowPartnerMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
@@ -146,7 +146,7 @@ interface ReflectionTexts {
 }
 
 interface MemojisPosition {
-  [personKey: string]: { x: number; y: number; faceIndex?: number };
+  [personKey: string]: { x: number; y: number; faceIndex?: number; answered?: boolean };
 }
 
 // Tonal card families — bg + text stay in the same hue family (like the
@@ -1008,7 +1008,12 @@ const RetroCards: React.FC = () => {
         ...prev,
         [draggingMemoji.cardIndex]: {
           ...prev[draggingMemoji.cardIndex],
-          [draggingMemoji.person]: { x: newX, y: newY },
+          [draggingMemoji.person]: {
+            ...prev[draggingMemoji.cardIndex]?.[draggingMemoji.person],
+            x: newX,
+            y: newY,
+            answered: true,
+          },
         },
       }));
     };
@@ -1036,7 +1041,12 @@ const RetroCards: React.FC = () => {
         ...prev,
         [draggingMemoji.cardIndex]: {
           ...prev[draggingMemoji.cardIndex],
-          [draggingMemoji.person]: { x: newX, y: newY },
+          [draggingMemoji.person]: {
+            ...prev[draggingMemoji.cardIndex]?.[draggingMemoji.person],
+            x: newX,
+            y: newY,
+            answered: true,
+          },
         },
       }));
     };
@@ -1509,12 +1519,12 @@ const RetroCards: React.FC = () => {
                         const marker = container.querySelector<HTMLElement>(`.print-memoji-${person.key}`);
                         return [person.key, { x: marker?.offsetLeft ?? 0, y: marker?.offsetTop ?? 0 }];
                       }));
-                      const key = selectedMemoji.current[cardId] ?? nearestMemoji(renderedPositions, position);
+                      const key = live ? 'p0' : selectedMemoji.current[cardId] ?? nearestMemoji(renderedPositions, position);
                       if (!key || !persons.some(person => person.key === key)) return;
                       selectedMemoji.current[cardId] = key;
                       setMemojisPositions(prev => ({
                         ...prev,
-                        [cardId]: { ...prev[cardId], [key]: { ...position, faceIndex: i } },
+                        [cardId]: { ...prev[cardId], [key]: { ...position, faceIndex: i, answered: true } },
                       }));
                     }}
                   >
@@ -1522,13 +1532,15 @@ const RetroCards: React.FC = () => {
                   </Button>
                 ))}
               </div>
-              {/* Draggable Memojis — one per person */}
-              {persons.map((person, i) => {
-                // Connected: the partner's emoji rides where they dragged their own.
+              {/* Connected: only your own emoji is draggable. Your partner's
+                  answer appears after both of you have placed yours. */}
+              {persons.flatMap((person, i) => {
                 const remote = livePerson(i);
+                if (live && i > 1) return [];
                 const at = remote
                   ? (live?.positions as Record<number, MemojisPosition> | undefined)?.[cardId]?.p0
                   : memojisPositions[cardId]?.[person.key];
+                if (remote && !shouldShowPartnerMemoji(memojisPositions[cardId]?.p0, at)) return [];
                 const posX = at?.x ?? defaultX;
                 const posY = at?.y ?? defaultY(i);
                 const faceIndex = at?.faceIndex;
@@ -1536,7 +1548,7 @@ const RetroCards: React.FC = () => {
                 return (
                   <div
                     key={person.key}
-                    className={`absolute w-14 h-14 cursor-move select-none touch-none print-memoji print-memoji-${person.key}`}
+                    className={`absolute w-14 h-14 select-none print-memoji print-memoji-${person.key} ${remote ? 'pointer-events-none' : 'swiper-no-swiping cursor-move touch-none'}`}
                     style={{
                       // min() keeps the emoji inside the scale's own box even when a
                       // default or saved position is wider than the card.
@@ -1547,7 +1559,7 @@ const RetroCards: React.FC = () => {
                       '--print-anchored-top': anchoredTop,
                       '--print-left-percent': faceIndex === undefined ? `${(posX / (isMobile ? 320 : 480)) * 100}%` : `${posX}px`,
                     } as React.CSSProperties}
-                    aria-label={remote ? `${person.name} (live)` : undefined}
+                    aria-label={remote ? `${person.name}: Antwort` : `${person.name}: dein verschiebbares Emoji`}
                     data-remote={remote || undefined}
                     onMouseDown={remote ? undefined : (e) => handleMemojiMouseDown(e, cardId, person.key)}
                     onTouchStart={remote ? undefined : (e) => handleMemojiTouchStart(e, cardId, person.key)}
@@ -1555,6 +1567,7 @@ const RetroCards: React.FC = () => {
                     <div className="w-full h-full flex items-center justify-center rounded-full pointer-events-none text-4xl leading-none">
                       {person.emoji}
                     </div>
+                    {remote && <span className="print-memoji-label">{person.name}</span>}
                   </div>
                 );
               })}

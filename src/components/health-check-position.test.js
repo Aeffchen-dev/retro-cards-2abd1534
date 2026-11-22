@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { besideSmiley, nearestMemoji } from "./health-check-position";
+import { besideSmiley, hasHealthCheckAnswer, nearestMemoji, shouldShowPartnerMemoji } from "./health-check-position";
 
 describe("Health Check smiley click", () => {
   test("places a Memoji exactly 16px right of the smiley", () => {
@@ -17,5 +17,20 @@ describe("Health Check smiley click", () => {
   });
   test("uses the closest partner when none has been selected", () => {
     expect(nearestMemoji({ p0: { x: 220, y: 20 }, p1: { x: 220, y: 200 } }, { x: 50, y: 180 })).toBe("p1");
+  });
+  test("does not mistake the untouched resting emoji for an answer", () => {
+    expect(hasHealthCheckAnswer({ x: 248, y: 64 })).toBe(false);
+    expect(hasHealthCheckAnswer({ x: 248, y: 64, answered: true })).toBe(true);
+  });
+  test("keeps answers saved by an older version visible", () => {
+    expect(hasHealthCheckAnswer({ x: 180, y: 90 })).toBe(true);
+    expect(hasHealthCheckAnswer({ x: 248, y: 64, faceIndex: 2 })).toBe(true);
+  });
+  test("shows the partner only after both people have answered", () => {
+    const own = { x: 60, y: 64, answered: true };
+    const partner = { x: 60, y: 136, answered: true };
+    expect(shouldShowPartnerMemoji(undefined, partner)).toBe(false);
+    expect(shouldShowPartnerMemoji(own, undefined)).toBe(false);
+    expect(shouldShowPartnerMemoji(own, partner)).toBe(true);
   });
 });
