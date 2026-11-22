@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { displayNameUpdate, invitationStatus } from '@/components/partner-invitation-data';
 import { isTextEntryTarget, partnerDisplayName, PARTNER_REFRESH_INTERVAL_MS, samePartnerMembers, updatePartnerMember } from './partner-live-data';
-import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, type GuestAccess } from './guest-retro-client';
+import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, isExpiredGuestAccess, type GuestAccess } from './guest-retro-client';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
 type Member = { user_id: string; display_name: string; answers: Json; is_owner?: boolean };
@@ -55,7 +55,11 @@ function useSession() {
   const refresh = useCallback(async () => {
     if (guest) {
       try { const data = await guestRequest({action:'read', token:guest.token}); applyMembers(data.members ?? []); setInvite(guest.invite ?? ''); setLoadedSessionId(guest.sessionId); setOnline(true); }
-      catch (e) { setOnline(false); setError(e instanceof Error ? e.message : 'Verbindung nicht verfügbar'); }
+      catch (e) {
+        // A guest pass whose room was closed or removed can never work again:
+        // drop it so the next "Link teilen" opens a fresh room instead of failing.
+        if (isExpiredGuestAccess(e)) { localStorage.removeItem(GUEST_STORAGE_KEY); setGuest(null); setSessionId(null); setMembers([]); membersRef.current = []; setInvite(''); setLoadedSessionId(null); setOnline(false); setError(''); return; }
+        setOnline(false); setError(e instanceof Error ? e.message : 'Verbindung nicht verfügbar'); }
       return;
     }
     if (!sessionId || !user) return;
@@ -103,7 +107,7 @@ function useSession() {
     snapshot.current = value;
     if (timer.current) clearTimeout(timer.current);
     if (guest) {
-      timer.current = setTimeout(async () => { try { await guestRequest({action:'update',token:guest.token,answers:snapshot.current}); } catch(e) {setError(e instanceof Error ? e.message : 'Änderungen konnten nicht geteilt werden');} },250);
+      timer.current = setTimeout(async () => { try { await guestRequest({action:'update',token:guest.token,answers:snapshot.current}); } catch(e) {if (isExpiredGuestAccess(e)) { void refresh(); return; } setError(e instanceof Error ? e.message : 'Änderungen konnten nicht geteilt werden');} },250);
       return;
     }
     if (!sessionId || !user) return;
@@ -111,7 +115,7 @@ function useSession() {
       const { error: e } = await supabase.from('retro_members').update({ answers: snapshot.current as Json, updated_at: new Date().toISOString() }).eq('session_id', sessionId).eq('user_id', user.id);
       if (e) setError('Deine Änderungen konnten nicht geteilt werden. Bitte prüfe die Verbindung.');
     }, 250);
-  }, [sessionId, user, guest]);
+  }, [sessionId, user, guest, refresh]);
   useEffect(() => { publish(snapshot.current); return () => { if (timer.current) clearTimeout(timer.current); }; }, [publish]);
   const shareTyping = useCallback((typingAt: number) => {
     publish({ ...snapshot.current, activity: { typingAt } });

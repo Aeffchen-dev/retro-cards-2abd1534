@@ -8,8 +8,9 @@ export function readGuestAccess():GuestAccess|null {
 }
 export async function guestRequest(body:Record<string,unknown>) {
  const {data,error}=await supabase.functions.invoke('guest-retro',{body});
- if(error){let message='Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'; if('context' in error && error.context instanceof Response){try{const details=await error.context.json();if(typeof details.error==='string')message=details.error;}catch{ /* no response body */ }}throw new Error(message);}
+ if(error){let message='Die Verbindung ist gerade nicht möglich. Bitte erneut versuchen.'; const status=('context' in error && error.context instanceof Response)?error.context.status:0; if('context' in error && error.context instanceof Response){try{const details=await error.context.json();if(typeof details.error==='string')message=details.error;}catch{ /* no response body */ }}const err=new Error(message) as Error&{expired?:boolean}; err.expired=status===403&&body.action!=='join'; throw err;}
  return data;
 }
 export function parseGuestAccess(value:unknown):GuestAccess{return accessSchema.parse(value);}
 export function invitationFromUrl(){const params=new URLSearchParams(location.hash.slice(1));return params.get('invite')??new URLSearchParams(location.search).get('join')??'';}
+export const isExpiredGuestAccess=(e:unknown)=>Boolean(e&&typeof e==='object'&&(e as {expired?:boolean}).expired);
