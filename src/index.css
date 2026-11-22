@@ -2128,22 +2128,33 @@ textarea.bg-retro-post-it:focus,
 .partner-field-name { font-size: 12px; color: var(--retro-info-text, #6E7078); }
 .partner-field-text { white-space: pre-wrap; overflow-wrap: anywhere; }
 .print-memoji[data-remote] { cursor: default; transition: left .3s ease, top .3s ease; opacity: 1; pointer-events: none; overflow: visible !important; }
+/* The partner's name rides under their Health Check emoji and wears the same
+   12px grey the other partner labels use ("... schreibt:", "hat schon
+   geantwortet", the Setup status line). A plate of the card's own surface keeps
+   the guide lines from running through the letters. */
 .print-memoji-label {
   position: absolute;
-  top: 50%;
-  left: calc(100% + 4px);
-  transform: translateY(-50%);
+  top: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
   width: max-content;
   max-width: 96px;
   padding: 1px 4px;
   background: var(--retro-card-bg);
-  color: var(--retro-black);
+  color: var(--retro-info-text, #6E7078);
   font-size: 12px;
   line-height: 14px;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* When your own emoji sits in the row directly below the partner's, the name
+   rides above their emoji so it never covers yours. */
+.print-memoji-label.is-above {
+  top: auto;
+  bottom: calc(100% + 2px);
 }
 
 /* Memory photos as polaroids */

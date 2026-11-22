@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { besideSmiley, hasHealthCheckAnswer, nearestMemoji, shouldShowPartnerMemoji } from "./health-check-position";
+import { besideSmiley, hasHealthCheckAnswer, nearestMemoji, partnerLabelSide, shouldShowPartnerMemoji } from "./health-check-position";
 
 describe("Health Check smiley click", () => {
   test("places a Memoji exactly 16px right of the smiley", () => {
@@ -32,5 +32,23 @@ describe("Health Check smiley click", () => {
     expect(shouldShowPartnerMemoji(undefined, partner)).toBe(false);
     expect(shouldShowPartnerMemoji(own, undefined)).toBe(false);
     expect(shouldShowPartnerMemoji(own, partner)).toBe(true);
+  });
+  test("puts the partner name under their emoji", () => {
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 60, y: 136 })).toBe("below");
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 60, y: 85 })).toBe("below");
+  });
+  test("flips the name above when your emoji sits in the row directly below", () => {
+    // Smileys stand 51px apart while the markers are 56px tall, so a name
+    // underneath would land on the head of the emoji in the next row.
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 60, y: 187 })).toBe("above");
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 90, y: 187 })).toBe("above");
+  });
+  test("keeps the name below when your emoji is further down or beside the row", () => {
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 60, y: 238 })).toBe("below");
+    expect(partnerLabelSide({ x: 60, y: 136 }, { x: 200, y: 187 })).toBe("below");
+  });
+  test("reads below while either answer is missing", () => {
+    expect(partnerLabelSide(undefined, { x: 60, y: 187 })).toBe("below");
+    expect(partnerLabelSide({ x: 60, y: 136 }, undefined)).toBe("below");
   });
 });

@@ -7,7 +7,7 @@ import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import StarRating from "@/components/StarRating";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
-import { besideSmiley, nearestMemoji, shouldShowPartnerMemoji } from "@/components/health-check-position";
+import { besideSmiley, nearestMemoji, partnerLabelSide, shouldShowPartnerMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
@@ -1587,7 +1587,7 @@ const RetroCards: React.FC = () => {
                     <div className="w-full h-full flex items-center justify-center rounded-full pointer-events-none text-4xl leading-none">
                       {person.emoji}
                     </div>
-                    {remote && <span className="print-memoji-label">{person.name}</span>}
+                    {remote && <span className={`print-memoji-label${partnerLabelSide(at, memojisPositions[cardId]?.p0) === 'above' ? ' is-above' : ''}`}>{person.name}</span>}
                   </div>
                 );
               })}

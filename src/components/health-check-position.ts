@@ -16,6 +16,27 @@ export function shouldShowPartnerMemoji(own: MemojiAnswer | undefined, partner: 
   return hasHealthCheckAnswer(own) && hasHealthCheckAnswer(partner);
 }
 
+export type LabelSide = 'above' | 'below';
+
+/**
+ * Which side of the partner's emoji their name rides on.
+ *
+ * The name reads under the emoji, but the smiley rows sit closer together than
+ * one emoji is tall (rows 51px apart, markers 56px) — so when your own emoji is
+ * the row directly beneath the partner's, a name underneath would land on its
+ * head. There it rides above instead.
+ */
+export function partnerLabelSide(
+  partner: MemojiAnswer | undefined,
+  own: MemojiAnswer | undefined,
+  markerSize = 56,
+): LabelSide {
+  if (!partner || !own) return 'below';
+  const dy = own.y - partner.y;
+  const dx = Math.abs(own.x - partner.x);
+  return dy > 0 && dy < markerSize && dx < markerSize ? 'above' : 'below';
+}
+
 export function besideSmiley(face: Box, container: Box, memojiSize = 56): Point {
   return {
     x: Math.max(0, Math.min(container.width - memojiSize, face.x - container.x + face.width + 16)),
