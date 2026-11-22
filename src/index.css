@@ -2161,3 +2161,9 @@ textarea.bg-retro-post-it:focus,
   .print-prompt-list { flex-direction: column; gap: 0; width: 100%; margin-top: 28px; padding: 0; list-style: none; flex: 1 1 auto; }
   .print-prompt-list li { flex: 1 1 0; border-bottom: 1px solid #C9CBD1; padding-top: 10px; font-size: 14px; color: #201C1D; }
 }
+
+.partner-field-lock { margin-left: 4px; font-size: 11px; }
+.partner-field-lock-note { display: block; font-size: 12px; color: var(--retro-info-text, #6E7078); }
+.setup-partner-own { margin-top: 6px; font-size: 14px; }
+.health-partner-waiting { margin-top: 8px; font-size: 12px; color: var(--retro-info-text, #6E7078); }
+@media print { .partner-field-lock, .partner-field-lock-note, .health-partner-waiting { display: none; } }

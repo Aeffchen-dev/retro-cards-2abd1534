@@ -139,7 +139,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
     )}
     {partnerLabel ? (
       <div className="partner-field" aria-live="polite">
-        <span className="partner-field-name">{partnerLabel}</span>
+        <span className="partner-field-name">{partnerLabel} schreibt: <span className="partner-field-lock" aria-hidden="true">🔒</span><span className="partner-field-lock-note">Nur {partnerLabel} kann das ändern</span></span>
         <span className="partner-field-text">{partnerValue?.trim() ? (bullets ? bulletize(partnerValue) : partnerValue) : "Noch nichts geschrieben"}</span>
       </div>
     ) : null}

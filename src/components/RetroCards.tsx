@@ -1865,6 +1865,9 @@ const RetroCards: React.FC = () => {
                     </div>
                     <PartnerConnection compact partnerName={setupData.name2} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
                   </div>
+                  {live && (live.setup?.name1 || live.setup?.emoji1) ? (
+                    <p className="setup-partner-own retro-body-copy">{live.setup?.emoji1} {live.setup?.name1} <span className="partner-field-name">· von {liveName} eingetragen, nur lesbar</span></p>
+                  ) : null}
                 </div>
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
               </div>
@@ -2004,6 +2007,7 @@ const RetroCards: React.FC = () => {
             categoryAccent={BRAND.deepGreen}
             pageIndex={riskSlideIds.indexOf(cardIndex)}
             names={persons.map(p => p.name)}
+            partnerName={live ? liveName : undefined}
             values={editModeNotes[SLIDE_RISIKO] || {}}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,

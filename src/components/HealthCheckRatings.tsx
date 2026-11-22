@@ -6,15 +6,15 @@ import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
 import ActionRow from './ActionRow';
 
-type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string };
-export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent }: Props) {
+type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string; partnerName?: string };
+export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent, partnerName }: Props) {
   const s = usePartnerSession();
   const actualPerson = 'p0';
   const own = healthResults(values, actualPerson);
   const remote = healthResults(s.partnerAnswers.notes?.['105'] ?? {}, 'p0');
   const other = revealedPartnerResults(own, s.sessionId ? remote : healthResults(values, 'p1'));
   const ownName = names[0] || s.members.find(m => m.user_id === s.memberId)?.display_name;
-  const otherName = (s.partner ? s.partnerName : names[1]);
+  const otherName = (s.partner ? (partnerName || 'Partner') : names[1]);
   if (pageIndex === 8) {
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
@@ -40,6 +40,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
         }}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={[]} fieldMin={120}
           comparison={otherScore !== null ? { value: String((otherScore - 1) * 25), label: `${otherName ?? 'Partner'}: ${otherScore}/5`, color: categoryColor, name: otherName ?? 'Partner' } : undefined}
           onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
+        {s.partner && score === null && remote[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] !== null && <p className="health-partner-waiting">{otherName} hat schon geantwortet – antworte zuerst, um es zu sehen</p>}
         <div className="health-scale-ends"><span>Trifft noch nicht zu</span><span>Trifft immer zu</span></div>
       </div></div></div>;
     })}</div>
