@@ -16,6 +16,7 @@ import BgVector from "@/components/BgVector";
 import HealthCheckRatings from './HealthCheckRatings';
 import PartnerConnection from './PartnerConnection';
 import { usePartnerSession } from '@/hooks/use-partner-session';
+import { partnerDisplayName } from '@/hooks/partner-live-data';
 import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
 import { saveMemoryThumb } from './memory-thumbs';
@@ -403,7 +404,7 @@ const RetroCards: React.FC = () => {
   const displayName1 = setupData.name1 || NAME1_PLACEHOLDER;
   // Connected: the second person is the real partner — their own Setup name, emoji and answers.
   const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
-  const liveName = live ? partnerSession.partnerName : '';
+  const liveName = live ? partnerDisplayName(partnerSession.partner?.display_name, live.setup?.name1, setupData.name2) : '';
   const name2 = live ? liveName : setupData.name2;
   const displayName2 = name2 || NAME2_PLACEHOLDER;
   const displayEmoji1 = setupData.emoji1 || EMOJI1_PLACEHOLDER;
@@ -2274,7 +2275,7 @@ const RetroCards: React.FC = () => {
 
       {/* Card Content - Swiper.js slide animation like friends app */}
       <div className="print-stage relative z-10 flex-1 min-h-0 flex items-center justify-center overflow-hidden py-2">
-        <PartnerActivity />
+        <PartnerActivity partnerName={live ? liveName : undefined} />
         {/* Edge click zones for slide navigation */}
         <button
           aria-label="Vorherige Karte"

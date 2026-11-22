@@ -75,7 +75,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
       </div> : <div className="space-y-4">
         {s.others.length > 0 && s.online
           ? <ul className="space-y-2" aria-label="Verbundene Partner">{s.others.map(m => <li key={m.user_id}>
-              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${partnerDisplayName(m.display_name, (m.answers as { setup?: { name1?: string } } | null)?.setup?.name1)} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
+              <ActionRow accent={accent} iconNode={<X size={16}/>} label={`${partnerDisplayName(m.display_name, (m.answers as { setup?: { name1?: string } } | null)?.setup?.name1, partnerName)} ist verbunden`} onClick={() => { setNotice(''); if (s.isOwner) setRemoveId(m.user_id); else setConfirmDisconnect(true); }} />
             </li>)}</ul>
           : hint ? <p role="status" aria-live="polite">{hint}</p> : null}
         {link && <ActionRow accent={accent} iconNode={<Share2 size={16}/>} label="Link teilen" onClick={() => { if (!busy) void act(shareLink); }} />}
@@ -91,7 +91,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     </AlertDialog>
     <AlertDialog open={Boolean(removeId)} onOpenChange={o => { if (!o) setRemoveId(null); }}>
       <AlertDialogContent className="max-w-[calc(100%-32px)] sm:max-w-lg">
-        <AlertDialogHeader><AlertDialogTitle>{s.partnerName} entfernen?</AlertDialogTitle><AlertDialogDescription>Diese Person sieht danach keine neuen Antworten mehr. Alle anderen bleiben verbunden.</AlertDialogDescription></AlertDialogHeader>
+        <AlertDialogHeader><AlertDialogTitle>{recipient !== 'Partner' ? recipient : s.partnerName} entfernen?</AlertDialogTitle><AlertDialogDescription>Diese Person sieht danach keine neuen Antworten mehr. Alle anderen bleiben verbunden.</AlertDialogDescription></AlertDialogHeader>
         <AlertDialogFooter><AlertDialogCancel disabled={busy}>Abbrechen</AlertDialogCancel><Button variant="destructive" disabled={busy} onClick={() => { const id = removeId; if (id && !busy) void act(async () => { await s.remove(id); setRemoveId(null); }); }}><X size={16}/> {busy ? 'Entfernt …' : 'Entfernen'}</Button></AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

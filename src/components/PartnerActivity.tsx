@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 
 /** Shows "[Name] schreibt gerade …" for a few seconds whenever the partner's typing beat changes. */
-export default function PartnerActivity() {
+export default function PartnerActivity({ partnerName }: { partnerName?: string }) {
   const s = usePartnerSession();
+  const displayName = partnerName || s.partnerName;
   const typingAt = s.partner ? s.partnerAnswers.activity?.typingAt ?? 0 : 0;
   const seen = useRef<number | null>(null);
   const [visible, setVisible] = useState(false);
@@ -17,5 +18,5 @@ export default function PartnerActivity() {
     return () => clearTimeout(t);
   }, [typingAt]);
   if (!visible || !s.partner) return null;
-  return <p className="partner-activity screen-only" role="status" aria-live="polite">{s.partnerName} schreibt gerade …</p>;
+  return <p className="partner-activity screen-only" role="status" aria-live="polite">{displayName} schreibt gerade …</p>;
 }

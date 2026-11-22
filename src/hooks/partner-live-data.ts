@@ -18,10 +18,12 @@ export function samePartnerMembers(current: readonly unknown[], next: readonly u
   return current === next || JSON.stringify(current) === JSON.stringify(next);
 }
 
-/** The Setup name wins over the name stored at join time (often the "Gast" fallback). */
-export function partnerDisplayName(stored?: string, setupName?: string): string {
+/** Their own Setup name wins; the name assigned to their invitation is the next fallback. */
+export function partnerDisplayName(stored?: string, setupName?: string, invitedName?: string): string {
   const typed = (setupName ?? '').trim();
   if (typed) return typed.slice(0, 80);
+  const invited = (invitedName ?? '').trim();
+  if (invited) return invited.slice(0, 80);
   const saved = (stored ?? '').trim();
   // "Gast" / "Gast B" are join-time fallbacks, never a real name.
   return saved && !/^gast(\s|$)/i.test(saved) ? saved : 'Partner';
