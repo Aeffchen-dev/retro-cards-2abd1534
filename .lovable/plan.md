@@ -1,33 +1,20 @@
-# Gemeinsame Sitzung verbessern
+# Gemeinsame Sitzung: Namen, Rechte, Slider – klar und einheitlich
 
-Vorschläge, sortiert nach Wirkung. Nach Freigabe setze ich Punkte 1–4 um; 5–7 nur auf Wunsch.
+## So ist es heute
+- **Namen:** Auf Karten mit Schreibfeldern heißt dein Partner so, wie er sich selbst im Setup nennt; fehlt das, der Name, den du im Setup für ihn eingetragen hast; sonst „Partner".
+- **Lücke:** Die Health-Check-Slider und die Auswertung nutzen noch den beim Beitritt gespeicherten Namen – dort kann weiterhin „Gast" stehen.
+- **Bearbeiten:** Jeder schreibt nur in seine eigenen Felder und verschiebt nur sein eigenes Emoji bzw. seinen eigenen Regler. Die Antworten des anderen sind nur lesbar.
+- **Slider:** Die Auswahl des anderen erscheint als zweite Markierung auf derselben Skala, aber erst, wenn du selbst geantwortet hast.
 
-## 1. Sehen, wo der Partner gerade ist
-- Kleiner Hinweis oben auf der Karte: „Sam ist auf ‚Feedback‘" bzw. ein Punkt mit Partnerfarbe in der Kartenübersicht.
-- Knopf „Zu Sam springen", um auf dieselbe Karte zu wechseln.
-
-## 2. Tippen live sichtbar
-- „Sam schreibt …" direkt unter dem passenden Feld (nicht global), verschwindet nach 3 s Pause.
-- Antworten von Gästen schneller übertragen (heute alle paar Sekunden abgefragt) – Ziel unter 1 s.
-
-## 3. Klarer Verbindungsstatus
-- Dauerhaft sichtbarer kleiner Status im Kopf: grün „verbunden", grau „offline – wird nachgeholt".
-- Beim Wiederverbinden kurze Meldung „Alles wieder synchron".
-
-## 4. Fortschritt gemeinsam
-- Auf jeder Karte ein Mini-Häkchen pro Person: „Du ✓ · Sam ✓", damit man weiß, wann man weiter kann.
-- Auswerten-Karte zeigt erst Ergebnisse, wenn beide fertig sind, mit „Wartet noch auf Sam".
-
-## 5. Optional: Gemeinsam blättern
-- Schalter „Zusammen blättern": wer wischt, nimmt den anderen mit.
-
-## 6. Optional: Reaktionen
-- Auf Partner-Antworten mit einem Herz/Emoji reagieren.
-
-## 7. Optional: Sitzung wiederaufnehmen
-- Am nächsten Tag direkt in derselben Sitzung landen, mit „Weiter, wo ihr aufgehört habt".
+## Was ich ändere
+1. **Ein Name überall:** Slider, Auswertung, Diagramm, Verlauf, Emoji-Label und Verbindungsliste nutzen dieselbe Namensregel. „Gast" taucht nirgends mehr auf.
+2. **Setup des Partners sichtbar:** Auf der Setup-Karte siehst du die Einträge deines Partners (Name, Emoji) als nicht bearbeitbare Zeile mit „von [Name] eingetragen". Dein eigenes Feld bleibt deins.
+3. **Feld-Beschriftungen:** Jede Partner-Antwort unter einem Schreibfeld trägt „[Name] schreibt:" mit dem richtigen Namen; auf beiden Geräten aus Sicht des jeweiligen Lesers (bei dir heißt er Sam, bei Sam heißt du Alex).
+4. **Klar, was man bearbeiten kann:** Partner-Antworten bekommen ein kleines Schloss-Symbol und den Hinweis „Nur [Name] kann das ändern". Eigene Felder bleiben wie gehabt.
+5. **Slider des Partners:** Die zweite Markierung trägt den Namen direkt daneben (wie beim Emoji), in der Partnerfarbe, nicht verschiebbar. Solange du noch nicht geantwortet hast, steht unter der Skala „[Name] hat schon geantwortet – antworte zuerst, um es zu sehen".
 
 ## Technische Details
-- Präsenz (aktuelle Karte, tippt gerade, fertig-Status) über Realtime-Presence für angemeldete Nutzer; für Gäste ein leichter Presence-Eintrag über die bestehende Gast-Funktion, Abfrageintervall verkürzen bzw. Realtime-Broadcast nutzen.
-- Fortschritt aus vorhandenen Antwort-Schlüsseln ableiten (reine Hilfsfunktion + Tests).
-- Keine Änderungen an gespeicherten Antworten; Druck/PDF unverändert.
+- `HealthCheckRatings` und Auswertung: `otherName` über `partnerDisplayName(partner.display_name, live.setup.name1, setupData.name2)` statt `s.partnerName`; Name als Prop aus `RetroCards` übergeben.
+- Setup: read-only Partnerzeile aus `live.setup`.
+- `PostItField` read-only Block: Label + Schloss-Icon; `StatementScale` comparison: Label rechts neben dem Marker, Hinweis bei verstecktem Ergebnis.
+- Tests: Namensregel auf Slider/Auswertung; Hinweis erscheint nur, wenn Partner geantwortet hat und man selbst nicht.
