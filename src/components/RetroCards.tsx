@@ -404,6 +404,9 @@ const RetroCards: React.FC = () => {
   const displayName1 = setupData.name1 || NAME1_PLACEHOLDER;
   // Connected: the second person is the real partner — their own Setup name, emoji and answers.
   const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
+  // A joined partner follows the inviting person's "Nicht monogam" choice and cannot change it.
+  const guestSetup = Boolean(live && !partnerSession.isOwner);
+  const openRelationship = guestSetup ? Boolean(live?.setup?.openRelationship) : setupData.openRelationship;
   const liveName = live ? partnerDisplayName(partnerSession.partner?.display_name, live.setup?.name1, setupData.name2) : '';
   const name2 = live ? liveName : setupData.name2;
   const displayName2 = name2 || NAME2_PLACEHOLDER;
@@ -512,11 +515,11 @@ const RetroCards: React.FC = () => {
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
     const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION, 4];
-    if (setupData.openRelationship) arr.push(5);
+    if (openRelationship) arr.push(5);
     // The "Ideas" card (internally still SLIDE_VORHABEN) sits directly before Takeaways.
     arr.push(7, SLIDE_VORHABEN, 8, 9, 10);
     return arr;
-  }, [setupData.openRelationship, riskSlideIds]);
+  }, [openRelationship, riskSlideIds]);
 
   const totalCards = slides.length;
 
@@ -1971,10 +1974,11 @@ const RetroCards: React.FC = () => {
               <button
                 type="button"
                 role="checkbox"
-                hidden={Boolean(live && !partnerSession.isOwner)}
-                aria-checked={setupData.openRelationship}
+                disabled={guestSetup}
+                aria-checked={openRelationship}
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (guestSetup) return;
                   setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
                 }}
                 className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
@@ -1983,14 +1987,14 @@ const RetroCards: React.FC = () => {
                   className="shrink-0 w-8 h-8 flex items-center justify-center"
                   style={{ background: SETUP_PILL }}
                 >
-                  {setupData.openRelationship && (
+                  {openRelationship && (
                     <StackIcon name="IconCheckmark" size={16} color={SETUP_PILL_ON} />
                   )}
                 </span>
 
 
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
-                  Nicht monogam
+                  Nicht monogam{guestSetup ? <span className="partner-field-name">&nbsp;· von {liveName} festgelegt</span> : null}
                 </span>
                 </button>
               </div>
