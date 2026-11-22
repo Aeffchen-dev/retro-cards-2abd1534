@@ -77,3 +77,29 @@ export function healthInsights(
     nextSteps,
   };
 }
+
+/** One talking question per Health Check topic, used for the "Darüber reden" box. */
+export const TALK_QUESTIONS: Record<string, string> = {
+  love: "Wann hast du dich zuletzt richtig gesehen gefühlt – und was hat gefehlt?",
+  communication: "Worüber fällt es dir gerade schwer, offen zu sprechen?",
+  trust: "Was würde dir helfen, dich noch sicherer zu fühlen?",
+  intimacy: "Welche Art von Nähe wünschst du dir gerade mehr?",
+  time: "Welcher gemeinsame Moment hat dir zuletzt gutgetan – wie bekommen wir mehr davon?",
+  freedom: "Wo wünschst du dir mehr Raum für dich?",
+  fairness: "Welche Aufgabe würdest du gern abgeben oder teilen?",
+  fun: "Was würde dir wieder richtig Spaß mit uns machen?",
+};
+
+export interface EvaluationTopic { id: string; title: string; own: number | null; partner: number | null }
+
+/** Topics both rated 4 or better (or you alone, without a partner). */
+export function sharedStrengths(topics: EvaluationTopic[], hasPartner: boolean): string[] {
+  return topics.filter(t => t.own !== null && t.own >= 4 && (!hasPartner || (t.partner !== null && t.partner >= 4))).map(t => t.title);
+}
+
+/** Topics anyone rated 2 or lower, or rated two or more points apart — each with its question. */
+export function talkTopics(topics: EvaluationTopic[]): { title: string; question: string }[] {
+  return topics
+    .filter(t => (t.own !== null && t.own <= 2) || (t.partner !== null && t.partner <= 2) || (t.own !== null && t.partner !== null && Math.abs(t.own - t.partner) >= 2))
+    .map(t => ({ title: t.title, question: TALK_QUESTIONS[t.id] ?? "Was braucht ihr hier gerade?" }));
+}

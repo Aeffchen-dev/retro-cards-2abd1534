@@ -1,4 +1,4 @@
-import { retroSummary, healthInsights } from "./retro-summary";
+import { retroSummary, healthInsights, sharedStrengths, talkTopics, type EvaluationTopic } from "./retro-summary";
 import { pastHealthHistory, readLocalHealthHistory } from "./health-history-data";
 import { HEALTH_CATEGORIES, healthResults } from './health-check-data';
 
@@ -9,43 +9,62 @@ interface Props {
   partnerValues?: Record<string, string>;
   partnerName?: string;
   ideas?: Record<string, string>;
+  onOpenHealthCheck?: () => void;
 }
 
-/** A compact "at a glance" box of the Health Check answers on the Takeaways card. */
-export default function RetroSummary({ values, persons, intimacy, partnerValues, partnerName, ideas }: Props) {
+const fmt = (n: number) => n.toFixed(1).replace('.', ',');
+
+/** The Takeaways card's evaluation: averages, per-topic bars and three clear boxes. */
+export default function RetroSummary({ values, persons, intimacy, partnerValues, partnerName, ideas, onOpenHealthCheck }: Props) {
   const s = retroSummary(values, persons.map((p) => p.key), intimacy);
-  const ratings = healthResults(values, 'p0');
-  const answered = ratings.filter((v): v is number => v !== null);
-  const strengths = HEALTH_CATEGORIES.filter((_, i) => (ratings[i] ?? 0) >= 4).map(c => c.axis);
-  const focus = HEALTH_CATEGORIES.filter((_, i) => ratings[i] !== null && (ratings[i] ?? 5) <= 2).map(c => c.axis);
+  const own = healthResults(values, 'p0');
+  const hasPartner = Boolean(partnerValues);
   const partner = partnerValues ? healthResults(partnerValues, 'p0') : HEALTH_CATEGORIES.map(() => null);
   const past = pastHealthHistory(readLocalHealthHistory());
   const previous = past.length ? past[past.length - 1].results.people[0]?.scores ?? null : null;
-  const ins = healthInsights(ratings, partner, HEALTH_CATEGORIES.map(c => c.axis), previous, ideas);
-  const who = partnerName || 'Partner';
-  const rows: [string, string][] = [
-    ["Health Check", answered.length === 8 ? `Im Schnitt: ${(answered.reduce((a,b) => a+b,0)/8).toFixed(1)}/5` : `${answered.length} von 8 Themen beantwortet`],
-    ...(ins.partnerAverage !== null ? [[who, `Im Schnitt: ${ins.partnerAverage.toFixed(1)}/5`] as [string, string]] : []),
-    ...(ins.trend !== null ? [["Trend", ins.trend === 0 ? "Gleich wie letztes Mal" : `${ins.trend > 0 ? "▲ +" : "▼ "}${ins.trend.toFixed(1)} seit der letzten Retro`] as [string, string]] : []),
-    ...(ins.gaps.length ? [["Unterschiedlich gesehen", ins.gaps.map(g => `${g.title} (${g.own} vs. ${g.partner})`).join(", ")] as [string, string]] : []),
-    ["Stärken", strengths.join(", ") || "–"],
-    ["Darüber reden", focus.join(", ") || "–"],
-    ["Fairness", ratings[6] !== null ? `${ratings[6]}/5` : '–'],
-    ...(ins.nextSteps.length ? [["Nächste Schritte", ins.nextSteps.join(" · ")] as [string, string]] : []),
-    ["Intimität", s.intimacy ? `${"★".repeat(s.intimacy)}${"☆".repeat(5 - s.intimacy)}` : "–"],
-  ];
+  const ins = healthInsights(own, partner, HEALTH_CATEGORIES.map(c => c.axis), previous, ideas);
+  const me = persons[0]?.name || 'Du';
+  const who = partnerName || persons[1]?.name || 'Partner';
+  const topics: EvaluationTopic[] = HEALTH_CATEGORIES.map((c, i) => ({ id: c.id, title: c.axis, own: own[i], partner: partner[i] }));
+  const answered = own.filter(v => v !== null).length;
+  const strengths = sharedStrengths(topics, hasPartner);
+  const talk = talkTopics(topics);
+  const open = (label: string) => onOpenHealthCheck
+    ? <button type="button" className="retro-eval-open" onClick={onOpenHealthCheck}>{label} – zurück zum Health Check</button>
+    : <span className="retro-eval-muted">{label}</span>;
+
   return (
-    <section className="retro-summary w-full" aria-label="Zusammenfassung">
-      <h3 className="retro-summary-title">Auf einen Blick</h3>
-      <dl className="retro-summary-list">
-        {rows.map(([k, v]) => (
-          <div key={k} className="retro-summary-row">
-            <dt>{k}</dt>
-            <dd>{v}</dd>
-          </div>
+    <section className="retro-summary retro-eval w-full" aria-label="Auswertung">
+      <div className="retro-eval-head">
+        <div><span className="retro-eval-big">{ins.average !== null ? fmt(ins.average) : '–'}</span><span className="retro-eval-who">{me}</span></div>
+        {hasPartner && <div><span className="retro-eval-big is-partner">{ins.partnerAverage !== null ? fmt(ins.partnerAverage) : '–'}</span><span className="retro-eval-who">{who}</span></div>}
+      </div>
+      {ins.trend !== null && <p className={`retro-eval-trend ${ins.trend > 0 ? 'is-up' : ins.trend < 0 ? 'is-down' : ''}`}>{ins.trend === 0 ? '= gleich wie letzte Retro' : `${ins.trend > 0 ? '▲ +' : '▼ '}${fmt(ins.trend)} seit der letzten Retro`}</p>}
+      {answered < 8 && <p className="retro-eval-note">{open(`Noch offen: ${8 - answered} von 8 Themen`)}</p>}
+
+      <ul className="retro-eval-bars" aria-label="Themen">
+        {topics.map(t => (
+          <li key={t.id}>
+            <span className="retro-eval-topic">{t.title}</span>
+            <span className="retro-eval-pair">
+              <span className="retro-eval-bar" style={{ width: `${((t.own ?? 0) / 5) * 100}%` }} aria-label={`${me}: ${t.own ?? 'offen'}`} />
+              {hasPartner && <span className="retro-eval-bar is-partner" style={{ width: `${((t.partner ?? 0) / 5) * 100}%` }} aria-label={`${who}: ${t.partner ?? 'offen'}`} />}
+            </span>
+          </li>
         ))}
-      </dl>
-      {ins.gaps[0] ? <p className="retro-summary-prompt">Gesprächsimpuls: Wie erlebt ihr „{ins.gaps[0].title}" gerade jeweils – und was würde es für euch beide besser machen?</p> : null}
+      </ul>
+
+      <div className="retro-eval-box"><h4>Das läuft gut</h4>{strengths.length ? <p>{strengths.join(', ')}</p> : <p className="retro-eval-muted">Noch kein gemeinsames Highlight</p>}</div>
+      <div className="retro-eval-box"><h4>Darüber reden</h4>{talk.length ? <ul>{talk.map(t => <li key={t.title}><strong>{t.title}:</strong> {t.question}</li>)}</ul> : <p className="retro-eval-muted">Keine offenen Baustellen</p>}</div>
+      <div className="retro-eval-box"><h4>Bis zur nächsten Retro</h4>{ins.nextSteps.length ? <ul className="retro-eval-checks">{ins.nextSteps.map(n => <li key={n}>☐ {n}</li>)}</ul> : <p className="retro-eval-muted">Noch keine Ideen eingetragen</p>}</div>
+
+      {s.workload && s.workload.length > 1 && (
+        <div className="retro-eval-box"><h4>Beziehungsarbeit</h4>
+          <div className="retro-eval-split">{s.workload.map((w, i) => <span key={w.key} className={i ? 'is-partner' : ''} style={{ width: `${w.share}%` }} />)}</div>
+          <p>{s.workload.map((w, i) => `${i === 1 && hasPartner ? who : persons.find(p => p.key === w.key)?.name || 'Partner'} ${Math.round(w.share)} %`).join(' · ')}</p>
+        </div>
+      )}
+      {s.intimacy ? <p className="retro-eval-note">Intimität: {"♥".repeat(s.intimacy)}{"♡".repeat(5 - s.intimacy)}</p> : null}
     </section>
   );
 }

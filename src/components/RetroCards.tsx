@@ -1860,7 +1860,6 @@ const RetroCards: React.FC = () => {
                   </div>
                 </div>
               ) : (
-              {/* Person 2 — post-it style field */}
               <div className="flex flex-col gap-2 w-full">
                 <div className="flex flex-col w-full min-w-0">
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
@@ -2151,7 +2150,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir aus der Retro mit" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="mt-6 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined} partnerName={liveName} ideas={editModeNotes[SLIDE_VORHABEN]} /></div>
+            <div className="mt-6 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined} partnerName={liveName} ideas={editModeNotes[SLIDE_VORHABEN]} onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))} /></div>
             <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
