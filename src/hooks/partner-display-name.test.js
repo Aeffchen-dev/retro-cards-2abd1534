@@ -7,6 +7,6 @@ test('the name beside the invitation is used until the partner enters their own'
   assert.equal(partnerDisplayName('Gast', '', 'Sam'), 'Sam');
   assert.equal(partnerDisplayName('Gast B', '   ', '  Sam  '), 'Sam');
 });
-test('the partner’s own Setup name still wins over the invitation name', () => {
-  assert.equal(partnerDisplayName('Gast', 'Sammy', 'Sam'), 'Sammy');
+test('the name typed into the partner field in Setup wins over the partner’s own entry', () => {
+  assert.equal(partnerDisplayName('Gast', 'Sammy', 'Sam'), 'Sam');
 });

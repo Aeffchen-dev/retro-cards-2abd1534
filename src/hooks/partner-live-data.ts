@@ -20,10 +20,12 @@ export function samePartnerMembers(current: readonly unknown[], next: readonly u
 
 /** Their own Setup name wins; the name assigned to their invitation is the next fallback. */
 export function partnerDisplayName(stored?: string, setupName?: string, invitedName?: string): string {
-  const typed = (setupName ?? '').trim();
-  if (typed) return typed.slice(0, 80);
+  // The name the inviting person typed into the partner field wins, so everyone
+  // sees the partner under the name chosen in Setup; their own entry is the fallback.
   const invited = (invitedName ?? '').trim();
   if (invited) return invited.slice(0, 80);
+  const typed = (setupName ?? '').trim();
+  if (typed) return typed.slice(0, 80);
   const saved = (stored ?? '').trim();
   // "Gast" / "Gast B" are join-time fallbacks, never a real name.
   return saved && !/^gast(\s|$)/i.test(saved) ? saved : 'Partner';

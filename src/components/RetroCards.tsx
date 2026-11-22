@@ -662,6 +662,11 @@ const RetroCards: React.FC = () => {
   useEffect(() => {
     partnerSession.shareName(setupData.name1);
   }, [setupData.name1, partnerSession.shareName]);
+  // A joined partner starts with the name the inviting person typed for them.
+  const invitedForMe = !partnerSession.isOwner ? live?.setup?.name2?.trim() : '';
+  useEffect(() => {
+    if (invitedForMe && !setupData.name1.trim()) setSetupData(prev => prev.name1.trim() ? prev : { ...prev, name1: invitedForMe });
+  }, [invitedForMe, setupData.name1]);
   // Joining through an invitation starts the retro on its first card.
   useEffect(() => {
     const goFirst = () => swiperRef?.slideTo(0);
