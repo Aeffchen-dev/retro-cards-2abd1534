@@ -362,7 +362,8 @@ const RetroCards: React.FC = () => {
   // State for captured photos
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
   // Last time this person typed, shared so the partner sees "schreibt gerade …".
-  const [typingAt, setTypingAt] = useState(0);
+  // A ref keeps the typing beat from repainting the card under the phone keyboard.
+  const typingAt = useRef(0);
   useEffect(() => {
     let last = 0;
     const onInput = (e: Event) => {
@@ -374,11 +375,15 @@ const RetroCards: React.FC = () => {
       // an ongoing phone-keyboard composition (autocorrect) undisturbed.
       if ((e as InputEvent).isComposing) return;
       const now = Date.now();
-      if (now - last > 1500) { last = now; setTypingAt(now); }
+      if (now - last > 1500) {
+        last = now;
+        typingAt.current = now;
+        partnerSession.shareTyping(now);
+      }
     };
     document.addEventListener('input', onInput);
     return () => document.removeEventListener('input', onInput);
-  }, []);
+  }, [partnerSession.shareTyping]);
 
   // State for setup (names, emojis, open-relationship toggle, extra partners)
   const [setupData, setSetupData] = useState<SetupData>(() => {
@@ -643,8 +648,8 @@ const RetroCards: React.FC = () => {
   }, [reflectionTexts]);
 
   useEffect(() => {
-    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion, activity: typingAt ? { typingAt } : undefined });
-  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, typingAt, partnerSession.publish]);
+    partnerSession.publish({ notes: editModeNotes, postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, positions: memojisPositions, setup: setupData, question: currentQuestion, activity: typingAt.current ? { typingAt: typingAt.current } : undefined });
+  }, [editModeNotes, postItTexts, takeawayTexts, reflectionTexts, memojisPositions, setupData, currentQuestion, partnerSession.publish]);
   // The name typed in Setup is the name the other person sees, and it follows every edit.
   useEffect(() => {
     partnerSession.shareName(setupData.name1);
@@ -1800,6 +1805,9 @@ const RetroCards: React.FC = () => {
                     <input
                       type="text"
                       value={setupData.name1}
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck={false}
                       onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
                       placeholder="Deine Antwort"
                       style={fieldStyle}
@@ -1820,6 +1828,9 @@ const RetroCards: React.FC = () => {
                     <input
                       type="text"
                       value={setupData.name2}
+                      autoCapitalize="none"
+                      autoCorrect="off"
+                      spellCheck={false}
                       onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
                       placeholder="Deine Antwort"
                       style={fieldStyle}
@@ -1857,6 +1868,9 @@ const RetroCards: React.FC = () => {
                       <input
                         type="text"
                         value={p.name}
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                         onChange={(e) => {
                           const next = [...setupData.extraPartners];
                           next[idx] = { ...next[idx], name: e.target.value };

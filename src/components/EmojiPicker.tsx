@@ -89,6 +89,9 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({
           ref={searchRef}
           type="text"
           value={query}
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Suchen – z. B. Herz"
           aria-label="Emoji suchen"

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { updatePartnerMember } from './partner-live-data';
+import { updatePartnerMember } from './partner-live-data.ts';
 
 test('incoming partner edits replace remote answers without overwriting own answers', () => {
   const own = {user_id:'self',answers:{text:'Mein Text'}};

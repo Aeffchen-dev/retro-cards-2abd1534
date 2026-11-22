@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { displayNameUpdate } from './partner-invitation-data';
+import { displayNameUpdate } from './partner-invitation-data.ts';
 
 const read = relative => readFileSync(fileURLToPath(new URL(relative, import.meta.url)), 'utf8');
 

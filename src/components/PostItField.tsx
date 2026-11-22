@@ -107,6 +107,9 @@ export const PostItField: React.FC<PostItFieldProps> = ({
     ) : (
       <textarea
         value={value}
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
         onChange={(e) => {
           let next = e.target.value;
           if (bullets && !value.length && next.length && !next.startsWith(BULLET)) {

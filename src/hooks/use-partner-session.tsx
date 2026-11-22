@@ -3,7 +3,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { displayNameUpdate, invitationStatus } from '@/components/partner-invitation-data';
-import { PARTNER_REFRESH_INTERVAL_MS, updatePartnerMember } from './partner-live-data';
+import { isTextEntryTarget, PARTNER_REFRESH_INTERVAL_MS, samePartnerMembers, updatePartnerMember } from './partner-live-data';
 import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, type GuestAccess } from './guest-retro-client';
 
 export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
@@ -19,7 +19,34 @@ function useSession() {
   const [online, setOnline] = useState(false);
   const snapshot = useRef<DeckSnapshot>({});
   const timer = useRef<ReturnType<typeof setTimeout>>();
+  const nameTimer = useRef<ReturnType<typeof setTimeout>>();
+  const focusTimer = useRef<ReturnType<typeof setTimeout>>();
   const sharedName = useRef('');
+  const membersRef = useRef<Member[]>([]);
+  const pendingMembers = useRef<Member[] | null>(null);
+  const applyMembers = useCallback((next: Member[]) => {
+    membersRef.current = next;
+    // A poll or realtime reply must not repaint a controlled field mid-keystroke.
+    // Keep the newest room state and flush it when the writing field loses focus.
+    if (isTextEntryTarget(document.activeElement)) { pendingMembers.current = next; return; }
+    setMembers(current => samePartnerMembers(current, next) ? current : next);
+  }, []);
+  useEffect(() => {
+    const flush = () => {
+      if (focusTimer.current) clearTimeout(focusTimer.current);
+      focusTimer.current = setTimeout(() => {
+        if (isTextEntryTarget(document.activeElement) || !pendingMembers.current) return;
+        const next = pendingMembers.current;
+        pendingMembers.current = null;
+        setMembers(current => samePartnerMembers(current, next) ? current : next);
+      });
+    };
+    document.addEventListener('focusout', flush);
+    return () => {
+      document.removeEventListener('focusout', flush);
+      if (focusTimer.current) clearTimeout(focusTimer.current);
+    };
+  }, []);
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
     const { data } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user ?? null));
@@ -27,18 +54,18 @@ function useSession() {
   }, []);
   const refresh = useCallback(async () => {
     if (guest) {
-      try { const data = await guestRequest({action:'read', token:guest.token}); setMembers(data.members ?? []); setInvite(guest.invite ?? ''); setLoadedSessionId(guest.sessionId); setOnline(true); }
+      try { const data = await guestRequest({action:'read', token:guest.token}); applyMembers(data.members ?? []); setInvite(guest.invite ?? ''); setLoadedSessionId(guest.sessionId); setOnline(true); }
       catch (e) { setOnline(false); setError(e instanceof Error ? e.message : 'Verbindung nicht verfügbar'); }
       return;
     }
     if (!sessionId || !user) return;
     const { data, error: e } = await supabase.from('retro_members').select('user_id,display_name,answers').eq('session_id', sessionId);
     if (e) { setError(e.message); return; }
-    setMembers(data ?? []);
+    applyMembers(data ?? []);
     const { data: room } = await supabase.from('retro_sessions').select('invite_code').eq('id', sessionId).maybeSingle();
     setInvite(room?.invite_code ?? '');
     setLoadedSessionId(sessionId);
-  }, [sessionId, user, guest]);
+  }, [sessionId, user, guest, applyMembers]);
   useEffect(() => {
     if (guest) {
       void refresh();
@@ -47,12 +74,12 @@ function useSession() {
       window.addEventListener('focus', catchUp); window.addEventListener('online', catchUp); document.addEventListener('visibilitychange', catchUp);
       return () => { clearInterval(interval); window.removeEventListener('focus', catchUp); window.removeEventListener('online', catchUp); document.removeEventListener('visibilitychange', catchUp); };
     }
-    if (!sessionId || !user) { setMembers([]); setInvite(''); setLoadedSessionId(null); setOnline(false); return; }
+    if (!sessionId || !user) { membersRef.current = []; pendingMembers.current = null; setMembers([]); setInvite(''); setLoadedSessionId(null); setOnline(false); return; }
     void refresh();
     const channel = supabase.channel(`partner-${sessionId}-${crypto.randomUUID()}`).on('postgres_changes', { event: '*', schema: 'public', table: 'retro_members', filter: `session_id=eq.${sessionId}` }, payload => {
       const updated = payload.new;
       if (payload.eventType !== 'DELETE' && 'user_id' in updated && typeof updated.user_id === 'string' && typeof updated.display_name === 'string' && updated.answers && typeof updated.answers === 'object') {
-        setMembers(current => updatePartnerMember(current, { user_id: updated.user_id, display_name: updated.display_name, answers: updated.answers }));
+        applyMembers(updatePartnerMember(membersRef.current, { user_id: updated.user_id, display_name: updated.display_name, answers: updated.answers }));
       } else void refresh();
     }).subscribe(status => {
       setOnline(status === 'SUBSCRIBED');
@@ -71,12 +98,12 @@ function useSession() {
       document.removeEventListener('visibilitychange', catchUp);
       void supabase.removeChannel(channel);
     };
-  }, [sessionId, user, refresh, guest]);
+  }, [sessionId, user, refresh, guest, applyMembers]);
   const publish = useCallback((value: DeckSnapshot) => {
     snapshot.current = value;
     if (timer.current) clearTimeout(timer.current);
     if (guest) {
-      timer.current = setTimeout(async () => { try { const data = await guestRequest({action:'update',token:guest.token,answers:snapshot.current}); setMembers(data.members ?? []); } catch(e) {setError(e instanceof Error ? e.message : 'Änderungen konnten nicht geteilt werden');} },250);
+      timer.current = setTimeout(async () => { try { await guestRequest({action:'update',token:guest.token,answers:snapshot.current}); } catch(e) {setError(e instanceof Error ? e.message : 'Änderungen konnten nicht geteilt werden');} },250);
       return;
     }
     if (!sessionId || !user) return;
@@ -86,23 +113,28 @@ function useSession() {
     }, 250);
   }, [sessionId, user, guest]);
   useEffect(() => { publish(snapshot.current); return () => { if (timer.current) clearTimeout(timer.current); }; }, [publish]);
+  const shareTyping = useCallback((typingAt: number) => {
+    publish({ ...snapshot.current, activity: { typingAt } });
+  }, [publish]);
   // The name typed in Setup is the name the other person sees, so it travels
   // with every edit instead of staying the value picked when the room opened.
   const shareName = useCallback((raw: string) => {
     const name = displayNameUpdate(raw, sharedName.current);
-    if (!name) return;
-    if (guest) {
+    if (!name || (!guest && (!sessionId || !user))) return;
+    if (nameTimer.current) clearTimeout(nameTimer.current);
+    nameTimer.current = setTimeout(() => {
       sharedName.current = name;
-      void guestRequest({ action: 'update', token: guest.token, answers: snapshot.current, name })
-        .then(data => setMembers(data.members ?? []))
-        .catch(e => { sharedName.current = ''; setError(e instanceof Error ? e.message : 'Dein Name konnte nicht geteilt werden'); });
-      return;
-    }
-    if (!sessionId || !user) return;
-    sharedName.current = name;
-    void supabase.from('retro_members').update({ display_name: name, updated_at: new Date().toISOString() }).eq('session_id', sessionId).eq('user_id', user.id)
-      .then(({ error: e }) => { if (e) { sharedName.current = ''; setError('Dein Name konnte nicht geteilt werden'); } });
+      if (guest) {
+        void guestRequest({ action: 'update', token: guest.token, answers: snapshot.current, name })
+          .catch(e => { sharedName.current = ''; setError(e instanceof Error ? e.message : 'Dein Name konnte nicht geteilt werden'); });
+        return;
+      }
+      if (!sessionId || !user) return;
+      void supabase.from('retro_members').update({ display_name: name, updated_at: new Date().toISOString() }).eq('session_id', sessionId).eq('user_id', user.id)
+        .then(({ error: e }) => { if (e) { sharedName.current = ''; setError('Dein Name konnte nicht geteilt werden'); } });
+    }, 400);
   }, [guest, sessionId, user]);
+  useEffect(() => () => { if (nameTimer.current) clearTimeout(nameTimer.current); }, []);
   const connect = async (name: string, code?: string) => {
     setError('');
     if (!name.trim() || name.length > 80) { setError('Bitte deinen Namen eingeben (maximal 80 Zeichen).'); return; }
@@ -128,11 +160,14 @@ function useSession() {
       const { error: e } = await supabase.from('retro_members').delete().eq('session_id', sessionId).eq('user_id', user.id);
       if (e) { setError(e.message); return; }
     }
+    if (nameTimer.current) clearTimeout(nameTimer.current);
+    pendingMembers.current = null;
+    membersRef.current = [];
     setSessionId(null); localStorage.removeItem('partner-session-id'); setMembers([]); setInvite(''); sharedName.current = '';
   };
   const remove = async (id: string) => {
     if (!guest) return;
-    try { const data = await guestRequest({ action: 'remove', token: guest.token, memberId: id }); setMembers(data.members ?? []); }
+    try { const data = await guestRequest({ action: 'remove', token: guest.token, memberId: id }); applyMembers(data.members ?? []); }
     catch (e) { setError(e instanceof Error ? e.message : 'Partner konnte nicht entfernt werden'); }
   };
   const memberId = guest?.memberId ?? user?.id;
@@ -141,7 +176,7 @@ function useSession() {
   const partner = members.find(m => m.user_id !== memberId);
   const partnerAnswers = (partner?.answers ?? {}) as DeckSnapshot;
   const invitation = invitationStatus(sessionId, memberId, members, loadedSessionId === sessionId);
-  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, shareName, connect, leave };
+  return { user, memberId, others, isOwner, remove, guest, sessionId, members, partner, partnerAnswers, invite, invitation, error, setError, online, publish, shareTyping, shareName, connect, leave };
 }
 // Shared on globalThis so a hot-reloaded duplicate of this module reuses the same context.
 type PartnerCtx = React.Context<ReturnType<typeof useSession> | null>;

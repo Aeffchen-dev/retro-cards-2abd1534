@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Plain phone typing: autocorrect, spelling changes and automatic capitals are off on writing fields; typing activity uses a ref, own write replies no longer repaint, incoming partner updates wait until focusout, and name sharing is debounced. Mobile typing and reload readback passed for Setup and bullets; two real guests exchanged lowercase Setup names. 14 focused tests, typecheck and build OK. Physical iPhone Safari hardware remains untested.
 - [x] Make phone typing behave like a normal native field: typing activity now updates after React has read the character and leaves keyboard composition untouched. Exact mobile reproduction changed from "allo" to "Hallo"; bullet field, autocorrect-style composition and post-idle input pass, with 5 focused tests and build OK. Physical iPhone Safari hardware remains untested.
 - [x] Send the name typed in Setup to the other person instead of "Gast": the name follows every edit, for guest links and connected accounts alike. Two real guests verified (host sees "… ist verbunden" with the guest's own Setup name, guest sees the host's); 12 focused tests pass, build OK.
 - [x] Explain phone doubled/missing keystrokes and why partner writing is not visible in every field: traced controlled-input updates, synchronous local saving, 250ms publishing, guest 3-second polling, and the absence of partner-text bindings outside Health Check ratings and typing activity. Explanation only; no input behavior changed.
