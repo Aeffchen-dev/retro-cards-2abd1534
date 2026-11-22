@@ -4,6 +4,10 @@ export function invitationName(existingName: string): string {
   return existingName.trim().slice(0, 80) || 'Gast';
 }
 
+export function invitationRecipientName(partnerName?: string): string {
+  return partnerName?.trim().slice(0, 80) || 'Partner';
+}
+
 /**
  * The name the other person sees follows Setup: trimmed, capped, and only worth
  * sending when it actually differs from what was shared last.

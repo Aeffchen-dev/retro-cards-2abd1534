@@ -1848,18 +1848,21 @@ const RetroCards: React.FC = () => {
                   <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                     {NAME2_PLACEHOLDER}
                   </div>
-                  <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
-                    <input
-                      type="text"
-                      value={setupData.name2}
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      spellCheck={false}
-                      onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
-                      placeholder="Deine Antwort"
-                      style={fieldStyle}
-                      className={nameInputCls}
-                    />
+                  <div className="setup-partner-name-row flex items-stretch w-full min-w-0">
+                    <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
+                      <input
+                        type="text"
+                        value={setupData.name2}
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
+                        onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
+                        placeholder="Deine Antwort"
+                        style={fieldStyle}
+                        className={nameInputCls}
+                      />
+                    </div>
+                    <PartnerConnection compact partnerName={setupData.name2} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
                   </div>
                 </div>
                 {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
@@ -1888,22 +1891,25 @@ const RetroCards: React.FC = () => {
                         <StackIcon name="IconClearSm" size={12} color={SETUP_TEXT} />
                       </button>
                     </div>
-                    <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
-                      <input
-                        type="text"
-                        value={p.name}
-                        autoCapitalize="none"
-                        autoCorrect="off"
-                        spellCheck={false}
-                        onChange={(e) => {
-                          const next = [...setupData.extraPartners];
-                          next[idx] = { ...next[idx], name: e.target.value };
-                          setSetupData({ ...setupData, extraPartners: next });
-                        }}
-                        placeholder="Deine Antwort"
-                        style={fieldStyle}
-                        className={nameInputCls}
-                      />
+                    <div className="setup-partner-name-row flex items-stretch w-full min-w-0">
+                      <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
+                        <input
+                          type="text"
+                          value={p.name}
+                          autoCapitalize="none"
+                          autoCorrect="off"
+                          spellCheck={false}
+                          onChange={(e) => {
+                            const next = [...setupData.extraPartners];
+                            next[idx] = { ...next[idx], name: e.target.value };
+                            setSetupData({ ...setupData, extraPartners: next });
+                          }}
+                          placeholder="Deine Antwort"
+                          style={fieldStyle}
+                          className={nameInputCls}
+                        />
+                      </div>
+                      <PartnerConnection compact partnerName={p.name} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} incomingInvitation={false} />
                     </div>
                   </div>
                   {emojiPicker(p.emoji, "🧚", (val) => {
@@ -1966,7 +1972,6 @@ const RetroCards: React.FC = () => {
                 </button>
               </div>
 
-              <PartnerConnection accent={SETUP_ACCENT} initialName={setupData.name1} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
               <div className="w-full">
                 <ActionRow
                   icon="IconArrowRight"

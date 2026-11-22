@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { invitationStatus, canResendInvitation, connectionHint } from './partner-invitation-data';
+import { invitationStatus, canResendInvitation, connectionHint, invitationRecipientName } from './partner-invitation-data';
 
 test('invitation is accepted only when another member has joined', () => {
   assert.equal(invitationStatus('retro', 'self', [{user_id:'self'}], true), 'pending');
@@ -23,4 +23,8 @@ test('no status hint before anyone has joined', () => {
 test('a joined partner offline reads as reconnecting, a live one as connected', () => {
   assert.equal(connectionHint(true, false), 'Verbindung wird wiederhergestellt …');
   assert.equal(connectionHint(true, true), null);
+});
+test('each invitation names the partner from its own Setup field', () => {
+  assert.equal(invitationRecipientName(' Sam '), 'Sam');
+  assert.equal(invitationRecipientName(''), 'Partner');
 });

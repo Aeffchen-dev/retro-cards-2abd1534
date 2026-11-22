@@ -6,15 +6,25 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel } from '@/components/ui/alert-dialog';
 import { usePartnerSession } from '@/hooks/use-partner-session';
-import { connectionHint, invitationName } from './partner-invitation-data';
+import { connectionHint, invitationName, invitationRecipientName } from './partner-invitation-data';
 import { invitationFromUrl } from '@/hooks/guest-retro-client';
 import { copyInvitation, shareInvitation } from '@/hooks/invitation-sharing';
 import { toast } from 'sonner';
 
-export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '', pillColor = 'var(--retro-pill, #9D9CFF)', pillDot = 'var(--retro-pill-dot, #201C1D)' }: { accent?: string; initialName?: string; pillColor?: string; pillDot?: string }) {
+type Props = {
+  accent?: string;
+  initialName?: string;
+  partnerName?: string;
+  pillColor?: string;
+  pillDot?: string;
+  compact?: boolean;
+  incomingInvitation?: boolean;
+};
+
+export default function PartnerConnection({ accent = 'var(--retro-info-rule)', initialName = '', partnerName = '', pillColor = 'var(--retro-pill, #9D9CFF)', pillDot = 'var(--retro-pill-dot, #201C1D)', compact = false, incomingInvitation = true }: Props) {
   const s = usePartnerSession();
-  const [open, setOpen] = useState(() => Boolean(invitationFromUrl()));
-  const [code, setCode] = useState(() => invitationFromUrl());
+  const [open, setOpen] = useState(() => incomingInvitation && Boolean(invitationFromUrl()));
+  const [code, setCode] = useState(() => incomingInvitation ? invitationFromUrl() : null);
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
   const [confirmDisconnect, setConfirmDisconnect] = useState(false);
@@ -31,6 +41,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
   }, [code, s.sessionId, disconnecting]);
   const link = s.invite ? `${location.origin}${location.pathname}${s.guest ? '#invite=' : '?join='}${s.invite}` : '';
   const hint = connectionHint(Boolean(s.partner), s.online);
+  const recipient = invitationRecipientName(partnerName);
   const connect = () => {
     if (busy) return;
     setNotice(''); s.setError('');
@@ -48,7 +59,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={<Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">Partner einladen{s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partnerName} ist verbunden`} />}</span>} className="partner-connect-trigger" onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={compact ? <Share2 size={16}/> : <Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">{compact ? 'Link teilen' : 'Partner einladen'}{compact && <span className="sr-only"> für {recipient}</span>}{!compact && s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partnerName} ist verbunden`} />}</span>} className={`partner-connect-trigger ${compact ? 'setup-partner-share' : ''}`} onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       {/* The chapter name rides above the sheet, outside its panel — the same
           pill the cards wear above their own question. */}
@@ -56,7 +67,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
         <div className="retro-pill"><span className="retro-label">Verbindung</span></div>
       </div>
       <div className="partner-sheet-panel">
-      <SheetHeader className="partner-sheet-header"><SheetTitle className="partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : 'Partner einladen?'}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : 'Schick diesen Link deinem Partner – er öffnet die Retro und ist sofort mit dir verbunden. Ohne Registrierung, eure Antworten bleiben getrennt und lassen sich vergleichen.'}</SheetDescription></SheetHeader>
+      <SheetHeader className="partner-sheet-header"><SheetTitle className="partner-sheet-title">{!s.sessionId && code ? 'Gemeinsam zur Retro' : `${recipient} einladen?`}</SheetTitle><SheetDescription className="partner-sheet-description">{!s.sessionId && code ? 'Mach bei der gemeinsamen Retro mit – ohne Registrierung. Eure Antworten bleiben getrennt und lassen sich vergleichen.' : `Schick diesen Link an ${recipient} – nach dem Öffnen seid ihr sofort verbunden. Ohne Registrierung, eure Antworten bleiben getrennt und lassen sich vergleichen.`}</SheetDescription></SheetHeader>
       {!s.sessionId ? <div className="space-y-3">
         {code ? <ActionRow accent={accent} iconNode={<Users size={16}/>} label={busy ? 'Verbindet …' : 'Retro beitreten'} onClick={connect} />
         : busy ? <p role="status" className="text-sm text-muted-foreground">Einladungslink wird erstellt …</p>
