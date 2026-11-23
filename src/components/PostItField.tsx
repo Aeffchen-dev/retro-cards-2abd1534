@@ -1,11 +1,14 @@
 import React from "react";
-import { ChevronRight, LockKeyhole } from "lucide-react";
+import { ChevronRight, LockKeyhole, X } from "lucide-react";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
 
 interface PostItFieldProps {
@@ -80,27 +83,28 @@ interface PartnerAnswerProps {
     opens on demand, where its own scrolling area can hold any amount of text. */
 const PartnerAnswer: React.FC<PartnerAnswerProps> = ({ label, partnerLabel, partnerValue, bullets }) => {
   const [open, setOpen] = React.useState(false);
+  const closeRef = React.useRef<HTMLButtonElement>(null);
   const rawAnswer = partnerValue ?? "";
   const hasAnswer = Boolean(rawAnswer.trim());
   const answer = hasAnswer ? (bullets ? bulletize(rawAnswer) : rawAnswer) : "";
 
   return (
-    <>
-      <div className={`partner-field screen-only${hasAnswer ? "" : " is-empty"}`} aria-live="polite">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <div className={`partner-field screen-only${hasAnswer ? "" : " is-empty"}`}>
         {hasAnswer ? (
-          <button
+          <DialogTrigger asChild><Button
             type="button"
+            variant="ghost"
             className="partner-field-summary swiper-no-swiping"
             aria-label={`Antwort von ${partnerLabel} zu „${label}“ lesen`}
             aria-haspopup="dialog"
-            onClick={() => setOpen(true)}
           >
             <span className="partner-field-topline">
               <span className="partner-field-name">{partnerLabel} schreibt:</span>
               <span className="partner-field-preview">{answer}</span>
             </span>
             <span className="partner-field-read">Lesen <ChevronRight size={14} strokeWidth={1.5} aria-hidden="true" /></span>
-          </button>
+          </Button></DialogTrigger>
         ) : (
           <span className="partner-field-empty">
             <span className="partner-field-name">{partnerLabel}: Noch nichts geschrieben</span>
@@ -116,19 +120,24 @@ const PartnerAnswer: React.FC<PartnerAnswerProps> = ({ label, partnerLabel, part
       </div>
 
       {hasAnswer ? (
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="partner-answer-dialog screen-only">
+          <DialogContent className="partner-answer-dialog screen-only" showCloseButton={false}
+            onOpenAutoFocus={event => { event.preventDefault(); closeRef.current?.focus(); }}
+            onKeyDown={event => event.stopPropagation()}>
+            <DialogClose asChild>
+              <Button ref={closeRef} variant="outline" className="partner-answer-close" aria-label="Lesedialog schließen">
+                <X aria-hidden="true" /><span>Schließen</span>
+              </Button>
+            </DialogClose>
             <DialogHeader className="partner-answer-header">
               <DialogTitle className="partner-answer-title">Antwort von {partnerLabel}</DialogTitle>
               <DialogDescription className="partner-answer-description">
                 {label} · Nur {partnerLabel} kann diese Antwort ändern.
               </DialogDescription>
             </DialogHeader>
-            <div className="partner-answer-full">{answer}</div>
+            <div className="partner-answer-full" role="region" aria-label={`Vollständige Antwort von ${partnerLabel} zu ${label}`} tabIndex={0}>{answer}</div>
           </DialogContent>
-        </Dialog>
       ) : null}
-    </>
+    </Dialog>
   );
 };
 

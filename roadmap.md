@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Current request
+- [x] Restyle partner Health Check faces with dark-grey outlines and no fill; labels sit close below without a background. Verified in connected phone views.
+- [x] Synchronize Nicht monogam using versioned edits without stale polling or echo reversions; both directions and reload verified with two connected guests, with four regression tests.
+- [x] Accessible partner reading: visible German close button, Radix focus restoration/trapping, focusable keyboard-scrollable answer region and named dialog/description. Phone and desktop keyboard checks passed; 23 focused tests and build OK. Actual screenreader audio was not tested.
 - [x] Add an AI Gateway retro analysis on Takeaways: existing own/partner answers plus optional context, recurring-theme history, concrete shared next steps, protected guest/account access, and phone verification. Real two-guest generation returned 3 themes and 3 steps; persistence, 401/403 rejection, 14 focused tests, typecheck and build passed.
 - [x] Plain phone typing: autocorrect, spelling changes and automatic capitals are off on writing fields; typing activity uses a ref, own write replies no longer repaint, incoming partner updates wait until focusout, and name sharing is debounced. Mobile typing and reload readback passed for Setup and bullets; two real guests exchanged lowercase Setup names. 14 focused tests, typecheck and build OK. Physical iPhone Safari hardware remains untested.
 - [x] Make phone typing behave like a normal native field: typing activity now updates after React has read the character and leaves keyboard composition untouched. Exact mobile reproduction changed from "allo" to "Hallo"; bullet field, autocorrect-style composition and post-idle input pass, with 5 focused tests and build OK. Physical iPhone Safari hardware remains untested.

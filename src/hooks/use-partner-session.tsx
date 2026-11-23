@@ -6,7 +6,7 @@ import { displayNameUpdate, invitationStatus } from '@/components/partner-invita
 import { isTextEntryTarget, partnerDisplayName, PARTNER_REFRESH_INTERVAL_MS, samePartnerMembers, updatePartnerMember } from './partner-live-data';
 import { readGuestAccess, guestRequest, parseGuestAccess, GUEST_STORAGE_KEY, isExpiredGuestAccess, type GuestAccess } from './guest-retro-client';
 
-export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
+export type DeckSnapshot = { notes?: Record<string, Record<string, string>>; postIts?: Record<string, string>; takeaways?: Record<string, string>; reflection?: Record<string, string>; positions?: Record<string, unknown>; setup?: { name1: string; name2: string; emoji1: string; emoji2: string; openRelationship: boolean; openRelationshipRevision?: number; openRelationshipEditor?: string; extraPartners: {name:string;emoji:string}[] }; question?: string; activity?: { typingAt: number } };
 type Member = { user_id: string; display_name: string; answers: Json; is_owner?: boolean };
 function useSession() {
   const [guest, setGuest] = useState<GuestAccess | null>(readGuestAccess);

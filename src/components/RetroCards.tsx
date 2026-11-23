@@ -4,6 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import RetroSummary from "./RetroSummary";
 import RetroAiInsights from "./RetroAiInsights";
 import { collectRetroAnswers } from "./retro-ai-data";
+import { mergeSharedSetupChoice, toggleSharedSetupChoice, type SharedSetupChoice } from './shared-setup-choice';
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
@@ -81,7 +82,7 @@ interface ExtraPartner {
   emoji: string;
 }
 
-interface SetupData {
+interface SetupData extends SharedSetupChoice {
   name1: string;
   name2: string;
   emoji1: string;
@@ -401,18 +402,9 @@ const RetroCards: React.FC = () => {
   const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
   // "Nicht monogam" is one shared choice: whoever flips it last sets it for everyone.
   const openRelationship = setupData.openRelationship;
-  const partnerOpen = live?.setup ? Boolean(live.setup.openRelationship) : undefined;
-  const seenPartnerOpen = useRef<boolean | undefined>(undefined);
   useEffect(() => {
-    if (partnerOpen === undefined) { seenPartnerOpen.current = undefined; return; }
-    if (seenPartnerOpen.current !== undefined && seenPartnerOpen.current !== partnerOpen) {
-      setSetupData(prev => prev.openRelationship === partnerOpen ? prev : { ...prev, openRelationship: partnerOpen });
-    } else if (seenPartnerOpen.current === undefined && !partnerSession.isOwner) {
-      // On joining, take over the inviting person's setting.
-      setSetupData(prev => prev.openRelationship === partnerOpen ? prev : { ...prev, openRelationship: partnerOpen });
-    }
-    seenPartnerOpen.current = partnerOpen;
-  }, [partnerOpen, partnerSession.isOwner]);
+    setSetupData(prev => mergeSharedSetupChoice(prev, live?.setup, partnerSession.isOwner));
+  }, [live?.setup, partnerSession.isOwner]);
   const liveName = live ? partnerDisplayName(partnerSession.partner?.display_name, live.setup?.name1, setupData.name2) : '';
   const name2 = live ? liveName : setupData.name2;
   const displayName2 = name2 || NAME2_PLACEHOLDER;
@@ -1977,13 +1969,15 @@ const RetroCards: React.FC = () => {
               </button>}
 
               {/* Nicht monogam — checkbox row (tile left, label field right) */}
-              <button
+              <Button
                 type="button"
                 role="checkbox"
+                variant="ghost"
                 aria-checked={openRelationship}
+                aria-label="Nicht monogam"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSetupData({ ...setupData, openRelationship: !setupData.openRelationship });
+                  setSetupData(prev => toggleSharedSetupChoice(prev, live?.setup, partnerSession.memberId ?? 'local'));
                 }}
                 className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
@@ -2000,7 +1994,7 @@ const RetroCards: React.FC = () => {
                 <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Nicht monogam{live ? <span className="partner-field-name">&nbsp;· gilt für euch beide</span> : null}
                 </span>
-                </button>
+                </Button>
               </div>
 
               <div className="w-full">

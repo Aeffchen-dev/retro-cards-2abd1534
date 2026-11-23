@@ -2151,6 +2151,9 @@ textarea.bg-retro-post-it:focus,
   width: 100%;
   min-width: 0;
   padding: 0;
+  height: auto;
+  border-radius: 0;
+  font-weight: 400;
   border: 0;
   background: transparent;
   color: inherit;
@@ -2184,7 +2187,11 @@ textarea.bg-retro-post-it:focus,
   overflow: hidden;
   color: var(--retro-black, #201C1D);
 }
-.partner-answer-header { padding-right: 28px; text-align: left; }
+.partner-answer-header { text-align: left; }
+.partner-answer-dialog { grid-template-rows: auto auto minmax(0, 1fr); }
+.partner-answer-dialog .partner-answer-close { justify-self: end; min-height: 44px; color: var(--retro-black); background: hsl(var(--background)); border: 1px solid var(--retro-black); border-radius: 4px; font-size: 14px; opacity: 1; }
+.partner-answer-close > svg { width: 24px; height: 24px; }
+.partner-answer-close:focus-visible, .partner-answer-full:focus-visible { outline: 2px solid var(--retro-black); outline-offset: 2px; box-shadow: none; }
 .partner-answer-title { overflow-wrap: anywhere; font-size: 20px; font-weight: 400; line-height: 1.25; }
 .partner-answer-description { font-size: 12px; line-height: 1.4; }
 .partner-answer-full {
@@ -2203,13 +2210,13 @@ textarea.bg-retro-post-it:focus,
    the guide lines from running through the letters. */
 .print-memoji-label {
   position: absolute;
-  top: calc(100% + 2px);
+  top: calc(100% - 2px);
   left: 50%;
   transform: translateX(-50%);
   width: max-content;
   max-width: 96px;
-  padding: 1px 4px;
-  background: var(--retro-card-bg);
+  padding: 0;
+  background: transparent;
   color: var(--retro-info-text, #6E7078);
   font-size: 12px;
   line-height: 14px;
@@ -2223,7 +2230,7 @@ textarea.bg-retro-post-it:focus,
    rides above their emoji so it never covers yours. */
 .print-memoji-label.is-above {
   top: auto;
-  bottom: calc(100% + 2px);
+  bottom: calc(100% - 2px);
 }
 
 /* Memory photos as polaroids */
