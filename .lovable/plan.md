@@ -23,9 +23,6 @@ Die Skala soll sofort verständlich sein, sich auf dem Handy sicher bedienen las
 6. **Bedienbarkeit für alle**
    Screenreader lesen die Spaltenbezeichnung statt einer Zahl vor; Pfeiltasten springen spaltenweise, Pos1/Ende an die Enden.
 
-7. **Kein versehentliches Weiterwischen**
-   Ziehen auf der Skala blättert nie die Karte um; leichtes vertikales Wischen außerhalb des Punkts scrollt/blättert normal.
-
 ## Technische Details
 - Betrifft `StatementScale` in `RisikoSlide.tsx`, die ersten zwei Health-Check-Karten in `RetroCards.tsx` und `health-check.css`.
 - Gespeicherte Antworten (1–5 bzw. 0/25/50/75/100) bleiben unverändert.
