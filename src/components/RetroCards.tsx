@@ -9,7 +9,7 @@ import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import StarRating from "@/components/StarRating";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
-import { besideSmiley, nearestMemoji, partnerLabelSide, shouldShowPartnerMemoji } from "@/components/health-check-position";
+import { besideSmiley, HC_FACE, hcSpanPoint, nearestMemoji, partnerLabelSide, shouldShowPartnerMemoji } from "@/components/health-check-position";
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
@@ -51,15 +51,8 @@ const SLIDE_RISIKO = 105;
 const RISIKO_CONTINUATION = 200;
 const isRisikoSlide = (id: number) => id === SLIDE_RISIKO || id >= RISIKO_CONTINUATION;
 
-// The first two Health Check cards share a centred face column. A taller span
-// leaves the larger faces breathing room. Faces and the Memoji that anchors to a
-// face all read this one geometry.
-const HC_FACE = 44;
-const HC_SPAN_PCT = 84;
-const HC_OFFSET_PCT = (100 - HC_SPAN_PCT) / 2;
-/** CSS top of the point sitting on fraction `f` (0 = first smiley, 1 = last) of the smiley span. */
-const hcSpanPoint = (f: number) =>
-  `calc(${HC_OFFSET_PCT}% + (${HC_SPAN_PCT}% - ${HC_FACE}px) * ${f} + ${HC_FACE / 2}px)`;
+// The first two Health Check cards' face column (HC_FACE, hcSpanPoint) lives in
+// health-check-position.ts, so its geometry can be measured without the deck.
 
 
 // Pill label displayed ABOVE the card for each slide (null = no pill)
@@ -1511,7 +1504,7 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 key={heading} className="retro-heading w-full"><RevealText text={heading} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="relative w-full flex-1 my-10 print-memoji-container" style={{
+            <div className="relative w-full flex-1 my-4 print-memoji-container" style={{
               '--health-face-size': `${HC_FACE}px`,
               '--health-guide-end': `${defaultX}px`,
               '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
