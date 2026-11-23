@@ -1,10 +1,11 @@
 # Roadmap
 
 ## Current request
+- [ ] „Letzte 4 Wochen“ und alle zugehörigen Notizseiten fest auf den vorhandenen Rosa-Ton #F39FFF setzen; orangefarbene Kategorie-Pille unverändert lassen.
 - [x] Verlauf: eckige CTA-Datumspills mit invertierter Kategorie-Marke links auf der aktiven Pille; Löschaktion und Logik vollständig entfernt. Telefon-Test mit Testeintrag bestätigt Auswahl, Farben, 32px-Höhe, keine Löschaktion und unveränderten gespeicherten Eintrag; 17 Tests und Typecheck grün.
 - [x] Smiley-Regler: graue Smileys deckend weiß gefüllt, Kontur weiterhin weich; während des Ziehens frei und beim Loslassen auf der nächsten der fünf Spalten eingerastet. Telefon-Vorschau: 39 während des Ziehens → 50 nach dem Loslassen, Health Check 3 gespeichert; 105 relevante Tests und Typecheck grün.
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
-- [ ] Last-4-weeks pink: waiting for which pink the user means.
+- [x] Last-4-weeks pink: der gewünschte Ton ist der vorhandene Rosa-Ton #F39FFF; Umsetzung im aktuellen Punkt oben.
 - [x] Questions card (the deck's last card) keeps a white fill at every deck position; its pink fill came from the position-based background list, so a joining partner could drop it onto the pink entry. Two-device check measured white on both devices; 3 new tests pass, build OK.
 - [x] Let either connected partner move both feeling-card emojis, including untouched markers, with shared positions. Two real connected guests verified both markers on both cards, selected-marker clicks, reload and desktop-to-phone readback; 21 focused tests passed, build OK. Other scales remain personal.
 - [x] Synchronize all Setup names, emojis, added partners and relationship choice across shared devices; either partner can edit. Three connected guests verified including reload; six new regression tests passed.
