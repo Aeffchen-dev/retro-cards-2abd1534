@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [ ] Smiley-Regler: graue Smileys deckend weiß füllen; während des Ziehens frei bewegen und beim Loslassen auf der nächsten der fünf Spalten einrasten. Health-Check-Antworten bleiben 1–5.
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
 - [ ] Last-4-weeks pink: waiting for which pink the user means.
 - [x] Questions card (the deck's last card) keeps a white fill at every deck position; its pink fill came from the position-based background list, so a joining partner could drop it onto the pink entry. Two-device check measured white on both devices; 3 new tests pass, build OK.

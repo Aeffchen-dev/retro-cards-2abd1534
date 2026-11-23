@@ -1,7 +1,13 @@
-# Fragen-Karte ohne pinken Hintergrund
+# Smiley-Regler: weiße Füllung und Einrasten beim Loslassen
 
-Die Fragen-Karte (und die Ideas-Karte, die dieselbe Zufallsfarbe trägt) wählt zufällig aus sechs Farbkombinationen. Eine davon hat Pink als Fläche (Pink mit Orange). Diese Kombination fällt weg, die übrigen fünf bleiben unverändert.
+- Die grauen Smileys behalten ihre zurückhaltende graue Kontur, aber ihre Innenfläche wird deckend weiß gezeichnet.
+- Beim Ziehen folgt der schwarze Regler frei und stufenlos dem Finger oder Zeiger.
+- Beim Loslassen springt er auf die nächste der fünf Smiley-Spalten: 0, 25, 50, 75 oder 100 Prozent.
+- Das gilt für den gemeinsamen Smiley-Regler im Health Check und bei den Risikofaktoren. Gespeicherte Health-Check-Werte bleiben weiterhin 1–5, Partnerantworten und Auswertung ändern sich nicht.
+- Tastatursteuerung und einfaches Antippen landen ebenfalls auf einer Spalte.
 
 ## Technisch
-- `RetroCards.tsx`: Eintrag `{ icon: BRAND.stackOrange, square: BRAND.pink }` aus `QUESTION_COMBOS` entfernen. Die Wiederholungssperre arbeitet mit dem Index modulo Länge und passt sich an.
-- Test: Keine Kombination in `QUESTION_COMBOS` hat `square: BRAND.pink`.
+- `RisikoSlide.tsx`: während der Interaktion einen freien Zwischenwert anzeigen und bei Zeigerende, Abbruch oder Fokusverlust auf den nächsten Spaltenwert setzen.
+- `risiko-data.ts`: eine kleine reine Einrastfunktion mit Tests für Grenzen und Rundung.
+- `health-check.css` und `index.css`: weiße Fläche von der abgeschwächten Kontur entkoppeln; bestehende Tests an das neue Verhalten anpassen.
+- Danach den zentralen Ablauf am Telefon-Viewport prüfen: frei ziehen, loslassen, eingerasteten Wert und weiße Füllung kontrollieren.
