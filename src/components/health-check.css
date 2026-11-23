@@ -19,7 +19,7 @@
 .health-category-square > span { width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-primary); }
 #root .health-rating-heading .health-category-label .health-category-text { padding: 4px 12px; align-self: center; }
 #root .health-question-scale > .retro-heading { margin: 0; flex-shrink: 0; font-size: 32px; }
-.health-scale-centre { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding-block: var(--retro-card-pad); }
+.health-scale-centre { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding-block: 8px; }
 .health-scale-ends { display: flex; justify-content: space-between; gap: 16px; margin-top: 8px; color: var(--retro-info-text); font-size: 12px; line-height: 16px; }
 .health-scale-ends > span { max-width: 45%; }
 .health-scale-ends > span:last-child { text-align: right; }
@@ -32,12 +32,13 @@
 #root .health-rating-item > .retro-heading { margin-top: 8px; }
 .health-rating-footer { margin-top: auto; flex-shrink: 0; }
 .health-rating-control.health-smiley-control { margin-top: 0; }
-.health-smiley-control.risiko-page { --risiko-field-h: 120px; }
-.health-smiley-control .risiko-track.has-comparison { height: 116px; }
+.health-smiley-control.risiko-page { --risiko-field-h: 180px; }
+.health-smiley-control .risiko-track.has-comparison { height: 128px; padding-bottom: 12px; }
 .risiko-comparison-marker { position: absolute; top: calc(50% + 34px); width: 24px; transform: translateX(-50%); pointer-events: none; z-index: 35; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.risiko-comparison-marker > svg { width: 24px; height: 24px; stroke: var(--retro-info-text); }
+.risiko-comparison-marker > svg { width: 24px; height: 24px; stroke: var(--retro-black, #201C1D); }
+.risiko-comparison-marker > svg * { stroke: var(--retro-black, #201C1D) !important; }
 .risiko-comparison-marker > svg circle { fill: none; }
-.risiko-comparison-name { position: absolute; left: 50%; top: calc(100% + 1px); transform: translateX(-50%); max-width: 96px; overflow: hidden; text-overflow: ellipsis; font-size: 12px; line-height: 1.2; color: var(--retro-info-text); white-space: nowrap; background: transparent; padding: 0; }
+.risiko-comparison-name { position: absolute; left: 50%; top: calc(100% + 1px); transform: translateX(-50%); max-width: 96px; overflow: hidden; text-overflow: ellipsis; font-size: 12px; line-height: 1.2; color: var(--retro-info-text); white-space: nowrap; background: none !important; box-shadow: none; padding: 0; }
 .health-smiley-control .risiko-scale-captions { display: none; }
 .health-chart svg { width: 100%; height: 100%; }
 .health-chart { display: flex; align-items: center; }
