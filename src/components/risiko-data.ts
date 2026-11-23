@@ -73,6 +73,13 @@ export const scaleValue = (stored?: string): number => {
 export const snapScaleValue = (value: number): number =>
   Math.round(scaleValue(String(value)) / 25) * 25;
 
+/** Which of the five columns (0–4) a 0–100 value falls in, as the snap rounds it. */
+export const scaleColumn = (value: number): number => snapScaleValue(value) / 25;
+
+/** One keyboard step: a whole column left/right, or straight to an end. */
+export const scaleStep = (value: number, dir: number | "start" | "end"): number =>
+  dir === "start" ? 0 : dir === "end" ? 100 : Math.min(100, Math.max(0, (scaleColumn(value) + Math.sign(dir)) * 25));
+
 /** How far the circle's centre stops short of each scale end. The scale spans its
  *  whole container, so the inset is the circle's own radius: at 0 and 100 its edge
  *  lands exactly on the container's edges — fully visible, never cut off, never

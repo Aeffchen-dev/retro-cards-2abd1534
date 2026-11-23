@@ -1,5 +1,6 @@
 import HealthCheckChart from './HealthCheckChart';
 import { StatementScale } from './RisikoSlide';
+import { SCALE_CAPTIONS } from './risiko-data';
 import { HEALTH_CATEGORIES, healthScore, healthResults, healthScaleValue, healthScaleScore, revealedPartnerResults, evaluationNames } from './health-check-data';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
@@ -41,10 +42,10 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
           e.preventDefault();
           onChange(`hc_${actualPerson}_${c.id}`, String(e.key === 'Home' ? 1 : e.key === 'End' ? 5 : Math.min(5, Math.max(1, (score ?? 3) + delta))));
         }}><StatementScale value={healthScaleValue(score)} ariaLabel={c.title} captions={[]} fieldMin={120}
-          comparison={otherScore !== null ? { value: String((otherScore - 1) * 25), label: `${otherName ?? 'Partner'}: ${otherScore}/5`, color: categoryColor, name: otherName ?? 'Partner' } : undefined}
+          comparison={otherScore !== null ? { value: String((otherScore - 1) * 25), label: `${otherName ?? 'Partner'}: ${SCALE_CAPTIONS[otherScore - 1]}`, color: categoryColor, name: otherName ?? 'Partner' } : undefined}
           onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
         {s.partner && score === null && remote[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] !== null && <p className="health-partner-waiting">{otherName} hat schon geantwortet – antworte zuerst, um es zu sehen</p>}
-        <div className="health-scale-ends"><span>Trifft noch nicht zu</span><span>Trifft immer zu</span></div>
+        <div className="health-scale-ends"><span>Trifft noch nicht zu</span>{score !== null && <span className="health-scale-choice" aria-live="polite">{SCALE_CAPTIONS[score - 1]}</span>}<span>Trifft immer zu</span></div>
       </div></div></div>;
     })}</div>
     <ActionRow className="hc-helper health-rating-footer" icon="IconInfo" label="Schiebt den Regler zur passenden Antwort" accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />

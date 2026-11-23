@@ -153,3 +153,7 @@
 .health-date-chip.is-active { padding-left: 0; }
 .health-date-marker { width: 32px; height: 32px; flex: none; display: flex; align-items: center; justify-content: center; margin-right: 0; }
 .health-date-marker > span { width: 8px; height: 8px; border-radius: 50%; }
+
+/* The chosen answer's own name stands between the two end labels. */
+.health-scale-choice { color: var(--retro-black); font-weight: 600; text-align: center; flex: 1; }
+@media print { .health-scale-choice { display: none; } }

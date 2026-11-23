@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
-import { scaleValue, snapScaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, SCALE_MOUTHS, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, snapScaleValue, scaleStep, scaleColumn, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, SCALE_MOUTHS, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 // One face, drawn once: the round outline, two filled dot eyes and the mouth
 // traced from the very anchor curve the dragged dot morphs through. The five grey
@@ -261,7 +261,8 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
   );
 };
 
-const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValue, comparison }: {
+const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValue, comparison, valueText, onStep }: {
+  valueText?: string; onStep?: (dir: number | "start" | "end") => void;
   value: number; readOnly: boolean; onChange: (v: number) => void; onRelease: () => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
   comparison?: { value: string; label: string; color: string; name: string };
 }) => {
@@ -272,7 +273,7 @@ const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValu
   const shown = touched || !!hasValue;
   const marker = thumb ?? <ExpressionPoint value={value} active={dragging && !readOnly} shown={shown} />;
   return (
-  <div className={`risiko-track relative w-full shrink-0${comparison ? " has-comparison" : ""}`}>
+  <div className={`risiko-track relative w-full shrink-0${comparison ? " has-comparison" : ""}${dragging ? " is-dragging" : ""}`}>
     {/* The rule spans the full card width; only the circle's travel is inset. Its
         ends are rounded off, so the line finishes soft instead of cut square. It
         draws in the card's own ink (user: "slider range black"), while the
@@ -297,7 +298,11 @@ const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValu
           onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
           onKeyDown={(e) => {
             e.stopPropagation();
-            if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) { setDragging(true); setTouched(true); }
+            if (onStep && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"].includes(e.key)) {
+              // Keys jump a whole column, Home/End to the ends — the answer is always a real column.
+              e.preventDefault(); setTouched(true);
+              onStep(e.key === "Home" ? "start" : e.key === "End" ? "end" : ["ArrowLeft", "ArrowDown", "PageDown"].includes(e.key) ? -1 : 1);
+            }
           }}
         >
           {/* The whole row is the hit area, so a click above or below the rule
@@ -305,7 +310,7 @@ const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValu
           <SliderPrimitive.Track className="relative w-full h-full" />
           {/* The thumb is sized like the circle itself, so Radix's travel maths
               — root minus thumb — matches the drawn marker's edge-to-edge trip. */}
-          <SliderPrimitive.Thumb aria-label={ariaLabel} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
+          <SliderPrimitive.Thumb aria-label={ariaLabel} aria-valuetext={valueText} className="risiko-thumb rounded-full" style={{ width: MARKER_SIZE, height: MARKER_SIZE }} />
         </SliderPrimitive.Root>
         <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
           {marker}
@@ -350,6 +355,8 @@ export interface StatementScaleProps {
  * the scale leaves `statement` out. The field's own drag handlers live here, so a
  * press anywhere on the line picks the circle up however the scale is used.
  */
+const columnOf = (v: number) => scaleColumn(v);
+
 export const StatementScale = ({ value, onChange, ariaLabel, statement, below, captions = SCALE_CAPTIONS, fieldMin, readOnly = false, comparison }: StatementScaleProps) => {
   // A press inside the field — anywhere above the rule — picks the circle up and
   // keeps dragging it, so the whole grey band is the handle and not only the
@@ -384,6 +391,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     interacting.current = false;
     const snapped = snapScaleValue(draftRef.current ?? shownValue);
     onChange(String(snapped));
+    try { navigator.vibrate?.(8); } catch { /* not supported */ }
     draftRef.current = null;
     setDraftValue(null);
   };
@@ -404,9 +412,15 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     if (v !== null) preview(v);
   };
   const releaseField = () => { settle(); };
+  const step = (dir: number | "start" | "end") => {
+    const next = scaleStep(scaleValue(value), dir);
+    onChange(String(next));
+  };
+  const activeColumn = columnOf(shownValue);
+  const answered = value !== undefined || draftValue !== null;
 
   return (
-    <div className="risiko-block relative flex flex-col w-full grow shrink-0">
+    <div className={`risiko-block relative flex flex-col w-full grow shrink-0${draftValue !== null ? " is-dragging" : ""}`}>
       {statement && <h2 className="risiko-statement shrink-0" lang="de">{statement}</h2>}
       <div className="risiko-scale-row relative flex flex-col w-full box-border grow shrink-0">
 
@@ -441,14 +455,15 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
                   dividers between neighbouring ones, painted above. */}
               <FaceLayer />
               <Track value={shownValue} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
-                comparison={comparison} onChange={preview} onRelease={settle} />
+                comparison={comparison} onChange={preview} onRelease={settle}
+                valueText={answered ? (captions.length ? captions : SCALE_CAPTIONS)[activeColumn] : `Noch nicht beantwortet`} onStep={step} />
             </div>
             {/* Every column names itself: one label per field, centred on that field,
                 so the circle always sits above the word it points at. The row takes
                 exactly the height the names need and stands under the field. */}
             <div className="risiko-scale-captions pointer-events-none" lang="de">
               {captions.map((caption, i) => (
-                <span key={i} className="risiko-scale-caption" data-active={i === Math.min(FACES.length - 1, Math.floor((TRAVEL_INSET + shownValue * TRAVEL / 100) / COLUMN))}>{captionLines(caption).map((line, j, all) => (
+                <span key={i} className="risiko-scale-caption" data-active={i === activeColumn} data-answered={answered}>{captionLines(caption).map((line, j, all) => (
                   <span key={j} className="risiko-caption-line"><span className="risiko-caption-plate">{softHyphenate(line)}</span>{j < all.length - 1 ? " " : ""}</span>
                 ))}</span>
               ))}

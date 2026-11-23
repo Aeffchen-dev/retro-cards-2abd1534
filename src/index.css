@@ -2329,3 +2329,16 @@ textarea.bg-retro-post-it:focus,
 /* Setup share button is icon-only: hide its empty label field so the name input gets the width. */
 .setup-partner-share { width: auto !important; flex: 0 0 auto !important; }
 .setup-partner-share > span:last-child { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Health Check scale UX: the chosen column's name stands out, the marker glides into
+   its column on release, and an unanswered dot reads as not yet chosen. */
+.risiko-scale-caption[data-answered="true"] { transition: opacity 150ms ease; }
+.risiko-scale-caption[data-answered="true"]:not([data-active="true"]) { opacity: 0.55; }
+.risiko-scale-caption[data-answered="true"][data-active="true"] { color: var(--retro-black); font-weight: 600; }
+.risiko-block:not(.is-dragging) .risiko-track:not(.is-dragging) .risiko-marker { transition: left 150ms ease-out; }
+.risiko-expression-point:not(.is-shown) .risiko-plain-dot { opacity: 0.6; }
+@media print {
+  .risiko-scale-caption { opacity: 1 !important; font-weight: inherit !important; }
+  .risiko-expression-point .risiko-plain-dot { opacity: 1 !important; }
+}
+@media (prefers-reduced-motion: reduce) { .risiko-marker { transition: none !important; } }
