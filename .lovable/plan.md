@@ -12,3 +12,7 @@
 - Inhalt: `REFLECTION_FIELDS` als `PostItField readOnly` mit `live.reflection[key]`; `partnerValue` aus der eigenen Feedback-Folie entfernen (Screen + Print).
 - Swiper-Index-Navigation (z. B. `slides.indexOf`) bleibt ID-basiert, daher keine Verschiebungsfehler.
 - Test: Folie erscheint nur mit Partner und steht direkt nach Feedback.
+
+## Zusätzlich: kein Platzhalter in Partnerfeldern
+- Read-only-Felder des Partners zeigen nie den Platzhaltertext (z. B. „Deine Antwort“); leer steht dort nur „[Name] schreibt noch …“.
+- Technisch: `PostItField` unterdrückt `placeholder`/Helfer, wenn das Feld eine Partnerantwort zeigt (readOnly mit Partnerlabel), auf allen Folien.
