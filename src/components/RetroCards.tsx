@@ -46,6 +46,7 @@ const janaMemoji = "/assets/jana-memoji.png";
 const SLIDE_INTRO = 100;
 const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
+const SLIDE_REFLECTION_PARTNER = 106;
 const SLIDE_LOGO = 103;
 const SLIDE_VORHABEN = 104;
 const SLIDE_RISIKO = 105;
@@ -512,12 +513,15 @@ const RetroCards: React.FC = () => {
 
   // Ordered list of visible slide ids — filters out dates if openRelationship is off
   const slides = useMemo(() => {
-    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION, 4];
+    const arr: number[] = [SLIDE_LOGO, SLIDE_INTRO, SLIDE_SETUP, 0, 1, 2, ...riskSlideIds, 3, SLIDE_REFLECTION];
+    // The partner's feedback reads on its own card straight after yours, only when connected.
+    if (live) arr.push(SLIDE_REFLECTION_PARTNER);
+    arr.push(4);
     if (openRelationship) arr.push(5);
     // The "Ideas" card (internally still SLIDE_VORHABEN) sits directly before Takeaways.
     arr.push(7, SLIDE_VORHABEN, 8, 9, 10);
     return arr;
-  }, [openRelationship, riskSlideIds]);
+  }, [openRelationship, riskSlideIds, !!live]);
 
   const totalCards = slides.length;
 
@@ -532,7 +536,7 @@ const RetroCards: React.FC = () => {
       // Last 4 weeks: orange
       if (slideId === 3) return BRAND.stackOrange;
       // Feedback: purple
-      if (slideId === SLIDE_REFLECTION) return BRAND.spiralBlue;
+      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) return BRAND.spiralBlue;
       // Takeaways: turquoise combo
       if (slideId === 8) return BRAND.turquoise;
       // Talk-about: rosa pill with orange accents
@@ -558,7 +562,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.deepGreen;   // olive pill → the card's own dark olive
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
-      if (slideId === SLIDE_REFLECTION) return BRAND.babyBlue; // blue labels
+      if (slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) return BRAND.babyBlue; // blue labels
       if (slideId === 7) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
@@ -744,6 +748,7 @@ const RetroCards: React.FC = () => {
       2: "Wie geht's mir in der Beziehung?",
       3: "Wie waren die letzten 4 Wochen? Was war los?",
       [SLIDE_REFLECTION]: "Gegenseitiges Feedback",
+      [SLIDE_REFLECTION_PARTNER]: "Feedback des Partners",
       5: "Wie stehts mit Dates?",
       7: "Körperliche Intimität",
     };
@@ -1683,7 +1688,7 @@ const RetroCards: React.FC = () => {
                   bullets
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                  placeholder="Deine Antwort"
+                  placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
                   readOnly={livePerson(idx)}
                   value={livePerson(idx) ? live?.postIts?.p0 || "" : postItTexts[person.key] || ""}
                   onChange={(v) => setPostItTexts({ ...postItTexts, [person.key]: v })}
@@ -1700,7 +1705,7 @@ const RetroCards: React.FC = () => {
                   minHeight={160}
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                  placeholder="Deine Antwort"
+                  placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                   value={livePerson(idx) ? live?.postIts?.p0 || "" : postItTexts[person.key] || ""}
                 />
               ))}
@@ -2070,8 +2075,6 @@ const RetroCards: React.FC = () => {
                   label={label}
                   placeholder={helper || placeholder}
                   value={reflectionTexts[key] || ""}
-                  partnerLabel={live ? liveName : undefined}
-                  partnerValue={live?.reflection?.[key]}
                   onChange={(v) => setReflectionTexts({ ...reflectionTexts, [key]: v })}
                 />
               ))}
@@ -2089,13 +2092,35 @@ const RetroCards: React.FC = () => {
                   helper={helper}
                   placeholder={placeholder}
                   value={reflectionTexts[key] || ""}
-                  partnerLabel={live ? liveName : undefined}
-                  partnerValue={live?.reflection?.[key]}
                 />
               ))}
 
             </div>
 
+          </div>
+        );
+
+      case SLIDE_REFLECTION_PARTNER:
+        return (
+          <div className="flex flex-col items-start w-full h-full">
+            <div className="flex flex-col items-start gap-6 w-full">
+              <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
+                <span className="retro-label">Feedback</span>
+              </div>
+              <h2 className="retro-heading w-full"><RevealText text={`Feedback von ${liveName || "Partner"}`} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+            </div>
+            <div className="flex flex-col flex-1 w-full justify-between gap-4 mt-6">
+              {REFLECTION_FIELDS.map(([key, label]) => (
+                <PostItField
+                  key={key}
+                  readOnly
+                  accent={labelColorOf(SLIDE_REFLECTION)}
+                  label={label}
+                  placeholder={`${liveName || "Partner"} schreibt noch …`}
+                  value={live?.reflection?.[key] || ""}
+                />
+              ))}
+            </div>
           </div>
         );
 
@@ -2176,7 +2201,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                  placeholder="Deine Antwort"
+                  placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
                   readOnly={livePerson(idx)}
                   value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                   onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
@@ -2192,7 +2217,7 @@ const RetroCards: React.FC = () => {
                   minHeight={160}
                   accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                  placeholder="Deine Antwort"
+                  placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                   value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                 />
               ))}
@@ -2380,6 +2405,7 @@ const RetroCards: React.FC = () => {
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
+                [SLIDE_REFLECTION_PARTNER]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 // Ideas wears the same combo as the Questions card
                 [SLIDE_VORHABEN]: {
                   pill: QUESTION_COMBOS[questionComboIdx % QUESTION_COMBOS.length].square,
@@ -2408,7 +2434,7 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden" style={{ '--retro-action-tile': theme.pillDot, '--retro-action-icon': theme.pill } as React.CSSProperties}>
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
@@ -2478,7 +2504,7 @@ const RetroCards: React.FC = () => {
                                           key={noteKey}
                                           accent={labelColorOf(slideId)}
                                           label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                          placeholder="Deine Antwort"
+                                          placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
                                           readOnly={livePerson(idx)}
                                           value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                           onChange={(v) =>
@@ -2512,7 +2538,7 @@ const RetroCards: React.FC = () => {
                                       key={noteKey}
                                       accent={labelColorOf(slideId)}
                                       label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                      placeholder="Deine Antwort"
+                                      placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
                                       readOnly={livePerson(idx)}
                                       value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                       onChange={(v) =>

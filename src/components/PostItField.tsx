@@ -182,7 +182,9 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         className="post-it-readonly w-full flex-1 p-3 bg-retro-post-it text-[#201C1D] text-base whitespace-pre-wrap"
         style={{ minHeight: minHeight ? `${minHeight}px` : undefined }}
       >
-        {(bullets ? bulletize(value) : value) || placeholder}
+        {(bullets ? bulletize(value) : value) || (
+          <span className="post-it-helper">{placeholder}</span>
+        )}
       </div>
     ) : (
       <textarea
