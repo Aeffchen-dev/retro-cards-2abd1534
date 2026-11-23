@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Trash2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { usePartnerSession } from '@/hooks/use-partner-session';
@@ -9,7 +8,6 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const session = usePartnerSession();
   const [selected, setSelected] = useState<string | null>(null);
   const [entries, setEntries] = useState<HealthHistoryEntry[]>([]);
-  const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   useEffect(() => {
@@ -54,28 +52,17 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [complete, loading, resultsKey, session.user?.id, session.sessionId]);
-  const remove = async (entry: HealthHistoryEntry) => {
-    if (busy || !window.confirm('Diese gespeicherte Retro aus dem Verlauf löschen?')) return;
-    setBusy(true); setError('');
-    try {
-      if (session.user) {
-        const { error: e } = await supabase.from('retro_health_history').delete().eq('id',entry.id).eq('owner_id',session.user.id);
-        if (e) throw e;
-      } else localStorage.setItem(HEALTH_HISTORY_KEY, JSON.stringify(readLocalHealthHistory().filter(e => e.id !== entry.id)));
-      setEntries(current => current.filter(e => e.id !== entry.id));
-    } catch { setError('Die Retro konnte nicht gelöscht werden.'); }
-    finally { setBusy(false); }
-  };
   const pastEntries = pastHealthHistory(entries);
   const hasPast = pastEntries.length > 0;
   const pick = (entry: HealthHistoryEntry | null) => { setSelected(entry?.id ?? null); onSelect?.(entry ? entry.results : null); };
   const chosen = pastEntries.find(e => e.id === selected);
+  const activeStyle = { background: categoryColor, color: categoryAccent };
+  const activeMarker = <span className="health-date-marker" style={{ background: categoryAccent }} aria-hidden="true"><span style={{ background: categoryColor }} /></span>;
   return <div className="health-history">
     {hasPast && !loading && <div className="health-date-strip swiper-no-swiping" role="tablist" aria-label="Retro auswählen">
-      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} style={!chosen ? {background: categoryColor, color: categoryAccent} : undefined} onClick={() => pick(null)}>Heute</button>
-      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} style={on ? {background: categoryColor, color: categoryAccent} : undefined} onClick={() => pick(entry)}>{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
+      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} style={!chosen ? activeStyle : undefined} onClick={() => pick(null)}>{!chosen && activeMarker}Heute</button>
+      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} style={on ? activeStyle : undefined} onClick={() => pick(entry)}>{on && activeMarker}{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
     </div>}
-    {chosen && (!session.user || chosen.owner_id === session.user.id) && <button type="button" className="health-date-delete" disabled={busy} onClick={() => void remove(chosen).then(() => pick(null))}><Trash2 size={14}/> Diese Retro löschen</button>}
     {error && <p role="alert">{error}</p>}
   </div>;
 }
