@@ -1,6 +1,9 @@
 # Roadmap
 
 ## Current request
+- [x] Synchronize all Setup names, emojis, added partners and relationship choice across shared devices; either partner can edit. Three connected guests verified including reload; six new regression tests passed.
+- [x] Keep sharing icon-only, use Emoji auswählen for connected partners, and space additional partners at 24px with scrolling when needed. Copy link and phone overflow checks passed.
+- [x] Use black partner result names, raise the smiley scale and soften grey reference faces; connected phone and desktop views checked with no runtime errors. Physical iPhone testing remains unavailable.
 - [x] Restyle partner Health Check faces with dark-grey outlines and no fill; labels sit close below without a background. Verified in connected phone views.
 - [x] Synchronize Nicht monogam using versioned edits without stale polling or echo reversions; both directions and reload verified with two connected guests, with four regression tests.
 - [x] Accessible partner reading: visible German close button, Radix focus restoration/trapping, focusable keyboard-scrollable answer region and named dialog/description. Phone and desktop keyboard checks passed; 23 focused tests and build OK. Actual screenreader audio was not tested.

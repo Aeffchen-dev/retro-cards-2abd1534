@@ -4,7 +4,7 @@ import ActionRow from "@/components/ActionRow";
 import RetroSummary from "./RetroSummary";
 import RetroAiInsights from "./RetroAiInsights";
 import { collectRetroAnswers } from "./retro-ai-data";
-import { mergeSharedSetupChoice, toggleSharedSetupChoice, type SharedSetupChoice } from './shared-setup-choice';
+import { editSharedSetupData, mergeSharedSetupData, type SharedSetupData } from './shared-setup-data';
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
@@ -18,8 +18,8 @@ import { Camera } from "lucide-react";
 import BgVector from "@/components/BgVector";
 import HealthCheckRatings from './HealthCheckRatings';
 import PartnerConnection from './PartnerConnection';
-import { usePartnerSession } from '@/hooks/use-partner-session';
-import { partnerDisplayName } from '@/hooks/partner-live-data';
+import { usePartnerSession, type DeckSnapshot } from '@/hooks/use-partner-session';
+import { isTextEntryTarget, partnerDisplayName } from '@/hooks/partner-live-data';
 import { disableCameraFlash } from './camera-settings';
 import { HEALTH_HISTORY_KEY } from './health-history-data';
 import { saveMemoryThumb } from './memory-thumbs';
@@ -83,7 +83,7 @@ interface ExtraPartner {
   emoji: string;
 }
 
-interface SetupData extends SharedSetupChoice {
+interface SetupData extends SharedSetupData {
   name1: string;
   name2: string;
   emoji1: string;
@@ -401,16 +401,39 @@ const RetroCards: React.FC = () => {
   const displayName1 = setupData.name1 || NAME1_PLACEHOLDER;
   // Connected: the second person is the real partner — their own Setup name, emoji and answers.
   const live = partnerSession.partner ? partnerSession.partnerAnswers : null;
-  // "Nicht monogam" is one shared choice: whoever flips it last sets it for everyone.
+  // Every Setup field is shared; answers on the other cards stay personal.
   const openRelationship = setupData.openRelationship;
+  const ownerMember = partnerSession.members.find(member => member.is_owner) ?? partnerSession.members[0];
+  const orderedMembers = ownerMember ? [ownerMember, ...partnerSession.members.filter(member => member.user_id !== ownerMember.user_id)] : [];
+  const ownSetupIndex = orderedMembers.findIndex(member => member.user_id === partnerSession.memberId);
+  const sharedSetupSources = useMemo(() => partnerSession.members
+    .filter(member => member.user_id !== partnerSession.memberId)
+    .map(member => (member.answers as DeckSnapshot)?.setup), [partnerSession.members, partnerSession.memberId]);
   useEffect(() => {
-    setSetupData(prev => mergeSharedSetupChoice(prev, live?.setup, partnerSession.isOwner));
-  }, [live?.setup, partnerSession.isOwner]);
+    if (!partnerSession.sessionId || ownSetupIndex < 0 || !ownerMember) return;
+    const sessionId = partnerSession.sessionId;
+    const apply = () => {
+      if (isTextEntryTarget(document.activeElement)) return;
+      setSetupData(prev => mergeSharedSetupData(prev, sharedSetupSources, sessionId, ownSetupIndex, ownerMember.user_id));
+    };
+    apply();
+    // Remote Setup edits wait until the focused input has saved its last character.
+    const onBlur = () => { queueMicrotask(apply); };
+    document.addEventListener('focusout', onBlur);
+    return () => document.removeEventListener('focusout', onBlur);
+  }, [sharedSetupSources, partnerSession.sessionId, ownSetupIndex, ownerMember?.user_id]);
+  const updateSetup = (change: Partial<SetupData> | ((previous: SetupData) => Partial<SetupData>)) => {
+    setSetupData(previous => {
+      const patch = typeof change === 'function' ? change(previous) : change;
+      if (!partnerSession.sessionId || ownSetupIndex < 0 || previous.sharedSetup?.sessionId !== partnerSession.sessionId) return { ...previous, ...patch };
+      return editSharedSetupData(previous, patch, ownSetupIndex, partnerSession.memberId ?? 'local');
+    });
+  };
   const liveName = live ? partnerDisplayName(partnerSession.partner?.display_name, live.setup?.name1, setupData.name2) : '';
   const name2 = live ? liveName : setupData.name2;
   const displayName2 = name2 || NAME2_PLACEHOLDER;
   const displayEmoji1 = setupData.emoji1 || EMOJI1_PLACEHOLDER;
-  const displayEmoji2 = (live && live.setup?.emoji1) || setupData.emoji2 || EMOJI2_PLACEHOLDER;
+  const displayEmoji2 = setupData.emoji2 || (live && live.setup?.emoji1) || EMOJI2_PLACEHOLDER;
   /** On a connected device, the partner's field shows what they write into their own first field. */
   const livePerson = (idx: number) => Boolean(live) && idx === 1;
   const partnerKey = (key: string) => key.replace(/-p\d+$/, '-p0').replace(/^p\d+$/, 'p0');
@@ -667,11 +690,6 @@ const RetroCards: React.FC = () => {
   useEffect(() => {
     partnerSession.shareName(setupData.name1);
   }, [setupData.name1, partnerSession.shareName]);
-  // A joined partner starts with the name the inviting person typed for them.
-  const invitedForMe = !partnerSession.isOwner ? live?.setup?.name2?.trim() : '';
-  useEffect(() => {
-    if (invitedForMe && !setupData.name1.trim()) setSetupData(prev => prev.name1.trim() ? prev : { ...prev, name1: invitedForMe });
-  }, [invitedForMe, setupData.name1]);
   // Joining through an invitation starts the retro on its first card.
   useEffect(() => {
     const goFirst = () => swiperRef?.slideTo(0);
@@ -1826,9 +1844,7 @@ const RetroCards: React.FC = () => {
             <div className="flex flex-col items-start gap-6 w-full">
               <h2 className="retro-heading w-full"><RevealText text="Wer macht mit?" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            {/* Every element (name rows, add partner, toggle, CTA) gets an
-                even share of the leftover vertical space between them */}
-            <div className="flex flex-col w-full flex-1 mt-8 justify-between gap-3">
+            <div className={`setup-fields flex flex-col w-full flex-1 mt-8 justify-between gap-3${setupData.extraPartners.length ? ' has-extra-partners' : ''}`}>
 
 
               {/* Person 1 — post-it style field */}
@@ -1844,14 +1860,15 @@ const RetroCards: React.FC = () => {
                       autoCapitalize="none"
                       autoCorrect="off"
                       spellCheck={false}
-                      onChange={(e) => setSetupData({ ...setupData, name1: e.target.value })}
+                      aria-label="Dein Name"
+                      onChange={(e) => updateSetup({ name1: e.target.value })}
                       placeholder="Deine Antwort"
                       style={fieldStyle}
                       className={nameInputCls}
                     />
                   </div>
                 </div>
-                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji1: val }))}
+                {emojiPicker(setupData.emoji1, EMOJI1_PLACEHOLDER, (val) => updateSetup({ emoji1: val }))}
               </div>
 
               {live ? (
@@ -1861,17 +1878,24 @@ const RetroCards: React.FC = () => {
                       Partner
                     </div>
                     <div className="setup-partner-name-row flex items-stretch w-full min-w-0">
-                      <div className="name-input-wrapper w-full flex items-center h-8 px-3 gap-2 min-w-0" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }} aria-label={`${liveName}, ${partnerSession.online ? 'verbunden' : 'gerade offline'}`}>
-                        <span className={`partner-status-dot${partnerSession.online ? ' is-connected' : ''}`} aria-hidden="true" />
-                        <span className={`setup-partner-card-name text-base${live.setup?.name1?.trim() ? '' : ' is-pending'}`}>{live.setup?.name1?.trim() ? liveName : 'trägt seinen Namen noch ein …'}</span>
+                      <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
+                        <input
+                          type="text"
+                          value={setupData.name2}
+                          autoCapitalize="none"
+                          autoCorrect="off"
+                          spellCheck={false}
+                          aria-label="Name deines Partners"
+                          onChange={(e) => updateSetup({ name2: e.target.value })}
+                          placeholder="Name deines Partners"
+                          style={fieldStyle}
+                          className={nameInputCls}
+                        />
                       </div>
                       <PartnerConnection compact partnerName={setupData.name2 || liveName} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
                     </div>
                   </div>
-                  <div className="inline-flex h-8 self-start items-center" aria-label="Emoji deines Partners">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center text-base" style={{ background: SETUP_PILL, color: SETUP_PILL_ON }}>{live.setup?.emoji1 || setupData.emoji2 || EMOJI2_PLACEHOLDER}</span>
-                    <span className="retro-body-copy flex h-8 items-center whitespace-nowrap px-3" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>{partnerSession.online ? 'verbunden' : 'gerade offline'}</span>
-                  </div>
+                  {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => updateSetup({ emoji2: val }))}
                 </div>
               ) : (
               <div className="flex flex-col gap-2 w-full">
@@ -1887,7 +1911,8 @@ const RetroCards: React.FC = () => {
                         autoCapitalize="none"
                         autoCorrect="off"
                         spellCheck={false}
-                        onChange={(e) => setSetupData({ ...setupData, name2: e.target.value })}
+                        aria-label="Name deines Partners"
+                        onChange={(e) => updateSetup({ name2: e.target.value })}
                         placeholder="Deine Antwort"
                         style={fieldStyle}
                         className={nameInputCls}
@@ -1896,31 +1921,31 @@ const RetroCards: React.FC = () => {
                     <PartnerConnection compact partnerName={setupData.name2} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
                   </div>
                 </div>
-                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => setSetupData({ ...setupData, emoji2: val }))}
+                {emojiPicker(setupData.emoji2, EMOJI2_PLACEHOLDER, (val) => updateSetup({ emoji2: val }))}
               </div>
               )}
 
               {/* Extra partners — post-it style fields */}
               {setupData.extraPartners.map((p, idx) => (
-                <div key={idx} className="flex flex-col gap-2 w-full">
+                <div key={idx} className="setup-extra-partner flex flex-col gap-2 w-full">
                   <div className="flex flex-col w-full min-w-0">
                     <div className="flex items-center justify-between w-full">
                       <div className="inline-flex items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
                         {`Partner ${idx + 3}`}
                       </div>
-                      <button
+                      <Button
+                        variant="ghost"
                         type="button"
                         aria-label="Partner entfernen"
                         onClick={(e) => {
                           e.stopPropagation();
-                          const next = setupData.extraPartners.filter((_, i) => i !== idx);
-                          setSetupData({ ...setupData, extraPartners: next });
+                          updateSetup(previous => ({ extraPartners: previous.extraPartners.filter((_, i) => i !== idx) }));
                         }}
                         className="relative z-40 shrink-0 w-8 h-8 rounded-none flex items-center justify-center transition-opacity hover:opacity-80"
                         style={{ background: SETUP_GREY_FILL }}
                       >
                         <StackIcon name="IconClearSm" size={12} color={SETUP_TEXT} />
-                      </button>
+                      </Button>
                     </div>
                     <div className="setup-partner-name-row flex items-stretch w-full min-w-0">
                       <div className="name-input-wrapper w-full" style={{ background: SETUP_GREY_FILL }}>
@@ -1930,10 +1955,10 @@ const RetroCards: React.FC = () => {
                           autoCapitalize="none"
                           autoCorrect="off"
                           spellCheck={false}
+                          aria-label={`Name Partner ${idx + 3}`}
                           onChange={(e) => {
-                            const next = [...setupData.extraPartners];
-                            next[idx] = { ...next[idx], name: e.target.value };
-                            setSetupData({ ...setupData, extraPartners: next });
+                            const value = e.target.value;
+                            updateSetup(previous => ({ extraPartners: previous.extraPartners.map((person, i) => i === idx ? { ...person, name: value } : person) }));
                           }}
                           placeholder="Deine Antwort"
                           style={fieldStyle}
@@ -1944,9 +1969,7 @@ const RetroCards: React.FC = () => {
                     </div>
                   </div>
                   {emojiPicker(p.emoji, "🧚", (val) => {
-                    const next = [...setupData.extraPartners];
-                    next[idx] = { ...next[idx], emoji: val };
-                    setSetupData({ ...setupData, extraPartners: next });
+                    updateSetup(previous => ({ extraPartners: previous.extraPartners.map((person, i) => i === idx ? { ...person, emoji: val } : person) }));
                   })}
                 </div>
               ))}
@@ -1956,15 +1979,13 @@ const RetroCards: React.FC = () => {
               {/* Add partner and the "Nicht monogam" toggle keep one shared gap between
                   them — the same 8px a name has to its emoji picker. */}
               <div className="flex flex-col gap-2 w-full">
-              {/* Add partner — own evenly spaced slot; only the inviting person shapes the group */}
-              {!(live && !partnerSession.isOwner) && <button
+              {/* Everyone in the shared session can update the Setup roster. */}
+              <Button
+                variant="ghost"
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSetupData({
-                    ...setupData,
-                    extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
-                  });
+                  updateSetup(previous => ({ extraPartners: [...previous.extraPartners, { name: '', emoji: '' }] }));
                 }}
                 className="relative z-40 self-start w-auto flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
@@ -1974,7 +1995,7 @@ const RetroCards: React.FC = () => {
                 <span className="h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Weiteren Partner hinzufügen
                 </span>
-              </button>}
+              </Button>
 
               {/* Nicht monogam — checkbox row (tile left, label field right) */}
               <Button
@@ -1985,7 +2006,7 @@ const RetroCards: React.FC = () => {
                 aria-label="Nicht monogam"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSetupData(prev => toggleSharedSetupChoice(prev, live?.setup, partnerSession.memberId ?? 'local'));
+                  updateSetup(previous => ({ openRelationship: !previous.openRelationship }));
                 }}
                 className="relative z-40 self-start w-auto flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >

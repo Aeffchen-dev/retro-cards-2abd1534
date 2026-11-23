@@ -109,6 +109,7 @@ body, input, textarea, select, button { font-family: var(--font-app); }
        colour its label bar wears */
     --retro-textarea-bg: #E4E6E8;
     --retro-info-rule: #C9CBD1;
+    --health-reference-opacity: 0.45;
     /* the one breath the info note keeps under its hairline (user: "gap top
        border info text to CTA same as info text top padding", "info text top
        padding only 8px") — the button above stands no breath of its own over
@@ -2217,7 +2218,7 @@ textarea.bg-retro-post-it:focus,
   max-width: 96px;
   padding: 0;
   background: transparent;
-  color: var(--retro-info-text, #6E7078);
+  color: var(--retro-black);
   font-size: 12px;
   line-height: 14px;
   text-align: center;
@@ -2260,6 +2261,10 @@ textarea.bg-retro-post-it:focus,
 .setup-partner-card-name.is-pending { color: var(--retro-info-text, #6E7078); }
 .setup-partner-card-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--retro-info-text, #6E7078); }
 .setup-partner-card-status .partner-status-dot:not(.is-connected) { background: #C9CBD1; }
+.setup-fields { min-height: 0; }
+.setup-fields.has-extra-partners { justify-content: flex-start; gap: 24px; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 2px; }
+.setup-fields.has-extra-partners > div { flex-shrink: 0; }
+#root .partner-field-name { color: var(--retro-black); }
 .retro-eval { display: grid; gap: 12px; }
 .retro-eval-head { display: flex; gap: 24px; }
 .retro-eval-head > div { display: flex; flex-direction: column; }
