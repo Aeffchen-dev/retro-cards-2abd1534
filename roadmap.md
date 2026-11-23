@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [ ] Verlauf: eckige CTA-Datumspills, aktive Pille mit invertierter Kategorie-Marke links und direkt sichtbarem X an jeder löschbaren früheren Retro; nach dem Löschen zurück zu Heute.
 - [x] Smiley-Regler: graue Smileys deckend weiß gefüllt, Kontur weiterhin weich; während des Ziehens frei und beim Loslassen auf der nächsten der fünf Spalten eingerastet. Telefon-Vorschau: 39 während des Ziehens → 50 nach dem Loslassen, Health Check 3 gespeichert; 105 relevante Tests und Typecheck grün.
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
 - [ ] Last-4-weeks pink: waiting for which pink the user means.
