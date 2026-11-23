@@ -1,22 +1,14 @@
-# Statement-Karte (Risikofaktoren) verbessern
+# Feedback des Partners auf eigener Folie
 
-## Was auf dem Screenshot auffällt
-1. **"Chris" kollidiert mit "Trifft immer zu"** – das Partner-Label läuft in die Spaltenbeschriftung.
-2. **Partner-Smiley hängt lose unter der Linie** – wirkt wie ein sechster Smiley, nicht wie eine Antwort.
-3. **Viel leere Fläche** zwischen Frage, Skala und Infozeile; die Skala wirkt klein und verloren.
-4. **Nur zwei Endbeschriftungen**, die mittleren Spalten bleiben namenlos, obwohl Linien sie trennen.
-5. **Vertikale Linien ragen weit über/unter die Smileys** und wirken unruhig.
-6. **Kein Hinweis, ob du schon geantwortet hast** – das gewählte Smiley ist nur etwas dunkler.
-
-## Vorschläge
-- Partner-Antwort **über** der Linie zeigen (kleiner Punkt/Emoji mit Name darüber), die Spaltenbeschriftung bleibt unten frei – keine Überlappung mehr.
-- Partner-Markierung in einer eigenen, zurückhaltenden Farbe (dunkelgrau Umriss, wie im Health Check), damit sie klar "Antwort von Chris" liest.
-- Skala etwas größer und näher an die Frage rücken; freien Raum unten statt zwischen den Blöcken.
-- Trennlinien kürzen: nur so hoch wie Smiley + Label-Zone.
-- Endbeschriftungen unter dem ersten/letzten Smiley zentrieren statt am Rand.
-- Gewähltes Smiley deutlicher markieren (Kartenfarbe als Füllung oder dickerer Ring).
+## Was sich ändert
+- Auf der Folie **"Gegenseitiges Feedback"** schreibst du nur noch deine eigenen Antworten (Spiegeln, Danke, Ungesagt) – die Vorschau "[Name] schreibt:" unter den Feldern entfällt.
+- **Direkt danach** erscheint – nur wenn ein Partner verbunden ist – eine neue Folie **"Feedback von [Name]"** mit seinen drei Antworten, voll lesbar, nicht bearbeitbar (Schloss-Hinweis wie bisher).
+- Hat der Partner ein Feld noch leer: grauer Hinweis "[Name] schreibt noch …"; Antworten erscheinen live.
+- Ohne verbundenen Partner bleibt das Deck unverändert (keine leere Extrafolie).
+- Export/PDF: eigene Feedback-Seite wie bisher, Partner-Feedback als eigene Seite danach (nur wenn verbunden).
 
 ## Technisch
-- `RisikoSlide.tsx` / `health-check.css`: Partner-Marker-Position (above), Labelplatte, Linienhöhe, Spacing.
-- Kollisionsprüfung wie `partnerLabelSide` wiederverwenden; Print unverändert lassen.
-- Test: Partner-Label überlappt Endbeschriftung nicht (Geometrie-Helper).
+- Neue Slide-ID `SLIDE_REFLECTION_PARTNER` in `RetroCards.tsx`, in `slides` nur eingefügt wenn `live` existiert, direkt nach `SLIDE_REFLECTION`; Pill "Feedback", gleiche Farben über `pillColorOf`/`labelColorOf(SLIDE_REFLECTION)`.
+- Inhalt: `REFLECTION_FIELDS` als `PostItField readOnly` mit `live.reflection[key]`; `partnerValue` aus der eigenen Feedback-Folie entfernen (Screen + Print).
+- Swiper-Index-Navigation (z. B. `slides.indexOf`) bleibt ID-basiert, daher keine Verschiebungsfehler.
+- Test: Folie erscheint nur mit Partner und steht direkt nach Feedback.
