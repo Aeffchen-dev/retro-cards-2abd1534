@@ -445,11 +445,12 @@ body, input, textarea, select, button { font-family: var(--font-app); }
 .health-check-page .retro-heading {
   overflow-wrap: anywhere;
 }
-/* The first two Health Check cards draw their own track: five solid grey lines
-   across the face column — the line under every smiley's own field, so the track
-   starts below the first face and closes below the last one. Each starts at the
-   column's own left edge and stops short of the resting Memoji's spot; the faces
-   draw on top of them. */
+/* The first two Health Check cards draw their own track: four solid grey lines
+   across the face column — one between every pair of neighbouring smileys, so the
+   track starts below the first face and stops below the last smiley's own line;
+   nothing closes the column under the last face (user: "below last emoji … no
+   line"). Each starts at the column's own left edge and stops short of the
+   resting Memoji's spot; the faces draw on top of them. */
 .health-check-guides {
   position: absolute;
   inset: 0;

@@ -1520,7 +1520,10 @@ const RetroCards: React.FC = () => {
               '--health-guide-print-end': `${(defaultX / (isMobile ? 320 : 480)) * 100}%`,
             } as React.CSSProperties}>
               <div className="health-check-guides" aria-hidden="true">
-                {Array.from({ length: 5 }, (_, i) => (
+                {/* Four lines, one between every pair of neighbouring smileys: the
+                    column stops below the last smiley's own line and nothing closes
+                    under the last face (user: "below last emoji … no line"). */}
+                {Array.from({ length: 4 }, (_, i) => (
                   <span key={i} className="health-check-guide" style={{ top: hcSpanPoint((i + 0.5) / 4) }} />
                 ))}
               </div>

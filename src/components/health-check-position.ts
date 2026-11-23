@@ -5,20 +5,22 @@ type Box = Point & { width: number; height: number };
 /**
  * The first two Health Check cards share one centred face column.
  *
- * Five faces stand on one span, and the track's five grey lines fall on the
+ * Five faces stand on one span, and the track's four grey lines fall on the
  * midpoints between neighbouring faces — so every smiley carries the line under
- * it, and none sits above the topmost one. The room between a smiley's lower
- * edge and its line is a quarter of the face-to-face distance minus the face's
- * own radius: the column has to be spread wide enough for that to read as air
- * rather than a line glued to the face (user: "health check smilies more
- * vertical space between smiley and line", after the gap had closed to 3.6px on
- * a phone).
+ * it, none sits above the topmost one, and nothing closes the column under the
+ * last face (user: "below last emoji first 2 health check no line"). The room
+ * between a smiley's lower edge and its line is a quarter of the face-to-face
+ * distance minus the face's own radius: the column has to be spread wide enough
+ * for that to read as air rather than a line glued to the face (user: "health
+ * check smilies more vertical space between smiley and line", after the gap had
+ * closed to 3.6px on a phone).
  *
  * The span is derived from the track, not from a share of the column: the track
- * runs from the first smiley's top edge to the line under the last one, which
- * costs an eighth of a span more than the faces themselves. Deriving it that way
- * keeps the last line inside the column at every height — a plain percentage
- * span overflows the box as soon as the column grows tall.
+ * runs from the first smiley's top edge to where the line under the last one used
+ * to stand, which costs an eighth of a span more than the faces themselves.
+ * Deriving it that way keeps the last smiley inside the column at every height —
+ * a plain percentage span overflows the box as soon as the column grows tall —
+ * and holds the smiley-to-line gap at the width it was tuned to.
  */
 export const HC_FACE = 44;
 /** Air above the first smiley and below the last line, inside the column. */

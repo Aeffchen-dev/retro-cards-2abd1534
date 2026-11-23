@@ -47,11 +47,24 @@ describe("the Health Check smileys keep air around their lines", () => {
   });
 
   test("every smiley carries its own line, and none stands above the first", () => {
-    // five lines on the midpoints between neighbouring faces…
+    // four lines on the midpoints between neighbouring faces…
     expect(cards).toContain("hcSpanPoint((i + 0.5) / 4)");
     // …drawn on the very span the faces stand on, so a line always falls between
-    // two of them and the track only ever closes below the last one.
+    // two of them.
     expect(cards).toContain("hcSpanPoint(i / 4)");
+  });
+
+  test("the column closes below the fourth line, not under the last smiley", () => {
+    // "below last emoji first 2 health check no line" — the track stops below the
+    // last smiley's own line: only the four midpoints between neighbouring faces
+    // are drawn, so nothing stands under the bottom-most face.
+    const guides = cards.slice(cards.indexOf("health-check-guides"), cards.indexOf("print-emoji-scale"));
+    expect(guides, "the track draws a different number of lines").toContain("Array.from({ length: 4 }");
+    expect(guides, "the track still closes under the last smiley").not.toContain("length: 5");
+    // the last line drawn sits half a face-distance above the last face's centre,
+    // i.e. on the midpoint between the last two faces — never below the last one
+    expect(cards, "the last line no longer stands between the last two faces")
+      .toContain("hcSpanPoint((i + 0.5) / 4)");
   });
 
   test("the track never grows out of the column, however tall it is", () => {
