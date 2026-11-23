@@ -72,19 +72,6 @@ export const bulletOnEnter = (text: string, from: number, to: number) => {
   return { value, caret: from + 1 + BULLET.length };
 };
 
-/** True for `ms` after `value` changes (never on first render). */
-export const useRecentChange = (value: string, ms: number) => {
-  const [recent, setRecent] = React.useState(false);
-  const first = React.useRef(true);
-  React.useEffect(() => {
-    if (first.current) { first.current = false; return; }
-    setRecent(true);
-    const t = window.setTimeout(() => setRecent(false), ms);
-    return () => window.clearTimeout(t);
-  }, [value, ms]);
-  return recent;
-};
-
 interface PartnerAnswerProps {
   label: string;
   partnerLabel: string;
@@ -100,7 +87,6 @@ const PartnerAnswer: React.FC<PartnerAnswerProps> = ({ label, partnerLabel, part
   const rawAnswer = partnerValue ?? "";
   const hasAnswer = Boolean(rawAnswer.trim());
   const answer = hasAnswer ? (bullets ? bulletize(rawAnswer) : rawAnswer) : "";
-  const typing = useRecentChange(rawAnswer, 3000);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -114,7 +100,7 @@ const PartnerAnswer: React.FC<PartnerAnswerProps> = ({ label, partnerLabel, part
             aria-haspopup="dialog"
           >
             <span className="partner-field-topline">
-              <span className="partner-field-name">{partnerLabel} schreibt{typing ? <span className="partner-typing-dots" aria-label="gerade"><i /><i /><i /></span> : ":"}</span>
+              <span className="partner-field-name">{partnerLabel} schreibt:</span>
               <span className="partner-field-preview">{answer}</span>
             </span>
             <span className="partner-field-read">Lesen <ChevronRight size={14} strokeWidth={1.5} aria-hidden="true" /></span>
@@ -173,9 +159,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   bullets = false,
   partnerLabel,
   partnerValue,
-}) => {
-  const savedNow = useRecentChange(readOnly ? "" : value, 1600);
-  return (
+}) => (
   <div className={`flex flex-col w-full flex-1 ${className}`}>
     <div
       className="inline-flex self-start items-center py-1 pl-3 pr-3 retro-body-copy"
@@ -203,7 +187,6 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         )}
       </div>
     ) : (
-      <div className="relative flex flex-col w-full flex-1">
       <textarea
         value={value}
         autoCapitalize="none"
@@ -230,18 +213,12 @@ export const PostItField: React.FC<PostItFieldProps> = ({
         style={{ borderRadius: "0px", minHeight: minHeight ? `${minHeight}px` : undefined, background: "var(--retro-textarea-bg)" }}
         placeholder={bullets && !placeholder.startsWith(BULLET) ? BULLET + placeholder : placeholder}
       />
-      {/* A quiet confirmation that the text is kept — and, when connected, shared. */}
-      <span className={`post-it-saved screen-only${savedNow ? " is-visible" : ""}`} role="status" aria-live="polite">
-        {savedNow ? (partnerLabel ? `Gespeichert · ${partnerLabel} sieht es` : "Gespeichert") : ""}
-      </span>
-      </div>
     )}
 
     {partnerLabel ? (
       <PartnerAnswer label={label} partnerLabel={partnerLabel} partnerValue={partnerValue} bullets={bullets} />
     ) : null}
   </div>
-  );
-};
+);
 
 export default PostItField;
