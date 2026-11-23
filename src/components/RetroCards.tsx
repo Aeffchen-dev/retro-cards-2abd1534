@@ -10,7 +10,8 @@ import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import StarRating from "@/components/StarRating";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
-import { besideSmiley, HC_FACE, hcSpanPoint, nearestMemoji, partnerLabelSide, shouldShowPartnerMemoji } from "@/components/health-check-position";
+import { besideSmiley, HC_FACE, hcSpanPoint, nearestMemoji, partnerLabelSide } from "@/components/health-check-position";
+import { mergeFeelingPositions, moveFeelingPosition, type FeelingPositions, type SharedFeelingPosition } from './shared-feeling-positions';
 import { Button } from "@/components/ui/button";
 import RevealText from "@/components/RevealText";
 import { ActiveSlideContext } from "@/components/ActiveSlideContext";
@@ -144,7 +145,7 @@ interface ReflectionTexts {
 }
 
 interface MemojisPosition {
-  [personKey: string]: { x: number; y: number; faceIndex?: number; answered?: boolean };
+  [personKey: string]: SharedFeelingPosition;
 }
 
 // Tonal card families — bg + text stay in the same hue family (like the
@@ -450,6 +451,22 @@ const RetroCards: React.FC = () => {
       })),
     ];
   }, [displayName1, displayName2, displayEmoji1, displayEmoji2, setupData.extraPartners]);
+
+  const feelingSources = useMemo(() => partnerSession.others.map(member => ({
+    memberId: member.user_id,
+    positions: ((member.answers as DeckSnapshot)?.positions ?? {}) as FeelingPositions,
+  })), [partnerSession.members, partnerSession.memberId]);
+  useEffect(() => {
+    if (draggingMemoji || !partnerSession.sessionId || !partnerSession.memberId || !partnerSession.partner) return;
+    const sessionId = partnerSession.sessionId;
+    const ownId = partnerSession.memberId;
+    const otherId = partnerSession.partner.user_id;
+    setMemojisPositions(previous => mergeFeelingPositions(previous, feelingSources, sessionId, ownId, otherId));
+  }, [feelingSources, draggingMemoji, partnerSession.sessionId, partnerSession.memberId, partnerSession.partner?.user_id]);
+  const placeFeelingEmoji = useCallback((card: number, key: string, point: SharedFeelingPosition, bounds: { w: number; h: number }) => {
+    const targetId = key === 'p0' ? partnerSession.memberId : key === 'p1' ? partnerSession.partner?.user_id : undefined;
+    setMemojisPositions(previous => moveFeelingPosition(previous, card, key, point, bounds, partnerSession.sessionId, targetId, partnerSession.memberId ?? 'local'));
+  }, [partnerSession.sessionId, partnerSession.memberId, partnerSession.partner?.user_id]);
 
   // A card that is too short for two statements gets one per card instead of a
   // clipped second one; the same split drives screen and print.
@@ -1034,18 +1051,7 @@ const RetroCards: React.FC = () => {
       const newX = Math.max(0, Math.min(containerWidth - 56, draggingMemoji.initialX + deltaX));
       const newY = Math.max(-40, Math.min(containerHeight - 56, draggingMemoji.initialY + deltaY));
 
-      setMemojisPositions((prev) => ({
-        ...prev,
-        [draggingMemoji.cardIndex]: {
-          ...prev[draggingMemoji.cardIndex],
-          [draggingMemoji.person]: {
-            ...prev[draggingMemoji.cardIndex]?.[draggingMemoji.person],
-            x: newX,
-            y: newY,
-            answered: true,
-          },
-        },
-      }));
+      placeFeelingEmoji(draggingMemoji.cardIndex, draggingMemoji.person, { x: newX, y: newY }, { w: containerWidth, h: containerHeight });
     };
 
     const handleGlobalMouseUp = () => {
@@ -1067,18 +1073,7 @@ const RetroCards: React.FC = () => {
       const newX = Math.max(0, Math.min(containerWidth - 56, draggingMemoji.initialX + deltaX));
       const newY = Math.max(-40, Math.min(containerHeight - 56, draggingMemoji.initialY + deltaY));
 
-      setMemojisPositions((prev) => ({
-        ...prev,
-        [draggingMemoji.cardIndex]: {
-          ...prev[draggingMemoji.cardIndex],
-          [draggingMemoji.person]: {
-            ...prev[draggingMemoji.cardIndex]?.[draggingMemoji.person],
-            x: newX,
-            y: newY,
-            answered: true,
-          },
-        },
-      }));
+      placeFeelingEmoji(draggingMemoji.cardIndex, draggingMemoji.person, { x: newX, y: newY }, { w: containerWidth, h: containerHeight });
     };
 
     const handleGlobalTouchEnd = () => {
@@ -1100,7 +1095,7 @@ const RetroCards: React.FC = () => {
       document.removeEventListener("touchmove", handleGlobalTouchMove);
       document.removeEventListener("touchend", handleGlobalTouchEnd);
     };
-  }, [draggingMemoji]);
+  }, [draggingMemoji, placeFeelingEmoji]);
 
   const openCamera = async () => {
     console.log('Camera button clicked');
@@ -1545,32 +1540,25 @@ const RetroCards: React.FC = () => {
                       if (!container) return;
                       const box = container.getBoundingClientRect();
                       const position = besideSmiley(event.currentTarget.getBoundingClientRect(), box);
-                      const renderedPositions = Object.fromEntries(persons.filter((_, n) => !livePerson(n)).map(person => {
+                      const renderedPositions = Object.fromEntries(persons.map(person => {
                         const marker = container.querySelector<HTMLElement>(`.print-memoji-${person.key}`);
                         return [person.key, { x: marker?.offsetLeft ?? 0, y: marker?.offsetTop ?? 0 }];
                       }));
-                      const key = live ? 'p0' : selectedMemoji.current[cardId] ?? nearestMemoji(renderedPositions, position);
+                      const key = selectedMemoji.current[cardId] ?? nearestMemoji(renderedPositions, position);
                       if (!key || !persons.some(person => person.key === key)) return;
                       selectedMemoji.current[cardId] = key;
-                      setMemojisPositions(prev => ({
-                        ...prev,
-                        [cardId]: { ...prev[cardId], [key]: { ...position, faceIndex: i, answered: true } },
-                      }));
+                      placeFeelingEmoji(cardId, key, { ...position, faceIndex: i, answered: true }, { w: box.width, h: box.height });
                     }}
                   >
                     <Face size={HC_FACE} strokeWidth={1.2} color="var(--retro-black)" />
                   </Button>
                 ))}
               </div>
-              {/* Connected: only your own emoji is draggable. Your partner's
-                  answer appears after both of you have placed yours. */}
+              {/* Both partners can place either emoji on the shared feeling cards. */}
               {persons.flatMap((person, i) => {
                 const remote = livePerson(i);
                 if (live && i > 1) return [];
-                const at = remote
-                  ? (live?.positions as Record<number, MemojisPosition> | undefined)?.[cardId]?.p0
-                  : memojisPositions[cardId]?.[person.key];
-                if (remote && !shouldShowPartnerMemoji(memojisPositions[cardId]?.p0, at)) return [];
+                const at = memojisPositions[cardId]?.[person.key];
                 const posX = at?.x ?? defaultX;
                 const posY = at?.y ?? defaultY(i);
                 const faceIndex = at?.faceIndex;
@@ -1578,21 +1566,21 @@ const RetroCards: React.FC = () => {
                 return (
                   <div
                     key={person.key}
-                    className={`absolute w-14 h-14 select-none print-memoji print-memoji-${person.key} ${remote ? 'pointer-events-none' : 'swiper-no-swiping cursor-move touch-none'}`}
+                    className={`absolute w-14 h-14 select-none print-memoji print-memoji-${person.key} swiper-no-swiping cursor-move touch-none`}
                     style={{
                       // min() keeps the emoji inside the scale's own box even when a
                       // default or saved position is wider than the card.
-                      left: `min(${posX}px, calc(100% - 56px))`,
-                      top: anchoredTop ?? `min(${posY}px, calc(100% - 56px))`,
+                      left: `min(${at?.xRatio === undefined ? `${posX}px` : `${at.xRatio * 100}%`}, calc(100% - 56px))`,
+                      top: anchoredTop ?? `min(${at?.yRatio === undefined ? `${posY}px` : `${at.yRatio * 100}%`}, calc(100% - 56px))`,
                       zIndex: 1000,
                       '--print-top-percent': `${(posY / (isMobile ? 400 : 520)) * 100}%`,
                       '--print-anchored-top': anchoredTop,
                       '--print-left-percent': faceIndex === undefined ? `${(posX / (isMobile ? 320 : 480)) * 100}%` : `${posX}px`,
                     } as React.CSSProperties}
-                    aria-label={remote ? `${person.name}: Antwort` : `${person.name}: dein verschiebbares Emoji`}
-                    data-remote={remote || undefined}
-                    onMouseDown={remote ? undefined : (e) => handleMemojiMouseDown(e, cardId, person.key)}
-                    onTouchStart={remote ? undefined : (e) => handleMemojiTouchStart(e, cardId, person.key)}
+                    aria-label={`${person.name}: verschiebbares Emoji`}
+                    data-partner={remote || undefined}
+                    onMouseDown={(e) => handleMemojiMouseDown(e, cardId, person.key)}
+                    onTouchStart={(e) => handleMemojiTouchStart(e, cardId, person.key)}
                   >
                     <div className="w-full h-full flex items-center justify-center rounded-full pointer-events-none text-4xl leading-none">
                       {person.emoji}

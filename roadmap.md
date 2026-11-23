@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Let either connected partner move both feeling-card emojis, including untouched markers, with shared positions. Two real connected guests verified both markers on both cards, selected-marker clicks, reload and desktop-to-phone readback; 21 focused tests passed, build OK. Other scales remain personal.
 - [x] Synchronize all Setup names, emojis, added partners and relationship choice across shared devices; either partner can edit. Three connected guests verified including reload; six new regression tests passed.
 - [x] Keep sharing icon-only, use Emoji auswählen for connected partners, and space additional partners at 24px with scrolling when needed. Copy link and phone overflow checks passed.
 - [x] Use black partner result names, raise the smiley scale and soften grey reference faces; connected phone and desktop views checked with no runtime errors. Physical iPhone testing remains unavailable.
