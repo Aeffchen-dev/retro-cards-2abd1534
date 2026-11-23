@@ -5,7 +5,7 @@ root `AGENTS.md` still holds the deck-wide ones.
 
 - Reuse StatementScale for satisfaction ratings and convert its percentage position to the existing 1–5 answer namespace, so partner sharing and charts retain saved scores.
 - Show one Health Check category per card to fit the shared question typography; render partial radar results as answered vertices only — no connecting line until every category is answered — and never substitute zero for missing answers.
-- Publish Setup through session-scoped, per-field versioned canonical roster edits and project each member into their own first-person view; this lets everyone edit names, emojis and group settings without stale snapshots reverting changes. Other card answers remain personal and read-only for partners. Use shared ActionRow and Sheet controls for sharing.
+- Publish Setup through session-scoped, per-field versioned canonical roster edits and project each member into their own first-person view; this lets everyone edit names, emojis and group settings without stale snapshots reverting changes. Other card answers remain personal and read-only for partners, except the Ideas fields, which merge per field by newest edit stamp (`shared-text-fields`). Use shared ActionRow and Sheet controls for sharing.
 - Archive Health Check results as explicit immutable dated snapshots, separate from live answers; anonymous archives stay on-device without answer expiry and authenticated archives use owner/member-protected storage.
 - The first two feeling cards allow either partner to move both emojis; merge session-scoped member-identified per-marker versions and proportional coordinates so stale replies and different screen sizes cannot overwrite or misplace a move. Other rating scales keep personal answers.
 

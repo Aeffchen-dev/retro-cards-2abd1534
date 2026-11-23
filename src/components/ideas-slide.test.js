@@ -18,7 +18,8 @@ describe("Vorhaben card carries the next-retro sentence and sits before Takeaway
   test("comes directly before the Takeaways card and after Intimacy", () => {
     const deck = src.slice(src.indexOf("const arr: number[]"), src.indexOf("}, [setupData.openRelationship"));
     // Intimacy (7), then Ideas, then Takeaways (8), Archive (9), Questions (10).
-    expect(deck).toContain("arr.push(7, SLIDE_VORHABEN, 8, 9, 10)");
+    expect(deck).toContain("arr.push(7);");
+    expect(deck).toContain("arr.push(SLIDE_VORHABEN, 8, 9, 10)");
     // It is no longer tucked between Feedback and "To talk about".
     expect(deck).not.toContain("SLIDE_REFLECTION, SLIDE_VORHABEN");
     // Nothing was dropped on the way: all ten numbered cards plus the four fixed ones.

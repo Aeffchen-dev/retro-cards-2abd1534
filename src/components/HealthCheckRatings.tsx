@@ -5,10 +5,13 @@ import { usePartnerSession } from '@/hooks/use-partner-session';
 import './health-check.css';
 import HealthCheckHistory from './HealthCheckHistory';
 import ActionRow from './ActionRow';
+import { useState } from 'react';
+import type { HistoryResults } from './health-history-data';
 
 type Props = { pageIndex: number; values: Record<string,string>; onChange: (key: string,value: string) => void; names: string[]; categoryColor: string; categoryAccent: string; partnerName?: string };
 export default function HealthCheckRatings({ pageIndex, values, onChange, names, categoryColor, categoryAccent, partnerName }: Props) {
   const s = usePartnerSession();
+  const [picked, setPicked] = useState<HistoryResults | null>(null);
   const actualPerson = 'p0';
   const own = healthResults(values, actualPerson);
   const remote = healthResults(s.partnerAnswers.notes?.['105'] ?? {}, 'p0');
@@ -19,8 +22,8 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
     const completeOwn = healthResults(values, 'p0').every(v => v !== null);
     return <section className="health-ratings health-results" aria-label="Health Check Auswertung">
       <h2 className="retro-heading">Auswertung</h2>
-      <HealthCheckChart own={own} other={other} names={evaluationNames([ownName??'Ich',otherName??'Partner'], Boolean(s.partner))}/>
-      <HealthCheckHistory complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
+      <HealthCheckChart own={picked ? picked.people[0]?.scores ?? [] : own} other={picked ? picked.people[1]?.scores ?? [] : other} names={evaluationNames([ownName??'Ich',otherName??'Partner'], Boolean(s.partner))}/>
+      <HealthCheckHistory onSelect={setPicked} complete={completeOwn} categoryColor={categoryColor} categoryAccent={categoryAccent} results={{ people: [
         { id: s.memberId ?? 'p0', name: ownName ?? 'Ich', scores: healthResults(values,'p0') },
         { id: s.partner?.user_id ?? 'p1', name: otherName ?? 'Partner', scores: other },
       ] }} />

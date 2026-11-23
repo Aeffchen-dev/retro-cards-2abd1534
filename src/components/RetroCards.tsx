@@ -7,6 +7,8 @@ import { collectRetroAnswers } from "./retro-ai-data";
 import { editSharedSetupData, mergeSharedSetupData, type SharedSetupData } from './shared-setup-data';
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
+import { VORHABEN_QUESTIONS } from "@/components/vorhaben-data";
+import { editSharedText, mergeSharedTexts } from "@/components/shared-text-fields";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
 import StarRating from "@/components/StarRating";
 import { risikoPages, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING } from "@/components/risiko-data";
@@ -48,6 +50,7 @@ const SLIDE_INTRO = 100;
 const SLIDE_SETUP = 101;
 const SLIDE_REFLECTION = 102;
 const SLIDE_REFLECTION_PARTNER = 106;
+const SLIDE_INTIMACY_PARTNER = 107;
 const SLIDE_LOGO = 103;
 const SLIDE_VORHABEN = 104;
 const SLIDE_RISIKO = 105;
@@ -547,6 +550,16 @@ const RetroCards: React.FC = () => {
 
   // Slide ids with edit button: health-personal(1), health-relationship(2), last-4-weeks(3),
   // reflection(102), dates(5), intimacy(7)
+  // Ideas is one shared list: the newest edit of each field wins on every device.
+  const remoteIdeas = live?.notes?.[SLIDE_VORHABEN];
+  useEffect(() => {
+    if (!remoteIdeas) return;
+    setEditModeNotes(prev => {
+      const own = prev[SLIDE_VORHABEN] || {};
+      const merged = mergeSharedTexts(own, remoteIdeas, VORHABEN_QUESTIONS.map(([key]) => key));
+      return merged === own ? prev : { ...prev, [SLIDE_VORHABEN]: merged };
+    });
+  }, [remoteIdeas]);
   const slidesWithEditButton = [1, 2, 3, 7];
   // Every Risikofaktoren page gets a Notizen CTA like the Health Check slides
   const hasEditButton = (slideId: number) => slidesWithEditButton.includes(slideId);
@@ -559,7 +572,9 @@ const RetroCards: React.FC = () => {
     arr.push(4);
     if (openRelationship) arr.push(5);
     // The "Ideas" card (internally still SLIDE_VORHABEN) sits directly before Takeaways.
-    arr.push(7, SLIDE_VORHABEN, 8, 9, 10);
+    arr.push(7);
+    if (live) arr.push(SLIDE_INTIMACY_PARTNER);
+    arr.push(SLIDE_VORHABEN, 8, 9, 10);
     return arr;
   }, [openRelationship, riskSlideIds, !!live]);
 
@@ -583,7 +598,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 4) return "#F39FFF";
       if (slideId === 5) return BRAND.neonGreen;
       // Intimacy: orange
-      if (slideId === 7) return BRAND.maroon;
+      if (slideId === 7 || slideId === SLIDE_INTIMACY_PARTNER) return BRAND.maroon;
       // Archive: same colors as the Setup slide
       if (slideId === 9) return BRAND.lightBlue;
       // Ideas + Questions: the same random combo the Questions card wears
@@ -603,7 +618,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) return BRAND.babyBlue; // blue labels
-      if (slideId === 7) return BRAND.pink;            // maroon pill → pink
+      if (slideId === 7 || slideId === SLIDE_INTIMACY_PARTNER) return BRAND.pink;            // maroon pill → pink
       if (slideId === 8) return BRAND.turquoise;       // green labels
       if (slideId === 9) return BRAND.yellow;
       if (slideId === 10) return BRAND.yellow;
@@ -786,6 +801,7 @@ const RetroCards: React.FC = () => {
       [SLIDE_REFLECTION_PARTNER]: "Feedback des Partners",
       5: "Wie stehts mit Dates?",
       7: "Körperliche Intimität",
+      [SLIDE_INTIMACY_PARTNER]: "Körperliche Intimität",
     };
     if (isRisikoSlide(slideId)) return "Health Check";
     return questions[slideId] || "";
@@ -1738,8 +1754,9 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   accent={labelColorOf(5)}
                   label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                  placeholder="Deine Antwort"
-                  value={editModeNotes[5]?.[person.key] || ""}
+                  placeholder={livePerson(idx) ? "" : "Deine Antwort"}
+                  readOnly={livePerson(idx)}
+                  value={livePerson(idx) ? live?.notes?.[5]?.[partnerKey(person.key)] || "" : editModeNotes[5]?.[person.key] || ""}
                   onChange={(v) =>
                     setEditModeNotes(prev => ({
                       ...prev,
@@ -2064,11 +2081,9 @@ const RetroCards: React.FC = () => {
             pillColor={pillColorOf(SLIDE_VORHABEN)}
             labelColor="#FF47D1"
             values={editModeNotes[SLIDE_VORHABEN] || {}}
-            partnerLabel={live ? liveName : undefined}
-            partnerValues={live?.notes?.[SLIDE_VORHABEN]}
             onChange={(key, value) => setEditModeNotes(prev => ({
               ...prev,
-              [SLIDE_VORHABEN]: { ...prev[SLIDE_VORHABEN], [key]: value },
+              [SLIDE_VORHABEN]: editSharedText(prev[SLIDE_VORHABEN] || {}, key, value),
             }))}
           />
         );
@@ -2131,7 +2146,7 @@ const RetroCards: React.FC = () => {
                   readOnly
                   accent={labelColorOf(SLIDE_REFLECTION)}
                   label={label}
-                  placeholder={`${liveName || "Partner"} schreibt noch …`}
+                  placeholder=""
                   value={live?.reflection?.[key] || ""}
                 />
               ))}
@@ -2158,8 +2173,6 @@ const RetroCards: React.FC = () => {
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.hot || ""}
-                partnerLabel={live ? liveName : undefined}
-                partnerValue={live?.notes?.[7]?.hot}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
                     ...prev,
@@ -2173,8 +2186,6 @@ const RetroCards: React.FC = () => {
                 placeholder="Deine Antwort"
                 minHeight={72}
                 value={editModeNotes[7]?.idea || ""}
-                partnerLabel={live ? liveName : undefined}
-                partnerValue={live?.notes?.[7]?.idea}
                 onChange={(v) =>
                   setEditModeNotes(prev => ({
                     ...prev,
@@ -2187,6 +2198,24 @@ const RetroCards: React.FC = () => {
           </div>
         );
       }
+
+      case SLIDE_INTIMACY_PARTNER:
+        return (
+          <div className="flex flex-col items-start gap-14 w-full h-full justify-center">
+            <div className="flex flex-col items-start gap-3 w-full flex-1 min-h-0">
+              <div className="retro-pill flex justify-center items-center gap-2 rounded-full border border-retro-white">
+                <span className="retro-label">Intimacy</span>
+              </div>
+              <h2 className="retro-heading w-full"><RevealText text={`Intimität von ${liveName || "Partner"}`} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
+              <p className="intimacy-question w-full">Wie zufrieden ist {liveName || "Partner"} mit eurem Sex?</p>
+              <div className="pointer-events-none" aria-readonly="true">
+                <StarRating value={live?.notes?.[7]?.scale} onChange={() => {}} />
+              </div>
+              <PostItField readOnly accent={labelColorOf(7)} label="Das war hot" placeholder="" minHeight={72} value={live?.notes?.[7]?.hot || ""} />
+              <PostItField readOnly accent={labelColorOf(7)} label="Spicy thought" placeholder="" minHeight={72} value={live?.notes?.[7]?.idea || ""} />
+            </div>
+          </div>
+        );
 
       case 8:
         return (
@@ -2418,6 +2447,7 @@ const RetroCards: React.FC = () => {
                 4: { pill: "#F39FFF", pillDot: "#FF4A0C" },
                 5: { pill: BRAND.neonGreen, pillDot: BRAND.darkBlue },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
+                [SLIDE_INTIMACY_PARTNER]: { pill: BRAND.maroon, pillDot: BRAND.pink },
                 8: { pill: BRAND.turquoise, pillDot: BRAND.darkGreen },
                 [SLIDE_REFLECTION]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
                 [SLIDE_REFLECTION_PARTNER]: { pill: BRAND.spiralBlue, pillDot: BRAND.babyBlue },
