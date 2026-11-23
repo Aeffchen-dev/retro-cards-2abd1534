@@ -39,7 +39,12 @@
 .risiko-comparison-marker > svg * { stroke: var(--retro-black, #201C1D) !important; }
 .risiko-comparison-marker > svg circle { fill: none; }
 .risiko-comparison-name { position: absolute; left: 50%; top: calc(100% + 1px); transform: translateX(-50%); max-width: 96px; overflow: hidden; text-overflow: ellipsis; font-size: 12px; line-height: 1.2; color: var(--retro-black); white-space: nowrap; background: none !important; box-shadow: none; padding: 0; }
-.risiko-face-header .risiko-face { opacity: var(--health-reference-opacity); }
+/* Soften only the grey drawing. The white inside each face stays fully opaque,
+   so the rule and column guides stop cleanly at the face instead of showing through. */
+.risiko-face-header .risiko-face { opacity: 1; }
+.risiko-face-header .risiko-face > svg:first-child { stroke-opacity: var(--health-reference-opacity); }
+.risiko-face-header .risiko-face > svg:first-child > circle:first-child { fill-opacity: 1; }
+.risiko-face-header .risiko-face > svg:last-child { fill-opacity: var(--health-reference-opacity); }
 .health-smiley-control .risiko-scale-captions { display: none; }
 .health-chart svg { width: 100%; height: 100%; }
 .health-chart { display: flex; align-items: center; }

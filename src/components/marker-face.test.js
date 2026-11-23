@@ -13,7 +13,8 @@ const block = (start) => {
 describe("the dot's smiley is painted on the card in its own colour", () => {
   test("the face keeps the smileys' drawing but wears the rule's ink, not grey", () => {
     const morph = slide.slice(slide.indexOf("const MorphFace"), slide.indexOf("const ExpressionPoint"));
-    expect(morph).toContain("stroke={INK}");
+    expect(morph).toContain("color = INK");
+    expect(morph).toContain("stroke={color}");
     expect(morph).not.toContain("FACE_GREY");
     expect(morph).toContain('<circle cx="12" cy="12" r="10" />');
     // The untouched dot's hint rides in the same ink.

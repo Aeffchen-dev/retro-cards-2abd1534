@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] Smiley-Regler: graue Smileys deckend weiß füllen; während des Ziehens frei bewegen und beim Loslassen auf der nächsten der fünf Spalten einrasten. Health-Check-Antworten bleiben 1–5.
+- [x] Smiley-Regler: graue Smileys deckend weiß gefüllt, Kontur weiterhin weich; während des Ziehens frei und beim Loslassen auf der nächsten der fünf Spalten eingerastet. Telefon-Vorschau: 39 während des Ziehens → 50 nach dem Loslassen, Health Check 3 gespeichert; 105 relevante Tests und Typecheck grün.
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
 - [ ] Last-4-weeks pink: waiting for which pink the user means.
 - [x] Questions card (the deck's last card) keeps a white fill at every deck position; its pink fill came from the position-based background list, so a joining partner could drop it onto the pink entry. Two-device check measured white on both devices; 3 new tests pass, build OK.
@@ -52,7 +52,7 @@
 - [x] Smileys, one drawing: every face in the deck (scale smileys, Health Check faces, printed average-mood face, answer dot) is built from the scale's own anchor mouths, so the **mouth now draws one pixel on all of them** and the **eyes are filled dots a step bigger** (0.8 → 1 grid unit, 3.67px at the 44px face) while each outline keeps its own weight (2.4px on the scale, 2.2px in Health Check).
 - [x] Scale pens: one shared 2.4px pen for the rule, the five grey smileys and the answer dot's own face (the 20% step between scale and answer is retired), and every vertical line — the column guides, the dividers between columns and the work-split's boundary — is a single pixel.
 - [x] Info row: the ℹ glyph is 12px and rides the sentence's first line; the sentence starts at exactly the same x as "Notizen öffnen"; 8px hairline gaps; the mark stands in an unfilled 32px column at the row's edge.
-- [x] Grey scale smileys: outline only, no fill, no plate; the guides keep their grey.
+- [x] Grey scale smileys: opaque white fill inside the softened grey outline, no surrounding halo; the guides keep their grey. Superseded by the latest request.
 - [x] Big question text back to the display face's regular weight: `#root .question-font` (and the statement that shares its rule) paints at 400, one step below the 500 it wore; the family is a variable 200–700 face, so the step is visible. 177 checks pass.
 - [x] Notes button: grey field with a grey ring, black pencil outside edit mode (pink X and pink pencil kept where they belong).
 - [x] Answer dot: subtle 2px white outline; the circle is drawn at rest too, so the resting marker and the dragged one are the same object; the arrow hint inside paints at 1px and stays the horizontal left-right arrow.

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
-import { scaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
+import { scaleValue, snapScaleValue, scaleExpression, scaleFaceBlend, scaleFaceGeometry, markerInset, scaleEndInset, columnBands, columnEdges, captionLines, workloadShares, adjustWorkloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, RISIKO_STATEMENTS, RISIKO_PER_PAGE, RISIKO_ALLOCATION_HEADING, RISIKO_ALLOCATION_EXAMPLES, allocationExamplesSentence, risikoPages, SCALE_CAPTIONS, softHyphenate, RISIKO_MOOD_KEYS, averageMood, moodFaceIndex, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO } from "./risiko-data";
 
 describe("workload split", () => {
   test("represents an even default as adjoining widths filling 100%", () => {
@@ -107,9 +107,25 @@ describe("Risikofaktoren scale", () => {
     expect(markerInset(0, 11.5)).toBe(11.5);
     expect(markerInset(100, 11.5)).toBe(-11.5);
     expect(markerInset(50, 11.5)).toBe(0);
-    // in between it stops anywhere: nothing snaps to a field
+    // in between it follows the drag freely until release snaps to a field
     expect(markerInset(37, 11.5)).toBeCloseTo(2.99, 5);
     expect(markerInset(62.5, 11.5)).toBeCloseTo(-2.875, 5);
+  });
+  test("release snaps to the nearest of the five smiley columns", () => {
+    expect(snapScaleValue(0)).toBe(0);
+    expect(snapScaleValue(12)).toBe(0);
+    expect(snapScaleValue(13)).toBe(25);
+    expect(snapScaleValue(37)).toBe(25);
+    expect(snapScaleValue(38)).toBe(50);
+    expect(snapScaleValue(62)).toBe(50);
+    expect(snapScaleValue(63)).toBe(75);
+    expect(snapScaleValue(87)).toBe(75);
+    expect(snapScaleValue(88)).toBe(100);
+    expect(snapScaleValue(100)).toBe(100);
+  });
+  test("release snapping clamps values outside the scale", () => {
+    expect(snapScaleValue(-20)).toBe(0);
+    expect(snapScaleValue(120)).toBe(100);
   });
   test("workload shares keep the exact dragged value", () => {
     expect(scaleValue("73")).toBe(73);
@@ -502,6 +518,9 @@ describe("smallest text size", () => {
     expect(below).toEqual([
       "calc(min(calc((100cqw / 5 - 7.5px) / 5.66), 18px) - 2px)",
       "11px",
+      "11px",
+      "11px",
+      "11px",
     ]);
     expect(css).toMatch(/\.risiko-scale-caption \{[^}]*font-size: 11px;[^}]*\}/);
   });
@@ -684,16 +703,18 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
       .toContain("const MOUTH_W = MOUTH_PEN_PX * (FACE_VIEW / MARKER_SIZE);");
     expect(src, "the dot's mouth is not drawn with that pen").toContain("<path d={path} strokeWidth={MOUTH_W} />");
     expect(src, "the dot's outline no longer wears the face's pen")
-      .toContain("stroke={INK} strokeWidth={MARKER_PEN}");
+      .toContain("stroke={color} strokeWidth={MARKER_PEN}");
   });
-  test("the scale stays free of snapping", () => {
+  test("the scale moves freely and snaps only when released", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    expect(src, "the statement slider snapped to the face anchors again")
+    expect(src, "the statement slider no longer has continuous pointer input")
       .toMatch(/min=\{0\} max=\{100\} step=\{1\}/);
-    expect(src, "the field's press no longer rounds to whole values")
-      .toMatch(/onChange\(String\(Math\.round\(v\)\)\)/);
-    expect(src, "a snap constant is still on the statement scale")
-      .not.toMatch(/const SNAP = /);
+    expect(src, "the free pointer position is rounded for storage")
+      .toMatch(/onChange\(String\(Math\.round\(free\)\)\)/);
+    expect(src, "release does not snap to the nearest smiley")
+      .toMatch(/const snapped = snapScaleValue\(draftRef\.current \?\? shownValue\)/);
+    expect(src, "the drawn marker no longer uses the free draft")
+      .toMatch(/const shownValue = draftValue \?\? scaleValue\(value\)/);
   });
   test("the answer dot rides on top of the smiley row", () => {
     const src = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
@@ -701,19 +722,15 @@ describe("the fixed sentence of Beziehungsarbeit examples on the work-split card
     expect(zs.length, "the drawn markers are gone").toBeGreaterThanOrEqual(2);
     expect(zs.every((z) => z > 30), "a marker still hides under the smiley row's z-30").toBe(true);
   });
-  test("the grey smileys draw as an outline with no fill", () => {
-    // user: "grey full = grey outline no fill" — the scale's faces carry no plate
-    // of their own any more; only the answer dot keeps a white one (covered by
-    // marker-face.test.js), so the answer is the one face that reads clear of the
-    // rule and the column guides running behind the row.
+  test("the grey smileys have an opaque white fill without a halo", () => {
     const css = readFileSync(new URL("../index.css", import.meta.url), "utf8");
-    const face = css.match(/\.risiko-face \{[^}]*\}/g)?.find((r) => /border-radius/.test(r)) ?? "";
-    expect(face, "the smileys' own rule is gone").toBeTruthy();
-    expect(face, "a grey smiley lost its plate over the rule").toMatch(/background/);
-    const tsx = readFileSync(new URL("./RisikoSlide.tsx", import.meta.url), "utf8");
-    const comp = tsx.match(/const Face = [\s\S]*?\n\);/)?.[0] ?? "";
-    expect(comp, "the face paints a fill circle of its own inside the outline")
-      .not.toMatch(/<circle cx="12" cy="12" r="10"/);
+    expect(css).toMatch(/\.risiko-face > svg:first-child > circle:first-child \{ fill: var\(--risiko-face-fill\); \}/);
+    expect(css).toContain("--risiko-face-fill: #FFFFFF;");
+    const healthCss = readFileSync(new URL("./health-check.css", import.meta.url), "utf8");
+    expect(healthCss, "the faded outline also fades the white fill")
+      .toMatch(/\.risiko-face-header \.risiko-face > svg:first-child \{ stroke-opacity: var\(--health-reference-opacity\); \}/);
+    expect(healthCss, "the white fill is not opaque")
+      .toMatch(/\.risiko-face-header \.risiko-face > svg:first-child > circle:first-child \{ fill-opacity: 1; \}/);
   });
   test("the info row's ℹ mark draws with a light 1.5px pen", () => {
     const src = readFileSync(new URL("./ActionRow.tsx", import.meta.url), "utf8");

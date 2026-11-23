@@ -68,6 +68,11 @@ export const scaleValue = (stored?: string): number => {
   return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 50;
 };
 
+/** While dragging the marker can stand anywhere. On release it settles on the
+ * nearest of the five smiley columns: 0, 25, 50, 75 or 100. */
+export const snapScaleValue = (value: number): number =>
+  Math.round(scaleValue(String(value)) / 25) * 25;
+
 /** How far the circle's centre stops short of each scale end. The scale spans its
  *  whole container, so the inset is the circle's own radius: at 0 and 100 its edge
  *  lands exactly on the container's edges — fully visible, never cut off, never
@@ -76,8 +81,8 @@ export const scaleEndInset = (markerSize: number): number => markerSize / 2;
 
 /** The circle's centre at a scale value, measured from the end of the travel. The
  *  smileys are placed with the same maths, so the circle
- *  always sits exactly under the face it points at; the value is continuous, so it
- *  can stop anywhere in between. */
+ * always sits exactly under the face it points at; while dragging, the value is
+ *  continuous and can stand anywhere in between until release snaps it. */
 export const markerInset = (value: number, endInset: number): number =>
   endInset - (scaleValue(String(value)) * (2 * endInset)) / 100;
 

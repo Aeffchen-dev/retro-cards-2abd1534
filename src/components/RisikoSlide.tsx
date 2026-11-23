@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import ActionRow from "@/components/ActionRow";
 import { centreShift } from "./risiko-centring";
-import { scaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, SCALE_MOUTHS, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
+import { scaleValue, snapScaleValue, scaleExpression, scaleFaceGeometry, columnBands, columnEdges, scaleEndInset, workloadShares, workloadSegments, adjustWorkloadBoundary, workloadBand, SCALE_MOUTHS, mouthPath, RISIKO_ALLOCATION_HEADING, allocationExamplesSentence, SCALE_CAPTIONS, softHyphenate, captionLines, RISIKO_STATEMENTS, RISIKO_CHAPTER_OPEN, RISIKO_CHAPTER_INFO, RISIKO_STATEMENT_INFO, averageMood, moodFaceIndex, type RisikoPage } from "./risiko-data";
 
 // One face, drawn once: the round outline, two filled dot eyes and the mouth
 // traced from the very anchor curve the dragged dot morphs through. The five grey
@@ -261,8 +261,8 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
   );
 };
 
-const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue, comparison }: {
-  value: number; readOnly: boolean; onChange: (v: number) => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
+const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValue, comparison }: {
+  value: number; readOnly: boolean; onChange: (v: number) => void; onRelease: () => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
   comparison?: { value: string; label: string; color: string; name: string };
 }) => {
   const [dragging, setDragging] = useState(false);
@@ -289,11 +289,11 @@ const Track = ({ value, readOnly, onChange, ariaLabel, thumb, hasValue, comparis
           style={{ left: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, right: `calc(${TRAVEL_INSET}% - ${END_INSET}px)`, top: 0, bottom: 0 }}
           value={[value]} min={0} max={100} step={1}
           onPointerDown={() => { setDragging(true); setTouched(true); }}
-          onPointerUp={() => setDragging(false)}
-          onPointerCancel={() => setDragging(false)}
-          onLostPointerCapture={() => setDragging(false)}
-          onBlur={() => setDragging(false)}
-          onKeyUp={() => setDragging(false)}
+          onPointerUp={() => { setDragging(false); onRelease(); }}
+          onPointerCancel={() => { setDragging(false); onRelease(); }}
+          onLostPointerCapture={() => { setDragging(false); onRelease(); }}
+          onBlur={() => { setDragging(false); onRelease(); }}
+          onKeyUp={() => { setDragging(false); onRelease(); }}
           onValueChange={([v]) => { if (v !== undefined) onChange(v); }}
           onKeyDown={(e) => {
             e.stopPropagation();
@@ -356,6 +356,10 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
   // rule's own row. The value is read with the slider's own maths, so both ways of
   // grabbing land the circle exactly under the pointer.
   const fieldDrag = useRef<HTMLDivElement | null>(null);
+  const interacting = useRef(false);
+  const draftRef = useRef<number | null>(null);
+  const [draftValue, setDraftValue] = useState<number | null>(null);
+  const shownValue = draftValue ?? scaleValue(value);
   const fieldValueAt = (el: HTMLElement, clientX: number) => {
     const box = el.getBoundingClientRect();
     // the same equal fifths the smileys, the drawn columns and the circle stand on
@@ -363,6 +367,25 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     const travel = (box.width * TRAVEL) / 100;
     if (travel <= 0) return null;
     return Math.min(100, Math.max(0, ((clientX - box.left - from) / travel) * 100));
+  };
+  // Keep the drawn marker at the exact pointer position even where a consumer
+  // stores a coarser answer (Health Check stores 1–5). The parent still receives
+  // the live preview, but cannot quantise the marker while it is being dragged.
+  const preview = (next: number) => {
+    const free = scaleValue(String(next));
+    interacting.current = true;
+    draftRef.current = free;
+    setDraftValue(free);
+    onChange(String(Math.round(free)));
+  };
+  const settle = () => {
+    fieldDrag.current = null;
+    if (!interacting.current) return;
+    interacting.current = false;
+    const snapped = snapScaleValue(draftRef.current ?? shownValue);
+    onChange(String(snapped));
+    draftRef.current = null;
+    setDraftValue(null);
   };
   const grabField = (e: React.PointerEvent<HTMLDivElement>) => {
     // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
@@ -373,14 +396,14 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
     e.currentTarget.setPointerCapture(e.pointerId);
-    onChange(String(Math.round(v)));
+    preview(v);
   };
   const dragField = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!fieldDrag.current) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
-    if (v !== null) onChange(String(Math.round(v)));
+    if (v !== null) preview(v);
   };
-  const releaseField = () => { fieldDrag.current = null; };
+  const releaseField = () => { settle(); };
 
   return (
     <div className="risiko-block relative flex flex-col w-full grow shrink-0">
@@ -417,15 +440,15 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
                   line center of smiley position"): the columns are drawn only by the
                   dividers between neighbouring ones, painted above. */}
               <FaceLayer />
-              <Track value={scaleValue(value)} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
-                comparison={comparison} onChange={(v) => onChange(String(v))} />
+              <Track value={shownValue} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
+                comparison={comparison} onChange={preview} onRelease={settle} />
             </div>
             {/* Every column names itself: one label per field, centred on that field,
                 so the circle always sits above the word it points at. The row takes
                 exactly the height the names need and stands under the field. */}
             <div className="risiko-scale-captions pointer-events-none" lang="de">
               {captions.map((caption, i) => (
-                <span key={i} className="risiko-scale-caption" data-active={i === Math.min(FACES.length - 1, Math.floor((TRAVEL_INSET + scaleValue(value) * TRAVEL / 100) / COLUMN))}>{captionLines(caption).map((line, j, all) => (
+                <span key={i} className="risiko-scale-caption" data-active={i === Math.min(FACES.length - 1, Math.floor((TRAVEL_INSET + shownValue * TRAVEL / 100) / COLUMN))}>{captionLines(caption).map((line, j, all) => (
                   <span key={j} className="risiko-caption-line"><span className="risiko-caption-plate">{softHyphenate(line)}</span>{j < all.length - 1 ? " " : ""}</span>
                 ))}</span>
               ))}
