@@ -163,29 +163,7 @@ const Face = ({ Icon, color = FACE_GREY }: { Icon: (typeof FACES)[number]; color
 );
 
 
-const FaceLayer = ({ pick }: { pick?: { selected: number | null; labels: readonly string[]; ariaLabel: string; onPick: (i: number) => void } } = {}) => pick ? (
-  // Tap-to-answer: the five smileys are a radio group; the chosen one wears colour and grows.
-  <div className="risiko-face-header risiko-face-pick absolute left-0 right-0 flex items-center justify-between box-border swiper-no-swiping" role="radiogroup" aria-label={pick.ariaLabel}
-    onKeyDown={(e) => {
-      const d = ["ArrowRight", "ArrowUp"].includes(e.key) ? 1 : ["ArrowLeft", "ArrowDown"].includes(e.key) ? -1 : 0;
-      if (!d && e.key !== "Home" && e.key !== "End") return;
-      e.preventDefault(); e.stopPropagation();
-      const next = e.key === "Home" ? 0 : e.key === "End" ? FACES.length - 1 : Math.min(FACES.length - 1, Math.max(0, (pick.selected ?? 2) + d));
-      pick.onPick(next);
-      (e.currentTarget.children[next] as HTMLElement | undefined)?.focus();
-    }}>
-    {FACES.map((F, i) => {
-      const on = pick.selected === i;
-      return <button key={i} type="button" role="radio" aria-checked={on} tabIndex={on || (pick.selected === null && i === 2) ? 0 : -1}
-        aria-label={pick.labels[i] ?? `${i + 1} von 5`}
-        className={`risiko-face-button absolute top-1/2 flex${on ? " is-selected" : ""}`} style={{ left: faceX(i) }}
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={() => { pick.onPick(i); try { navigator.vibrate?.(8); } catch { /* unsupported */ } }}>
-        <Face Icon={F} color={on ? "var(--risiko-choice, #FF47D1)" : undefined} />
-      </button>;
-    })}
-  </div>
-) : (
+const FaceLayer = () => (
   <div className="risiko-face-header absolute left-0 right-0 pointer-events-none flex items-center justify-between box-border" aria-hidden="true">
     {FACES.map((F, i) => <span key={i} className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 flex" style={{ left: faceX(i) }}><Face Icon={F} /></span>)}
   </div>
@@ -283,8 +261,8 @@ const ExpressionPoint = ({ value, active, shown }: { value: number; active: bool
   );
 };
 
-const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValue, comparison, valueText, onStep, hideMarker }: {
-  valueText?: string; onStep?: (dir: number | "start" | "end") => void; hideMarker?: boolean;
+const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValue, comparison, valueText, onStep }: {
+  valueText?: string; onStep?: (dir: number | "start" | "end") => void;
   value: number; readOnly: boolean; onChange: (v: number) => void; onRelease: () => void; ariaLabel: string; thumb?: React.ReactNode; hasValue?: boolean;
   comparison?: { value: string; label: string; color: string; name: string };
 }) => {
@@ -301,7 +279,7 @@ const Track = ({ value, readOnly, onChange, onRelease, ariaLabel, thumb, hasValu
         draws in the card's own ink (user: "slider range black"), while the
         vertical column guides keep the lighter grey behind it. */}
     <div className="risiko-rule absolute top-1/2 -translate-y-1/2" style={{ background: "var(--retro-black)", left: 0, right: 0, height: RULE_W, borderRadius: RULE_W / 2 }} />
-    {hideMarker ? null : readOnly ? (
+    {readOnly ? (
     <div className="risiko-marker absolute top-1/2 -translate-x-1/2 -translate-y-1/2 z-40" style={{ left: markerLeft(value) }}>
         {marker}
       </div>
@@ -421,7 +399,7 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
     // Only the dot itself stays with the slider, so its own drag and keyboard keep working.
     // Everywhere else in the field — the rule's outer ends included, which the slider's own
     // track does not reach — a press places the dot, so the whole line is a tap target.
-    if (readOnly || !readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
+    if (readOnly || (e.target as HTMLElement).closest(".risiko-thumb")) return;
     const v = fieldValueAt(e.currentTarget, e.clientX);
     if (v === null) return;
     fieldDrag.current = e.currentTarget;
@@ -475,13 +453,8 @@ export const StatementScale = ({ value, onChange, ariaLabel, statement, below, c
               {/* No line runs down a smiley's own centre any more (user: "remove the
                   line center of smiley position"): the columns are drawn only by the
                   dividers between neighbouring ones, painted above. */}
-              <FaceLayer pick={readOnly ? undefined : {
-                selected: value !== undefined ? activeColumn : null,
-                labels: captions.length ? captions : SCALE_CAPTIONS,
-                ariaLabel,
-                onPick: (i) => onChange(String(i * 25)),
-              }} />
-              <Track hideMarker={!readOnly} value={shownValue} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
+              <FaceLayer />
+              <Track value={shownValue} readOnly={readOnly} ariaLabel={ariaLabel} hasValue={value !== undefined}
                 comparison={comparison} onChange={preview} onRelease={settle}
                 valueText={answered ? (captions.length ? captions : SCALE_CAPTIONS)[activeColumn] : `Noch nicht beantwortet`} onStep={step} />
             </div>

@@ -2354,11 +2354,3 @@ textarea.bg-retro-post-it:focus,
 @keyframes partner-typing { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .partner-typing-dots i { animation: none; } }
 @media print { .post-it-saved { display: none !important; } }
-
-/* Tap-to-answer smileys (no slider): each face is a 44px button; the chosen one
-   grows and takes colour, the others stay grey. */
-.risiko-face-pick .risiko-face-button { transform: translate(-50%, -50%); padding: 0; border: 0; background: transparent; cursor: pointer; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; border-radius: 9999px; transition: transform 150ms ease-out; -webkit-tap-highlight-color: transparent; }
-.risiko-face-pick .risiko-face-button.is-selected { transform: translate(-50%, -50%) scale(1.25); z-index: 2; }
-.risiko-face-pick .risiko-face-button:active { transform: translate(-50%, -50%) scale(0.92); }
-.risiko-face-pick .risiko-face-button:focus-visible { outline: 1.5px solid currentColor; outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .risiko-face-pick .risiko-face-button { transition: none; } }
