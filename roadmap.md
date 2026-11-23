@@ -3,6 +3,7 @@
 ## Current request
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
 - [ ] Last-4-weeks pink: waiting for which pink the user means.
+- [x] Questions card (the deck's last card) keeps a white fill at every deck position; its pink fill came from the position-based background list, so a joining partner could drop it onto the pink entry. Two-device check measured white on both devices; 3 new tests pass, build OK.
 - [x] Let either connected partner move both feeling-card emojis, including untouched markers, with shared positions. Two real connected guests verified both markers on both cards, selected-marker clicks, reload and desktop-to-phone readback; 21 focused tests passed, build OK. Other scales remain personal.
 - [x] Synchronize all Setup names, emojis, added partners and relationship choice across shared devices; either partner can edit. Three connected guests verified including reload; six new regression tests passed.
 - [x] Keep sharing icon-only, use Emoji auswählen for connected partners, and space additional partners at 24px with scrolling when needed. Copy link and phone overflow checks passed.
