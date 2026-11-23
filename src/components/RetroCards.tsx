@@ -2466,7 +2466,7 @@ const RetroCards: React.FC = () => {
                 },
               };
               const ov = isRisikoSlide(slideId) ? overrides[SLIDE_RISIKO] : overrides[slideId];
-              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || isRisikoSlide(slideId) ? { bg: BRAND.white } : {}) } : baseTheme;
+              const theme = ov ? { ...baseTheme, accent: ov.pill, ...ov, ...(slideId === SLIDE_VORHABEN || isRisikoSlide(slideId) || slideId === 10 ? { bg: BRAND.white } : {}) } : baseTheme;
               // Convert theme.text hex to rgb triplet for --retro-white-rgb
               const hex = theme.text.replace('#', '');
               const r = parseInt(hex.slice(0, 2), 16);
@@ -2479,7 +2479,7 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER || slideId === 10) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
               <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden" style={{ '--retro-action-tile': theme.pillDot, '--retro-action-icon': theme.pill } as React.CSSProperties}>
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
