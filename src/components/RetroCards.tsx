@@ -226,6 +226,11 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 // "The last 4 weeks" link items — one brand hue per row (Stack colour system)
 const ROSA_SHADES = ["#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF"];
 
+// The pink the stage behind "The last 4 weeks" wears while that card is open —
+// the card's own category pink (user: "last 4 weeks slide bg not pink ... make
+// pink like category pink").
+const STAGE_PINK_LAST_WEEKS = "#FF47D1";
+
 
 
 // Card backgrounds stay neutral (brand background colors); the accent/pill of
@@ -2348,6 +2353,10 @@ const RetroCards: React.FC = () => {
     }
   };
 
+  // The stage behind the card: the deck's dark backdrop, except on the card
+  // whose approved pink carries the whole slide.
+  const stageBg = slides[currentCard] === 3 ? STAGE_PINK_LAST_WEEKS : "#201C1D";
+
   return (
     <ActiveSlideContext.Provider value={currentCard}>
     <div
@@ -2369,12 +2378,13 @@ const RetroCards: React.FC = () => {
         aria-hidden="true"
         className="pointer-events-none select-none absolute inset-0 z-0 screen-only overflow-hidden"
         style={{
-          backgroundColor: "#201C1D",
+          backgroundColor: stageBg,
         }}
       >
         <BgVector
           className="absolute inset-0 w-full h-full bg-graphic-animated"
           style={{ opacity: 1 }}
+          background={stageBg}
         />
       </div>
 
