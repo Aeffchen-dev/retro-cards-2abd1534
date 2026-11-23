@@ -2266,7 +2266,7 @@ textarea.bg-retro-post-it:focus,
 .setup-fields.has-extra-partners { justify-content: flex-start; gap: 24px; overflow-y: auto; overscroll-behavior: contain; padding-bottom: 2px; }
 .setup-fields.has-extra-partners > div { flex-shrink: 0; }
 #root .partner-field-name { color: var(--retro-black); }
-.retro-eval { display: grid; gap: 12px; }
+.retro-eval { display: grid; gap: 12px; color: var(--retro-black); }
 .retro-eval-head { display: flex; gap: 24px; }
 .retro-eval-head > div { display: flex; flex-direction: column; }
 .retro-eval-big { font-size: 32px; line-height: 1; color: var(--retro-black); }

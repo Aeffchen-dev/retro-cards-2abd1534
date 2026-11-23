@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] Auswertung ohne zusätzliches Popup direkt auf der Takeaways-Karte verbessern; alle eigenen und geteilten Texte/Skalen erfassen und als „funktioniert gut“, „braucht Aufmerksamkeit“ und „Vorhaben“ einordnen.
+- [x] Auswertung ohne Popup direkt auf der Takeaways-Karte: alle eigenen/geteilten Texte und Skalen, gemeinsame Ideas nur einmal, Bereiche „Was gut funktioniert“, „Was Aufmerksamkeit braucht“, „Eure Vorhaben“. Zwei echte Gäste mit unterschiedlichen Antworten erfolgreich verglichen; KI 200, Ideas übernommen, kein Dialog, kein horizontaler Überlauf, 11 Tests und Typecheck grün.
 - [x] „Letzte 4 Wochen“ und alle zugehörigen Notizseiten fest auf den vorhandenen Rosa-Ton #F39FFF gesetzt; orangefarbene Kategorie-Pille unverändert. Telefon-Vorschau bestätigt identischen Karten- und Notizhintergrund; 5 Farbtests und Typecheck grün.
 - [x] Verlauf: eckige CTA-Datumspills mit invertierter Kategorie-Marke links auf der aktiven Pille; Löschaktion und Logik vollständig entfernt. Telefon-Test mit Testeintrag bestätigt Auswahl, Farben, 32px-Höhe, keine Löschaktion und unveränderten gespeicherten Eintrag; 17 Tests und Typecheck grün.
 - [x] Smiley-Regler: graue Smileys deckend weiß gefüllt, Kontur weiterhin weich; während des Ziehens frei und beim Loslassen auf der nächsten der fünf Spalten eingerastet. Telefon-Vorschau: 39 während des Ziehens → 50 nach dem Loslassen, Health Check 3 gespeichert; 105 relevante Tests und Typecheck grün.
