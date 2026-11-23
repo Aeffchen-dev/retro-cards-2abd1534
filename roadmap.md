@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Archive card never wears a pink fill: its background is pinned white in the card style instead of the position-based background list, which a joining partner plus "Nicht monogam" could drop onto the pink entry. Phone preview measured white in both layouts; 2 new tests pass, build OK.
 - [x] Auswertung ohne Popup direkt auf der Takeaways-Karte: alle eigenen/geteilten Texte und Skalen, gemeinsame Ideas nur einmal, Bereiche „Was gut funktioniert“, „Was Aufmerksamkeit braucht“, „Eure Vorhaben“. Zwei echte Gäste mit unterschiedlichen Antworten erfolgreich verglichen; KI 200, Ideas übernommen, kein Dialog, kein horizontaler Überlauf, 11 Tests und Typecheck grün.
 - [x] „Letzte 4 Wochen“ und alle zugehörigen Notizseiten fest auf den vorhandenen Rosa-Ton #F39FFF gesetzt; orangefarbene Kategorie-Pille unverändert. Telefon-Vorschau bestätigt identischen Karten- und Notizhintergrund; 5 Farbtests und Typecheck grün.
 - [x] Verlauf: eckige CTA-Datumspills mit invertierter Kategorie-Marke links auf der aktiven Pille; Löschaktion und Logik vollständig entfernt. Telefon-Test mit Testeintrag bestätigt Auswahl, Farben, 32px-Höhe, keine Löschaktion und unveränderten gespeicherten Eintrag; 17 Tests und Typecheck grün.
