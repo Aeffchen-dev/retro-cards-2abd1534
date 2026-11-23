@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current request
-- [ ] „Letzte 4 Wochen“ und alle zugehörigen Notizseiten fest auf den vorhandenen Rosa-Ton #F39FFF setzen; orangefarbene Kategorie-Pille unverändert lassen.
+- [x] „Letzte 4 Wochen“ und alle zugehörigen Notizseiten fest auf den vorhandenen Rosa-Ton #F39FFF gesetzt; orangefarbene Kategorie-Pille unverändert. Telefon-Vorschau bestätigt identischen Karten- und Notizhintergrund; 5 Farbtests und Typecheck grün.
 - [x] Verlauf: eckige CTA-Datumspills mit invertierter Kategorie-Marke links auf der aktiven Pille; Löschaktion und Logik vollständig entfernt. Telefon-Test mit Testeintrag bestätigt Auswahl, Farben, 32px-Höhe, keine Löschaktion und unveränderten gespeicherten Eintrag; 17 Tests und Typecheck grün.
 - [x] Smiley-Regler: graue Smileys deckend weiß gefüllt, Kontur weiterhin weich; während des Ziehens frei und beim Loslassen auf der nächsten der fünf Spalten eingerastet. Telefon-Vorschau: 39 während des Ziehens → 50 nach dem Loslassen, Health Check 3 gespeichert; 105 relevante Tests und Typecheck grün.
 - [x] Partner feedback empty fields stay blank; Dates shows partner notes read-only; partner Intimacy on its own card; Ideas fields shared and editable by all (newest edit wins); Verlauf is a date strip (Heute + past retros) that swaps the chart above. Typecheck, build and 2 new tests OK; not tested with two connected devices.
