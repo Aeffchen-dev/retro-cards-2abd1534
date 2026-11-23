@@ -2000,7 +2000,7 @@ const RetroCards: React.FC = () => {
 
 
                 <span className="h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
-                  Nicht monogam{live ? <span className="partner-field-name">&nbsp;· gilt für euch beide</span> : null}
+                  Nicht monogam
                 </span>
                 </Button>
               </div>
