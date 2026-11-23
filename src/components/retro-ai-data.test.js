@@ -24,7 +24,7 @@ const own = {
 };
 
 const result = {
-  themes: [{ title: "Gemeinsame Zeit", summary: "Ihr wünscht euch mehr ungeteilte Aufmerksamkeit.", recurring: true }],
+  themes: [{ title: "Gemeinsame Zeit", summary: "Ihr wünscht euch mehr ungeteilte Aufmerksamkeit.", comparison: "Jana und Niklas nennen beide mehr bewusste Zeit.", status: "watch", recurring: true }],
   nextSteps: [{ action: "Plant einen handyfreien Abend.", timing: "Diese Woche" }],
 };
 
@@ -38,6 +38,42 @@ describe("retro AI answers", () => {
 
   it("omits empty fields instead of asking the model to interpret blanks", () => {
     expect(collectRetroAnswers("Jana", { reflection: { thanks: "  Danke  " } })).toEqual([{ person: "Jana", prompt: "Feedback – Danke", answer: "Danke" }]);
+  });
+
+  it("includes every kind of note and rating, while excluding the local p1 copy", () => {
+    const answers = collectRetroAnswers("Jana", {
+      notes: {
+        3: { "q0-p0": "Projekt geschafft", "q5-p0": "Stolz", "q0-p1": "Partnerkopie" },
+        5: { p0: "Nur verabredete Dates" },
+        7: { scale: "75" },
+        105: { self: "100", hc_p0_love: "5", work_p0: "60", "self-p0": "Ich kann ganz ich selbst sein" },
+        200: { "love-p0": "Die kleinen Gesten" },
+      },
+    });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Letzte 4 Wochen – Ein voller Erfolg", answer: "Projekt geschafft" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Letzte 4 Wochen – 4 Wochen in einem Wort", answer: "Stolz" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Dates – Notiz", answer: "Nur verabredete Dates" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Intimacy – Zufriedenheit", answer: "4 von 5 Herzen" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Health Check – Ich kann in deiner Gegenwart so sein wie ich bin und fühle mich gesehen und respektiert", answer: "Trifft immer zu (100/100)" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Health Check – Liebe & Wertschätzung", answer: "5 von 5 – Sehr zufrieden" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Health Check – Beziehungsarbeit", answer: "60 % der Beziehungsarbeit" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Health Check – Notiz zu: Ich kann in deiner Gegenwart so sein wie ich bin und fühle mich gesehen und respektiert", answer: "Ich kann ganz ich selbst sein" });
+    expect(answers).toContainEqual({ person: "Jana", prompt: "Health Check – Notiz zu: Wir zeigen uns aktiv, dass wir uns lieben", answer: "Die kleinen Gesten" });
+    expect(answers.some(answer => answer.answer === "Partnerkopie")).toBe(false);
+  });
+
+  it("adds jointly edited Ideas once and fills missing local values from the shared session", () => {
+    const answers = collectRetroAnswers(
+      "Jana",
+      { notes: { 104: { plans: "Samstag frühstücken", experiment: "Handyfreier Abend" } } },
+      "Niklas",
+      { notes: { 104: { plans: "Samstag frühstücken", experiment: "Handyfreier Abend", idea: "Aufgaben früher teilen" } } },
+    );
+    expect(answers.filter(answer => answer.person === "Gemeinsam")).toEqual([
+      { person: "Gemeinsam", prompt: "Ideas – Plan", answer: "Samstag frühstücken" },
+      { person: "Gemeinsam", prompt: "Ideas – Try", answer: "Handyfreier Abend" },
+      { person: "Gemeinsam", prompt: "Ideas – Change", answer: "Aufgaben früher teilen" },
+    ]);
   });
 });
 
@@ -62,6 +98,17 @@ describe("retro AI history", () => {
   it("accepts the concrete model contract and rejects malformed output", () => {
     expect(asRetroAiResult(result)).toEqual(result);
     expect(asRetroAiResult({ themes: [], nextSteps: [] })).toBeNull();
+  });
+
+  it("keeps older saved results readable without inventing a comparison", () => {
+    const legacy = { ...result, themes: [{ title: "Vertrauen", summary: "Darüber habt ihr gesprochen.", recurring: false }] };
+    expect(asRetroAiResult(legacy)?.themes[0]).toEqual({
+      title: "Vertrauen",
+      summary: "Darüber habt ihr gesprochen.",
+      comparison: "",
+      status: "watch",
+      recurring: false,
+    });
   });
 
   it("uses a local calendar day for one-entry-per-round replacement", () => {

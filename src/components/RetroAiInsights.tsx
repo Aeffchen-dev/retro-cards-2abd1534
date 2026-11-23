@@ -1,8 +1,5 @@
-import { useState, type CSSProperties } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { ArrowRight, LoaderCircle, RotateCcw, Sparkles } from "lucide-react";
-import ActionRow from "./ActionRow";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
-import { Button } from "./ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { usePartnerSession } from "@/hooks/use-partner-session";
 import {
@@ -12,11 +9,13 @@ import {
   saveAiInsight,
   type RetroAnswerInput,
   type RetroAiResult,
+  type RetroAiTheme,
 } from "./retro-ai-data";
 
 interface Props {
   answers: RetroAnswerInput[];
   accent: string;
+  fallback: ReactNode;
 }
 
 async function functionErrorMessage(error: unknown) {
@@ -34,16 +33,37 @@ async function functionErrorMessage(error: unknown) {
   return "Die Auswertung ist gerade nicht möglich. Bitte versuche es erneut.";
 }
 
-export default function RetroAiInsights({ answers, accent }: Props) {
+function ThemeGroup({ title, themes, empty }: { title: string; themes: RetroAiTheme[]; empty: string }) {
+  return (
+    <section className="retro-eval-box retro-ai-category">
+      <h4>{title}</h4>
+      {themes.length ? (
+        <div className="retro-ai-theme-list">
+          {themes.map(theme => (
+            <article className="retro-ai-theme" key={`${theme.status}-${theme.title}-${theme.summary}`}>
+              <span className={theme.recurring ? "retro-ai-badge is-recurring" : "retro-ai-badge"}>
+                {theme.recurring ? "Wiederkehrend" : "Aus dieser Runde"}
+              </span>
+              <h5>{theme.title}</h5>
+              <p>{theme.summary}</p>
+              {theme.comparison && <p className="retro-ai-comparison">{theme.comparison}</p>}
+            </article>
+          ))}
+        </div>
+      ) : <p className="retro-eval-muted">{empty}</p>}
+    </section>
+  );
+}
+
+/** The complete evaluation lives directly on the Takeaways card, never in a dialog. */
+export default function RetroAiInsights({ answers, accent, fallback }: Props) {
   const partnerSession = usePartnerSession();
-  const [open, setOpen] = useState(false);
-  const [extraContext, setExtraContext] = useState("");
   const [result, setResult] = useState<RetroAiResult | null>(() => latestAiInsight());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const people = [...new Set(answers.map(answer => answer.person))];
   const hasAccess = Boolean(partnerSession.guest?.token || partnerSession.user);
-  const canGenerate = (answers.length > 0 || extraContext.trim().length >= 3) && hasAccess && !loading;
+  const canGenerate = answers.length > 0 && hasAccess && !loading;
 
   const generate = async () => {
     if (!canGenerate) return;
@@ -53,7 +73,6 @@ export default function RetroAiInsights({ answers, accent }: Props) {
       const { data, error: invokeError } = await supabase.functions.invoke("retro-insights", {
         body: {
           answers,
-          extraContext: extraContext.trim(),
           previousThemes: previousAiThemes(),
           guestToken: partnerSession.guest?.token,
         },
@@ -72,95 +91,50 @@ export default function RetroAiInsights({ answers, accent }: Props) {
     }
   };
 
+  const works = result?.themes.filter(theme => theme.status === "works") ?? [];
+  const watch = result?.themes.filter(theme => theme.status === "watch") ?? [];
+  const peopleLabel = people.length > 1 ? `${people.slice(0, -1).join(", ")} und ${people[people.length - 1]}` : (people[0] ?? "");
+
   return (
-    <>
-      <ActionRow
-        iconNode={<Sparkles size={16} strokeWidth={1.8} aria-hidden="true" />}
-        label="KI-Auswertung"
-        accent={accent}
-        onClick={() => setOpen(true)}
-      />
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="retro-ai-dialog swiper-no-swiping" style={{ "--retro-ai-accent": accent } as CSSProperties}>
-          <DialogHeader className="retro-ai-header">
-            <DialogTitle className="retro-ai-title">Eure gemeinsame Auswertung</DialogTitle>
-            <DialogDescription className="retro-ai-description">
-              Erkennt wiederkehrende Themen und formuliert daraus konkrete nächste Schritte.
-            </DialogDescription>
-          </DialogHeader>
+    <section className="retro-ai-inline" style={{ "--retro-ai-accent": accent } as CSSProperties} aria-label="Gemeinsame Gesamtauswertung">
+      {result ? (
+        <div className="retro-ai-inline-results" aria-live="polite">
+          <ThemeGroup title="Was gut funktioniert" themes={works} empty="Daraus lässt sich gerade kein eindeutiger Stärkebereich ableiten." />
+          <ThemeGroup title="Was Aufmerksamkeit braucht" themes={watch} empty="Es gibt gerade keinen eindeutigen Punkt, der Aufmerksamkeit braucht." />
+          <section className="retro-eval-box retro-ai-category" aria-label="Eure Vorhaben">
+            <h4>Eure Vorhaben</h4>
+            <ol className="retro-ai-step-list">
+              {result.nextSteps.map(step => (
+                <li key={`${step.action}-${step.timing}`}>
+                  <ArrowRight size={18} strokeWidth={1.8} aria-hidden="true" />
+                  <div><strong>{step.action}</strong><span>{step.timing}</span></div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+      ) : fallback}
 
-          <div className="retro-ai-scroll">
-            <section className="retro-ai-input" aria-label="Grundlage der Auswertung">
-              <h3>Das wird berücksichtigt</h3>
-              <p>
-                {answers.length
-                  ? `${answers.length} ${answers.length === 1 ? "Antwort" : "Antworten"}${people.length ? ` von ${people.join(" und ")}` : ""} aus dieser Retro.`
-                  : "Noch sind keine Textantworten eingetragen."}
-              </p>
-              <label htmlFor="retro-ai-context">Zusätzlicher Kontext <span>optional</span></label>
-              <textarea
-                id="retro-ai-context"
-                value={extraContext}
-                onChange={event => setExtraContext(event.target.value)}
-                placeholder="Was soll die Auswertung sonst noch wissen?"
-                maxLength={3000}
-                rows={3}
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
-              />
-              {!hasAccess && <p className="retro-ai-access">Verbindet euch über „Partner einladen“, um die KI-Auswertung gemeinsam zu nutzen.</p>}
-            </section>
-
-            {error && <div className="retro-ai-error" role="alert"><p>{error}</p></div>}
-            {loading && <div className="retro-ai-loading" role="status"><LoaderCircle className="animate-spin" size={20} /><span>Ich lese eure Antworten und verbinde die Themen …</span></div>}
-
-            {result && !loading && (
-              <div className="retro-ai-results" aria-live="polite">
-                <section aria-labelledby="retro-ai-themes">
-                  <h3 id="retro-ai-themes">Wiederkehrende Themen</h3>
-                  <div className="retro-ai-theme-list">
-                    {result.themes.map(theme => (
-                      <article className="retro-ai-theme" key={`${theme.title}-${theme.summary}`}>
-                        <span className={theme.recurring ? "retro-ai-badge is-recurring" : "retro-ai-badge"}>
-                          {theme.recurring ? "Wiederkehrend" : "Aus dieser Runde"}
-                        </span>
-                        <h4>{theme.title}</h4>
-                        <p>{theme.summary}</p>
-                      </article>
-                    ))}
-                  </div>
-                </section>
-                <section aria-labelledby="retro-ai-steps">
-                  <h3 id="retro-ai-steps">Eure nächsten Schritte</h3>
-                  <ol className="retro-ai-step-list">
-                    {result.nextSteps.map(step => (
-                      <li key={`${step.action}-${step.timing}`}>
-                        <ArrowRight size={18} strokeWidth={1.8} aria-hidden="true" />
-                        <div><strong>{step.action}</strong><span>{step.timing}</span></div>
-                      </li>
-                    ))}
-                  </ol>
-                </section>
-              </div>
-            )}
-          </div>
-
-          <div className="retro-ai-footer">
-            <p>Nur für diese Auswertung verarbeitet · kein Datenbank-Eintrag</p>
-            <Button
-              type="button"
-              className="retro-ai-generate"
-              disabled={!canGenerate}
-              onClick={generate}
-              style={{ "--retro-ai-accent": accent } as CSSProperties}
-            >
-              {loading ? <LoaderCircle className="animate-spin" size={17} /> : result ? <RotateCcw size={17} /> : <Sparkles size={17} />}
-              {loading ? "Auswertung läuft" : result ? "Neu auswerten" : "Themen & Schritte erstellen"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+      <div className="retro-ai-inline-meta">
+        {answers.length
+          ? `${answers.length} ${answers.length === 1 ? "Angabe" : "Angaben"}${people.length ? ` von ${peopleLabel}` : ""} aus dieser Retro.`
+          : "Noch sind keine Angaben eingetragen."}
+      </div>
+      {error && <div className="retro-ai-error" role="alert"><p>{error}</p></div>}
+      {loading && <div className="retro-ai-loading" role="status"><LoaderCircle className="animate-spin" size={20} /><span>Ich vergleiche eure Angaben und ordne die Themen …</span></div>}
+      {!hasAccess && <p className="retro-ai-access">Verbindet euch über „Partner einladen“, um die gemeinsame KI-Einordnung zu nutzen.</p>}
+      <button
+        type="button"
+        className="retro-ai-inline-generate swiper-no-swiping"
+        disabled={!canGenerate}
+        onClick={generate}
+      >
+        <span className="retro-ai-generate-icon" aria-hidden="true">
+          {loading ? <LoaderCircle className="animate-spin" size={16} /> : result ? <RotateCcw size={16} /> : <Sparkles size={16} />}
+        </span>
+        <span className="retro-ai-generate-label">{loading ? "Auswertung läuft" : result ? "Neu auswerten" : "Gesamtauswertung erstellen"}</span>
+      </button>
+      <p className="retro-ai-privacy">Nur für diese Auswertung verarbeitet · kein Datenbank-Eintrag</p>
+    </section>
   );
 }
