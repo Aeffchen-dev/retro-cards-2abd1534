@@ -2273,3 +2273,98 @@ textarea.bg-retro-post-it:focus,
 .retro-eval-split { display: flex; height: 8px; margin-bottom: 4px; }
 .retro-eval-split span { background: #2A8A10; } .retro-eval-split span.is-partner { background: #FF4D00; }
 @media print { .retro-eval-open { text-decoration: none; } .retro-eval { break-inside: avoid; } .retro-eval-bar, .retro-eval-split span { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+/* Takeaways KI-Auswertung: a contained reading surface, never another card overflowing. */
+.takeaways-content { flex: 1 1 auto; min-height: 0; margin-top: 16px; }
+@media screen {
+  .takeaways-content { overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; scrollbar-width: thin; }
+}
+@media print { .takeaways-content { height: auto; overflow: visible; margin-top: 24px; } }
+.retro-ai-entry { flex: none; }
+.retro-ai-dialog {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: calc(100% - 32px);
+  max-width: 620px;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--retro-black);
+  border-radius: 0;
+  background: hsl(var(--card));
+  color: var(--retro-black);
+}
+.retro-ai-dialog > button {
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--retro-black);
+  border-radius: 0;
+  color: var(--retro-black);
+  opacity: 1;
+}
+.retro-ai-dialog > button svg { width: 24px; height: 24px; }
+.retro-ai-header { padding: 24px 64px 0 24px; text-align: left; }
+.retro-ai-dialog .retro-ai-title { font-family: var(--font-question); font-size: 28px; font-weight: 400; line-height: 1.08; letter-spacing: 0; }
+.retro-ai-description { margin-top: 8px; color: var(--retro-info-text); font-size: 14px; line-height: 1.45; }
+.retro-ai-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 20px 24px 24px; }
+.retro-ai-scroll section + section, .retro-ai-results > section + section { margin-top: 24px; }
+.retro-ai-dialog .retro-ai-scroll h3 { margin: 0 0 8px; font-size: 16px; font-weight: 700; line-height: 1.25; }
+.retro-ai-input > p { margin: 0; color: var(--retro-info-text); font-size: 14px; line-height: 1.45; }
+.retro-ai-input label { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; margin-bottom: 6px; font-size: 14px; font-weight: 700; }
+.retro-ai-input label span { color: var(--retro-info-text); font-size: 12px; font-weight: 400; }
+.retro-ai-input textarea {
+  display: block;
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  border: 0;
+  border-radius: 0;
+  padding: 12px;
+  background: var(--retro-textarea-bg);
+  color: var(--retro-black);
+  font-size: 16px;
+  line-height: 1.45;
+}
+.retro-ai-input textarea:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+.retro-ai-input .retro-ai-access { margin-top: 10px; color: var(--retro-black); }
+.retro-ai-error { margin-top: 16px; border-left: 3px solid hsl(var(--destructive)); padding: 8px 12px; color: hsl(var(--destructive)); font-size: 14px; }
+.retro-ai-loading { display: flex; align-items: center; gap: 10px; margin-top: 20px; color: var(--retro-info-text); font-size: 14px; }
+.retro-ai-loading svg { flex: none; }
+.retro-ai-results { margin-top: 24px; }
+.retro-ai-theme-list { display: grid; gap: 12px; }
+.retro-ai-theme { border-top: 1px solid var(--retro-info-rule); padding-top: 12px; }
+.retro-ai-badge { display: inline-flex; border: 1px solid var(--retro-info-rule); padding: 2px 6px; color: var(--retro-info-text); font-size: 11px; line-height: 16px; }
+.retro-ai-badge.is-recurring { border-color: var(--retro-black); background: var(--retro-ai-accent, transparent); color: var(--retro-black); }
+.retro-ai-dialog .retro-ai-theme h4 { margin: 6px 0 4px; font-size: 16px; font-weight: 700; }
+.retro-ai-theme p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.5; }
+.retro-ai-step-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.retro-ai-step-list li { display: flex; align-items: flex-start; gap: 10px; }
+.retro-ai-step-list li > svg { flex: none; margin-top: 2px; }
+.retro-ai-step-list strong { display: block; font-size: 14px; line-height: 1.45; font-weight: 700; overflow-wrap: anywhere; }
+.retro-ai-step-list span { display: block; margin-top: 2px; color: var(--retro-info-text); font-size: 12px; }
+.retro-ai-footer { border-top: 1px solid var(--retro-info-rule); padding: 16px 24px 20px; }
+.retro-ai-footer > p { margin: 0 0 10px; color: var(--retro-info-text); font-size: 12px; }
+.retro-ai-dialog .retro-ai-generate {
+  width: 100%;
+  min-height: 44px;
+  border: 0;
+  border-radius: 0;
+  background: var(--retro-ai-accent);
+  color: var(--retro-black);
+  font-size: 14px;
+  font-weight: 700;
+}
+.retro-ai-dialog .retro-ai-generate:hover { background: var(--retro-ai-accent); opacity: .9; }
+.retro-ai-dialog .retro-ai-generate:disabled { background: var(--retro-textarea-bg); color: var(--retro-info-text); opacity: 1; }
+@media (max-width: 480px) {
+  .retro-ai-dialog { width: calc(100% - 16px); max-height: calc(100dvh - 16px); }
+  .retro-ai-header { padding: 20px 56px 0 20px; }
+  .retro-ai-dialog .retro-ai-title { font-size: 24px; }
+  .retro-ai-scroll { padding: 16px 20px 20px; }
+  .retro-ai-footer { padding: 14px 20px 16px; }
+}
+@media print { .retro-ai-entry, .retro-ai-dialog { display: none !important; } }

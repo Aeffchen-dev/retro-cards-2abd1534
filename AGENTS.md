@@ -2,6 +2,7 @@
 <!-- LOVABLE:BEGIN -->
 - Guest connections use separate service-only tables and an edge function validating hashed member capabilities; never enable anonymous auth or direct guest table access, so invitation and member credentials stay distinct.
 <!-- LOVABLE:END -->
+- Retro AI calls stay in `retro-insights` via AI Gateway; recurring-theme history stays on-device to avoid storing answer rounds.
 - The deck's cards and scales live in `src/components`, which carries its own `AGENTS.md` to read before changing files there.
 - Keep invitation sharing in a focused helper with clipboard fallback for denied native sharing; cancellation is silent and sharing failures must not masquerade as connection failures.
 - Trigger slider navigation hints only when the untouched marker enters view, animating the whole marker (disc and arrow) but never the saved answer; the deck keeps offscreen cards mounted, so mount-time animations would finish unseen.

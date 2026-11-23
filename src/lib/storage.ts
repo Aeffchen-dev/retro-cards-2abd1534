@@ -81,5 +81,6 @@ export const STORAGE_KEYS = {
   CURRENT_QUESTION: 'retro-cards-current-question',
   EDIT_MODE_NOTES: 'retro-cards-edit-mode-notes',
   SETUP_DATA: 'retro-cards-setup-data',
-  REFLECTION_TEXTS: 'retro-cards-reflection-texts'
+  REFLECTION_TEXTS: 'retro-cards-reflection-texts',
+  AI_INSIGHT_HISTORY: 'retro-cards-ai-insight-history'
 } as const;

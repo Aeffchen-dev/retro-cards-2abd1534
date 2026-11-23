@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from "react"
 import StackIcon from "@/components/StackIcon";
 import ActionRow from "@/components/ActionRow";
 import RetroSummary from "./RetroSummary";
+import RetroAiInsights from "./RetroAiInsights";
+import { collectRetroAnswers } from "./retro-ai-data";
 import PostItField from "@/components/PostItField";
 import VorhabenSlide from "@/components/VorhabenSlide";
 import RisikoSlide, { FACES } from "@/components/RisikoSlide";
@@ -2168,8 +2170,20 @@ const RetroCards: React.FC = () => {
               </div>
               <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir aus der Retro mit" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
-            <div className="mt-6 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined} partnerName={liveName} ideas={editModeNotes[SLIDE_VORHABEN]} onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))} /></div>
-            <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
+            <div className="takeaways-content swiper-no-swiping w-full">
+              <div className="retro-ai-entry screen-only w-full">
+                <RetroAiInsights
+                  accent={pillColorOf(8)}
+                  answers={collectRetroAnswers(
+                    setupData.name1 || "Du",
+                    { postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, notes: editModeNotes },
+                    liveName,
+                    live ?? undefined,
+                  )}
+                />
+              </div>
+              <div className="mt-4 w-full"><RetroSummary values={editModeNotes[SLIDE_RISIKO] || {}} persons={persons} intimacy={editModeNotes[7]?.scale} partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined} partnerName={liveName} ideas={editModeNotes[SLIDE_VORHABEN]} onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))} /></div>
+              <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
                   key={person.key}
@@ -2195,6 +2209,7 @@ const RetroCards: React.FC = () => {
                   value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                 />
               ))}
+              </div>
             </div>
 
           </div>
