@@ -1855,19 +1855,22 @@ const RetroCards: React.FC = () => {
               </div>
 
               {live ? (
-                <div className="flex flex-col w-full min-w-0">
-                  <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
-                    Partner
-                  </div>
-                  <div className="setup-partner-card" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }} aria-label={`${liveName}, verbunden`}>
-                    <span className="setup-partner-card-emoji" aria-hidden="true">{live.setup?.emoji1 || setupData.emoji2 || EMOJI2_PLACEHOLDER}</span>
-                    <span className="flex flex-col min-w-0">
-                      <span className={`setup-partner-card-name${live.setup?.name1?.trim() ? '' : ' is-pending'}`}>{liveName}</span>
-                      <span className="setup-partner-card-status">
+                <div className="flex flex-col gap-2 w-full">
+                  <div className="flex flex-col w-full min-w-0">
+                    <div className="inline-flex self-start items-center h-8 px-3 retro-body-copy" style={{ background: SETUP_ACCENT, color: SETUP_ON_ACCENT }}>
+                      Partner
+                    </div>
+                    <div className="setup-partner-name-row flex items-stretch w-full min-w-0">
+                      <div className="name-input-wrapper w-full flex items-center h-8 px-3 gap-2 min-w-0" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }} aria-label={`${liveName}, ${partnerSession.online ? 'verbunden' : 'gerade offline'}`}>
                         <span className={`partner-status-dot${partnerSession.online ? ' is-connected' : ''}`} aria-hidden="true" />
-                        {live.setup?.name1?.trim() ? (partnerSession.online ? 'verbunden' : 'gerade offline') : 'trägt seinen Namen noch ein …'}
-                      </span>
-                    </span>
+                        <span className={`setup-partner-card-name text-base${live.setup?.name1?.trim() ? '' : ' is-pending'}`}>{live.setup?.name1?.trim() ? liveName : 'trägt seinen Namen noch ein …'}</span>
+                      </div>
+                      <PartnerConnection compact partnerName={setupData.name2 || liveName} initialName={setupData.name1} accent={SETUP_ACCENT} pillColor={SETUP_PILL} pillDot={SETUP_PILL_ON} />
+                    </div>
+                  </div>
+                  <div className="inline-flex h-8 self-start items-center" aria-label="Emoji deines Partners">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center text-base" style={{ background: SETUP_PILL, color: SETUP_PILL_ON }}>{live.setup?.emoji1 || setupData.emoji2 || EMOJI2_PLACEHOLDER}</span>
+                    <span className="retro-body-copy flex h-8 items-center whitespace-nowrap px-3" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>{partnerSession.online ? 'verbunden' : 'gerade offline'}</span>
                   </div>
                 </div>
               ) : (
@@ -1963,12 +1966,12 @@ const RetroCards: React.FC = () => {
                     extraPartners: [...setupData.extraPartners, { name: '', emoji: '' }],
                   });
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+                className="relative z-40 self-start w-auto flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
                 <span className="shrink-0 w-8 h-8 flex items-center justify-center leading-none" style={{ background: SETUP_PILL }}>
                   <StackIcon name="IconPlus" size={16} color={SETUP_PILL_ON} />
                 </span>
-                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
+                <span className="h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Weiteren Partner hinzufügen
                 </span>
               </button>}
@@ -1984,7 +1987,7 @@ const RetroCards: React.FC = () => {
                   e.stopPropagation();
                   setSetupData(prev => toggleSharedSetupChoice(prev, live?.setup, partnerSession.memberId ?? 'local'));
                 }}
-                className="relative z-40 w-full flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
+                className="relative z-40 self-start w-auto flex items-center gap-0 h-8 retro-body-copy no-underline rounded-none border-none p-0 transition-opacity hover:opacity-90"
               >
                 <span
                   className="shrink-0 w-8 h-8 flex items-center justify-center"
@@ -1996,7 +1999,7 @@ const RetroCards: React.FC = () => {
                 </span>
 
 
-                <span className="flex-1 h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
+                <span className="h-8 flex items-center px-3 text-left whitespace-nowrap" style={{ background: SETUP_GREY_FILL, color: SETUP_TEXT }}>
                   Nicht monogam{live ? <span className="partner-field-name">&nbsp;· gilt für euch beide</span> : null}
                 </span>
                 </Button>

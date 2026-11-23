@@ -2052,7 +2052,7 @@ textarea.bg-retro-post-it:focus,
 /* The opening fills the card: the block takes the card's whole height and the
    four paragraphs spread their gaps through the room that is left. */
 #root .intro-block { flex: 1 1 auto; }
-#root .intro-copy { flex: 1 1 auto; justify-content: space-between; }
+#root .intro-copy { flex: 0 0 auto; justify-content: flex-start; }
 /* Where the card keeps its full width and stands tall enough, the headline grows
    to the largest size the card still holds without the paragraphs spilling over
    its lower edge (measured: 32px needs 616px of the 627px content box). */
@@ -2375,3 +2375,7 @@ textarea.bg-retro-post-it:focus,
   .retro-ai-footer { padding: 14px 20px 16px; }
 }
 @media print { .retro-ai-entry, .retro-ai-dialog { display: none !important; } }
+
+/* Setup share button is icon-only: hide its empty label field so the name input gets the width. */
+.setup-partner-share { width: auto !important; flex: 0 0 auto !important; }
+.setup-partner-share > span:last-child { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }

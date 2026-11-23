@@ -59,7 +59,7 @@ export default function PartnerConnection({ accent = 'var(--retro-info-rule)', i
     }
   };
   return <Sheet open={open} onOpenChange={setOpen}>
-    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={compact ? <Share2 size={16}/> : <Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">{compact ? 'Link teilen' : 'Partner einladen'}{compact && <span className="sr-only"> für {recipient}</span>}{!compact && s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partnerName} ist verbunden`} />}</span>} className={`partner-connect-trigger ${compact ? 'setup-partner-share' : ''}`} onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
+    <ActionRow accent={accent} style={{ '--retro-action-tile': pillColor } as CSSProperties} iconNode={compact ? <Share2 size={16}/> : <Users size={16}/>} iconColor="var(--retro-black)" label={<span className="partner-trigger-label">{compact ? <span className="sr-only">Link teilen für {recipient}</span> : 'Partner einladen'}{!compact && s.partner && s.online && <span className="partner-status-dot is-connected" role="img" aria-label={`${s.partnerName} ist verbunden`} />}</span>} className={`partner-connect-trigger ${compact ? 'setup-partner-share' : ''}`} onClick={() => { setNotice(''); s.setError(''); setOpen(true); if (!s.sessionId && !code && !busy) connect(); }} />
     <SheetContent side="bottom" className="partner-dialog partner-bottom-sheet swiper-no-swiping">
       {/* The chapter name rides above the sheet, outside its panel — the same
           pill the cards wear above their own question. */}
