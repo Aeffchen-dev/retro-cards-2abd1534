@@ -563,7 +563,7 @@ const RetroCards: React.FC = () => {
       return merged === own ? prev : { ...prev, [SLIDE_VORHABEN]: merged };
     });
   }, [remoteIdeas]);
-  const slidesWithEditButton = [1, 2, 3, 7];
+  const slidesWithEditButton = [1, 2, 3, 7, 8];
   // Every Risikofaktoren page gets a Notizen CTA like the Health Check slides
   const hasEditButton = (slideId: number) => slidesWithEditButton.includes(slideId);
 
@@ -1452,6 +1452,25 @@ const RetroCards: React.FC = () => {
 
 
 
+  const renderTakeawaysEvaluation = () => (
+    <RetroSummary
+      values={editModeNotes[SLIDE_RISIKO] || {}}
+      persons={persons}
+      intimacy={editModeNotes[7]?.scale}
+      partnerValues={live?.notes?.[SLIDE_RISIKO]}
+      partnerName={liveName}
+      ideas={editModeNotes[SLIDE_VORHABEN]}
+      accent={pillColorOf(8)}
+      answers={collectRetroAnswers(
+        setupData.name1 || "Du",
+        { postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, notes: editModeNotes },
+        liveName,
+        live ?? undefined,
+      )}
+      onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))}
+    />
+  );
+
   const renderCard = (cardIndex: number) => {
     switch (cardIndex) {
       case 0:
@@ -2230,22 +2249,7 @@ const RetroCards: React.FC = () => {
               <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir aus der Retro mit" color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
             </div>
             <div className="takeaways-content swiper-no-swiping w-full">
-              <div className="mt-4 w-full"><RetroSummary
-                values={editModeNotes[SLIDE_RISIKO] || {}}
-                persons={persons}
-                intimacy={editModeNotes[7]?.scale}
-                partnerValues={live?.notes?.[SLIDE_RISIKO] ? live.notes[SLIDE_RISIKO] : undefined}
-                partnerName={liveName}
-                ideas={editModeNotes[SLIDE_VORHABEN]}
-                accent={pillColorOf(8)}
-                answers={collectRetroAnswers(
-                  setupData.name1 || "Du",
-                  { postIts: postItTexts, takeaways: takeawayTexts, reflection: { ...reflectionTexts }, notes: editModeNotes },
-                  liveName,
-                  live ?? undefined,
-                )}
-                onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))}
-              /></div>
+              <div className="hidden print-only mt-4 w-full">{renderTakeawaysEvaluation()}</div>
               <div className="flex flex-col flex-1 w-full justify-between gap-6 mt-6 screen-only">
               {persons.map((person, idx) => (
                 <PostItField
@@ -2538,7 +2542,14 @@ const RetroCards: React.FC = () => {
                           >
                             <StackIcon name="IconClear" size={24} color="currentColor" />
                           </Button>
-                          {groups ? (
+                          {slideId === 8 ? (
+                            <>
+                              <h2 className="retro-heading notes-question mb-6 pr-12 shrink-0">Auswertung</h2>
+                              <div className="flex-1 min-h-0 w-full overflow-y-auto overflow-x-hidden swiper-no-swiping" tabIndex={0} aria-label="Retro-Auswertung">
+                                {renderTakeawaysEvaluation()}
+                              </div>
+                            </>
+                          ) : groups ? (
                             <div className="flex flex-col flex-1 min-h-0 gap-4 w-full animate-[fadeInUp_0.4s_ease-out_0.1s_both]">
                               {groups.map((g, gi) => (
                                 <div key={g.key} className="flex flex-col flex-1 min-h-0 gap-2">
@@ -2617,8 +2628,8 @@ const RetroCards: React.FC = () => {
                     {hasEditButton(slideId) && (editModeSlides[slideId] || (slideId !== 1 && slideId !== 2)) && !(isRisikoSlide(slideId) && !editModeSlides[slideId]) && !(slideId === 3 && !editModeSlides[slideId]) && (
                       <div className="absolute z-40 screen-only" style={{ left: 'var(--retro-card-pad)', bottom: 'var(--retro-card-pad)' }}>
                         <ActionRow
-                          icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
-                          label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
+                          icon={editModeSlides[slideId] ? "IconClear" : slideId === 8 ? "IconGraph" : "IconPencil"}
+                          label={editModeSlides[slideId] ? "Fertig" : slideId === 8 ? "Auswerten" : "Notizen öffnen"}
                           /* The two feeling cards keep their own green: the label
                              reads the card's category green and the close X stays
                              white on the green tile, like the pencil outside
