@@ -2212,7 +2212,7 @@ const RetroCards: React.FC = () => {
               <h2 className="retro-heading w-full"><RevealText text={`Intimität von ${liveName || "Partner"}`} color={pillColorOf(cardIndex)} slideIndex={cardIndex} /></h2>
               <p className="intimacy-question w-full">Wie zufrieden ist {liveName || "Partner"} mit eurem Sex?</p>
               <div className="pointer-events-none" aria-readonly="true">
-                <StarRating value={live?.notes?.[7]?.scale} onChange={() => {}} />
+                <StarRating readOnly value={live?.notes?.[7]?.scale} onChange={() => {}} />
               </div>
               <PostItField readOnly accent={labelColorOf(7)} label="Das war hot" placeholder="" minHeight={72} value={live?.notes?.[7]?.hot || ""} />
               <PostItField readOnly accent={labelColorOf(7)} label="Spicy thought" placeholder="" minHeight={72} value={live?.notes?.[7]?.idea || ""} />

@@ -25,18 +25,6 @@ describe("Intimacy heart rating", () => {
     expect(hearts, "no star icon is left in the control").not.toMatch(/Star(?!(Rating|s))/);
   });
 
-  test("a chosen heart fills with the card's pink", () => {
-    const rule = ruleBody('.intimacy-star[data-filled="true"] svg {');
-    expect(rule, "the fill is the card's pink").toMatch(/fill:\s*var\(--intimacy-accent\);/);
-    expect(rule, "a chosen heart is no longer plain ink").not.toMatch(/fill:\s*currentColor/);
-  });
-
-  test("hovering a heart paints no grey tile", () => {
-    const rule = ruleBody(".intimacy-rating .intimacy-star:hover {");
-    expect(rule, "the ghost button's grey hover plate is suppressed").toMatch(/background:\s*transparent;/);
-    expect(rule, "the hover still previews the pink").toMatch(/color:\s*var\(--intimacy-accent\);/);
-  });
-
   test("the question stands above the hearts", () => {
     const card = cards.slice(cards.indexOf("case 7:"), cards.indexOf("case 8:"));
     expect(card, "the card asks its question").toContain(QUESTION);

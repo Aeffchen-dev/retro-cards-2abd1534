@@ -16,4 +16,11 @@ describe("Intimacy star answers", () => {
       expect(intimacyStars(intimacyScale(star))).toBe(star);
     }
   });
+  test("half hearts round trip through saved answers", () => {
+    for (const hearts of [0.5, 1.5, 2.5, 3.5, 4.5]) {
+      expect(intimacyStars(intimacyScale(hearts))).toBe(hearts);
+    }
+    expect(intimacyScale(2.5)).toBe("37.5");
+    expect(intimacyScale(0.5)).toBe("-12.5");
+  });
 });
