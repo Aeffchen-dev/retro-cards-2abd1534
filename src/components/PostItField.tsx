@@ -27,6 +27,8 @@ interface PostItFieldProps {
   barColor?: string;
   /** Small grey sentence under the label bar, above the writing area */
   helper?: string;
+  /** Label text colour for a bar painted as given (a dark fill needs light words). */
+  labelTextColor?: string;
   /** Bullet points by default: every line starts with "• " */
   bullets?: boolean;
   /** Connected partner's name — shows their answer to the same field under yours, live. */
@@ -156,6 +158,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
   accent,
   barColor,
   helper,
+  labelTextColor,
   bullets = false,
   partnerLabel,
   partnerValue,
@@ -166,7 +169,7 @@ export const PostItField: React.FC<PostItFieldProps> = ({
       style={{
         minHeight: "32px",
         backgroundColor: barColor ?? readableBg(accent),
-        color: TEXT,
+        color: labelTextColor ?? TEXT,
       }}
     >
       {label}

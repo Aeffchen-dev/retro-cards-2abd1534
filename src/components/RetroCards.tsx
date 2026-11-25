@@ -630,6 +630,16 @@ const RetroCards: React.FC = () => {
     [questionComboIdx]
   );
 
+  /* The two feeling cards' notes label bar wears the card's own category green
+     (user: "textarea label notes category green"). Black words on that dark
+     fill only reach 3.1:1, so they read white there. */
+  const notesBarColors = useCallback(
+    (slideId: number) => (slideId === 1 || slideId === 2
+      ? { barColor: labelColorOf(slideId), labelTextColor: "#FFFFFF" }
+      : {}),
+    [labelColorOf]
+  );
+
   // Track if initial load is complete to avoid saving on mount
   const isInitialMount = useRef(true);
 
@@ -1637,7 +1647,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
-                style={{ '--retro-action-icon-override': 'var(--risiko-face-fill)', '--retro-action-label-override': labelColorOf(cardId) } as React.CSSProperties}
+                style={{ '--retro-action-icon-override': 'var(--risiko-face-fill)' } as React.CSSProperties}
                 /* the Notizen öffnen tile reads plain grey with a black pencil —
                    no outline of its own (user: "EDIT PEN BACKGROUND NO OURLINE");
                    edit mode keeps the card's own pill colour and its white pencil. */
@@ -2599,6 +2609,7 @@ const RetroCards: React.FC = () => {
                                     <PostItField
                                       key={noteKey}
                                       accent={labelColorOf(slideId)}
+                                      {...notesBarColors(slideId)}
                                       label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
                                       placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                                       readOnly={livePerson(idx)}
@@ -2629,13 +2640,12 @@ const RetroCards: React.FC = () => {
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : slideId === 8 ? "IconGraph" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : slideId === 8 ? "Auswerten" : "Notizen öffnen"}
-                          /* The two feeling cards keep their own green: the label
-                             reads the card's category green and the close X stays
-                             white on the green tile, like the pencil outside
-                             notes mode (user: "notes label category green and
-                             close icon white"). */
+                          /* The two feeling cards keep their own green tile: the
+                             close X stays white on it, while the label reads the
+                             deck's usual black (user: "health check CTa label
+                             black but textarea label notes category green"). */
                           style={(slideId === 1 || slideId === 2)
-                            ? ({ '--retro-action-icon-override': 'var(--risiko-face-fill)', '--retro-action-label-override': labelColorOf(slideId) } as React.CSSProperties)
+                            ? ({ '--retro-action-icon-override': 'var(--risiko-face-fill)' } as React.CSSProperties)
                             : undefined}
                           /* Notizen öffnen reads a plain grey tile with a black
                              pencil and no outline (user: "EDIT PEN BACKGROUND NO
