@@ -102,7 +102,7 @@ function buildFaces(phase: number): Face[] {
   return faces.sort((a, b) => b.depth - a.depth);
 }
 
-export default function BgVector({ className, style, background = DARK }: { className?: string; style?: React.CSSProperties; background?: string }) {
+export default function BgVector({ className, style }: { className?: string; style?: React.CSSProperties }) {
   const [phase, setPhase] = React.useState(0);
 
   React.useEffect(() => {
@@ -132,7 +132,7 @@ export default function BgVector({ className, style, background = DARK }: { clas
       aria-hidden="true"
       focusable="false"
     >
-      <rect width={W} height={H} fill={background} />
+      <rect width={W} height={H} fill={DARK} />
       {faces.map((f, i) => (
         <polygon key={i} points={f.pts} fill={f.fill} shapeRendering="geometricPrecision" />
       ))}

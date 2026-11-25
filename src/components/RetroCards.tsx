@@ -224,12 +224,7 @@ const QUESTION_COMBOS: { icon: string; square: string; linkTile?: string }[] = [
 ];
 
 // "The last 4 weeks" link items — one brand hue per row (Stack colour system)
-const ROSA_SHADES = ["#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF", "#F39FFF"];
-
-// The pink the stage behind "The last 4 weeks" wears while that card is open —
-// the card's own category pink (user: "last 4 weeks slide bg not pink ... make
-// pink like category pink").
-const STAGE_PINK_LAST_WEEKS = "#FF47D1";
+const ROSA_SHADES = Array(6).fill(BRAND.pink);
 
 
 
@@ -592,8 +587,8 @@ const RetroCards: React.FC = () => {
       if (slideId === 0) return BRAND.purple;
       // Health check slides: swapped orange combo
       if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.neonGreen;
-      // Last 4 weeks: orange
-      if (slideId === 3) return BRAND.stackOrange;
+      // Last 4 weeks: shared brand-pink accents on white
+      if (slideId === 3) return BRAND.pink;
       // Feedback: purple
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) return BRAND.spiralBlue;
       // Takeaways: turquoise combo
@@ -619,7 +614,7 @@ const RetroCards: React.FC = () => {
       if (slideId === 0) return BRAND.yellow;          // purple pill → yellow
       if (slideId === 4) return "#FF7A3D";              // rosa pill → warm orange label
       if (slideId === 1 || slideId === 2 || isRisikoSlide(slideId)) return BRAND.deepGreen;   // olive pill → the card's own dark olive
-      if (slideId === 3) return "#F39FFF";             // last 4 weeks → same rosa as link items
+      if (slideId === 3) return BRAND.pink;
       if (slideId === 5) return BRAND.darkBlue;        // bright green pill → dark blue
       if (slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER) return BRAND.babyBlue; // blue labels
       if (slideId === 7 || slideId === SLIDE_INTIMACY_PARTNER) return BRAND.pink;            // maroon pill → pink
@@ -2353,10 +2348,6 @@ const RetroCards: React.FC = () => {
     }
   };
 
-  // The stage behind the card: the deck's dark backdrop, except on the card
-  // whose approved pink carries the whole slide.
-  const stageBg = slides[currentCard] === 3 ? STAGE_PINK_LAST_WEEKS : "#201C1D";
-
   return (
     <ActiveSlideContext.Provider value={currentCard}>
     <div
@@ -2378,13 +2369,12 @@ const RetroCards: React.FC = () => {
         aria-hidden="true"
         className="pointer-events-none select-none absolute inset-0 z-0 screen-only overflow-hidden"
         style={{
-          backgroundColor: stageBg,
+          backgroundColor: "var(--retro-black)",
         }}
       >
         <BgVector
           className="absolute inset-0 w-full h-full bg-graphic-animated"
           style={{ opacity: 1 }}
-          background={stageBg}
         />
       </div>
 
@@ -2456,7 +2446,7 @@ const RetroCards: React.FC = () => {
                 0: { pill: BRAND.purple, pillDot: BRAND.stackOrange },
                 1: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
                 2: { pill: BRAND.neonGreen, pillDot: BRAND.deepGreen },
-                3: { pill: BRAND.stackOrange, pillDot: BRAND.vividPink },
+                3: { pill: BRAND.pink, pillDot: BRAND.darkPink },
                 4: { pill: "#F39FFF", pillDot: "#FF4A0C" },
                 5: { pill: BRAND.neonGreen, pillDot: BRAND.darkBlue },
                 7: { pill: BRAND.maroon, pillDot: BRAND.pink },
@@ -2492,9 +2482,9 @@ const RetroCards: React.FC = () => {
               const pb = parseInt(pillHex.slice(4, 6), 16);
               const mixC = (c: number) => Math.round(c * 0.12 + 9 * 0.88);
               const bodyBg = "#201C1D";
-              const cardStyle = { backgroundColor: slideId === 3 ? '#F39FFF' : (slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER || slideId === 10 || slideId === 9) ? '#FFFFFF' : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
+              const cardStyle = { backgroundColor: (slideId === 3 || slideId === 4 || slideId === 8 || slideId === SLIDE_LOGO || slideId === SLIDE_REFLECTION || slideId === SLIDE_REFLECTION_PARTNER || slideId === 10 || slideId === 9) ? BRAND.white : theme.bg, ['--retro-white-rgb' as any]: textRgb, ['--retro-post-it' as any]: '#E4E6E8', ['--retro-post-it-text' as any]: theme.text, ['--retro-pill' as any]: theme.pill, ['--retro-pill-dot' as any]: theme.pillDot, ['--retro-body-bg' as any]: bodyBg } as React.CSSProperties;
               return (
-              <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden" style={{ '--retro-action-tile': theme.pillDot, '--retro-action-icon': theme.pill } as React.CSSProperties}>
+              <SwiperSlide key={slideId} className="h-full min-h-0 overflow-hidden" style={{ '--retro-action-tile': slideId === 3 ? BRAND.pink : theme.pillDot, '--retro-action-icon': theme.pill } as React.CSSProperties}>
                 <div className="w-full h-full min-h-0 flex flex-col items-center justify-center overflow-hidden px-6">
 
                   {(SLIDE_PILLS[slideId] || isRisikoSlide(slideId)) && (
@@ -2632,7 +2622,7 @@ const RetroCards: React.FC = () => {
                              pencil. */
                           accent={pillColorOf(slideId)}
                           fieldBg={pillColorOf(slideId)}
-                          iconColor={slideId === 3 && editModeSlides[slideId] ? labelColorOf(3) : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : editModeSlides[slideId] ? "#FFFFFF" : "#201C1D"}
+                          iconColor={slideId === 3 ? BRAND.offBlack : slideId === 7 && !editModeSlides[slideId] ? "var(--intimacy-accent)" : editModeSlides[slideId] ? "#FFFFFF" : "#201C1D"}
                           iconStrokeWidth={1}
                           onClick={() => toggleEditMode(slideId)}
                         />
