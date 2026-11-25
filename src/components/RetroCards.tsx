@@ -1712,7 +1712,7 @@ const RetroCards: React.FC = () => {
                   bullets
                   accent={labelColorOf(4)}
                   label={personPlaceholder(person, idx, "Themen", "Meine Themen", "Themen meines Partners")}
-                  placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
+                  placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                   readOnly={livePerson(idx)}
                   value={livePerson(idx) ? live?.postIts?.p0 || "" : postItTexts[person.key] || ""}
                   onChange={(v) => setPostItTexts({ ...postItTexts, [person.key]: v })}
@@ -2248,7 +2248,7 @@ const RetroCards: React.FC = () => {
                   key={person.key}
                   accent={labelColorOf(8)}
                   label={personPlaceholder(person, idx, "Erkenntnisse", "Meine Erkenntnisse", "Erkenntnisse meines Partners")}
-                  placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
+                  placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                   readOnly={livePerson(idx)}
                   value={livePerson(idx) ? live?.takeaways?.p0 || "" : takeawayTexts[person.key] || ""}
                   onChange={(v) => setTakeawayTexts({ ...takeawayTexts, [person.key]: v })}
@@ -2552,7 +2552,7 @@ const RetroCards: React.FC = () => {
                                           key={noteKey}
                                           accent={labelColorOf(slideId)}
                                           label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                          placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
+                                          placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                                           readOnly={livePerson(idx)}
                                           value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                           onChange={(v) =>
@@ -2586,7 +2586,7 @@ const RetroCards: React.FC = () => {
                                       key={noteKey}
                                       accent={labelColorOf(slideId)}
                                       label={personPlaceholder(person, idx, "Notizen", "Meine Notizen", "Notizen meines Partners")}
-                                      placeholder={livePerson(idx) ? `${liveName || "Partner"} schreibt noch …` : "Deine Antwort"}
+                                      placeholder={livePerson(idx) ? "" : "Deine Antwort"}
                                       readOnly={livePerson(idx)}
                                       value={livePerson(idx) ? live?.notes?.[slideId]?.[partnerKey(noteKey)] || "" : editModeNotes[slideId]?.[noteKey] || ""}
                                       onChange={(v) =>
