@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Health Check: the chosen answer no longer stands between the two end labels — the scale keeps only "Trifft noch nicht zu" and "Trifft immer zu". Phone preview checked an answered card (marker in column two, answer stored) with nothing between the labels; 2 new tests pass, build OK.
 - [x] Shared-session writing fields no longer read "[Name] schreibt noch …": a partner's empty field stays blank, your own still asks "Deine Antwort". Two connected guests checked the card and its notes panel; 3 new tests pass, build OK.
 - [x] Health Check first two cards: the notes CTA's label reads the card's own category green (#0B7A35) and the close X stays white on the green tile, in the normal view and in notes mode alike. Phone preview measured the green label and white glyph on both cards in both states; 4 new tests pass, build OK.
 - [x] Clarified Last 4 Weeks colours: white card and notes pages, dark surrounding backdrop, category/labels/CTA tiles in brand pink #FF6BEF; phone preview verified card and opened notes.

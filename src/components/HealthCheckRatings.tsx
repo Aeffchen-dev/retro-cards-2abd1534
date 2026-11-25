@@ -45,7 +45,7 @@ export default function HealthCheckRatings({ pageIndex, values, onChange, names,
           comparison={otherScore !== null ? { value: String((otherScore - 1) * 25), label: `${otherName ?? 'Partner'}: ${SCALE_CAPTIONS[otherScore - 1]}`, color: categoryColor, name: otherName ?? 'Partner' } : undefined}
           onChange={value => onChange(`hc_${actualPerson}_${c.id}`,healthScaleScore(value))} /></div>
         {s.partner && score === null && remote[HEALTH_CATEGORIES.findIndex(category => category.id === c.id)] !== null && <p className="health-partner-waiting">{otherName} hat schon geantwortet – antworte zuerst, um es zu sehen</p>}
-        <div className="health-scale-ends"><span>Trifft noch nicht zu</span>{score !== null && <span className="health-scale-choice" aria-live="polite">{SCALE_CAPTIONS[score - 1]}</span>}<span>Trifft immer zu</span></div>
+        <div className="health-scale-ends"><span>Trifft noch nicht zu</span><span>Trifft immer zu</span></div>
       </div></div></div>;
     })}</div>
     <ActionRow className="hc-helper health-rating-footer" icon="IconInfo" label="Schiebt den Regler zur passenden Antwort" accent="transparent" fieldBg="transparent" iconColor="var(--retro-info-text)" labelColor="var(--retro-info-text)" />
