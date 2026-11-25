@@ -109,6 +109,8 @@ const NAME2_PLACEHOLDER = "Name deines Partners";
 const EMOJI1_PLACEHOLDER = "🧚‍♂️";
 const EMOJI2_PLACEHOLDER = "🧚‍♀️";
 
+const topicNamePossessive = (name: string): string => name + (/s$/i.test(name) ? "’" : "’s");
+
 // German possessive helper: add "s" unless name ends in s, x, z or ß
 const germanPossessive = (name: string): string => {
   if (!name) return "";
@@ -539,7 +541,7 @@ const RetroCards: React.FC = () => {
     (person: { name: string }, idx: number, label: string, fallbackMine: string, fallbackPartner: string): string => {
       if (label === "Themen") {
         const name = (idx === 0 ? setupData.name1 : idx === 1 ? name2 : person.name).trim();
-        return name ? `${name}'s Themen` : idx === 0 ? fallbackMine : fallbackPartner;
+        return name ? `${topicNamePossessive(name)} Themen` : idx === 0 ? fallbackMine : fallbackPartner;
       }
       if (idx === 0) return postItPlaceholder(setupData.name1, label, fallbackMine);
       if (idx === 1) return postItPlaceholder(name2, label, fallbackPartner);
