@@ -56,12 +56,14 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const hasPast = pastEntries.length > 0;
   const pick = (entry: HealthHistoryEntry | null) => { setSelected(entry?.id ?? null); onSelect?.(entry ? entry.results : null); };
   const chosen = pastEntries.find(e => e.id === selected);
-  const activeStyle = { background: categoryColor, color: categoryAccent };
-  const activeMarker = <span className="health-date-marker" style={{ background: categoryAccent }} aria-hidden="true"><span style={{ background: categoryColor }} /></span>;
+  // Every retro link is one grey rectangle: a coloured dot at its left, the date beside it.
+  // The selected retro keeps its coloured fill, and its dot turns into the card's contrast colour.
+  const chipStyle = (on: boolean) => on ? { background: categoryColor, color: categoryAccent } : undefined;
+  const dot = (on: boolean) => <span className="health-date-dot" style={{ background: on ? categoryAccent : categoryColor }} aria-hidden="true" />;
   return <div className="health-history">
     {hasPast && !loading && <div className="health-date-strip swiper-no-swiping" role="tablist" aria-label="Retro auswählen">
-      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} style={!chosen ? activeStyle : undefined} onClick={() => pick(null)}>{!chosen && activeMarker}Heute</button>
-      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} style={on ? activeStyle : undefined} onClick={() => pick(entry)}>{on && activeMarker}{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
+      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} style={chipStyle(!chosen)} onClick={() => pick(null)}>{dot(!chosen)}Heute</button>
+      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} style={chipStyle(on)} onClick={() => pick(entry)}>{dot(on)}{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
     </div>}
     {error && <p role="alert">{error}</p>}
   </div>;
