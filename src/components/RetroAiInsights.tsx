@@ -33,13 +33,14 @@ async function functionErrorMessage(error: unknown) {
   return "Die Auswertung ist gerade nicht möglich. Bitte versuche es erneut.";
 }
 
-function ThemeGroup({ title, themes, empty }: { title: string; themes: RetroAiTheme[]; empty: string }) {
+/** A category with nothing in it stays hidden: the evaluation only shows what was entered. */
+function ThemeGroup({ title, themes }: { title: string; themes: RetroAiTheme[] }) {
+  if (!themes.length) return null;
   return (
     <section className="retro-eval-box retro-ai-category">
       <h4>{title}</h4>
-      {themes.length ? (
-        <div className="retro-ai-theme-list">
-          {themes.map(theme => (
+      <div className="retro-ai-theme-list">
+        {themes.map(theme => (
             <article className="retro-ai-theme" key={`${theme.status}-${theme.title}-${theme.summary}`}>
               <span className={theme.recurring ? "retro-ai-badge is-recurring" : "retro-ai-badge"}>
                 {theme.recurring ? "Wiederkehrend" : "Aus dieser Runde"}
@@ -47,10 +48,9 @@ function ThemeGroup({ title, themes, empty }: { title: string; themes: RetroAiTh
               <h5>{theme.title}</h5>
               <p>{theme.summary}</p>
               {theme.comparison && <p className="retro-ai-comparison">{theme.comparison}</p>}
-            </article>
-          ))}
-        </div>
-      ) : <p className="retro-eval-muted">{empty}</p>}
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -99,8 +99,8 @@ export default function RetroAiInsights({ answers, accent, fallback }: Props) {
     <section className="retro-ai-inline" style={{ "--retro-ai-accent": accent } as CSSProperties} aria-label="Gemeinsame Gesamtauswertung">
       {result ? (
         <div className="retro-ai-inline-results" aria-live="polite">
-          <ThemeGroup title="Was gut funktioniert" themes={works} empty="Daraus lässt sich gerade kein eindeutiger Stärkebereich ableiten." />
-          <ThemeGroup title="Was Aufmerksamkeit braucht" themes={watch} empty="Es gibt gerade keinen eindeutigen Punkt, der Aufmerksamkeit braucht." />
+          <ThemeGroup title="Was gut funktioniert" themes={works} />
+          <ThemeGroup title="Was Aufmerksamkeit braucht" themes={watch} />
           <section className="retro-eval-box retro-ai-category" aria-label="Eure Vorhaben">
             <h4>Eure Vorhaben</h4>
             <ol className="retro-ai-step-list">

@@ -1,4 +1,4 @@
-import { retroSummary, healthInsights, sharedStrengths, talkTopics, type EvaluationTopic } from "./retro-summary";
+import { retroSummary, healthInsights, sharedStrengths, talkTopics, filledTopics, type EvaluationTopic } from "./retro-summary";
 import { pastHealthHistory, readLocalHealthHistory } from "./health-history-data";
 import { HEALTH_CATEGORIES, healthResults } from './health-check-data';
 import RetroAiInsights from './RetroAiInsights';
@@ -13,13 +13,12 @@ interface Props {
   ideas?: Record<string, string>;
   answers: RetroAnswerInput[];
   accent: string;
-  onOpenHealthCheck?: () => void;
 }
 
 const fmt = (n: number) => n.toFixed(1).replace('.', ',');
 
 /** The Takeaways card's evaluation: averages, per-topic bars and one inline synthesis. */
-export default function RetroSummary({ values, persons, intimacy, partnerValues, partnerName, ideas, answers, accent, onOpenHealthCheck }: Props) {
+export default function RetroSummary({ values, persons, intimacy, partnerValues, partnerName, ideas, answers, accent }: Props) {
   const s = retroSummary(values, persons.map((p) => p.key), intimacy);
   const own = healthResults(values, 'p0');
   const hasPartner = Boolean(partnerValues);
@@ -30,39 +29,36 @@ export default function RetroSummary({ values, persons, intimacy, partnerValues,
   const me = persons[0]?.name || 'Du';
   const who = partnerName || persons[1]?.name || 'Partner';
   const topics: EvaluationTopic[] = HEALTH_CATEGORIES.map((c, i) => ({ id: c.id, title: c.axis, own: own[i], partner: partner[i] }));
-  const answered = own.filter(v => v !== null).length;
+  const filled = filledTopics(topics);
   const strengths = sharedStrengths(topics, hasPartner);
   const talk = talkTopics(topics);
-  const open = (label: string) => onOpenHealthCheck
-    ? <button type="button" className="retro-eval-open" onClick={onOpenHealthCheck}>{label} – zurück zum Health Check</button>
-    : <span className="retro-eval-muted">{label}</span>;
 
+  // Only what was actually entered is summarised: an empty section stays hidden.
   const fallback = <>
-    <div className="retro-eval-box"><h4>Was gut funktioniert</h4>{strengths.length ? <p>{strengths.join(', ')}</p> : <p className="retro-eval-muted">Noch kein gemeinsames Highlight</p>}</div>
-    <div className="retro-eval-box"><h4>Was Aufmerksamkeit braucht</h4>{talk.length ? <ul>{talk.map(t => <li key={t.title}><strong>{t.title}:</strong> {t.question}</li>)}</ul> : <p className="retro-eval-muted">Keine offenen Baustellen</p>}</div>
-    <div className="retro-eval-box"><h4>Eure Vorhaben</h4>{ins.nextSteps.length ? <ul className="retro-eval-checks">{ins.nextSteps.map(n => <li key={n}>☐ {n}</li>)}</ul> : <p className="retro-eval-muted">Noch keine Ideas eingetragen</p>}</div>
+    {strengths.length > 0 && <div className="retro-eval-box"><h4>Was gut funktioniert</h4><p>{strengths.join(', ')}</p></div>}
+    {talk.length > 0 && <div className="retro-eval-box"><h4>Was Aufmerksamkeit braucht</h4><ul>{talk.map(t => <li key={t.title}><strong>{t.title}:</strong> {t.question}</li>)}</ul></div>}
+    {ins.nextSteps.length > 0 && <div className="retro-eval-box"><h4>Eure Vorhaben</h4><ul className="retro-eval-checks">{ins.nextSteps.map(n => <li key={n}>☐ {n}</li>)}</ul></div>}
   </>;
 
   return (
     <section className="retro-summary retro-eval w-full" aria-label="Auswertung">
-      <div className="retro-eval-head">
-        <div><span className="retro-eval-big">{ins.average !== null ? fmt(ins.average) : '–'}</span><span className="retro-eval-who">{me}</span></div>
-        {hasPartner && <div><span className="retro-eval-big is-partner">{ins.partnerAverage !== null ? fmt(ins.partnerAverage) : '–'}</span><span className="retro-eval-who">{who}</span></div>}
-      </div>
+      {(ins.average !== null || ins.partnerAverage !== null) && <div className="retro-eval-head">
+        {ins.average !== null && <div><span className="retro-eval-big">{fmt(ins.average)}</span><span className="retro-eval-who">{me}</span></div>}
+        {hasPartner && ins.partnerAverage !== null && <div><span className="retro-eval-big is-partner">{fmt(ins.partnerAverage)}</span><span className="retro-eval-who">{who}</span></div>}
+      </div>}
       {ins.trend !== null && <p className={`retro-eval-trend ${ins.trend > 0 ? 'is-up' : ins.trend < 0 ? 'is-down' : ''}`}>{ins.trend === 0 ? '= gleich wie letzte Retro' : `${ins.trend > 0 ? '▲ +' : '▼ '}${fmt(ins.trend)} seit der letzten Retro`}</p>}
-      {answered < 8 && <p className="retro-eval-note">{open(`Noch offen: ${8 - answered} von 8 Themen`)}</p>}
 
-      <ul className="retro-eval-bars" aria-label="Themen">
-        {topics.map(t => (
+      {filled.length > 0 && <ul className="retro-eval-bars" aria-label="Themen">
+        {filled.map(t => (
           <li key={t.id}>
             <span className="retro-eval-topic">{t.title}</span>
             <span className="retro-eval-pair">
-              <span className="retro-eval-bar" style={{ width: `${((t.own ?? 0) / 5) * 100}%` }} aria-label={`${me}: ${t.own ?? 'offen'}`} />
-              {hasPartner && <span className="retro-eval-bar is-partner" style={{ width: `${((t.partner ?? 0) / 5) * 100}%` }} aria-label={`${who}: ${t.partner ?? 'offen'}`} />}
+              {t.own !== null && <span className="retro-eval-bar" style={{ width: `${(t.own / 5) * 100}%` }} aria-label={`${me}: ${t.own} von 5`} />}
+              {hasPartner && t.partner !== null && <span className="retro-eval-bar is-partner" style={{ width: `${(t.partner / 5) * 100}%` }} aria-label={`${who}: ${t.partner} von 5`} />}
             </span>
           </li>
         ))}
-      </ul>
+      </ul>}
 
       <RetroAiInsights answers={answers} accent={accent} fallback={fallback} />
 

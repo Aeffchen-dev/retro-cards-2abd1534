@@ -1467,7 +1467,6 @@ const RetroCards: React.FC = () => {
         liveName,
         live ?? undefined,
       )}
-      onOpenHealthCheck={() => swiperRef?.slideTo(slides.indexOf(SLIDE_RISIKO))}
     />
   );
 

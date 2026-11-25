@@ -97,6 +97,11 @@ export function sharedStrengths(topics: EvaluationTopic[], hasPartner: boolean):
   return topics.filter(t => t.own !== null && t.own >= 4 && (!hasPartner || (t.partner !== null && t.partner >= 4))).map(t => t.title);
 }
 
+/** Topics with at least one filled answer: the evaluation summarises only what was entered. */
+export function filledTopics(topics: EvaluationTopic[]): EvaluationTopic[] {
+  return topics.filter(t => t.own !== null || t.partner !== null);
+}
+
 /** Topics anyone rated 2 or lower, or rated two or more points apart — each with its question. */
 export function talkTopics(topics: EvaluationTopic[]): { title: string; question: string }[] {
   return topics

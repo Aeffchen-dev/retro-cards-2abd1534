@@ -2288,7 +2288,6 @@ textarea.bg-retro-post-it:focus,
 .retro-eval-who, .retro-eval-muted, .retro-eval-note { font-size: 12px; color: var(--retro-info-text, #6E7078); }
 .retro-eval-trend { font-size: 14px; margin: 0; }
 .retro-eval-trend.is-up { color: #2A8A10; } .retro-eval-trend.is-down { color: #FF4D00; }
-.retro-eval-open { font-size: 12px; text-decoration: underline; color: var(--retro-black); background: none; border: 0; padding: 0; }
 .retro-eval-bars { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .retro-eval-bars li { display: grid; grid-template-columns: 96px 1fr; align-items: center; gap: 8px; font-size: 12px; }
 .retro-eval-pair { display: grid; gap: 2px; }
@@ -2299,7 +2298,7 @@ textarea.bg-retro-post-it:focus,
 .retro-eval-box ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
 .retro-eval-split { display: flex; height: 8px; margin-bottom: 4px; }
 .retro-eval-split span { background: #2A8A10; } .retro-eval-split span.is-partner { background: #FF4D00; }
-@media print { .retro-eval-open { text-decoration: none; } .retro-eval { break-inside: avoid; } .retro-eval-bar, .retro-eval-split span { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+@media print { .retro-eval { break-inside: avoid; } .retro-eval-bar, .retro-eval-split span { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 
 /* The complete AI evaluation reads directly inside Takeaways — no dialog and no
    second scrolling surface beyond the card's own content area. */
