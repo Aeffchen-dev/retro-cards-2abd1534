@@ -70,6 +70,8 @@ const SLIDE_PILLS: Record<number, string | null> = {
   2: "Health Check",
   3: "The last 4 weeks",
   102: "Feedback",
+  [SLIDE_REFLECTION_PARTNER]: "Feedback",
+  [SLIDE_INTIMACY_PARTNER]: "Intimacy",
   104: "Ideas",
   105: "Health Check",
   4: "To talk about",
