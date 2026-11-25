@@ -11,7 +11,7 @@ describe("Vorhaben card carries the next-retro sentence and sits before Takeaway
     expect(pills).toContain('104: "Ideas"');
     expect(pills).not.toContain("Vorhaben");
     expect(pills).not.toContain("Das nehmen wir uns");
-    expect(slide).toContain('text="Das nehmen wir uns bis zur nächsten Retro vor"');
+    expect(slide).toContain('text="Das nehmen wir uns vor"');
     expect(slide).not.toContain('text="Vorhaben"');
   });
 

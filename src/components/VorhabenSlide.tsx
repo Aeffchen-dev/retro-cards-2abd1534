@@ -34,7 +34,7 @@ const VorhabenSlide = ({ slideId, pillColor, labelColor, values, onChange, partn
   return (
     <div className="vorhaben-slide flex flex-col items-start w-full min-h-full"
       style={{ ["--vorhaben-pill" as string]: pillColor, ["--vorhaben-label" as string]: labelColor } as React.CSSProperties}>
-      <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir uns bis zur nächsten Retro vor" color={pillColor} slideIndex={slideId} /></h2>
+      <h2 className="retro-heading w-full"><RevealText text="Das nehmen wir uns vor" color={pillColor} slideIndex={slideId} /></h2>
       <div className={`screen-only flex flex-col flex-1 w-full ${partnerLabel ? 'gap-1 mt-2' : 'gap-3 mt-4'}`}>{fields(false)}</div>
       <div className="hidden print-only flex-col flex-1 w-full gap-4 mt-6">{fields(true)}</div>
     </div>
