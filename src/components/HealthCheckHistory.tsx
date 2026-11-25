@@ -4,6 +4,10 @@ import type { Json } from '@/integrations/supabase/types';
 import { usePartnerSession } from '@/hooks/use-partner-session';
 import { HealthHistoryEntry, HistoryResults, HEALTH_HISTORY_KEY, parseHistoryResults, chronologicalHistory, readLocalHealthHistory, historyForPair, pastHealthHistory, upsertDailyEntry } from './health-history-data';
 
+/* An unselected pill keeps its dot plain grey — only the selected retro paints
+   anything, and then only behind the dot (user: "only active grey has color"). */
+const HEALTH_DOT_OFF = "#6E7078"; // the deck's own grey footnote colour
+
 export default function HealthCheckHistory({ results, complete, categoryColor, categoryAccent, onSelect }: { results: HistoryResults; complete: boolean; categoryColor: string; categoryAccent: string; onSelect?: (results: HistoryResults | null) => void }) {
   const session = usePartnerSession();
   const [selected, setSelected] = useState<string | null>(null);
@@ -56,14 +60,23 @@ export default function HealthCheckHistory({ results, complete, categoryColor, c
   const hasPast = pastEntries.length > 0;
   const pick = (entry: HealthHistoryEntry | null) => { setSelected(entry?.id ?? null); onSelect?.(entry ? entry.results : null); };
   const chosen = pastEntries.find(e => e.id === selected);
-  // Every retro link is one grey rectangle: a coloured dot at its left, the date beside it.
-  // The selected retro keeps its coloured fill, and its dot turns into the card's contrast colour.
-  const chipStyle = (on: boolean) => on ? { background: categoryColor, color: categoryAccent } : undefined;
-  const dot = (on: boolean) => <span className="health-date-dot" style={{ background: on ? categoryAccent : categoryColor }} aria-hidden="true" />;
+  // Every retro link stays one grey rectangle with its dot at the left. Only the
+  // selected one paints anything: the colour sits just behind that dot, the rest
+  // of the pill keeps the deck's grey (user: "color only behind dot rest of pill
+  // grey", "only active grey has color and dot left").
+  const dot = (on: boolean) => (
+    <span
+      className={`health-date-plate${on ? ' is-on' : ''}`}
+      style={on ? { background: categoryColor } : undefined}
+      aria-hidden="true"
+    >
+      <span className="health-date-dot" style={{ background: on ? categoryAccent : HEALTH_DOT_OFF }} />
+    </span>
+  );
   return <div className="health-history">
     {hasPast && !loading && <div className="health-date-strip swiper-no-swiping" role="tablist" aria-label="Retro auswählen">
-      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} style={chipStyle(!chosen)} onClick={() => pick(null)}>{dot(!chosen)}Heute</button>
-      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} style={chipStyle(on)} onClick={() => pick(entry)}>{dot(on)}{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
+      <button type="button" role="tab" aria-selected={!chosen} className={`health-date-chip ${!chosen ? 'is-active' : ''}`} onClick={() => pick(null)}>{dot(!chosen)}Heute</button>
+      {[...pastEntries].reverse().map(entry => { const on = entry.id === selected; return <button key={entry.id} type="button" role="tab" aria-selected={on} className={`health-date-chip ${on ? 'is-active' : ''}`} onClick={() => pick(entry)}>{dot(on)}{new Date(entry.recorded_at).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'2-digit'})}</button>; })}
     </div>}
     {error && <p role="alert">{error}</p>}
   </div>;

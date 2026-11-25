@@ -150,6 +150,8 @@
 .health-date-strip { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .health-date-strip::-webkit-scrollbar { display: none; }
 #root .health-ratings .health-date-chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border: 0; border-radius: 0; background: var(--retro-textarea-bg); color: var(--color-text-primary); font-size: 14px; line-height: 32px; white-space: nowrap; }
-/* Every retro link is one grey rectangle: a coloured dot at its left, the date beside it.
-   The selected retro keeps its coloured fill, so its dot wears the card's contrast colour. */
+/* Every retro link stays a grey rectangle with its dot at the left; only the
+   selected one paints, and the colour is only the small plate behind that dot
+   (user: "color only behind dot rest of pill grey"). */
+.health-date-plate { width: 18px; height: 18px; flex: none; display: grid; place-items: center; }
 .health-date-dot { width: 10px; height: 10px; flex: none; border-radius: 50%; }
