@@ -1,6 +1,7 @@
 # Roadmap
 
 ## Current request
+- [x] Health Check first two cards: the notes CTA's label reads the card's own category green (#0B7A35) and the close X stays white on the green tile, in the normal view and in notes mode alike. Phone preview measured the green label and white glyph on both cards in both states; 4 new tests pass, build OK.
 - [x] Clarified Last 4 Weeks colours: white card and notes pages, dark surrounding backdrop, category/labels/CTA tiles in brand pink #FF6BEF; phone preview verified card and opened notes.
 - [ ] Deploy to GitHub Pages via the repository's own workflow: the build itself is verified here (build OK) and the npm lock file was completed so the workflow's install step has every dependency, but the run has to be started by the user — this sandbox has no GitHub repository or credentials, only Lovable's code storage.
 - [x] Archive card never wears a pink fill: its background is pinned white in the card style instead of the position-based background list, which a joining partner plus "Nicht monogam" could drop onto the pink entry. Phone preview measured white in both layouts; 2 new tests pass, build OK.

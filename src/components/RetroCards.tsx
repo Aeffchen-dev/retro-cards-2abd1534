@@ -1615,7 +1615,7 @@ const RetroCards: React.FC = () => {
               <ActionRow
                 icon={editModeSlides[cardId] ? "IconClear" : "IconPencil"}
                 label={editModeSlides[cardId] ? "Fertig" : "Notizen öffnen"}
-                style={{ '--retro-action-icon-override': 'var(--risiko-face-fill)' } as React.CSSProperties}
+                style={{ '--retro-action-icon-override': 'var(--risiko-face-fill)', '--retro-action-label-override': labelColorOf(cardId) } as React.CSSProperties}
                 /* the Notizen öffnen tile reads plain grey with a black pencil —
                    no outline of its own (user: "EDIT PEN BACKGROUND NO OURLINE");
                    edit mode keeps the card's own pill colour and its white pencil. */
@@ -2615,6 +2615,14 @@ const RetroCards: React.FC = () => {
                         <ActionRow
                           icon={editModeSlides[slideId] ? "IconClear" : "IconPencil"}
                           label={editModeSlides[slideId] ? "Fertig" : "Notizen öffnen"}
+                          /* The two feeling cards keep their own green: the label
+                             reads the card's category green and the close X stays
+                             white on the green tile, like the pencil outside
+                             notes mode (user: "notes label category green and
+                             close icon white"). */
+                          style={(slideId === 1 || slideId === 2)
+                            ? ({ '--retro-action-icon-override': 'var(--risiko-face-fill)', '--retro-action-label-override': labelColorOf(slideId) } as React.CSSProperties)
+                            : undefined}
                           /* Notizen öffnen reads a plain grey tile with a black
                              pencil and no outline (user: "EDIT PEN BACKGROUND NO
                              OURLINE"); edit mode keeps the card's own pill colour,
